@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="FrameSize">
+        <item>CIF</item>
+        <item>D1</item>
+        <item>HD720P</item>
+    </string-array>
+    
+    <string-array name="ResolutionText">
+        <item>SD</item>
+        <item>HD</item>
+        <item>HD720P</item>
+    </string-array>
+
+    <string-array name="ImageQualityText">
+        <item>fluent</item>
+        <item>balanced</item>
+        <item>fine</item>
+    </string-array>
+</resources>

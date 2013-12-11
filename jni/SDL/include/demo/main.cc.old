@@ -1,0 +1,479 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <openssl/des.h>
+#include <openssl/md5.h>
+#include <assert.h>
+#include <getopt.h>
+
+#include <netinet/in.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <arpa/inet.h>
+
+#include "howell/net/udpsocket.h"
+#include "ecamstreamreq.h"
+
+#include "demo/webservice/HomeMCUServiceBinding_USCOREIHomeMCUService.nsmap"
+#include "demo/webservice/soapH.h"
+#include "demo/webservice/soapStub.h"
+#include "demo/base64.h"
+
+const char * ACCOUNT="10086012";
+const char * PASSWORD=ACCOUNT;
+const char * DEVID="10000000000000000001";
+//const char * DEVID="12345678901234567890";
+const char * SERVER="http://180.166.7.214:8800/HomeService/HomeMCUService.svc";
+
+static void to_hex_format_string(char * str, unsigned char * hex, int cnt)
+{
+	char tmp[3];
+	int i;
+	for (i=0; i<cnt; ++i) {
+		sprintf(tmp,"%02x",hex[i]);
+		strcat(str,tmp);
+	}
+}
+
+class ClientDemo 
+{
+public:
+	const static int REQ_TIMEOUT=5000;
+
+	ClientDemo(const char * account, const char * passwd) {
+		if (account!=NULL) account_ = std::string(account);
+		if (passwd!=NULL) passwd_ = std::string(passwd);
+		udp_sender_ = new howell_net::UdpSocket(0,"192.168.128.244",17000);
+	}
+
+	~ClientDemo() {
+	}
+
+	bool Login() {
+
+		int result = 0;
+
+		struct soap * soap = soap_new();
+		struct _ns1__userLoginReq req;
+		struct _ns1__userLoginRes res;
+		memset(&req,0,sizeof(req));
+
+		char password[256];
+		memset(password,0,sizeof(password));
+		req.Account = (char *)account_.c_str();
+		req.PwdType = ns1__PwdType__Common;
+		passwordEncrypt((const unsigned char *)passwd_.c_str(),(unsigned char *)password,256);
+		req.Password = password;
+
+		fprintf(stderr, "crypto password:%s\n",password);
+		soap_call___ns1__userLogin(soap,SERVER,NULL,&req,&res);
+		if (soap->error) {
+			printf("soap error:%d,%s,%s\n", soap->error, *soap_faultcode(soap), *soap_faultstring(soap) );
+			result = soap->error;
+			return false;
+		}
+
+		fprintf(stderr,"login session:%s\n",res.LoginSession);
+		login_session_ = std::string(res.LoginSession);
+
+		soap_end(soap);
+		soap_delete(soap,NULL);
+		return true;
+	}
+
+	bool InviteLive(const char * devid,uint8_t method_bitmap, const char * udp_addr, int udp_port) {
+		stream_req_  =  ecam_stream_req_new(account_.c_str());
+		ecam_stream_req_set_usr_data(stream_req_,(void *)this);
+		//ecam_stream_req_regist_packet_cb(stream_req_,OnPacketArrive);
+		ecam_stream_req_regist_stream_cb(stream_req_,OnStreamArrive);
+
+		struct ecam_stream_req_context c;
+		memset(&c,0,sizeof(c));
+
+		c.playback = 0;
+		c.beg = c.end = 0;
+		c.re_invite = false;
+		c.method_map = method_bitmap;
+		if (udp_addr != NULL) {
+			strncpy(c.udp_addr,udp_addr,63);
+		}
+		c.udp_port = udp_port;
+		buildIceOpt(c.ice_opt);
+
+		if (invite(devid,&c)!=0) {
+			fprintf(stderr,"invite error\n");
+			exit(-1);
+		}
+
+		int ret = ecam_stream_req_start(stream_req_,&c,REQ_TIMEOUT);
+		fprintf(stderr,"stream req start ret:%d\n",ret);
+		return ret==0?true:false;
+	}
+
+	bool Replay() {
+		ecam_stream_req_stop(stream_req_,REQ_TIMEOUT);
+		return true;
+
+		struct ecam_stream_req_context c;
+		memset(&c,0,sizeof(c));
+
+		c.playback = 1;
+		c.beg = 1372050203+60; 
+		c.end = 1372050335;
+		c.re_invite = true;
+		c.method_map = 0;
+		buildIceOpt(c.ice_opt);
+
+		int ret = ecam_stream_req_start(stream_req_,&c,REQ_TIMEOUT);
+		fprintf(stderr,"stream req start ret:%d\n",ret);
+		return ret==0?true:false;
+	}
+
+	bool InvitePlayback(const char * devid,uint8_t method_bitmap, const char * udp_addr, int udp_port) {
+		stream_req_  =  ecam_stream_req_new(account_.c_str());
+		ecam_stream_req_set_usr_data(stream_req_,(void *)this);
+		//ecam_stream_req_regist_packet_cb(stream_req_,OnPacketArrive);
+		ecam_stream_req_regist_stream_cb(stream_req_,OnStreamArrive);
+
+		struct ecam_stream_req_context c;
+		memset(&c,0,sizeof(c));
+
+		c.playback = 1;
+		c.beg = 1372050203; 
+		c.end = 1372050335;
+		c.re_invite = false;
+		c.method_map = method_bitmap;
+		if (udp_addr != NULL) {
+			strncpy(c.udp_addr,udp_addr,63);
+		}
+		c.udp_port = udp_port;
+		buildIceOpt(c.ice_opt);
+
+		if (invite(devid,&c)!=0) {
+			fprintf(stderr,"invite error\n");
+			exit(-1);
+		}
+
+		int ret = ecam_stream_req_start(stream_req_,&c,REQ_TIMEOUT);
+		fprintf(stderr,"stream req start ret:%d\n",ret);
+		return ret==0?true:false;
+	}
+
+	bool Bye(const char * devid) {
+
+		//return true;
+		//fprintf(stderr,"before bye\n");
+		//ecam_stream_req_stop(stream_req_,-1);
+		//fprintf(stderr,"after \n");
+		//return true;
+
+		struct soap * soap;
+
+		soap = soap_new();
+
+		struct _ns1__byeReq req;
+		struct _ns1__byeRes res;
+		memset(&req,0,sizeof(req));
+		memset(&res,0,sizeof(res));
+
+		req.Account = (char *)account_.c_str();
+		req.LoginSession = (char *)login_session_.c_str();
+		req.DevID = (char *)devid;
+		req.ChannelNo = 0;
+		req.StreamType = ns1__StreamType__Sub;
+		req.DialogID = (char *)dialog_id_.c_str();
+
+		soap_call___ns1__bye(soap,SERVER,NULL,&req,&res);
+		if (soap->error) {
+			fprintf(stderr,"soap error:%d,%s,%s\n", soap->error, *soap_faultcode(soap), *soap_faultstring(soap) );
+		}
+		else
+			fprintf(stderr,"bye ret:%d\n",res.result);
+		soap_end(soap);
+		soap_delete(soap,NULL);
+
+		if (stream_req_!=NULL) {
+			ecam_stream_req_free(stream_req_);
+			stream_req_ = NULL;
+		}
+
+		return true;
+	}
+
+private:
+	static void OnPacketArrive(ecam_stream_req_t * req, const char * data, size_t len) { 
+		//fprintf(stderr,"%s len:%d\n",__func__,len);
+		ClientDemo * self=(ClientDemo *)ecam_stream_req_get_usr_data(req);
+		if (self->udp_sender_!=NULL) self->udp_sender_->send(data,len);
+	}
+
+	static void OnStreamArrive(ecam_stream_req_t * req, ECAM_STREAM_REQ_FRAME_TYPE media_type, const char * data, size_t len, uint32_t timestamp) {
+		if (media_type == kFrameTypeAudio) return;
+
+		//static uint32_t last_ts=0;
+		//int diff = timestamp-last_ts;
+		//if (abs(diff)>4000 || abs(diff)<3000) {
+			//printf("type:%d len:%d diff:%d\n",media_type,len,diff);
+		//}
+
+		//sleep(1);
+		//last_ts = timestamp;
+		return;
+
+		static int cnt=0;
+		if (media_type == kFrameTypeI || media_type == kFrameTypeP) {
+			cnt++;
+			if (cnt==25) {
+				sleep(2);
+				cnt=0;
+			}
+		}
+	}
+
+	void buildIceOpt(struct ICEOption &opt) {
+		memset(&opt,0,sizeof(opt));
+		opt.comp_cnt = 1;
+		//stun server
+		strcpy(opt.stun_addr,"180.166.7.214");
+		opt.stun_port = 34780;
+
+#if 1
+		//turn server
+		strcpy(opt.turn_addr,"180.166.7.214");
+		opt.turn_port = 34780;
+		opt.turn_tcp = 0;
+		strcpy(opt.turn_username,"100");
+		strcpy(opt.turn_password,"100");
+#endif
+	}
+
+	//jzh: from ShenLingfei
+	int passwordEncrypt(const unsigned char *plaitext, unsigned char *ciphertext, int len) {
+		if (!plaitext || !ciphertext || len <= 192)
+		{
+			return -1;
+		}
+
+		printf("plain pasword:   %s\n",plaitext);
+
+		// 随机产生key
+		//DES_cblock my_key;
+		//DES_cblock my_iv;
+		//DES_random_key(&my_key);
+		//DES_random_key(&my_iv);
+		DES_cblock my_key = {0x05, 0xf7, 0xdd, 0x03, 0xa7, 0xac, 0xe4, 0x42};
+		DES_cblock my_iv = {0xbc, 0x30, 0x3b, 0xa4, 0xab, 0x99, 0x42, 0xd2};
+		// 设置key
+		DES_key_schedule my_schedule;
+		int ret = DES_set_key(&my_key, &my_schedule);
+		if (ret) {
+			return -1;
+		}
+
+		// 明文
+		const unsigned char *my_input = (const unsigned char*)plaitext;
+		// md5
+		MD5_CTX md5;
+		ret = MD5_Init(&md5);
+		int ret1 = MD5_Update(&md5, (const void *)my_input, strlen((const char *)my_input));
+		unsigned char md5_out[17] = {0};
+		int ret2 = MD5_Final(md5_out, &md5);
+		unsigned char md_out[33] = {0};
+		to_hex_format_string((char *)md_out, md5_out, 16);
+
+		printf("first md5: %s\n",md_out);
+
+		//把随机产生的key和iv转换为16进制字符串
+		unsigned char key_string[17] = {0};
+		to_hex_format_string((char *)key_string, my_key, 8);
+		unsigned char iv_string[17] = {0};
+		to_hex_format_string((char *)iv_string, my_iv, 8);
+
+		// 第一次加密
+		unsigned char output_tmp[33] = {0};
+		DES_ncbc_encrypt(md_out, output_tmp, 32, &my_schedule, &my_iv, DES_ENCRYPT);
+		unsigned char my_first_cipher[65] = {0};
+		to_hex_format_string((char *)my_first_cipher, output_tmp, 32);
+
+		printf("first cipher: %s\n",my_first_cipher);
+
+		//第二次加密, 数据合成
+		unsigned char com[128] = {0};
+		memcpy(com, key_string, 16);    // memcpy源字符数组需要多一个字节，避免运行时栈崩溃
+		memcpy(&com[16], iv_string, 16);
+		memcpy(&com[32], my_first_cipher, 64);
+		unsigned char sec_key[8] = {0x48, 0x4F, 0x57, 0x45, 0x4C, 0x4C, 0x4B, 0x45};
+		unsigned char sec_iv[8] = {0x48, 0x4F,0x57, 0x45, 0x4C, 0x4C, 0x56, 0x49};
+
+		// 设置key
+		DES_key_schedule sec_schedule;
+		ret = DES_set_key(&sec_key, &sec_schedule);
+		if (ret)
+		{
+			return -1;
+		}
+
+		// 加密
+		unsigned char sec_out[97] = {0};
+		DES_ncbc_encrypt(com, sec_out, 96, &sec_schedule, &sec_iv, DES_ENCRYPT);
+		unsigned char final_out[193] = {0};
+		to_hex_format_string((char *)final_out, sec_out, 96);
+		memcpy(ciphertext, final_out, 192);
+
+		printf("final cipher: %s\n",final_out);
+		return 0;
+	}
+
+	int invite(const char * devid, struct ecam_stream_req_context *c)
+	{
+		struct soap * soap;
+		int result = 0;
+
+		char * local_sdp;
+		size_t sdp_len;
+		char * remote_sdp;
+
+		local_sdp = ecam_stream_req_prepare_sdp(stream_req_,c);
+		if (local_sdp==NULL) return -1;
+
+		soap = soap_new();
+
+		struct _ns1__inviteReq req;
+		struct _ns1__inviteRes res;
+		memset(&req,0,sizeof(req));
+		memset(&res,0,sizeof(res));
+
+		req.Account = (char *)account_.c_str();
+		req.LoginSession = (char *)login_session_.c_str();
+		req.DevID = (char *)devid;
+		req.ChannelNo = 0;
+		switch (1) {
+			case 0: req.StreamType = ns1__StreamType__Main; break;
+			case 1: req.StreamType = ns1__StreamType__Sub; break;
+			default:req.StreamType = ns1__StreamType__Sub; break;
+		}
+		if (!c->re_invite) 
+			createDialogId();
+		req.DialogID = (char *)dialog_id_.c_str();
+		req.SDPMessage = base64_encode((const unsigned char *)local_sdp,strlen(local_sdp));
+
+		fprintf(stderr,"ready to invite:%s\n",req.SDPMessage);
+		soap_call___ns1__invite(soap,SERVER,NULL,&req,&res);
+		if (soap->error) {
+			printf("soap error:%d,%s,%s\n", soap->error, *soap_faultcode(soap), *soap_faultstring(soap) );
+			result = soap->error;
+			goto quit;
+		}
+		fprintf(stderr,"after invite result:%d\n",res.result);
+
+		if (res.result!=0) {
+			result=-1;
+			goto quit;
+		}
+
+		remote_sdp = (char *)base64_decode(res.SDPMessage,&sdp_len);
+		fprintf(stderr,"remote sdp:%s\n",remote_sdp);
+
+		ecam_stream_req_handle_remote_sdp(stream_req_,c,dialog_id_.c_str(),remote_sdp);
+		//stream_req_->ProcessRemoteSdp(c,dialog_id_.c_str(),remote_sdp);
+		free(remote_sdp);
+
+quit:
+		free(req.SDPMessage);
+		soap_end(soap);
+		soap_delete(soap,NULL);
+		free(local_sdp);
+		return result;
+	}
+
+	void createDialogId() {
+		char d[32];
+		snprintf(d,31,"%ld",random());
+		dialog_id_ = std::string(d);
+	}
+
+	std::string account_;
+	std::string passwd_;
+	std::string login_session_;
+	std::string dialog_id_;
+	//ecamera::StreamRequest * stream_req_;
+	ecam_stream_req_t * stream_req_;
+	howell_net::UdpSocket * udp_sender_; //jzh: 用于将数据发给VLC做测试
+};
+
+static void menu()
+{
+	printf("\n\t-------------MENU-------------------\n");
+	printf("\t|i\tinvite the device\n");
+	printf("\t|p\tinvite the device's Playback\n");
+	printf("\t|r\treplay, 模拟拖动时间线\n");
+	printf("\t|b\tbye to the device\n");
+	printf("\t|l\tvod list\n");
+	printf("\t|q\tquit\n");
+	printf("\t-----------------------------------\n\n");
+}
+
+int main(int argc, char * argv[])
+{
+	ice_global_init();
+	srand(time(NULL));
+
+	ClientDemo demo(ACCOUNT,PASSWORD);
+	bool ret = demo.Login();
+	assert(ret);
+
+	while (1) {
+		menu();
+		char c;
+		if (scanf("%c",&c) != 1) {
+			continue;
+		}
+
+		switch (c) {
+			case 'i':
+				{
+					uint8_t req_method;
+					//req_method = 1<<ecamera::StreamRequest::kMethodICE | 1<<ecamera::StreamRequest::kMethodUdp;
+					//req_method = 1<<ecamera::StreamRequest::kMethodUdp; 
+					req_method = 1<<kStreamReqMethodIce |  1<<kStreamReqMethodUdp;
+					ret = demo.InviteLive(DEVID,req_method,"192.168.128.95",6002);
+					//ret = demo.InviteLive(DEVID,req_method,NULL,0);
+					assert(ret);
+				}
+				break;
+
+			case 'p':
+				{
+					uint8_t req_method;
+					//req_method = 1<<ecamera::StreamRequest::kMethodICE | 1<<ecamera::StreamRequest::kMethodUdp;
+					//req_method = 1<<kStreamReqMethodUdp;
+					req_method = 1<<kStreamReqMethodIce | 1<<kStreamReqMethodUdp;
+					ret = demo.InvitePlayback(DEVID,req_method,"192.168.128.95",6002);
+					//ret = demo.InviteLive(DEVID,req_method,NULL,0);
+					assert(ret);
+				}
+				break;
+
+			case 'r':
+				{
+					ret = demo.Replay();
+					assert(ret);
+				}
+				break;
+
+			case 'b':
+				demo.Bye(DEVID);
+				break;
+
+			case 'l':
+				break;
+
+			case 'q':
+				exit(0);
+
+			default:
+				break;
+		}
+	}
+
+	return 0;
+}

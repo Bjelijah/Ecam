@@ -1,0 +1,45 @@
+Version 0.9.6
+1.增加了程序的健壮性，平台返回null时程序不会挂
+2.回放列表点击以后该行变灰色
+3.修复了不能返回的BUG(ecam_stream_req_free 去掉锁)
+4.设备列表增加下拉刷新
+5.回放seekbar上添加气泡时间
+6.设备设置新增图像翻转功能
+7.item.xml 修改了famelayout：background="@drawable/list_item_bg_middle"使其间距变大 并且按下时显示蓝色
+	，修改了text：paddingTop="25dip"使设备名和在线提示间距变大
+8.device_manager_item.xml 修改了famelayout：background="@drawable/list_item_bg_middle"使其间距变大 并且按下时显示蓝色
+
+Version 0.9.7
+1.解决了videolist内存溢出的问题
+2.解决了videolist数组越界问题
+
+Version 0.9.9 
+1.增加了多语言支持
+2.增加了推送功能
+3.用户名密码界面输入法布遮挡输入框
+
+Version 1.0.1
+1.底层资源改成数组 每次退出退出不再卡
+2.视频下方的设置一开始就显示
+
+Version 1.0.2
+1.修改了invite之前过早退出导致程序崩溃的BUG
+2.设备设置里CheckBox按下直接修改设置（减少退出设置所用时间）
+3.修正了没有电源指示灯的设备获取状态是抛出异常导致之后的状态获取不到的BUG
+
+Version 1.0.3
+1.开始程序就获取设备信息存于SoapManager单例对象中用于判断设备是否有SD卡
+2.连接视频时，PunpIP,端口直接从SoapManager单例对象中的设备信息列表中取
+3.设备设置退出有改动时才设置配置
+4.推送通知作用于单个设备
+5.VedioList添加底部加载
+
+Version 1.0.4
+1.横屏一直显示网速TEXTVIEW
+2.没有数据显示的时候显示PROGRESS
+3.VedioList添加日期Title
+
+Version 1.0.5
+1.解决释放音频内存时音频正在播放导致程序崩溃的BUG
+2.libecamstream.a库增加获取准确回放时间的接口 解决回放seekBar不准确的BUG
+3.解决死锁导致程序退出不freeHandle的BUG

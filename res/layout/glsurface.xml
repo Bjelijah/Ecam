@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/glsurface" >
+    
+    <android.opengl.GLSurfaceView
+        android:id="@+id/glsurface_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </android.opengl.GLSurfaceView>
+    
+    <LinearLayout
+        android:id="@+id/surface_icons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:background="@drawable/surface_icon_bk"
+        android:paddingBottom="15dip"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" >
+
+           <!--   <SeekBar
+                android:id="@+id/replaySeekBar"
+                android:layout_width="243dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:layout_weight="0.18" />-->
+           
+        	<com.howell.webcam.player.MySeekBar   
+	            android:id="@+id/replaySeekBar"   
+	            android:layout_width="match_parent"   
+	            android:layout_height="wrap_content"   
+	            android:progressDrawable="@drawable/my_seekbar"  
+	            android:thumb="@drawable/seek_thumb" />  
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dip">
+        	
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" >
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="5dip"
+                android:layout_marginLeft="15dip"
+            	android:layout_weight="1">
+
+                <ImageButton
+                    android:id="@+id/ib_pause"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:visibility="gone"
+                    android:src="@drawable/pause" />
+
+                <ImageButton
+                    android:id="@+id/vedio_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#00000000"
+                    android:layout_weight="1"
+                    android:src="@drawable/vedio_list" />
+
+                <ImageButton
+                    android:id="@+id/catch_picture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#00000000"
+                    android:layout_weight="1"
+                    android:src="@drawable/camera_1" />
+
+                <ImageButton
+                    android:id="@+id/sound"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#00000000"
+                    android:layout_weight="1"
+                    android:src="@drawable/sound" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+	<ProgressBar
+        android:id="@+id/waitProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminateDrawable="@drawable/my_progress"/>
+
+    <ImageView
+	    android:id="@+id/animation_back"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_gravity="center"
+	    android:visibility="gone"
+	    android:src="@drawable/animation_background" />
+
+	<ImageView
+	    android:id="@+id/animation_aim"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_gravity="center"
+	    android:visibility="gone"
+	    android:src="@drawable/animation_aim" />
+	
+	<LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|left"
+                android:layout_marginBottom="22dip"
+                android:layout_marginLeft="15dip"
+            	>
+
+                <TextView
+                    android:id="@+id/tv_stream_len"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:gravity="center"
+                    android:textSize="20dip"
+                    android:textColor="@color/white"
+                    android:text="0 Kibt/s" />
+    </LinearLayout>
+
+</FrameLayout>

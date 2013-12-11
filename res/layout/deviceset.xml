@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="55dip"
+        android:background="@drawable/tenpay_top_bar"
+        android:gravity="center"
+        android:textColor="#FFFFFFFF"
+        android:textSize="23sp" />
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:shrinkColumns="0"
+            android:stretchColumns="0" >
+
+            <TableRow
+                android:layout_width="match_parent"
+			    android:layout_height="50dip"
+			    android:layout_marginLeft="10dip"
+			    android:layout_marginRight="10dip"
+			    android:layout_marginTop="10dip"
+			    android:gravity="center_vertical"
+                android:background="@drawable/list_single_item_bg_normal" >
+
+                
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="@string/device_name"
+                        android:textColor="#ff333333"
+                        android:textSize="16.0sp" />
+
+                    <TextView
+                        android:id="@+id/tv_device_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:textColor="#000080" />
+                </LinearLayout>
+            </TableRow>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginTop="10dip"
+                android:layout_marginBottom="10dip"
+                android:paddingLeft="25.0dip"
+                android:text="@string/vedio_arg"
+                android:textColor="#ffffff"
+                android:textSize="16.0sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <TableRow
+                    android:layout_width="match_parent"
+			        android:layout_height="50dip"
+			        android:layout_marginLeft="10dip"
+			        android:layout_marginRight="10dip"
+			        android:gravity="center_vertical"
+			        android:background="@drawable/list_item_bg_top" >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:drawablePadding="10.0dip"
+                        android:gravity="center_vertical"
+                        android:text="@string/resolution"
+                        android:textColor="#ff333333"
+                        android:singleLine="true"
+						android:ellipsize="end"
+                        android:textSize="16.0sp" />
+
+                    <SeekBar
+                        android:id="@+id/seekBar1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/resolutoin_str"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="#ff333333" />
+                </TableRow>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="50dip"
+                    android:layout_marginLeft="10dip"
+			        android:layout_marginRight="10dip"
+			        android:gravity="center_vertical"
+                    android:background="@drawable/list_item_bg_bottom" >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:drawablePadding="10.0dip"
+                        android:gravity="center_vertical"
+                        android:text="@string/picture"
+                        android:textColor="#ff333333"
+                        android:singleLine="true"
+						android:ellipsize="end"
+                        android:textSize="16.0sp" />
+
+                    <SeekBar
+                        android:id="@+id/seekBar2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/quality_str"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textColor="#ff333333"
+                        android:gravity="center" />
+                </TableRow>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingLeft="25.0dip"
+                android:layout_marginTop="10dip"
+                android:layout_marginBottom="10dip"
+                android:text="@string/auxiliary_set"
+                android:textColor="#ffffff"
+                android:textSize="16.0sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <TableRow
+                    android:layout_width="match_parent"
+				    android:layout_height="50dip"
+				    android:layout_marginLeft="10dip"
+				    android:layout_marginRight="10dip"
+				    android:gravity="center_vertical"
+	                android:background="@drawable/list_item_bg_top" >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:drawablePadding="10.0dip"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:text="@string/turn_over"
+                        android:textColor="#ff333333"
+                        android:textSize="16.0sp" />
+
+                    <CheckBox
+                        android:id="@+id/turn_over"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </TableRow>
+            </LinearLayout>
+            
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <TableRow
+                    android:layout_width="match_parent"
+				    android:layout_height="50dip"
+				    android:layout_marginLeft="10dip"
+				    android:layout_marginRight="10dip"
+				    android:gravity="center_vertical"
+	                android:background="@drawable/list_item_bg_bottom" >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:drawablePadding="10.0dip"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:text="@string/power_land"
+                        android:textColor="#ff333333"
+                        android:textSize="16.0sp" />
+
+                    <CheckBox
+                        android:id="@+id/power_led"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </TableRow>
+            </LinearLayout>
+            
+			<TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingLeft="25.0dip"
+                android:layout_marginTop="10dip"
+                android:layout_marginBottom="10dip"
+                android:text="@string/alarm_messages"
+                android:textColor="#ffffff"
+                android:textSize="16.0sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <TableRow
+                    android:layout_width="match_parent"
+				    android:layout_height="50dip"
+				    android:layout_marginLeft="10dip"
+				    android:layout_marginRight="10dip"
+				    android:gravity="center_vertical"
+	                android:background="@drawable/list_single_item_bg_normal" >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:drawablePadding="10.0dip"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:text="@string/move_detect"
+                        android:textColor="#ff333333"
+                        android:textSize="16.0sp" />
+
+                    <CheckBox
+                        android:id="@+id/vmd_enable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </TableRow>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_load"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="25.0dip"
+                android:layout_marginTop="10dip"
+                android:layout_marginBottom="10dip"
+                android:visibility="gone" >
+
+                <ProgressBar
+                    android:id="@+id/progressBar1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:indeterminateDrawable="@drawable/my_progress" />
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dip"
+                    android:gravity="center_vertical"
+                    android:textColor="#ffffff"
+                	android:textSize="16.0sp"
+                    android:text="正在设置..." />
+
+            </LinearLayout>
+            
+            <LinearLayout
+                android:id="@+id/ll_alarm_push"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" >
+
+                <TableRow
+                    android:layout_width="match_parent"
+				    android:layout_height="50dip"
+				    android:layout_marginLeft="10dip"
+				    android:layout_marginRight="10dip"
+				    android:gravity="center_vertical"
+	                android:background="@drawable/list_single_item_bg_normal" >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:drawablePadding="10.0dip"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:text="@string/push_push"
+                        android:textColor="#ff333333"
+                        android:textSize="16.0sp" />
+
+                    <CheckBox
+                        android:id="@+id/alarm_notice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </TableRow>
+            </LinearLayout>
+            
+            <TextView
+                android:id="@+id/tv_font"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingLeft="25.0dip"
+                android:paddingRight="25.0dip"
+                android:layout_marginTop="10dip"
+                android:text="@string/vmd_info"
+                android:textColor="#ffffff"
+                android:textSize="13.0sp" />
+
+            <TextView
+                android:id="@+id/tv_camera_version"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingLeft="25.0dip"
+                android:layout_marginTop="10dip"
+                android:layout_marginBottom="10dip"
+                android:text="@string/camera_version_title"
+                android:textColor="#ffffff"
+                android:textSize="16.0sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <TableRow
+                    android:layout_width="match_parent"
+				    android:layout_height="50dip"
+				    android:layout_marginLeft="10dip"
+				    android:layout_marginRight="10dip"
+				    android:layout_marginBottom="10dip"
+				    android:gravity="center_vertical"
+	                android:background="@drawable/list_single_item_bg_normal">
+
+                    <TextView
+                        android:id="@+id/camera_update_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:drawablePadding="10.0dip"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:textColor="#ff333333"
+                        android:textSize="16.0sp" />
+
+                    <Button
+                        android:id="@+id/setting_update_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dip"
+                        android:text="@string/camera_update"
+                        android:visibility="invisible" />
+
+                </TableRow>
+            </LinearLayout>
+        </TableLayout>
+
+    </ScrollView>
+
+</LinearLayout>

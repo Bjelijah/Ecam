@@ -1,0 +1,2684 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<wsdl:definitions name="HomeMCUService" targetNamespace="http://www.haoweis.com/HomeServices/MCU/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tns="http://www.haoweis.com/HomeServices/MCU/" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata">
+  <wsdl:types>
+    <?xml version="1.0" encoding="utf-8" ?>
+    <xs:schema elementFormDefault="qualified" targetNamespace="http://www.haoweis.com/HomeServices/MCU/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.haoweis.com/HomeServices/MCU/">
+      <xs:element name="createAccountReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Username" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Password" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Email" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="MobileTel" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="SecurityQuestion" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="SecurityAnswer" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Country" nillable="true" type="tns:CountryAbbr2ISO3166" />
+            <xs:element minOccurs="0" maxOccurs="1" name="CountryTelCode" nillable="true" type="tns:CountryAbbr2ISO3166" />
+            <xs:element minOccurs="0" maxOccurs="1" name="IDCard" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:simpleType name="CountryAbbr2ISO3166">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="AF" />
+          <xs:enumeration value="AL" />
+          <xs:enumeration value="DZ" />
+          <xs:enumeration value="AS" />
+          <xs:enumeration value="AD" />
+          <xs:enumeration value="AO" />
+          <xs:enumeration value="AI" />
+          <xs:enumeration value="AG" />
+          <xs:enumeration value="AR" />
+          <xs:enumeration value="AM" />
+          <xs:enumeration value="AW" />
+          <xs:enumeration value="AU" />
+          <xs:enumeration value="AT" />
+          <xs:enumeration value="AZ" />
+          <xs:enumeration value="BH" />
+          <xs:enumeration value="BD" />
+          <xs:enumeration value="BB" />
+          <xs:enumeration value="BY" />
+          <xs:enumeration value="BE" />
+          <xs:enumeration value="BZ" />
+          <xs:enumeration value="BJ" />
+          <xs:enumeration value="BM" />
+          <xs:enumeration value="BT" />
+          <xs:enumeration value="BO" />
+          <xs:enumeration value="BA" />
+          <xs:enumeration value="BW" />
+          <xs:enumeration value="BR" />
+          <xs:enumeration value="BN" />
+          <xs:enumeration value="BG" />
+          <xs:enumeration value="BF" />
+          <xs:enumeration value="BI" />
+          <xs:enumeration value="KH" />
+          <xs:enumeration value="CM" />
+          <xs:enumeration value="CA" />
+          <xs:enumeration value="CV" />
+          <xs:enumeration value="KY" />
+          <xs:enumeration value="CF" />
+          <xs:enumeration value="TD" />
+          <xs:enumeration value="CL" />
+          <xs:enumeration value="CN" />
+          <xs:enumeration value="CX" />
+          <xs:enumeration value="CO" />
+          <xs:enumeration value="CK" />
+          <xs:enumeration value="CR" />
+          <xs:enumeration value="HR" />
+          <xs:enumeration value="CU" />
+          <xs:enumeration value="CY" />
+          <xs:enumeration value="CZ" />
+          <xs:enumeration value="CI" />
+          <xs:enumeration value="CD" />
+          <xs:enumeration value="DK" />
+          <xs:enumeration value="DJ" />
+          <xs:enumeration value="DM" />
+          <xs:enumeration value="DO" />
+          <xs:enumeration value="EC" />
+          <xs:enumeration value="EG" />
+          <xs:enumeration value="SV" />
+          <xs:enumeration value="GQ" />
+          <xs:enumeration value="ER" />
+          <xs:enumeration value="EE" />
+          <xs:enumeration value="ET" />
+          <xs:enumeration value="FK" />
+          <xs:enumeration value="FO" />
+          <xs:enumeration value="FM" />
+          <xs:enumeration value="FJ" />
+          <xs:enumeration value="FI" />
+          <xs:enumeration value="FR" />
+          <xs:enumeration value="GF" />
+          <xs:enumeration value="PF" />
+          <xs:enumeration value="GA" />
+          <xs:enumeration value="GM" />
+          <xs:enumeration value="GE" />
+          <xs:enumeration value="DE" />
+          <xs:enumeration value="GH" />
+          <xs:enumeration value="GI" />
+          <xs:enumeration value="GB" />
+          <xs:enumeration value="GR" />
+          <xs:enumeration value="GL" />
+          <xs:enumeration value="GD" />
+          <xs:enumeration value="GP" />
+          <xs:enumeration value="GU" />
+          <xs:enumeration value="GT" />
+          <xs:enumeration value="GN" />
+          <xs:enumeration value="GW" />
+          <xs:enumeration value="GY" />
+          <xs:enumeration value="HT" />
+          <xs:enumeration value="HN" />
+          <xs:enumeration value="HK" />
+          <xs:enumeration value="HU" />
+          <xs:enumeration value="ID" />
+          <xs:enumeration value="IE" />
+          <xs:enumeration value="IL" />
+          <xs:enumeration value="IN" />
+          <xs:enumeration value="IQ" />
+          <xs:enumeration value="IR" />
+          <xs:enumeration value="IS" />
+          <xs:enumeration value="IT" />
+          <xs:enumeration value="JM" />
+          <xs:enumeration value="JO" />
+          <xs:enumeration value="JP" />
+          <xs:enumeration value="KE" />
+          <xs:enumeration value="KG" />
+          <xs:enumeration value="KI" />
+          <xs:enumeration value="KM" />
+          <xs:enumeration value="KN" />
+          <xs:enumeration value="KP" />
+          <xs:enumeration value="KR" />
+          <xs:enumeration value="KW" />
+          <xs:enumeration value="KZ" />
+          <xs:enumeration value="LA" />
+          <xs:enumeration value="LB" />
+          <xs:enumeration value="LC" />
+          <xs:enumeration value="LI" />
+          <xs:enumeration value="LK" />
+          <xs:enumeration value="LR" />
+          <xs:enumeration value="LS" />
+          <xs:enumeration value="LT" />
+          <xs:enumeration value="LU" />
+          <xs:enumeration value="LV" />
+          <xs:enumeration value="LY" />
+          <xs:enumeration value="MA" />
+          <xs:enumeration value="MC" />
+          <xs:enumeration value="MD" />
+          <xs:enumeration value="ME" />
+          <xs:enumeration value="MG" />
+          <xs:enumeration value="MH" />
+          <xs:enumeration value="MK" />
+          <xs:enumeration value="ML" />
+          <xs:enumeration value="MM" />
+          <xs:enumeration value="MN" />
+          <xs:enumeration value="MO" />
+          <xs:enumeration value="MP" />
+          <xs:enumeration value="MQ" />
+          <xs:enumeration value="MR" />
+          <xs:enumeration value="MT" />
+          <xs:enumeration value="MU" />
+          <xs:enumeration value="MV" />
+          <xs:enumeration value="MW" />
+          <xs:enumeration value="MX" />
+          <xs:enumeration value="MY" />
+          <xs:enumeration value="MZ" />
+          <xs:enumeration value="NA" />
+          <xs:enumeration value="NC" />
+          <xs:enumeration value="NE" />
+          <xs:enumeration value="NG" />
+          <xs:enumeration value="NI" />
+          <xs:enumeration value="NL" />
+          <xs:enumeration value="NO" />
+          <xs:enumeration value="NP" />
+          <xs:enumeration value="NR" />
+          <xs:enumeration value="NU" />
+          <xs:enumeration value="NZ" />
+          <xs:enumeration value="OM" />
+          <xs:enumeration value="PA" />
+          <xs:enumeration value="PE" />
+          <xs:enumeration value="PG" />
+          <xs:enumeration value="PH" />
+          <xs:enumeration value="PK" />
+          <xs:enumeration value="PL" />
+          <xs:enumeration value="PM" />
+          <xs:enumeration value="PR" />
+          <xs:enumeration value="PS" />
+          <xs:enumeration value="PT" />
+          <xs:enumeration value="PW" />
+          <xs:enumeration value="PY" />
+          <xs:enumeration value="QA" />
+          <xs:enumeration value="RE" />
+          <xs:enumeration value="RO" />
+          <xs:enumeration value="RS" />
+          <xs:enumeration value="RU" />
+          <xs:enumeration value="RW" />
+          <xs:enumeration value="SA" />
+          <xs:enumeration value="SB" />
+          <xs:enumeration value="SC" />
+          <xs:enumeration value="SD" />
+          <xs:enumeration value="SE" />
+          <xs:enumeration value="SG" />
+          <xs:enumeration value="SH" />
+          <xs:enumeration value="SI" />
+          <xs:enumeration value="SK" />
+          <xs:enumeration value="SL" />
+          <xs:enumeration value="SM" />
+          <xs:enumeration value="SN" />
+          <xs:enumeration value="SO" />
+          <xs:enumeration value="SR" />
+          <xs:enumeration value="SS" />
+          <xs:enumeration value="ST" />
+          <xs:enumeration value="SY" />
+          <xs:enumeration value="SZ" />
+          <xs:enumeration value="TC" />
+          <xs:enumeration value="TG" />
+          <xs:enumeration value="TH" />
+          <xs:enumeration value="TJ" />
+          <xs:enumeration value="TK" />
+          <xs:enumeration value="TL" />
+          <xs:enumeration value="TM" />
+          <xs:enumeration value="TN" />
+          <xs:enumeration value="TO" />
+          <xs:enumeration value="TR" />
+          <xs:enumeration value="TT" />
+          <xs:enumeration value="TV" />
+          <xs:enumeration value="TW" />
+          <xs:enumeration value="TZ" />
+          <xs:enumeration value="UA" />
+          <xs:enumeration value="UG" />
+          <xs:enumeration value="US" />
+          <xs:enumeration value="UY" />
+          <xs:enumeration value="UZ" />
+          <xs:enumeration value="VE" />
+          <xs:enumeration value="VN" />
+          <xs:enumeration value="VU" />
+          <xs:enumeration value="WF" />
+          <xs:enumeration value="WS" />
+          <xs:enumeration value="YE" />
+          <xs:enumeration value="YT" />
+          <xs:enumeration value="ZA" />
+          <xs:enumeration value="ZM" />
+          <xs:enumeration value="ZW" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="createAccountRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:simpleType name="MCUResult">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="OK" />
+          <xs:enumeration value="AccountNotExist" />
+          <xs:enumeration value="SessionExpired" />
+          <xs:enumeration value="DeviceNotExist" />
+          <xs:enumeration value="AccountExist" />
+          <xs:enumeration value="EmailExist" />
+          <xs:enumeration value="AccountFormat" />
+          <xs:enumeration value="EmailFormat" />
+          <xs:enumeration value="PasswordFormat" />
+          <xs:enumeration value="NicknameFormat" />
+          <xs:enumeration value="MobileTelFormat" />
+          <xs:enumeration value="Authencation" />
+          <xs:enumeration value="MobileTelExist" />
+          <xs:enumeration value="MCUVersion" />
+          <xs:enumeration value="DeviceAuthencation" />
+          <xs:enumeration value="DeviceOffline" />
+          <xs:enumeration value="ParamIllegal" />
+          <xs:enumeration value="HashTokenIllegal" />
+          <xs:enumeration value="ServiceBusy" />
+          <xs:enumeration value="NotSupport" />
+          <xs:enumeration value="DeviceBusy" />
+          <xs:enumeration value="EmailSend" />
+          <xs:enumeration value="SMSSend" />
+          <xs:enumeration value="AccessDenied" />
+          <xs:enumeration value="DeviceSessionExpired" />
+          <xs:enumeration value="NotAllowSession" />
+          <xs:enumeration value="DeviceError" />
+          <xs:enumeration value="UnKnow" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="updateAccountReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Username" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="updateAccountRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="updatePasswordReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Password" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="NewPassword" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="updatePasswordRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="queryDeviceReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="queryDeviceRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="1" name="NodeList" type="tns:ArrayOfNodeDetails" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="ArrayOfNodeDetails">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="NodeDetails" nillable="true" type="tns:NodeDetails" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="NodeDetails">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ChannelNo" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Name" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="OnLine" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="PtzFlag" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="SecurityArea" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="EStoreFlag" type="xs:boolean" />
+          <xs:element minOccurs="0" maxOccurs="1" name="UpnpIP" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="UpnpPort" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="1" name="DevVer" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CurVideoNum" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="LastUpdated" type="xs:dateTime" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:any />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="updateAppleTokenReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="AppleUDID" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DeviceToken" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="APNs" type="xs:boolean" />
+            <xs:element minOccurs="0" maxOccurs="1" name="AppleOS" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="updateAppleTokenRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getAccountReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getAccountRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Username" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Email" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="MobileTel" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Country" nillable="true" type="tns:CountryAbbr2ISO3166" />
+            <xs:element minOccurs="0" maxOccurs="1" name="CountryTelCode" nillable="true" type="tns:CountryAbbr2ISO3166" />
+            <xs:element minOccurs="0" maxOccurs="1" name="IDCard" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getBackPasswordReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="GetBackType" type="tns:DeliveryType" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:simpleType name="DeliveryType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Email" />
+          <xs:enumeration value="Mobile" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="getBackPasswordRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getAuxiliaryReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="Auxiliary" type="tns:AuxiliaryType" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:simpleType name="AuxiliaryType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Lighting" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="getAuxiliaryRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="1" name="AuxiliaryState" nillable="true" type="tns:AuxiliaryState" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:simpleType name="AuxiliaryState">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Inactive" />
+          <xs:enumeration value="Active" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="setAuxiliaryReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Auxiliary" nillable="true" type="tns:AuxiliaryType" />
+            <xs:element minOccurs="0" maxOccurs="1" name="AuxiliaryState" nillable="true" type="tns:AuxiliaryState" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="setAuxiliaryRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="inviteReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="ChannelNo" type="xs:int" />
+            <xs:element minOccurs="1" maxOccurs="1" name="StreamType" type="tns:StreamType" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DialogID" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="SDPMessage" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:simpleType name="StreamType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Main" />
+          <xs:enumeration value="Sub" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="inviteRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DialogID" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="SDPMessage" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="byeReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="ChannelNo" type="xs:int" />
+            <xs:element minOccurs="1" maxOccurs="1" name="StreamType" type="tns:StreamType" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DialogID" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="byeRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="userLoginReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="PwdType" type="tns:PwdType" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Password" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Version" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:simpleType name="PwdType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Common" />
+          <xs:enumeration value="Dynamic" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="userLoginRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="NodeList" type="tns:ArrayOfDev" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Username" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="ArrayOfDev">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Dev" nillable="true" type="tns:Dev" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Dev">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ChannelNo" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Name" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="OnLine" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="PtzFlag" type="xs:boolean" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:any />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="userLogoutReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="userLogoutRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="updateChannelNameReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="ChannelNo" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="ChannelName" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="updateChannelNameRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="addDeviceReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DeviceAll" type="tns:ArrayOfDevice" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="ArrayOfDevice">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Device" nillable="true" type="tns:Device" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Device">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="DevKey" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="DevName" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:any />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="addDeviceRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="nullifyDeviceReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DevKey" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="nullifyDeviceRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ptzControlReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="ChannelNo" type="xs:int" />
+            <xs:element minOccurs="1" maxOccurs="1" name="PtzDirection" type="tns:PTZDirection" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:simpleType name="PTZDirection">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Stop" />
+          <xs:enumeration value="Up" />
+          <xs:enumeration value="Down" />
+          <xs:enumeration value="Left" />
+          <xs:enumeration value="Right" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="ptzControlRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="lensControlReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="ChannelNo" type="xs:int" />
+            <xs:element minOccurs="1" maxOccurs="1" name="PtzLens" type="tns:PTZLens" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:simpleType name="PTZLens">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Stop" />
+          <xs:enumeration value="IrisOpen" />
+          <xs:enumeration value="IrisClose" />
+          <xs:enumeration value="ZoomTele" />
+          <xs:enumeration value="ZoomWide" />
+          <xs:enumeration value="FocusFar" />
+          <xs:enumeration value="FocusNear" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="lensControlRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="presetControlReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="ChannelNo" type="xs:int" />
+            <xs:element minOccurs="1" maxOccurs="1" name="PtzPreset" type="tns:PTZPreset" />
+            <xs:element minOccurs="1" maxOccurs="1" name="PresetNo" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:simpleType name="PTZPreset">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Clear" />
+          <xs:enumeration value="Set" />
+          <xs:enumeration value="Set" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="presetControlRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getCodingParamReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="ChannelNo" type="xs:int" />
+            <xs:element minOccurs="1" maxOccurs="1" name="StreamType" type="tns:StreamType" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getCodingParamRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="1" name="FrameSize" nillable="true" type="tns:FrameSize" />
+            <xs:element minOccurs="0" maxOccurs="1" name="FrameRate" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="RateType" nillable="true" type="tns:RateType" />
+            <xs:element minOccurs="0" maxOccurs="1" name="BitRate" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="ImageQuality" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="AudioInput" nillable="true" type="xs:boolean" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:simpleType name="FrameSize">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="HD720P" />
+          <xs:enumeration value="VGA" />
+          <xs:enumeration value="D1" />
+          <xs:enumeration value="CIF" />
+          <xs:enumeration value="QVGA" />
+          <xs:enumeration value="HD1080P" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="RateType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="CBR" />
+          <xs:enumeration value="VBR" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="setCodingParamReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="ChannelNo" type="xs:int" />
+            <xs:element minOccurs="1" maxOccurs="1" name="StreamType" type="tns:StreamType" />
+            <xs:element minOccurs="0" maxOccurs="1" name="FrameSize" nillable="true" type="tns:FrameSize" />
+            <xs:element minOccurs="0" maxOccurs="1" name="FrameRate" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="RateType" nillable="true" type="tns:RateType" />
+            <xs:element minOccurs="0" maxOccurs="1" name="BitRate" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="ImageQuality" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="AudioInput" nillable="true" type="xs:boolean" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="setCodingParamRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="rebootReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="rebootRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getDevVerReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getDevVerRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="1" name="CurDevVer" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="NewDevVer" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="upgradeDevVerReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="upgradeDevVerRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="queryLogReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="queryLogRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="1" name="PuLogAll" type="tns:ArrayOfPuLog" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="ArrayOfPuLog">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="PuLog" nillable="true" type="tns:PuLog" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="PuLog">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ChannelNo" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="1" name="ChannelName" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="LogType" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="1" name="LogDesc" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="AddTime" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:any />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="queryDevLogReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="StartTime" type="xs:dateTime" />
+            <xs:element minOccurs="1" maxOccurs="1" name="EndTime" type="xs:dateTime" />
+            <xs:element minOccurs="1" maxOccurs="1" name="MaxResult" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="queryDevLogRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DevLog" type="tns:ArrayOfDevLog" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="ArrayOfDevLog">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="DevLog" nillable="true" type="tns:DevLog" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="DevLog">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ChannelNo" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="1" name="ChannelName" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="LogType" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="1" name="LogDesc" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="LogTime" type="xs:dateTime" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:any />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="getVideoParamReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="ChannelNo" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getVideoParamRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="1" name="VideoStandard" nillable="true" type="tns:VideoStandard" />
+            <xs:element minOccurs="0" maxOccurs="1" name="RotationDegree" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Brightness" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Contrast" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Saturation" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Hue" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Infrared" nillable="true" type="xs:boolean" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:simpleType name="VideoStandard">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="PAL" />
+          <xs:enumeration value="NTSC" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="setVideoParamReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="ChannelNo" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="VideoStandard" nillable="true" type="tns:VideoStandard" />
+            <xs:element minOccurs="0" maxOccurs="1" name="RotationDegree" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Brightness" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Contrast" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Saturation" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Hue" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Infrared" nillable="true" type="xs:boolean" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="setVideoParamRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getOSDParamReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="ChannelNo" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getOSDParamRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Enabled" nillable="true" type="xs:boolean" />
+            <xs:element minOccurs="0" maxOccurs="1" name="TimestampEnabled" nillable="true" type="xs:boolean" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DateTimeFormat" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DisplayText" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="FontSize" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="FontColor" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="TextPositionX" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="TextPositionY" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="TimestampPositionX" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="TimestampPositionY" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="setOSDParamReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="ChannelNo" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Enabled" nillable="true" type="xs:boolean" />
+            <xs:element minOccurs="0" maxOccurs="1" name="TimestampEnabled" nillable="true" type="xs:boolean" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DateTimeFormat" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DisplayText" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="FontSize" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="FontColor" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="TextPositionX" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="TextPositionY" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="TimestampPositionX" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="TimestampPositionY" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="setOSDParamRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getTimeReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getTimeRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Time" nillable="true" type="xs:dateTime" />
+            <xs:element minOccurs="0" maxOccurs="1" name="TimeZone" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="setTimeReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Time" nillable="true" type="xs:dateTime" />
+            <xs:element minOccurs="0" maxOccurs="1" name="TimeZone" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="setTimeRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getVMDParamReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="ChannelNo" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getVMDParamRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Enabled" nillable="true" type="xs:boolean" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Sensitivity" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="StartTriggerTime" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="EndTriggerTime" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="RowGranularity" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="ColumnGranularity" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Grid" type="tns:VMDGrid" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="VMDGrid">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Row" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:any />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="setVMDParamReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="ChannelNo" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Enabled" nillable="true" type="xs:boolean" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Sensitivity" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="StartTriggerTime" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="EndTriggerTime" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Grid" type="tns:VMDGrid" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="setVMDParamRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getPrivacyMaskParamReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="ChannelNo" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getPrivacyMaskParamRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Enabled" nillable="true" type="xs:boolean" />
+            <xs:element minOccurs="0" maxOccurs="1" name="HorizontalResolution" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="VerticalResolution" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Region" type="tns:PrivacyMaskRegion" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="PrivacyMaskRegion">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Left" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Top" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Right" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Bottom" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:any />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="setPrivacyMaskParamReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="ChannelNo" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Enabled" nillable="true" type="xs:boolean" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Region" type="tns:PrivacyMaskRegion" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="setPrivacyMaskParamRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getPlayUrlReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="ChannelNo" type="xs:int" />
+            <xs:element minOccurs="1" maxOccurs="1" name="StreamType" type="tns:StreamType" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getPlayUrlRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="1" name="AOR" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="ProxyUri" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="ContactUri" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getVODUrlReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="ChannelNo" type="xs:int" />
+            <xs:element minOccurs="1" maxOccurs="1" name="StreamType" type="tns:StreamType" />
+            <xs:element minOccurs="1" maxOccurs="1" name="StartTime" type="xs:dateTime" />
+            <xs:element minOccurs="1" maxOccurs="1" name="EndTime" type="xs:dateTime" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getVODUrlRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="0" maxOccurs="1" name="VideoVODUrl" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="vodSearchReq">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Account" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="LoginSession" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="DevID" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="ChannelNo" type="xs:int" />
+            <xs:element minOccurs="1" maxOccurs="1" name="StreamType" type="tns:StreamType" />
+            <xs:element minOccurs="1" maxOccurs="1" name="StartTime" type="xs:dateTime" />
+            <xs:element minOccurs="1" maxOccurs="1" name="EndTime" type="xs:dateTime" />
+            <xs:element minOccurs="0" maxOccurs="1" name="PageNo" nillable="true" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="1" name="SearchID" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="vodSearchRes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:MCUResult" />
+            <xs:element minOccurs="1" maxOccurs="1" name="PageNo" type="xs:int" />
+            <xs:element minOccurs="1" maxOccurs="1" name="PageCount" type="xs:int" />
+            <xs:element minOccurs="1" maxOccurs="1" name="RecordCount" type="xs:int" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Record" type="tns:VODRecord" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="VODRecord">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="StartTime" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="EndTime" type="xs:dateTime" />
+          <xs:element minOccurs="0" maxOccurs="1" name="FileSize" nillable="true" type="xs:long" />
+          <xs:element minOccurs="0" maxOccurs="1" name="ContentType" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Desc" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Any">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:any />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="createAccountRequest">
+    <wsdl:part name="createAccountReq" element="tns:createAccountReq" />
+  </wsdl:message>
+  <wsdl:message name="createAccountResponse">
+    <wsdl:part name="createAccountRes" element="tns:createAccountRes" />
+  </wsdl:message>
+  <wsdl:message name="updateAccountRequest">
+    <wsdl:part name="updateAccountReq" element="tns:updateAccountReq" />
+  </wsdl:message>
+  <wsdl:message name="updateAccountResponse">
+    <wsdl:part name="updateAccountRes" element="tns:updateAccountRes" />
+  </wsdl:message>
+  <wsdl:message name="updatePasswordRequest">
+    <wsdl:part name="updatePasswordReq" element="tns:updatePasswordReq" />
+  </wsdl:message>
+  <wsdl:message name="updatePasswordResponse">
+    <wsdl:part name="updatePasswordRes" element="tns:updatePasswordRes" />
+  </wsdl:message>
+  <wsdl:message name="queryDeviceRequest">
+    <wsdl:part name="queryDeviceReq" element="tns:queryDeviceReq" />
+  </wsdl:message>
+  <wsdl:message name="queryDeviceResponse">
+    <wsdl:part name="queryDeviceRes" element="tns:queryDeviceRes" />
+  </wsdl:message>
+  <wsdl:message name="updateAppleTokenRequest">
+    <wsdl:part name="updateAppleTokenReq" element="tns:updateAppleTokenReq" />
+  </wsdl:message>
+  <wsdl:message name="updateAppleTokenResponse">
+    <wsdl:part name="updateAppleTokenRes" element="tns:updateAppleTokenRes" />
+  </wsdl:message>
+  <wsdl:message name="getAccountRequest">
+    <wsdl:part name="getAccountReq" element="tns:getAccountReq" />
+  </wsdl:message>
+  <wsdl:message name="getAccountResponse">
+    <wsdl:part name="getAccountRes" element="tns:getAccountRes" />
+  </wsdl:message>
+  <wsdl:message name="getBackPasswordRequest">
+    <wsdl:part name="getBackPasswordReq" element="tns:getBackPasswordReq" />
+  </wsdl:message>
+  <wsdl:message name="getBackPasswordResponse">
+    <wsdl:part name="getBackPasswordRes" element="tns:getBackPasswordRes" />
+  </wsdl:message>
+  <wsdl:message name="getAuxiliaryRequest">
+    <wsdl:part name="getAuxiliaryReq" element="tns:getAuxiliaryReq" />
+  </wsdl:message>
+  <wsdl:message name="getAuxiliaryResponse">
+    <wsdl:part name="getAuxiliaryRes" element="tns:getAuxiliaryRes" />
+  </wsdl:message>
+  <wsdl:message name="setAuxiliaryRequest">
+    <wsdl:part name="setAuxiliaryReq" element="tns:setAuxiliaryReq" />
+  </wsdl:message>
+  <wsdl:message name="setAuxiliaryResponse">
+    <wsdl:part name="setAuxiliaryRes" element="tns:setAuxiliaryRes" />
+  </wsdl:message>
+  <wsdl:message name="inviteRequest">
+    <wsdl:part name="inviteReq" element="tns:inviteReq" />
+  </wsdl:message>
+  <wsdl:message name="inviteResponse">
+    <wsdl:part name="inviteRes" element="tns:inviteRes" />
+  </wsdl:message>
+  <wsdl:message name="byeRequest">
+    <wsdl:part name="byeReq" element="tns:byeReq" />
+  </wsdl:message>
+  <wsdl:message name="byeResponse">
+    <wsdl:part name="byeRes" element="tns:byeRes" />
+  </wsdl:message>
+  <wsdl:message name="userLoginRequest">
+    <wsdl:part name="userLoginReq" element="tns:userLoginReq" />
+  </wsdl:message>
+  <wsdl:message name="userLoginResponse">
+    <wsdl:part name="userLoginRes" element="tns:userLoginRes" />
+  </wsdl:message>
+  <wsdl:message name="userLogoutRequest">
+    <wsdl:part name="userLogoutReq" element="tns:userLogoutReq" />
+  </wsdl:message>
+  <wsdl:message name="userLogoutResponse">
+    <wsdl:part name="userLogoutRes" element="tns:userLogoutRes" />
+  </wsdl:message>
+  <wsdl:message name="updateChannelNameRequest">
+    <wsdl:part name="updateChannelNameReq" element="tns:updateChannelNameReq" />
+  </wsdl:message>
+  <wsdl:message name="updateChannelNameResponse">
+    <wsdl:part name="updateChannelNameRes" element="tns:updateChannelNameRes" />
+  </wsdl:message>
+  <wsdl:message name="addDeviceRequest">
+    <wsdl:part name="addDeviceReq" element="tns:addDeviceReq" />
+  </wsdl:message>
+  <wsdl:message name="addDeviceResponse">
+    <wsdl:part name="addDeviceRes" element="tns:addDeviceRes" />
+  </wsdl:message>
+  <wsdl:message name="nullifyDeviceRequest">
+    <wsdl:part name="nullifyDeviceReq" element="tns:nullifyDeviceReq" />
+  </wsdl:message>
+  <wsdl:message name="nullifyDeviceResponse">
+    <wsdl:part name="nullifyDeviceRes" element="tns:nullifyDeviceRes" />
+  </wsdl:message>
+  <wsdl:message name="ptzControlRequest">
+    <wsdl:part name="ptzControlReq" element="tns:ptzControlReq" />
+  </wsdl:message>
+  <wsdl:message name="ptzControlResponse">
+    <wsdl:part name="ptzControlRes" element="tns:ptzControlRes" />
+  </wsdl:message>
+  <wsdl:message name="lensControlRequest">
+    <wsdl:part name="lensControlReq" element="tns:lensControlReq" />
+  </wsdl:message>
+  <wsdl:message name="lensControlResponse">
+    <wsdl:part name="lensControlRes" element="tns:lensControlRes" />
+  </wsdl:message>
+  <wsdl:message name="presetControlRequest">
+    <wsdl:part name="presetControlReq" element="tns:presetControlReq" />
+  </wsdl:message>
+  <wsdl:message name="presetControlResponse">
+    <wsdl:part name="presetControlRes" element="tns:presetControlRes" />
+  </wsdl:message>
+  <wsdl:message name="getCodingParamRequest">
+    <wsdl:part name="getCodingParamReq" element="tns:getCodingParamReq" />
+  </wsdl:message>
+  <wsdl:message name="getCodingParamResponse">
+    <wsdl:part name="getCodingParamRes" element="tns:getCodingParamRes" />
+  </wsdl:message>
+  <wsdl:message name="setCodingParamRequest">
+    <wsdl:part name="setCodingParamReq" element="tns:setCodingParamReq" />
+  </wsdl:message>
+  <wsdl:message name="setCodingParamResponse">
+    <wsdl:part name="setCodingParamRes" element="tns:setCodingParamRes" />
+  </wsdl:message>
+  <wsdl:message name="rebootRequest">
+    <wsdl:part name="rebootReq" element="tns:rebootReq" />
+  </wsdl:message>
+  <wsdl:message name="rebootResponse">
+    <wsdl:part name="rebootRes" element="tns:rebootRes" />
+  </wsdl:message>
+  <wsdl:message name="getDevVerRequest">
+    <wsdl:part name="getDevVerReq" element="tns:getDevVerReq" />
+  </wsdl:message>
+  <wsdl:message name="getDevVerResponse">
+    <wsdl:part name="getDevVerRes" element="tns:getDevVerRes" />
+  </wsdl:message>
+  <wsdl:message name="upgradeDevVerRequest">
+    <wsdl:part name="upgradeDevVerReq" element="tns:upgradeDevVerReq" />
+  </wsdl:message>
+  <wsdl:message name="upgradeDevVerResponse">
+    <wsdl:part name="upgradeDevVerRes" element="tns:upgradeDevVerRes" />
+  </wsdl:message>
+  <wsdl:message name="queryLogRequest">
+    <wsdl:part name="queryLogReq" element="tns:queryLogReq" />
+  </wsdl:message>
+  <wsdl:message name="queryLogResponse">
+    <wsdl:part name="queryLogRes" element="tns:queryLogRes" />
+  </wsdl:message>
+  <wsdl:message name="queryDevLogRequest">
+    <wsdl:part name="queryDevLogReq" element="tns:queryDevLogReq" />
+  </wsdl:message>
+  <wsdl:message name="queryDevLogResponse">
+    <wsdl:part name="queryDevLogRes" element="tns:queryDevLogRes" />
+  </wsdl:message>
+  <wsdl:message name="getVideoParamRequest">
+    <wsdl:part name="getVideoParamReq" element="tns:getVideoParamReq" />
+  </wsdl:message>
+  <wsdl:message name="getVideoParamResponse">
+    <wsdl:part name="getVideoParamRes" element="tns:getVideoParamRes" />
+  </wsdl:message>
+  <wsdl:message name="setVideoParamRequest">
+    <wsdl:part name="setVideoParamReq" element="tns:setVideoParamReq" />
+  </wsdl:message>
+  <wsdl:message name="setVideoParamResponse">
+    <wsdl:part name="setVideoParamRes" element="tns:setVideoParamRes" />
+  </wsdl:message>
+  <wsdl:message name="getOSDParamRequest">
+    <wsdl:part name="getOSDParamReq" element="tns:getOSDParamReq" />
+  </wsdl:message>
+  <wsdl:message name="getOSDParamResponse">
+    <wsdl:part name="getOSDParamRes" element="tns:getOSDParamRes" />
+  </wsdl:message>
+  <wsdl:message name="setOSDParamRequest">
+    <wsdl:part name="setOSDParamReq" element="tns:setOSDParamReq" />
+  </wsdl:message>
+  <wsdl:message name="setOSDParamResponse">
+    <wsdl:part name="setOSDParamRes" element="tns:setOSDParamRes" />
+  </wsdl:message>
+  <wsdl:message name="getTimeRequest">
+    <wsdl:part name="getTimeReq" element="tns:getTimeReq" />
+  </wsdl:message>
+  <wsdl:message name="getTimeResponse">
+    <wsdl:part name="getTimeRes" element="tns:getTimeRes" />
+  </wsdl:message>
+  <wsdl:message name="setTimeRequest">
+    <wsdl:part name="setTimeReq" element="tns:setTimeReq" />
+  </wsdl:message>
+  <wsdl:message name="setTimeResponse">
+    <wsdl:part name="setTimeRes" element="tns:setTimeRes" />
+  </wsdl:message>
+  <wsdl:message name="getVMDParamRequest">
+    <wsdl:part name="getVMDParamReq" element="tns:getVMDParamReq" />
+  </wsdl:message>
+  <wsdl:message name="getVMDParamResponse">
+    <wsdl:part name="getVMDParamRes" element="tns:getVMDParamRes" />
+  </wsdl:message>
+  <wsdl:message name="setVMDParamRequest">
+    <wsdl:part name="setVMDParamReq" element="tns:setVMDParamReq" />
+  </wsdl:message>
+  <wsdl:message name="setVMDParamResponse">
+    <wsdl:part name="setVMDParamRes" element="tns:setVMDParamRes" />
+  </wsdl:message>
+  <wsdl:message name="getPrivacyMaskParamRequest">
+    <wsdl:part name="getPrivacyMaskParamReq" element="tns:getPrivacyMaskParamReq" />
+  </wsdl:message>
+  <wsdl:message name="getPrivacyMaskParamResponse">
+    <wsdl:part name="getPrivacyMaskParamRes" element="tns:getPrivacyMaskParamRes" />
+  </wsdl:message>
+  <wsdl:message name="setPrivacyMaskParamRequest">
+    <wsdl:part name="setPrivacyMaskParamReq" element="tns:setPrivacyMaskParamReq" />
+  </wsdl:message>
+  <wsdl:message name="setPrivacyMaskParamResponse">
+    <wsdl:part name="setPrivacyMaskParamRes" element="tns:setPrivacyMaskParamRes" />
+  </wsdl:message>
+  <wsdl:message name="getPlayUrlRequest">
+    <wsdl:part name="getPlayUrlReq" element="tns:getPlayUrlReq" />
+  </wsdl:message>
+  <wsdl:message name="getPlayUrlResponse">
+    <wsdl:part name="getPlayUrlRes" element="tns:getPlayUrlRes" />
+  </wsdl:message>
+  <wsdl:message name="getVODUrlRequest">
+    <wsdl:part name="getVODUrlReq" element="tns:getVODUrlReq" />
+  </wsdl:message>
+  <wsdl:message name="getVODUrlResponse">
+    <wsdl:part name="getVODUrlRes" element="tns:getVODUrlRes" />
+  </wsdl:message>
+  <wsdl:message name="vodSearchRequest">
+    <wsdl:part name="vodSearchReq" element="tns:vodSearchReq" />
+  </wsdl:message>
+  <wsdl:message name="vodSearchResponse">
+    <wsdl:part name="vodSearchRes" element="tns:vodSearchRes" />
+  </wsdl:message>
+  <wsdl:portType name="IHomeMCUService">
+    <wsdl:documentation>
+      <summary>家庭MCU移动终端服务契约.</summary>
+    </wsdl:documentation>
+    <wsdl:operation name="createAccount">
+      <wsdl:documentation>
+        <summary>3.2.29 创建账户</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/createAccount" name="createAccountRequest" message="tns:createAccountRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/createAccount" name="createAccountResponse" message="tns:createAccountResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="updateAccount">
+      <wsdl:documentation>
+        <summary>3.2.30 修改账户信息</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/updateAccount" name="updateAccountRequest" message="tns:updateAccountRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/updateAccount" name="updateAccountResponse" message="tns:updateAccountResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="updatePassword">
+      <wsdl:documentation>
+        <summary>3.2.31 修改密码</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/updatePassword" name="updatePasswordRequest" message="tns:updatePasswordRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/updatePassword" name="updatePasswordResponse" message="tns:updatePasswordResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="queryDevice">
+      <wsdl:documentation>
+        <summary>3.2.32 设备状态查询</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/queryDevice" name="queryDeviceRequest" message="tns:queryDeviceRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/queryDevice" name="queryDeviceResponse" message="tns:queryDeviceResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="updateAppleToken">
+      <wsdl:documentation>
+        <summary>3.2.33 IOS推送服务注册</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/updateAppleToken" name="updateAppleTokenRequest" message="tns:updateAppleTokenRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/updateAppleToken" name="updateAppleTokenResponse" message="tns:updateAppleTokenResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getAccount">
+      <wsdl:documentation>
+        <summary>3.2.35 查询账户信息</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/getAccount" name="getAccountRequest" message="tns:getAccountRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/getAccount" name="getAccountResponse" message="tns:getAccountResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getBackPassword">
+      <wsdl:documentation>
+        <summary>3.2.36 密码找回</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/getBackPassword" name="getBackPasswordRequest" message="tns:getBackPasswordRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/getBackPassword" name="getBackPasswordResponse" message="tns:getBackPasswordResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getAuxiliary">
+      <wsdl:documentation>
+        <summary>3.2.37 查询摄像机辅助器状态</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/getAuxiliary" name="getAuxiliaryRequest" message="tns:getAuxiliaryRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/getAuxiliary" name="getAuxiliaryResponse" message="tns:getAuxiliaryResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="setAuxiliary">
+      <wsdl:documentation>
+        <summary>3.2.38 设置摄像机辅助器状态</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/setAuxiliary" name="setAuxiliaryRequest" message="tns:setAuxiliaryRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/setAuxiliary" name="setAuxiliaryResponse" message="tns:setAuxiliaryResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="invite">
+      <wsdl:documentation>
+        <summary>4.2.39请求视频流</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/invite" name="inviteRequest" message="tns:inviteRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/invite" name="inviteResponse" message="tns:inviteResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="bye">
+      <wsdl:documentation>
+        <summary>4.2.40视频流断开</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/bye" name="byeRequest" message="tns:byeRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/bye" name="byeResponse" message="tns:byeResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="userLogin">
+      <wsdl:documentation>
+        <summary>3.2.1 MCU登录</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/userLogin" name="userLoginRequest" message="tns:userLoginRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/userLogin" name="userLoginResponse" message="tns:userLoginResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="userLogout">
+      <wsdl:documentation>
+        <summary>3.2.2 MCU注销</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/userLogout" name="userLogoutRequest" message="tns:userLogoutRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/userLogout" name="userLogoutResponse" message="tns:userLogoutResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="updateChannelName">
+      <wsdl:documentation>
+        <summary>3.2.3 修改摄像头别名</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/updateChannelName" name="updateChannelNameRequest" message="tns:updateChannelNameRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/updateChannelName" name="updateChannelNameResponse" message="tns:updateChannelNameResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="addDevice">
+      <wsdl:documentation>
+        <summary>3.2.4 用户新增设备</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/addDevice" name="addDeviceRequest" message="tns:addDeviceRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/addDevice" name="addDeviceResponse" message="tns:addDeviceResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="nullifyDevice">
+      <wsdl:documentation>
+        <summary>3.2.5 用户移除设备</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/nullifyDevice" name="nullifyDeviceRequest" message="tns:nullifyDeviceRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/nullifyDevice" name="nullifyDeviceResponse" message="tns:nullifyDeviceResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ptzControl">
+      <wsdl:documentation>
+        <summary>3.2.6 MCU云台控制</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/ptzControl" name="ptzControlRequest" message="tns:ptzControlRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/ptzControl" name="ptzControlResponse" message="tns:ptzControlResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="lensControl">
+      <wsdl:documentation>
+        <summary>3.2.7 MCU镜头控制</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/lensControl" name="lensControlRequest" message="tns:lensControlRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/lensControl" name="lensControlResponse" message="tns:lensControlResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="presetControl">
+      <wsdl:documentation>
+        <summary>3.2.8 MCU预制点控制</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/presetControl" name="presetControlRequest" message="tns:presetControlRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/presetControl" name="presetControlResponse" message="tns:presetControlResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getCodingParam">
+      <wsdl:documentation>
+        <summary>3.2.9 摄像头音视频流编码参数查询</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/getCodingParam" name="getCodingParamRequest" message="tns:getCodingParamRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/getCodingParam" name="getCodingParamResponse" message="tns:getCodingParamResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="setCodingParam">
+      <wsdl:documentation>
+        <summary>3.2.10 摄像头音视频编码参数设置</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/setCodingParam" name="setCodingParamRequest" message="tns:setCodingParamRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/setCodingParam" name="setCodingParamResponse" message="tns:setCodingParamResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="reboot">
+      <wsdl:documentation>
+        <summary>3.2.11 重启摄像机</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/reboot" name="rebootRequest" message="tns:rebootRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/reboot" name="rebootResponse" message="tns:rebootResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getDevVer">
+      <wsdl:documentation>
+        <summary>3.2.12 设备固件版本查询</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/getDevVer" name="getDevVerRequest" message="tns:getDevVerRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/getDevVer" name="getDevVerResponse" message="tns:getDevVerResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="upgradeDevVer">
+      <wsdl:documentation>
+        <summary>3.2.13 远程升级通知</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/upgradeDevVer" name="upgradeDevVerRequest" message="tns:upgradeDevVerRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/upgradeDevVer" name="upgradeDevVerResponse" message="tns:upgradeDevVerResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="queryLog">
+      <wsdl:documentation>
+        <summary>3.2.14 用户日志查询（该协议已失效）</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/queryLog" name="queryLogRequest" message="tns:queryLogRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/queryLog" name="queryLogResponse" message="tns:queryLogResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="queryDevLog">
+      <wsdl:documentation>
+        <summary>3.2.15 设备日志查询</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/queryDevLog" name="queryDevLogRequest" message="tns:queryDevLogRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/queryDevLog" name="queryDevLogResponse" message="tns:queryDevLogResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getVideoParam">
+      <wsdl:documentation>
+        <summary>3.2.16 设备视频调节参数查询</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/getVideoParam" name="getVideoParamRequest" message="tns:getVideoParamRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/getVideoParam" name="getVideoParamResponse" message="tns:getVideoParamResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="setVideoParam">
+      <wsdl:documentation>
+        <summary>3.2.17 设备视频调节参数设置</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/setVideoParam" name="setVideoParamRequest" message="tns:setVideoParamRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/setVideoParam" name="setVideoParamResponse" message="tns:setVideoParamResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getOSDParam">
+      <wsdl:documentation>
+        <summary>3.2.18 视频OSD参数查询</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/getOSDParam" name="getOSDParamRequest" message="tns:getOSDParamRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/getOSDParam" name="getOSDParamResponse" message="tns:getOSDParamResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="setOSDParam">
+      <wsdl:documentation>
+        <summary>3.2.19 视频OSD参数设置</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/setOSDParam" name="setOSDParamRequest" message="tns:setOSDParamRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/setOSDParam" name="setOSDParamResponse" message="tns:setOSDParamResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getTime">
+      <wsdl:documentation>
+        <summary>3.2.20 设备时间信息查询</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/getTime" name="getTimeRequest" message="tns:getTimeRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/getTime" name="getTimeResponse" message="tns:getTimeResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="setTime">
+      <wsdl:documentation>
+        <summary>3.2.21 设备时间信息设置</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/setTime" name="setTimeRequest" message="tns:setTimeRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/setTime" name="setTimeResponse" message="tns:setTimeResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getVMDParam">
+      <wsdl:documentation>
+        <summary>3.2.22 运动侦测参数查询</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/getVMDParam" name="getVMDParamRequest" message="tns:getVMDParamRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/getVMDParam" name="getVMDParamResponse" message="tns:getVMDParamResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="setVMDParam">
+      <wsdl:documentation>
+        <summary>3.2.23 运动侦测参数设置</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/setVMDParam" name="setVMDParamRequest" message="tns:setVMDParamRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/setVMDParam" name="setVMDParamResponse" message="tns:setVMDParamResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getPrivacyMaskParam">
+      <wsdl:documentation>
+        <summary>3.2.24 视频遮盖参数查询</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/getPrivacyMaskParam" name="getPrivacyMaskParamRequest" message="tns:getPrivacyMaskParamRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/getPrivacyMaskParam" name="getPrivacyMaskParamResponse" message="tns:getPrivacyMaskParamResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="setPrivacyMaskParam">
+      <wsdl:documentation>
+        <summary>3.2.25 视频遮盖参数设置</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/setPrivacyMaskParam" name="setPrivacyMaskParamRequest" message="tns:setPrivacyMaskParamRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/setPrivacyMaskParam" name="setPrivacyMaskParamResponse" message="tns:setPrivacyMaskParamResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getPlayUrl">
+      <wsdl:documentation>
+        <summary>3.2.26 MCU视频监控点预览URL查询</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/getPlayUrl" name="getPlayUrlRequest" message="tns:getPlayUrlRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/getPlayUrl" name="getPlayUrlResponse" message="tns:getPlayUrlResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getVODUrl">
+      <wsdl:documentation>
+        <summary>3.2.27 MCU视频监控点点播URL查询</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/getVODUrl" name="getVODUrlRequest" message="tns:getVODUrlRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/getVODUrl" name="getVODUrlResponse" message="tns:getVODUrlResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="vodSearch">
+      <wsdl:documentation>
+        <summary>3.2.28 查询视频存储记录</summary>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://www.haoweis.com/HomeServices/MCU/vodSearch" name="vodSearchRequest" message="tns:vodSearchRequest" />
+      <wsdl:output wsaw:Action="http://www.haoweis.com/HomeServices/MCU/vodSearch" name="vodSearchResponse" message="tns:vodSearchResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="HomeMCUServiceBinding_IHomeMCUService" type="tns:IHomeMCUService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="createAccount">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/createAccount" style="document" />
+      <wsdl:input name="createAccountRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="createAccountResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateAccount">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/updateAccount" style="document" />
+      <wsdl:input name="updateAccountRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="updateAccountResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updatePassword">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/updatePassword" style="document" />
+      <wsdl:input name="updatePasswordRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="updatePasswordResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="queryDevice">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/queryDevice" style="document" />
+      <wsdl:input name="queryDeviceRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="queryDeviceResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateAppleToken">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/updateAppleToken" style="document" />
+      <wsdl:input name="updateAppleTokenRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="updateAppleTokenResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAccount">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/getAccount" style="document" />
+      <wsdl:input name="getAccountRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getAccountResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getBackPassword">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/getBackPassword" style="document" />
+      <wsdl:input name="getBackPasswordRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getBackPasswordResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAuxiliary">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/getAuxiliary" style="document" />
+      <wsdl:input name="getAuxiliaryRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getAuxiliaryResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setAuxiliary">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/setAuxiliary" style="document" />
+      <wsdl:input name="setAuxiliaryRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="setAuxiliaryResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="invite">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/invite" style="document" />
+      <wsdl:input name="inviteRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="inviteResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="bye">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/bye" style="document" />
+      <wsdl:input name="byeRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="byeResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="userLogin">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/userLogin" style="document" />
+      <wsdl:input name="userLoginRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="userLoginResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="userLogout">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/userLogout" style="document" />
+      <wsdl:input name="userLogoutRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="userLogoutResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateChannelName">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/updateChannelName" style="document" />
+      <wsdl:input name="updateChannelNameRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="updateChannelNameResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="addDevice">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/addDevice" style="document" />
+      <wsdl:input name="addDeviceRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="addDeviceResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="nullifyDevice">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/nullifyDevice" style="document" />
+      <wsdl:input name="nullifyDeviceRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="nullifyDeviceResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ptzControl">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/ptzControl" style="document" />
+      <wsdl:input name="ptzControlRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ptzControlResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="lensControl">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/lensControl" style="document" />
+      <wsdl:input name="lensControlRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="lensControlResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="presetControl">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/presetControl" style="document" />
+      <wsdl:input name="presetControlRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="presetControlResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCodingParam">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/getCodingParam" style="document" />
+      <wsdl:input name="getCodingParamRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getCodingParamResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setCodingParam">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/setCodingParam" style="document" />
+      <wsdl:input name="setCodingParamRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="setCodingParamResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="reboot">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/reboot" style="document" />
+      <wsdl:input name="rebootRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="rebootResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDevVer">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/getDevVer" style="document" />
+      <wsdl:input name="getDevVerRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getDevVerResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="upgradeDevVer">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/upgradeDevVer" style="document" />
+      <wsdl:input name="upgradeDevVerRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="upgradeDevVerResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="queryLog">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/queryLog" style="document" />
+      <wsdl:input name="queryLogRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="queryLogResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="queryDevLog">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/queryDevLog" style="document" />
+      <wsdl:input name="queryDevLogRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="queryDevLogResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getVideoParam">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/getVideoParam" style="document" />
+      <wsdl:input name="getVideoParamRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getVideoParamResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setVideoParam">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/setVideoParam" style="document" />
+      <wsdl:input name="setVideoParamRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="setVideoParamResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getOSDParam">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/getOSDParam" style="document" />
+      <wsdl:input name="getOSDParamRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getOSDParamResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setOSDParam">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/setOSDParam" style="document" />
+      <wsdl:input name="setOSDParamRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="setOSDParamResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getTime">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/getTime" style="document" />
+      <wsdl:input name="getTimeRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getTimeResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setTime">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/setTime" style="document" />
+      <wsdl:input name="setTimeRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="setTimeResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getVMDParam">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/getVMDParam" style="document" />
+      <wsdl:input name="getVMDParamRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getVMDParamResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setVMDParam">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/setVMDParam" style="document" />
+      <wsdl:input name="setVMDParamRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="setVMDParamResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getPrivacyMaskParam">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/getPrivacyMaskParam" style="document" />
+      <wsdl:input name="getPrivacyMaskParamRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getPrivacyMaskParamResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setPrivacyMaskParam">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/setPrivacyMaskParam" style="document" />
+      <wsdl:input name="setPrivacyMaskParamRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="setPrivacyMaskParamResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getPlayUrl">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/getPlayUrl" style="document" />
+      <wsdl:input name="getPlayUrlRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getPlayUrlResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getVODUrl">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/getVODUrl" style="document" />
+      <wsdl:input name="getVODUrlRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getVODUrlResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="vodSearch">
+      <soap:operation soapAction="http://www.haoweis.com/HomeServices/MCU/vodSearch" style="document" />
+      <wsdl:input name="vodSearchRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="vodSearchResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="HomeMCUService">
+    <wsdl:port name="HomeMCUServiceBinding_IHomeMCUService" binding="tns:HomeMCUServiceBinding_IHomeMCUService">
+      <soap:address location="http://www.haoweis.com:8800/HomeService/HomeMCUService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

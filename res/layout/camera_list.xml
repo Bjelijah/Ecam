@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFFFF"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="55dip"
+        android:background="@drawable/tenpay_top_bar"
+        android:gravity="center"
+        android:text="@string/camera_list"
+        android:textColor="#FFFFFFFF"
+        android:textSize="23sp" />
+
+    <com.howell.webcam.MyListView
+        android:id="@id/android:list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"/>
+
+</LinearLayout>

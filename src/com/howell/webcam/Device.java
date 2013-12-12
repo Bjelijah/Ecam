@@ -14,6 +14,7 @@ public class Device implements Serializable {
     private boolean mPtzFlag;
     private boolean hasUpdate;
     private int methodType;
+    private int indensity;
     
     public Device() {
 		super();
@@ -28,6 +29,7 @@ public class Device implements Serializable {
         mPtzFlag = ptzFlag;
         hasUpdate = false;
         methodType = 0;
+        indensity = -1;
     }
 
     public Device(String mDeviceID, int mChannelNo, String mName,
@@ -39,6 +41,15 @@ public class Device implements Serializable {
 		this.mOnLine = mOnLine;
 		this.mPtzFlag = mPtzFlag;
 		this.hasUpdate = hasUpdate;
+		indensity = -1;
+	}
+    
+	public int getIndensity() {
+		return indensity;
+	}
+
+	public void setIndensity(int indensity) {
+		this.indensity = indensity;
 	}
 
 	public boolean isHasUpdate() {
@@ -101,6 +112,8 @@ public class Device implements Serializable {
 	public String toString() {
 		return "Device [mDeviceID=" + mDeviceID + ", mChannelNo=" + mChannelNo
 				+ ", mName=" + mName + ", mOnLine=" + mOnLine + ", mPtzFlag="
-				+ mPtzFlag + ", hasUpdate=" + hasUpdate + "]";
+				+ mPtzFlag + ", hasUpdate=" + hasUpdate + ", methodType="
+				+ methodType + ", indensity=" + indensity + "]";
 	}
+
 }

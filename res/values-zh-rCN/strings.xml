@@ -74,4 +74,5 @@
 	<string name="download_dialog_message">正在下载更新</string>
 	<string name="download_dialog_fail">下载新版本失败</string>
 	<string name="load_more">点击加载更多</string>
+	<string name="no_sdcard">请先插入SD卡</string>
 </resources>

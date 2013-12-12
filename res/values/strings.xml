@@ -74,4 +74,5 @@
 	<string name="download_dialog_message">Downloading</string>
 	<string name="download_dialog_fail">Download fail</string>
 	<string name="load_more">Touch to load more</string>
+	<string name="no_sdcard">Please insert the SD card</string>
 </resources>

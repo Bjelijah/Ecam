@@ -29,4 +29,12 @@
         android:layout_marginRight="5dip"
         android:src="@drawable/selector_forward" />
 
+    <ImageView
+        android:id="@+id/iv_intensity"
+        android:layout_width="50dip"
+        android:layout_height="25dip"
+        android:layout_gravity="right|center_vertical"
+        android:layout_marginRight="30dip"
+        android:src="@drawable/wifi_0" />
+
 </FrameLayout>

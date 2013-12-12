@@ -7,7 +7,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.TimeZone;
 import java.util.Timer;
-import java.util.TimerTask;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,15 +14,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
-import android.graphics.YuvImage;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.opengl.GLSurfaceView;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.os.StatFs;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
@@ -209,12 +209,6 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
                 Context.MODE_PRIVATE);
         boolean soundMode = sharedPreferences.getBoolean("sound_mode", true);
         System.out.println("soundMode:"+soundMode);
-//        if(soundMode){
-//        	
-//        }else{
-//        	
-//        }
-		
 		if (mRecord != null) {
             try {
                 SimpleDateFormat foo = new SimpleDateFormat(
@@ -230,7 +224,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
         }
 		
 		mVedioList = (ImageButton) findViewById(R.id.vedio_list);
-		//判断有无SD卡
+		//判断设备有无SD卡
 		ArrayList<NodeDetails> node = mSoapManger.getNodeDetails();
 		if(node != null){
 			for(int i = 0 ; i < node.size() ; i++ ){
@@ -268,6 +262,10 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				if(!existSDCard()){
+					MessageUtiles.postToast(getApplicationContext(), getResources().getString(R.string.no_sdcard),2000);
+					return;
+				}
 				File destDir = new File("/sdcard/eCamera");
 				if (!destDir.exists()) {
 					destDir.mkdirs();
@@ -419,6 +417,45 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 //		task.execute();
 	}
 	
+	//获取SD卡总容量
+    public long getSDAllSize(){  
+        //取得SD卡文件路径  
+        File path = Environment.getExternalStorageDirectory();   
+        StatFs sf = new StatFs(path.getPath());   
+        //获取单个数据块的大小(Byte)  
+        long blockSize = sf.getBlockSize();   
+        //获取所有数据块数  
+        long allBlocks = sf.getBlockCount();  
+        //返回SD卡大小  
+        //return allBlocks * blockSize; //单位Byte  
+        //return (allBlocks * blockSize)/1024; //单位KB  
+        return (allBlocks * blockSize)/1024/1024; //单位MB  
+    }    
+    
+    //获取SD卡剩余容量
+    public long getSDFreeSize(){  
+        //取得SD卡文件路径  
+        File path = Environment.getExternalStorageDirectory();   
+        StatFs sf = new StatFs(path.getPath());   
+        //获取单个数据块的大小(Byte)  
+        long blockSize = sf.getBlockSize();   
+        //空闲的数据块的数量  
+        long freeBlocks = sf.getAvailableBlocks();  
+        //返回SD卡空闲大小  
+        //return freeBlocks * blockSize;  //单位Byte  
+        //return (freeBlocks * blockSize)/1024;   //单位KB  
+        return (freeBlocks * blockSize)/1024 /1024; //单位MB  
+    }      
+    
+    //是否存在SD卡
+    private boolean existSDCard() {  
+    	if (android.os.Environment.getExternalStorageState().equals(  
+    		android.os.Environment.MEDIA_MOUNTED)) {  
+        	return true;  
+        } else  
+        	return false;  
+    }  
+	
 	private String translateTime(int progress){
 		SimpleDateFormat foo = new SimpleDateFormat("HH:mm:ss");
 		foo.setTimeZone(TimeZone.getDefault());
@@ -500,39 +537,6 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		}
 	}
 	
-//	public class MyInviteTask extends AsyncTask<Void, Integer, Void> {
-//
-//        @Override
-//        protected Void doInBackground(Void... params) {
-//            // TODO Auto-generated method stub
-//            System.out.println("call doInBackground");
-//            System.out.println("start invite thread");
-//			
-//			client = new Client(dev);
-//			System.out.println("start invite live");
-//			if (playback) {
-//				Log.e("---------->>>>", "1111111111111111111");
-//				System.out.println("startTime:"+startTime+"endTime:"+endTime);
-//				inviteRet = PlayerActivity.client.InvitePlayback(startTime, endTime);
-//		    } else {
-//		        Log.e("---------->>>>", "2222222222222222222");
-//		        inviteRet = PlayerActivity.client.InviteLive(1);
-//		    }
-//			System.out.println("finish invite live");
-//            return null;
-//        }
-//        @Override  
-//        protected void onPostExecute(Void result) {  
-//            super.onPostExecute(result);  
-//            Log.e("invite", "onPostExecute");
-//            if (!isCancelled()) {  
-//            	Log.e("invite", "!isCancelled");
-//            	if(!inviteRet)
-//            		mPlayerHandler.sendEmptyMessage(POSTERROR);
-//            }  
-//        }  
-//    }
-	
 	public static void showStreamLen(int streamLen){
 		Message msg = new Message();
 		msg.what = SHOWSTREAMLEN;
@@ -567,8 +571,9 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 						if(correctedStartTime != -1 && correctedEndTime != -1)
 							break;
 					}
-				}else if(YV12Renderer.time != 0 && frameFlag > 0){
 					mReplaySeekBar.setMax((int)(correctedEndTime - correctedStartTime)*1000);
+				}else if(YV12Renderer.time != 0 && frameFlag > 0){
+					
 					endFrameTime = YV12Renderer.time;
 					//Log.e("----------->>>", "handler msg.arg1 :"+time);
 //					Log.e("----------->>>", "firstFtame time:"+firstFrameTime+",endFrame time:"+endFrameTime);

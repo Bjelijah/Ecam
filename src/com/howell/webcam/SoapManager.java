@@ -909,6 +909,28 @@ public class SoapManager implements Serializable {
     	return res;
     }
     
+    public GetWirelessNetworkRes getGetWirelessNetworkRes(GetWirelessNetworkReq req){
+    	GetWirelessNetworkRes res = new GetWirelessNetworkRes();
+    	SoapObject rpc = new SoapObject(sNameSpace, "getWirelessNetworkReq");
+    	rpc.addProperty("Account", req.getAccount());
+    	rpc.addProperty("LoginSession", req.getLoginSession());
+    	rpc.addProperty("DevID", req.getDevID());
+    	SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/getWirelessNetwork");
+    	try{
+ 	       	Object result = object.getProperty("result");
+ 	       	res.setResult(result.toString());
+ 	        Object wirelessType = object.getProperty("WirelessType");
+	       	res.setWirelessType(wirelessType.toString());
+	       	Object sSID = object.getProperty("SSID");
+ 	       	res.setsSID(sSID.toString());
+ 	        Object intensity = object.getProperty("Intensity");
+	       	res.setIntensity(Integer.valueOf(intensity.toString()));
+    	}catch (Exception e) {
+				// TODO: handle exception
+		}
+    	return res;
+    }
+    
 	@Override
 	public String toString() {
 		return "SoapManager [mLoginRequest=" + mLoginRequest

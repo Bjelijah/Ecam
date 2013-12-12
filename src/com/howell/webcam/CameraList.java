@@ -7,7 +7,6 @@ import org.kobjects.base64.Base64;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Color;
@@ -23,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.howell.webcam.R;
@@ -67,13 +67,7 @@ public class CameraList extends ListActivity implements OnItemClickListener {
 	        adapter = new CameraListAdapter(this, list);
             setListAdapter(adapter);
 	        
-        /*if (mResponse != null) {*/
-            list = mResponse.getNodeList();
-            sort(list);
-            
-//            setListAdapter(adapter);
             getListView().setOnItemClickListener(this);
-//        }
         }catch (Exception e) {
 			// TODO: handle exception
         	Log.e("!!!", "null pointer exception");
@@ -99,6 +93,11 @@ public class CameraList extends ListActivity implements OnItemClickListener {
 //					        }
 					        list = mResponse.getNodeList();
 					        sort(list);
+					        for(int i = 0 ; i < list.size() ; i++){
+								Device device = list.get(i);
+								int intensity = getCameraWifiIntensity(device.getDeviceID());
+								device.setIndensity(intensity);
+							}
 					        adapter.setList(list);
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -128,9 +127,18 @@ public class CameraList extends ListActivity implements OnItemClickListener {
 				Log.e("CameraList", "onFirstRefresh");
 				mSoapManager.getQueryDeviceRes(new QueryDeviceReq(mResponse.getAccount(), mResponse.getLoginSession()));
 				
+				list = new ArrayList<Device>();
+				list.addAll(mResponse.getNodeList());
+		        sort(list);
+		        
+				//获取设备WIFI强度
+				for(int i = 0 ; i < list.size() ; i++){
+					Device device = list.get(i);
+					int intensity = getCameraWifiIntensity(device.getDeviceID());
+					device.setIndensity(intensity);
+				}
 				//显示设备列表
 				myHandler.sendEmptyMessage(refreshCameraList);
-				myHandler.sendEmptyMessage(onFirstRefresh);
 			}
 		});
 		
@@ -164,29 +172,16 @@ public class CameraList extends ListActivity implements OnItemClickListener {
 			    Log.e("savePushParam", res.getResult());
         	}
         }.start();
-//        //推送设置
-//        SharedPreferences sharedPreferences = getSharedPreferences("set",
-//                Context.MODE_PRIVATE);
-//        boolean pushSet = sharedPreferences.getBoolean(mResponse.getAccount(), true);
-//        System.out.println(pushSet);
-//        String UUID = Secure.getString(getContentResolver(), Secure.ANDROID_ID);
-//        UpdateAndroidTokenReq updateAndroidTokenReq = new UpdateAndroidTokenReq(mResponse.getAccount(), mResponse.getLoginSession()
-//	    		, UUID,UUID, pushSet);
-//	    System.out.println(updateAndroidTokenReq.toString());
-//	    UpdateAndroidTokenRes res = mSoapManager.GetUpdateAndroidTokenRes(updateAndroidTokenReq);
-//	    Log.e("savePushParam", res.getResult());
-//	    
-//	    //检查客户端版本更新
-//        QueryClientVersionReq queryClientVersionReq = new QueryClientVersionReq("Android");
-//        QueryClientVersionRes queryClientVersionRes = mSoapManager.getQueryClientVersionRes(queryClientVersionReq);
-//		System.out.println(queryClientVersionRes.toString());
-//		String url = new String(Base64.decode(queryClientVersionRes.getDownloadAddress()));
-//		System.out.println("url:"+url);
-//		String version = getVersion();
-//		if(!version.equals(queryClientVersionRes.getVersion())){
-//			ClientUpdateUtils.showUpdataDialog(this,url);
-//		}
-		
+    }
+    
+    private int getCameraWifiIntensity(String devID ){
+    	GetWirelessNetworkReq req = new GetWirelessNetworkReq(mResponse.getAccount(), mResponse.getLoginSession(),devID);
+    	GetWirelessNetworkRes res = mSoapManager.getGetWirelessNetworkRes(req);
+    	System.out.println(res.getResult());
+    	if(res.getResult().equals("OK")){
+    		return res.getIntensity();
+    	}else
+    		return -1;
     }
     
     private String getVersion(){
@@ -223,6 +218,7 @@ public class CameraList extends ListActivity implements OnItemClickListener {
     		if(msg.what == refreshCameraList){
     			//setListAdapter(adapter);
     			adapter.setList(list);
+    			listView.onRefreshComplete();
     			adapter.notifyDataSetChanged();
     		}
     	}
@@ -251,14 +247,6 @@ public class CameraList extends ListActivity implements OnItemClickListener {
         Log.e("CameraList", "onSaveInstanceState");
         savedInstanceState.putSerializable("soap", mSoapManager);
     }
-    
-//    @Override
-//    public void onRestoreInstanceState(Bundle savedInstanceState){
-//        super.onRestoreInstanceState(savedInstanceState);
-//        Log.e("CameraList", "onRestoreInstanceState");
-//        mSoapManager = (SoapManager) savedInstanceState.getSerializable("temp");
-//    }
-    
     
     @Override
     protected void onPause() {
@@ -296,53 +284,30 @@ public class CameraList extends ListActivity implements OnItemClickListener {
         super.onResume();
         Log.e("CameraList", "onResume()");
     }
-/*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // TODO Auto-generated method stub
-        menu.add(R.string.settings);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // TODO Auto-generated method stub
-        Intent intent = new Intent(this, Settings.class);
-        startActivityForResult(intent, REQUEST_CODE);
-        return true;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // TODO Auto-generated method stub
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
-    }*/
 
     public class CameraListAdapter extends BaseAdapter {
 
         private Context mContext;
-        private ArrayList<Device> mList;
+//        private ArrayList<Device> mList;
 
         public CameraListAdapter(Context context, ArrayList<Device> list) {
             mContext = context;
-            mList = list;
+//            mList = list;
         }
         
         public void setList(ArrayList<Device> list){
-        	this.mList = list;
+//        	this.mList = list;
         }
         @Override
         public int getCount() {
             // TODO Auto-generated method stub
-            return mList == null ? 0 : mList.size();
+            return list == null ? 0 : list.size();
         }
 
         @Override
         public Object getItem(int position) {
             // TODO Auto-generated method stub
-            return mList == null ? null : mList.get(position);
+            return list == null ? null : list.get(position);
         }
 
         @Override
@@ -359,6 +324,7 @@ public class CameraList extends ListActivity implements OnItemClickListener {
             View view = layoutInflater.inflate(R.layout.item, null);
             TextView name = (TextView) view.findViewById(R.id.name);
             TextView online = (TextView) view.findViewById(R.id.online);
+            ImageView intensity = (ImageView)view.findViewById(R.id.iv_intensity);
             name.setText(dev.getName());
             if (dev.isOnLine()) {
                 online.setTextColor(Color.GRAY);
@@ -368,6 +334,21 @@ public class CameraList extends ListActivity implements OnItemClickListener {
                 online.setTextColor(Color.GRAY);
                 online.setText(R.string.not_online);
                 view.setTag(0);
+            }
+            System.out.println(dev.toString());
+            int cameraIntensity = dev.getIndensity();
+            if(cameraIntensity == 0){
+            	intensity.setImageDrawable(getResources().getDrawable(R.drawable.wifi_0));
+            }else if(cameraIntensity > 0 && cameraIntensity <= 25){
+            	intensity.setImageDrawable(getResources().getDrawable(R.drawable.wifi_1));
+            }else if(cameraIntensity > 25 && cameraIntensity <= 50){
+            	intensity.setImageDrawable(getResources().getDrawable(R.drawable.wifi_2));
+            }else if(cameraIntensity > 50 && cameraIntensity <= 75){
+            	intensity.setImageDrawable(getResources().getDrawable(R.drawable.wifi_3));
+            }else if(cameraIntensity > 75 && cameraIntensity <= 100){
+            	intensity.setImageDrawable(getResources().getDrawable(R.drawable.wifi_4));
+            }else{
+            	intensity.setVisibility(View.GONE);
             }
             return view;
         }
@@ -381,7 +362,7 @@ public class CameraList extends ListActivity implements OnItemClickListener {
         	MessageUtiles.postToast(getApplicationContext(), getResources().getString(R.string.not_online_message),1000);
         } else if (tag == 1) {
             Intent intent = new Intent(CameraList.this, PlayerActivity.class);
-            intent.putExtra("arg", mResponse.getNodeList().get((int) arg3));
+            intent.putExtra("arg", list.get((int) arg3));
             startActivity(intent);
         }
     }

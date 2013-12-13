@@ -30,6 +30,9 @@ public class PlaybackUtils {
     	VodSearchRes vodSearchRes = client.getVodSearchReq(1,startTime,endTime);
     	int pageCount = vodSearchRes.getPageCount();
     	nowPageCount = pageCount;
+    	if(pageCount == 0){
+    		return mList;
+    	}
     	//int recordCount = vodSearchRes.getRecordCount();
         mList = client.getVodSearchReq(pageCount, startTime, endTime).getRecord();
         if(pageCount <= 1){

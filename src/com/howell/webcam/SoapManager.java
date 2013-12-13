@@ -343,7 +343,7 @@ public class SoapManager implements Serializable {
 	        	return null;
 	        }
 	        res.setResult(result.toString());
-	
+	        System.out.println("getCodingParamRes:"+result.toString());
 	        Object FrameSize = object.getProperty("FrameSize");
 	        res.setFrameSize(FrameSize.toString());
 	

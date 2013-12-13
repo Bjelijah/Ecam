@@ -67,6 +67,8 @@ public class CameraList extends ListActivity implements OnItemClickListener {
 	        adapter = new CameraListAdapter(this, list);
             setListAdapter(adapter);
 	        
+            list = mResponse.getNodeList();
+	        sort(list);
             getListView().setOnItemClickListener(this);
         }catch (Exception e) {
 			// TODO: handle exception
@@ -126,10 +128,6 @@ public class CameraList extends ListActivity implements OnItemClickListener {
 				//获取设备设置（存于SoapManager单例对象中）
 				Log.e("CameraList", "onFirstRefresh");
 				mSoapManager.getQueryDeviceRes(new QueryDeviceReq(mResponse.getAccount(), mResponse.getLoginSession()));
-				
-				list = new ArrayList<Device>();
-				list.addAll(mResponse.getNodeList());
-		        sort(list);
 		        
 				//获取设备WIFI强度
 				for(int i = 0 ; i < list.size() ; i++){
@@ -180,8 +178,13 @@ public class CameraList extends ListActivity implements OnItemClickListener {
     	System.out.println(res.getResult());
     	if(res.getResult().equals("OK")){
     		return res.getIntensity();
-    	}else
-    		return -1;
+    	}else if(res.getResult().equals("NotSupport")){
+    		return 50;
+    	}else if(res.getResult().equals("DeviceOffline")){
+    		return 0;
+    	}else{
+    		return 0;
+    	}
     }
     
     private String getVersion(){
@@ -319,6 +322,7 @@ public class CameraList extends ListActivity implements OnItemClickListener {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             // TODO Auto-generated method stub
+        	System.out.println("getView");
             Device dev = (Device) getItem(position);
             LayoutInflater layoutInflater = LayoutInflater.from(mContext);
             View view = layoutInflater.inflate(R.layout.item, null);
@@ -345,7 +349,7 @@ public class CameraList extends ListActivity implements OnItemClickListener {
             	intensity.setImageDrawable(getResources().getDrawable(R.drawable.wifi_2));
             }else if(cameraIntensity > 50 && cameraIntensity <= 75){
             	intensity.setImageDrawable(getResources().getDrawable(R.drawable.wifi_3));
-            }else if(cameraIntensity > 75 && cameraIntensity <= 100){
+            }else if(cameraIntensity > 75){
             	intensity.setImageDrawable(getResources().getDrawable(R.drawable.wifi_4));
             }else{
             	intensity.setVisibility(View.GONE);

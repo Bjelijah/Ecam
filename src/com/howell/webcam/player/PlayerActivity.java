@@ -129,7 +129,10 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	private static boolean progressHasStop;
 	
 	public  AudioManager audiomanage;  
-	int maxVolume ;  
+	private int maxVolume ;  
+	
+	private static long correctedStartTime;
+	private static long correctedEndTime;
 	
 	boolean bPause ;
 //	private FrameLayout mLayout;
@@ -203,6 +206,8 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		lastSecondFrames = 0;
 		progressHasStop = false;
 		bPause = true;
+		correctedStartTime = -1;
+		correctedEndTime = -1;
 		
 		//获取配置文件声音图标信息
 		SharedPreferences sharedPreferences = getSharedPreferences("set",
@@ -355,7 +360,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
         	Log.e("----------->>>", "onS totoal time:"+endTime +","+ startTime);
         	//mReplaySeekBar.setMax((int)(endTime - startTime)*1000);
 //        	System.out.println("setMax:"+(int)(endTime - startTime)*1000);
-        	Log.e("---------->>>>", "setMax:"+(int)(endTime - startTime)*1000);
+        	//Log.e("---------->>>>", "setMax:"+(int)(endTime - startTime)*1000);
         	//mReplaySeekBar.setProgress(0);
         	mVedioList.setEnabled(false);
         	Log.e("---------->>>>", "frames send message");
@@ -372,7 +377,11 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 				int progress = mReplaySeekBar.getProgress();
 //				Log.e("----------->>>", "onStopTrackingTouch progress:"+progress);
 //				Log.e("---------->>>>", "onS startTime:"+startTime+"onS progress:"+progress+"onS endTime:"+endTime);
-				long replayStartTime = startTime + (long)progress/1000;
+				long replayStartTime = correctedStartTime + (long)progress/1000;
+				if(replayStartTime < startTime){
+					replayStartTime = startTime;
+				}
+				Log.e("---------->>>>", "onS startTime:"+replayStartTime+"onS endTime:"+endTime);
 				client.Replay(replayStartTime, endTime);
 				Log.e("---------->>>>", "replay end");
 				stopSendMessage = false;
@@ -459,7 +468,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	private String translateTime(int progress){
 		SimpleDateFormat foo = new SimpleDateFormat("HH:mm:ss");
 		foo.setTimeZone(TimeZone.getDefault());
-        String text = foo.format(startTime*1000 + progress);
+        String text = foo.format(correctedStartTime*1000 + progress);
         return text;
 	}
 	
@@ -557,8 +566,6 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 				}
 ////				mPlayerHandler.sendEmptyMessage(BITSCHANGE);
 //				Log.e("----------->>>", "native time:"+YV12Renderer.time);
-				long correctedStartTime = -1;
-				long correctedEndTime = -1;
 				if(YV12Renderer.time != 0 && frameFlag == 0){
 					firstFrameTime = YV12Renderer.time;
 					frameFlag++;

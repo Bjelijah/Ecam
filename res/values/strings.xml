@@ -26,7 +26,7 @@
     <string name="account">My account</string>
     <string name="camera_manager">Device management</string>
     <string name="alarm">Alarm</string>
-    <string name="about">About eCamera V1.0.5</string>
+    <string name="about">About eCamera V1.0.6</string>
     <string name="exit">Logout</string>
     <string name="email">Email</string>
     <string name="mobiletel">Mobile</string>
@@ -61,7 +61,7 @@
 	<string name="camera_version_title">Camera update</string>
 	<string name="camera_new_version">Find new version</string>
 	<string name="camera_old_version1">Version</string>
-	<string name="camera_old_version2">nonewver</string>
+	<string name="camera_old_version2"> no new version</string>
 	<string name="client_new_version">Find new client version</string>
 	<string name="camera_update">Update</string>
 	<string name="camera_update_notice">Make sure camera is online ,make sure camera power supply and connected to the network</string>
@@ -73,6 +73,6 @@
 	<string name="update_dialog_message">New version, please update in time！</string>
 	<string name="download_dialog_message">Downloading</string>
 	<string name="download_dialog_fail">Download fail</string>
-	<string name="load_more">Touch to load more</string>
+	<string name="load_more">More</string>
 	<string name="no_sdcard">Please insert the SD card</string>
 </resources>

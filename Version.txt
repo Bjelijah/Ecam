@@ -43,3 +43,7 @@ Version 1.0.5
 1.解决释放音频内存时音频正在播放导致程序崩溃的BUG
 2.libecamstream.a库增加获取准确回放时间的接口 解决回放seekBar不准确的BUG
 3.解决死锁导致程序退出不freeHandle的BUG
+
+Version 1.0.6
+1.增加了获取设备Wifi强度
+2.设备升级按钮变成红色

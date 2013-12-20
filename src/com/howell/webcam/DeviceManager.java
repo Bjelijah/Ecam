@@ -5,20 +5,20 @@ import java.util.Map;
 
 public class DeviceManager {
 	private static DeviceManager sInstance = new DeviceManager();
-	private Map<String, Device> map = new HashMap<String, Device>();
+	private Map<String, NodeDetails> map = new HashMap<String, NodeDetails>();
 	public static DeviceManager getInstance() {
 	    return sInstance;
 	}
 	 
-	public void addMember(Device device){
-		map.put(device.getDeviceID(), device);
+	public void addMember(NodeDetails device){
+		map.put(device.getDevID(), device);
 	}
 	
 	public void clearMember(){
 		map.clear();
 	}
 
-	public Map<String, Device> getMap() {
+	public Map<String, NodeDetails> getMap() {
 		return map;
 	}
 

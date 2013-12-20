@@ -36,7 +36,7 @@ public class CameraList extends ListActivity implements OnItemClickListener {
     private LoginResponse mResponse;
     private MyListView listView;
     private CameraListAdapter adapter;
-    private ArrayList<Device> list;
+    private ArrayList<NodeDetails> list;
     private static final int onFirstRefresh = 1;
     private static final int postUpdateMessage = 2;
     private static final int refreshCameraList = 3;
@@ -64,11 +64,9 @@ public class CameraList extends ListActivity implements OnItemClickListener {
 	       
 	        mResponse = mSoapManager.getLoginResponse();
 	        
-	        adapter = new CameraListAdapter(this, list);
+	        adapter = new CameraListAdapter(this);
             setListAdapter(adapter);
 	        
-            list = mResponse.getNodeList();
-	        sort(list);
             getListView().setOnItemClickListener(this);
         }catch (Exception e) {
 			// TODO: handle exception
@@ -84,23 +82,26 @@ public class CameraList extends ListActivity implements OnItemClickListener {
 				new AsyncTask<Void, Void, Void>() {
 					protected Void doInBackground(Void... params) {
 						try {
-							mSoapManager = SoapManager.getInstance();
-							LoginRequest loginReq = mSoapManager.getLoginRequest();
-					        mResponse = mSoapManager.getUserLoginRes(loginReq);
-					        mSoapManager.getLoginResponse().setLoginResponse(mResponse);
+//							mSoapManager = SoapManager.getInstance();
+//							LoginRequest loginReq = mSoapManager.getLoginRequest();
+//					        mResponse = mSoapManager.getUserLoginRes(loginReq);
+//					        mSoapManager.getLoginResponse().setLoginResponse(mResponse);
 					        //更新设备信息
 //					        mSoapManager.getQueryDeviceRes(new QueryDeviceReq(mResponse.getAccount(),mResponse.getLoginSession()));
 //					        for(NodeDetails node:mSoapManager.getNodeDetails()){
 //					        	System.out.println("new Device info:"+node.toString());
 //					        }
-					        list = mResponse.getNodeList();
+//					        list = mResponse.getNodeList();
+//					        sort(list);
+							mSoapManager.getQueryDeviceRes(new QueryDeviceReq(mResponse.getAccount(), mResponse.getLoginSession()));
+							list = mSoapManager.getNodeDetails();
 					        sort(list);
-					        for(int i = 0 ; i < list.size() ; i++){
-								Device device = list.get(i);
-								int intensity = getCameraWifiIntensity(device.getDeviceID());
-								device.setIndensity(intensity);
-							}
-					        adapter.setList(list);
+//					        for(int i = 0 ; i < list.size() ; i++){
+//								Device device = list.get(i);
+//								int intensity = getCameraWifiIntensity(device.getDeviceID());
+//								device.setIndensity(intensity);
+//							}
+//					        adapter.setList(list);
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
@@ -128,13 +129,15 @@ public class CameraList extends ListActivity implements OnItemClickListener {
 				//获取设备设置（存于SoapManager单例对象中）
 				Log.e("CameraList", "onFirstRefresh");
 				mSoapManager.getQueryDeviceRes(new QueryDeviceReq(mResponse.getAccount(), mResponse.getLoginSession()));
-		        
+				list = mSoapManager.getNodeDetails();
+		        sort(list);
+		        CamTabActivity.cameraVerThread = true;
 				//获取设备WIFI强度
-				for(int i = 0 ; i < list.size() ; i++){
-					Device device = list.get(i);
-					int intensity = getCameraWifiIntensity(device.getDeviceID());
-					device.setIndensity(intensity);
-				}
+//				for(int i = 0 ; i < list.size() ; i++){
+//					Device device = list.get(i);
+//					int intensity = getCameraWifiIntensity(device.getDeviceID());
+//					device.setIndensity(intensity);
+//				}
 				//显示设备列表
 				myHandler.sendEmptyMessage(refreshCameraList);
 			}
@@ -172,20 +175,20 @@ public class CameraList extends ListActivity implements OnItemClickListener {
         }.start();
     }
     
-    private int getCameraWifiIntensity(String devID ){
-    	GetWirelessNetworkReq req = new GetWirelessNetworkReq(mResponse.getAccount(), mResponse.getLoginSession(),devID);
-    	GetWirelessNetworkRes res = mSoapManager.getGetWirelessNetworkRes(req);
-    	System.out.println(res.getResult());
-    	if(res.getResult().equals("OK")){
-    		return res.getIntensity();
-    	}else if(res.getResult().equals("NotSupport")){
-    		return 50;
-    	}else if(res.getResult().equals("DeviceOffline")){
-    		return 0;
-    	}else{
-    		return 0;
-    	}
-    }
+//    private int getCameraWifiIntensity(String devID ){
+//    	GetWirelessNetworkReq req = new GetWirelessNetworkReq(mResponse.getAccount(), mResponse.getLoginSession(),devID);
+//    	GetWirelessNetworkRes res = mSoapManager.getGetWirelessNetworkRes(req);
+//    	System.out.println(res.getResult());
+//    	if(res.getResult().equals("OK")){
+//    		return res.getIntensity();
+//    	}else if(res.getResult().equals("NotSupport")){
+//    		return 50;
+//    	}else if(res.getResult().equals("DeviceOffline")){
+//    		return 0;
+//    	}else{
+//    		return 0;
+//    	}
+//    }
     
     private String getVersion(){
         PackageInfo pkg;
@@ -220,25 +223,25 @@ public class CameraList extends ListActivity implements OnItemClickListener {
     		}
     		if(msg.what == refreshCameraList){
     			//setListAdapter(adapter);
-    			adapter.setList(list);
+//    			adapter.setList(list);
     			listView.onRefreshComplete();
     			adapter.notifyDataSetChanged();
     		}
     	}
     };
     
-    private void sort(ArrayList<Device> list){
+    private void sort(ArrayList<NodeDetails> list){
     	if(list != null){
 	    	int length = list.size();
-	    	System.out.println("length:"+length);
+	    	//System.out.println("length:"+length);
 	    	for(int i = 0 ; i < length ; i++){
 	    		System.out.println(i+":"+list.get(i).toString());
 	    		if(list.get(i).isOnLine()){
-	    			System.out.println(i+" isOnline:"+list.get(i).toString());
+	    			//System.out.println(i+" isOnline:"+list.get(i).toString());
 	    			list.add(0, list.get(i));
 	    			list.remove(i+1);
 	    		}else{
-	    			System.out.println(i);
+	    			//System.out.println(i);
 	    		}
 	    	}
     	}
@@ -293,14 +296,14 @@ public class CameraList extends ListActivity implements OnItemClickListener {
         private Context mContext;
 //        private ArrayList<Device> mList;
 
-        public CameraListAdapter(Context context, ArrayList<Device> list) {
+        public CameraListAdapter(Context context) {
             mContext = context;
 //            mList = list;
         }
         
-        public void setList(ArrayList<Device> list){
-//        	this.mList = list;
-        }
+//        public void setList(ArrayList<Device> list){
+////        	this.mList = list;
+//        }
         @Override
         public int getCount() {
             // TODO Auto-generated method stub
@@ -323,7 +326,7 @@ public class CameraList extends ListActivity implements OnItemClickListener {
         public View getView(int position, View convertView, ViewGroup parent) {
             // TODO Auto-generated method stub
         	System.out.println("getView");
-            Device dev = (Device) getItem(position);
+            NodeDetails dev = (NodeDetails) getItem(position);
             LayoutInflater layoutInflater = LayoutInflater.from(mContext);
             View view = layoutInflater.inflate(R.layout.item, null);
             TextView name = (TextView) view.findViewById(R.id.name);
@@ -335,12 +338,15 @@ public class CameraList extends ListActivity implements OnItemClickListener {
                 online.setText(R.string.online);
                 view.setTag(1);
             } else {
+            	if(dev.getIntensity() != 0){
+            		dev.setIntensity(0);
+            	}
                 online.setTextColor(Color.GRAY);
                 online.setText(R.string.not_online);
                 view.setTag(0);
             }
-            System.out.println(dev.toString());
-            int cameraIntensity = dev.getIndensity();
+            //System.out.println(dev.toString());
+            int cameraIntensity = dev.getIntensity();
             if(cameraIntensity == 0){
             	intensity.setImageDrawable(getResources().getDrawable(R.drawable.wifi_0));
             }else if(cameraIntensity > 0 && cameraIntensity <= 25){
@@ -352,7 +358,7 @@ public class CameraList extends ListActivity implements OnItemClickListener {
             }else if(cameraIntensity > 75){
             	intensity.setImageDrawable(getResources().getDrawable(R.drawable.wifi_4));
             }else{
-            	intensity.setVisibility(View.GONE);
+            	//intensity.setVisibility(View.GONE);
             }
             return view;
         }

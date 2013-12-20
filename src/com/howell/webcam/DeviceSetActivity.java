@@ -36,7 +36,7 @@ public class DeviceSetActivity extends Activity implements
     private CheckBox vmd_checkbox_,video_checkbox,power_led_checkbox;
     private VMDParamRes vmd_res_;
     private static int backCount;
-    public static Device dev;
+    public static NodeDetails dev;
     private boolean isCrashed;
     // row is reoslution, col is quality, map to bitrate, unit is kbps
     private static int[][] reso_bitrate_map_ = {{96,128,196},{128,256,384},{1024,1536,2048}};
@@ -115,7 +115,7 @@ public class DeviceSetActivity extends Activity implements
         mSeekBar_quality.setOnSeekBarChangeListener(this);
 
         Intent intent = getIntent();
-        dev = (Device) intent.getSerializableExtra("Device");
+        dev = (NodeDetails) intent.getSerializableExtra("Device");
         mTvDeviceName.setText(dev.getName());
 
         mLoginResponse = mSoapManager.getLoginResponse();
@@ -293,7 +293,7 @@ public class DeviceSetActivity extends Activity implements
 				            String loginSession = mLoginResponse.getLoginSession().toString();
 
 				            CodingParamReq req = new CodingParamReq(account, loginSession,
-				                    dev.getDeviceID(), dev.getChannelNo(), "Sub");
+				                    dev.getDevID(), dev.getChannelNo(), "Sub");
 
 				            mCodingParamRes = mSoapManager.getCodingParamRes(req);
 				            framesize = mCodingParamRes.getFrameSize();
@@ -301,12 +301,12 @@ public class DeviceSetActivity extends Activity implements
 				            bitrate = Integer.parseInt(mCodingParamRes.getBitRate());
 				            Log.v("dev","image qualit is "+bitrate);
 				            
-				            VMDParamReq vmd_req = new VMDParamReq(account,loginSession,dev.getDeviceID(),dev.getChannelNo());
+				            VMDParamReq vmd_req = new VMDParamReq(account,loginSession,dev.getDevID(),dev.getChannelNo());
 				            vmd_res_ = mSoapManager.getVMDParam(vmd_req);
 				            Log.v("dev", "vmd enable: "+vmd_res_.getEnabled());
 				            //如果移动侦测开启 检测是否推送
 				            if(vmd_res_.getEnabled()){
-				            	QueryDeviceReq queryDeviceReq = new QueryDeviceReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDeviceID());
+				            	QueryDeviceReq queryDeviceReq = new QueryDeviceReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDevID());
 				            	queryDeviceRes = new QueryDeviceRes();
 				            	queryDeviceRes = mSoapManager.getQueryDeviceRes(queryDeviceReq);
 				            	System.out.println("is Push?"+queryDeviceRes.toString());
@@ -323,19 +323,19 @@ public class DeviceSetActivity extends Activity implements
 				        	}
 				        }
 				        //获取电源指示灯
-				        GetAuxiliaryReq getAuxiliaryReq = new GetAuxiliaryReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDeviceID(),"SignalLamp");
+				        GetAuxiliaryReq getAuxiliaryReq = new GetAuxiliaryReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDevID(),"SignalLamp");
 				        getAuxiliaryRes = mSoapManager.getGetAuxiliaryRes(getAuxiliaryReq);
 				        System.out.println("getAuxiliaryRes"+getAuxiliaryRes.getResult());
 				        
 				        System.out.println("333333333333333");
 				        //获取视频翻转信息
-				        GetVideoParamReq getVideoParamReq = new GetVideoParamReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDeviceID(), dev.getChannelNo());
+				        GetVideoParamReq getVideoParamReq = new GetVideoParamReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDevID(), dev.getChannelNo());
 				    	rotationDegree = mSoapManager.getGetVideoParamRes(getVideoParamReq).getRotationDegree();
 				    	System.out.println("rotationDegree"+rotationDegree);
 				    	
 				    	 System.out.println("4444444444444444444");
 				        //获取设备版本信息
-				    	GetDevVerReq getDevVerReq = new GetDevVerReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDeviceID());
+				    	GetDevVerReq getDevVerReq = new GetDevVerReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDevID());
 				    	res = mSoapManager.getGetDevVerRes(getDevVerReq);
 				    	Log.e("GetDevVerRes", res.toString());
 				    	
@@ -437,7 +437,7 @@ public class DeviceSetActivity extends Activity implements
     
     public static void cameraUpdate(){
     	Log.e("", "cameraUpdate");
-    	UpgradeDevVerReq req = new UpgradeDevVerReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDeviceID());
+    	UpgradeDevVerReq req = new UpgradeDevVerReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDevID());
     	UpgradeDevVerRes res = mSoapManager.getUpgradeDevVerRes(req);
     	Log.e("cameraUpdate", res.getResult());
     }
@@ -590,15 +590,15 @@ public class DeviceSetActivity extends Activity implements
     
     //保存图像翻转设置
     private boolean saveVideoParam(){
-    	System.out.println(mLoginResponse.getAccount()+","+mLoginResponse.getLoginSession()+","+dev.getDeviceID()+","+dev.getChannelNo());
+    	System.out.println(mLoginResponse.getAccount()+","+mLoginResponse.getLoginSession()+","+dev.getDevID()+","+dev.getChannelNo());
     	boolean isTurnOver = video_checkbox.isChecked();
     	SetVideoParamReq req_set = null;
     	SetVideoParamRes res = null;
     	if(isTurnOver){
-    		req_set = new SetVideoParamReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDeviceID(), dev.getChannelNo(),180);
+    		req_set = new SetVideoParamReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDevID(), dev.getChannelNo(),180);
 			res = mSoapManager.getSetVideoParamRes(req_set);
     	}else{
-    		req_set = new SetVideoParamReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDeviceID(), dev.getChannelNo(),0);
+    		req_set = new SetVideoParamReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDevID(), dev.getChannelNo(),0);
 			res = mSoapManager.getSetVideoParamRes(req_set);
     	}
     	System.out.println("turn over:"+res.getResult());
@@ -607,15 +607,15 @@ public class DeviceSetActivity extends Activity implements
     
     //保存电源指示灯设置
     private boolean savePowerLedParam(){
-    	System.out.println(mLoginResponse.getAccount()+","+mLoginResponse.getLoginSession()+","+dev.getDeviceID()+","+dev.getChannelNo());
+    	System.out.println(mLoginResponse.getAccount()+","+mLoginResponse.getLoginSession()+","+dev.getDevID()+","+dev.getChannelNo());
     	boolean powerLed = power_led_checkbox.isChecked();
     	SetAuxiliaryReq req_set = null;
     	SetAuxiliaryRes res = null;
     	if(powerLed){
-    		req_set = new SetAuxiliaryReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDeviceID(), "SignalLamp","Active");
+    		req_set = new SetAuxiliaryReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDevID(), "SignalLamp","Active");
     		res = mSoapManager.getSetAuxiliaryRes(req_set);
     	}else{
-    		req_set = new SetAuxiliaryReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDeviceID(), "SignalLamp","Inactive");
+    		req_set = new SetAuxiliaryReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDevID(), "SignalLamp","Inactive");
     		res = mSoapManager.getSetAuxiliaryRes(req_set);
     	}
     	System.out.println("power led:"+res.getResult());
@@ -628,10 +628,10 @@ public class DeviceSetActivity extends Activity implements
     	SubscribeAndroidPushReq req = null;
     	SubscribeAndroidPushRes res = null;
     	if(alarmPush){
-    		req = new SubscribeAndroidPushReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),0x01,dev.getDeviceID(), dev.getChannelNo());
+    		req = new SubscribeAndroidPushReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),0x01,dev.getDevID(), dev.getChannelNo());
     		res = mSoapManager.getSubscribeAndroidPushRes(req);
     	}else{
-    		req = new SubscribeAndroidPushReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),0x00,dev.getDeviceID(),dev.getChannelNo());
+    		req = new SubscribeAndroidPushReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),0x00,dev.getDevID(),dev.getChannelNo());
     		res = mSoapManager.getSubscribeAndroidPushRes(req);
     	}
     	System.out.println("alarm push:"+req.toString());

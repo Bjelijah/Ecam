@@ -374,6 +374,7 @@
                         android:id="@+id/setting_update_button"
                         android:layout_width="wrap_content"
                         android:layout_height="40dip"
+                        android:textColor="@color/red"
                         android:text="@string/camera_update"
                         android:visibility="invisible" />
 

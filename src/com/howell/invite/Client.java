@@ -1,16 +1,10 @@
 package com.howell.invite;
 
-import java.util.ArrayList;
 import java.util.Random;
-
 import org.kobjects.base64.Base64;
-
-import android.os.AsyncTask;
 import android.util.Log;
-
 import com.howell.webcam.ByeRequest;
 import com.howell.webcam.ByeResponse;
-import com.howell.webcam.Device;
 import com.howell.webcam.DeviceManager;
 import com.howell.webcam.GetNATServerRes;
 import com.howell.webcam.InviteRequest;
@@ -37,7 +31,7 @@ public class Client {
     private String local_sdp, remote_sdp;
     private long handle;
     private QueryDeviceRes queryDeviceRes;
-    private NodeDetails nodeDetail;
+//    private NodeDetails nodeDetail;
     
     private PlayerHandler handler;
 	public static final Integer POSTERROR = 0x0006;
@@ -52,6 +46,8 @@ public class Client {
 	private boolean isStartFinish;
 	private long beg,end;
 	
+	private NodeDetails dev;
+	
 //	public int quickQuit;
 	
 	private DeviceManager mDeviceManager;
@@ -65,8 +61,9 @@ public class Client {
 //        //System.loadLibrary("player_jni");
 //    }
 
-    public Client(Device dev) {
+    public Client(NodeDetails dev) {
         super();
+        this.dev = dev;
         beg = -1;
         end = -1;
         mDeviceManager = DeviceManager.getInstance();
@@ -80,24 +77,25 @@ public class Client {
         this.account = mSoapManager.getLoginResponse().getAccount();
         // System.out.println(account);
         this.loginSession = mSoapManager.getLoginResponse().getLoginSession();
-        this.devID = dev.getDeviceID();
+        this.devID = dev.getDevID();
         this.channelNo = dev.getChannelNo();
         this.streamType = "Sub";
         this.dialogID = String.valueOf(random.nextInt());
-        ArrayList<NodeDetails> node = mSoapManager.getNodeDetails();
-        if(node != null){
-	        for(int i = 0;i < node.size() ; i++){
-	        	if(node.get(i).getDevID().equals(devID)){
-	        		nodeDetail =  node.get(i);
-	        		break;
-	        	}
-	        }
-        }
+        
+//        ArrayList<NodeDetails> node = mSoapManager.getNodeDetails();
+//        if(node != null){
+//	        for(int i = 0;i < node.size() ; i++){
+//	        	if(node.get(i).getDevID().equals(devID)){
+//	        		nodeDetail =  node.get(i);
+//	        		break;
+//	        	}
+//	        }
+//        }
         Log.e("Client", "account:"+account+",loginSession:"+loginSession+",devID:"+devID);
-        if(!mDeviceManager.getMap().containsKey(dev.getDeviceID())){
+        if(!mDeviceManager.getMap().containsKey(dev.getDevID())){
         	mDeviceManager.addMember(dev);
         }
-        methodType = mDeviceManager.getMap().get(dev.getDeviceID()).getMethodType();
+        methodType = mDeviceManager.getMap().get(dev.getDevID()).getMethodType();
 //        queryDeviceRes = mSoapManager.getQueryDeviceRes(new QueryDeviceReq(
 //                account, loginSession, devID));
 //        Log.e("Client", queryDeviceRes.toString());
@@ -311,15 +309,15 @@ public class Client {
     	String UpnpIP = "";
     	int UpnpPort = 0;
     	System.out.println("fillStreamReqContext11111111111");
-    	if(nodeDetail == null){
+    	if(dev == null){
     		Log.e("fillStreamReqContext", "nodeDetail == null");
     		getQueryDevice();
     		UpnpIP = queryDeviceRes.getUpnpIP();
 	        UpnpPort = queryDeviceRes.getUpnpPort();
     	}else{
     		Log.e("fillStreamReqContext", "nodeDetail != null");
-    		UpnpIP = nodeDetail.getUpnpIP();
-	        UpnpPort = nodeDetail.getUpnpPort();
+    		UpnpIP = dev.getUpnpIP();
+	        UpnpPort = dev.getUpnpPort();
     	}
     	StreamReqContext streamReqContext = null;
     	GetNATServerRes res = mSoapManager.getLocalGetNATServerRes();

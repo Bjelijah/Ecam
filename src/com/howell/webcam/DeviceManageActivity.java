@@ -26,14 +26,14 @@ public class DeviceManageActivity extends ListActivity implements
 
     private SoapManager mSoapManager;
     private LoginResponse mResponse;
-    public static ArrayList<Device> mList;
+    public static ArrayList<NodeDetails> mList;
     private int line;
     
     private Activities mActivities;
     private HomeKeyEventBroadCastReceiver receiver;
     
 //    private CameraListAdapter adapter;
-    private Device curDevice;
+    private NodeDetails curDevice;
     private ImageView curRedIcon;
 
     @Override
@@ -53,7 +53,7 @@ public class DeviceManageActivity extends ListActivity implements
 	        mResponse = mSoapManager.getLoginResponse();
 
         /*if (mResponse != null) {*/
-            mList = mResponse.getNodeList();
+            mList = mSoapManager.getNodeDetails();
             CameraListAdapter adapter = new CameraListAdapter(this, mList);
             setListAdapter(adapter);
             getListView().setOnItemClickListener(this);
@@ -69,7 +69,7 @@ public class DeviceManageActivity extends ListActivity implements
     @Override
     public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
     	line = (int)arg3;
-    	curDevice = mResponse.getNodeList().get(line);
+    	curDevice = mList.get(line);
         curRedIcon = (ImageView)(arg1).findViewById(R.id.red_icon);
     	if(!curDevice.isOnLine()){
     		MessageUtiles.postToast(getApplication(), getResources().getString(R.string.not_online_message),2000);
@@ -84,7 +84,7 @@ public class DeviceManageActivity extends ListActivity implements
 //				// TODO Auto-generated method stub
 				Intent intent = new Intent(DeviceManageActivity.this,
 		                DeviceSetActivity.class);
-		        intent.putExtra("Device", mResponse.getNodeList().get(line));
+		        intent.putExtra("Device", mList.get(line));
 		        startActivity(intent);
 //			}
 //		}).start();
@@ -93,10 +93,10 @@ public class DeviceManageActivity extends ListActivity implements
     public class CameraListAdapter extends BaseAdapter {
 
         private Context mContext;
-        private ArrayList<Device> mList;
+        private ArrayList<NodeDetails> mList;
         //private Map<Integer, View> map;
 
-        public CameraListAdapter(Context context, ArrayList<Device> list) {
+        public CameraListAdapter(Context context, ArrayList<NodeDetails> list) {
             mContext = context;
             mList = list;
 //            map = new HashMap<Integer, View>();
@@ -126,7 +126,7 @@ public class DeviceManageActivity extends ListActivity implements
 //        	if(map.containsKey(position)) { 
 //        		return map.get(position);
 //        	}
-            Device dev = (Device) getItem(position);
+            NodeDetails dev = (NodeDetails) getItem(position);
             
             //dev.setHasUpdate(true);
             
@@ -136,6 +136,7 @@ public class DeviceManageActivity extends ListActivity implements
             TextView name = (TextView) view.findViewById(R.id.name);
             ImageView redIcon = (ImageView)view.findViewById(R.id.red_icon);
             name.setText(dev.getName());
+            System.out.println(dev.isHasUpdate());
             if(dev.isHasUpdate()){
             	redIcon.setVisibility(View.VISIBLE);
             }else{

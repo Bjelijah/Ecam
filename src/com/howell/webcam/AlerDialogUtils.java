@@ -25,7 +25,7 @@ public class AlerDialogUtils {
 		    			CamTabActivity.updateNum -- ;
 		    			System.out.println(DeviceSetActivity.dev.toString());
 		    			DeviceSetActivity.dev.setHasUpdate(false);
-		    			for(Device d:DeviceManageActivity.mList){
+		    			for(NodeDetails d:DeviceManageActivity.mList){
 		    	    		if(d.getName().equals(DeviceSetActivity.dev.getName())){
 		    	    			d.setHasUpdate(DeviceSetActivity.dev.isHasUpdate());
 		    	    			break;

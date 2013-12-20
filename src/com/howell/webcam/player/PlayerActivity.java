@@ -48,7 +48,6 @@ import android.widget.TextView;
 
 import com.android.howell.webcam.R;
 import com.howell.invite.Client;
-import com.howell.webcam.Device;
 import com.howell.webcam.FileUtils;
 import com.howell.webcam.LoginResponse;
 import com.howell.webcam.MessageUtiles;
@@ -66,7 +65,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	private static PlayerActivity mPlayer;
 	private Thread inviteThread;
 	private static boolean playback=false;
-	private Device dev;
+	private NodeDetails dev;
 	private boolean mPausing=false;
 	private GLSurfaceView mGlView;
 	private VODRecord mRecord;
@@ -119,7 +118,6 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	
 //	private MyInviteTask task;
 	private boolean inviteRet;
-	private NodeDetails nodeDetail;
 	
 //	public static boolean isQuit;
 	private static int nowFrames;
@@ -174,13 +172,13 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
         mGestureDetector.setIsLongpressEnabled(true);  
         
         Intent intent = getIntent();
-		if (intent.getSerializableExtra("arg") instanceof Device) {
-            dev = (Device) intent.getSerializableExtra("arg");
+		if (intent.getSerializableExtra("arg") instanceof NodeDetails) {
+            dev = (NodeDetails) intent.getSerializableExtra("arg");
 //           client = new Client(dev);
             playback = false;
 		} else if (intent.getSerializableExtra("arg") instanceof VODRecord) {
             mRecord = (VODRecord) intent.getSerializableExtra("arg");
-            dev = mRecord.getDevice();
+            dev = (NodeDetails) intent.getSerializableExtra("nodeDetails");
 //            client = new Client(dev);
             playback = true;
         }
@@ -189,7 +187,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
         LoginResponse res = mSoapManger.getLoginResponse();
         account = res.getAccount();
         loginSession = res.getLoginSession();
-        devID = dev.getDeviceID();
+        devID = dev.getDevID();
         channelNo =	dev.getChannelNo();
         
 		backCount = 0;
@@ -230,21 +228,12 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		
 		mVedioList = (ImageButton) findViewById(R.id.vedio_list);
 		//判断设备有无SD卡
-		ArrayList<NodeDetails> node = mSoapManger.getNodeDetails();
-		if(node != null){
-			for(int i = 0 ; i < node.size() ; i++ ){
-				if(node.get(i).getDevID().equals(dev.getDeviceID())){
-					nodeDetail = node.get(i);
-					if(nodeDetail.iseStoreFlag()){
-						mVedioList.setEnabled(true);
-						mVedioList.setImageResource(R.drawable.vedio_list);
-					}else{
-						mVedioList.setEnabled(false);
-						mVedioList.setImageResource(R.drawable.vedio_list_enable_false);
-					}
-					break;
-				}
-			}
+		if(dev.iseStoreFlag()){
+			mVedioList.setEnabled(true);
+			mVedioList.setImageResource(R.drawable.vedio_list);
+		}else{
+			mVedioList.setEnabled(false);
+			mVedioList.setImageResource(R.drawable.vedio_list_enable_false);
 		}
 	    mVedioList.setOnClickListener(new View.OnClickListener() {
 	        @Override
@@ -936,7 +925,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
         // 触发条件 ：   
         // X轴的坐标位移大于FLING_MIN_DISTANCE，且移动速度大于FLING_MIN_VELOCITY个像素/秒   
 		
-		if(!nodeDetail.isPtzFlag() || playback){
+		if(!dev.isPtzFlag() || playback){
 			System.out.println("is not PTZ");
 			return false;
 		}
@@ -958,27 +947,27 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
         	direction = "Right";
         	time = 700;
         	System.out.println("fling111111111");
-        	animationStart(0.1f, -100.0f,0.1f,0.1f);
+        	animationStart(0,100,0,0);
         	Log.e("MyGesture", "Fling left "+"x:"+Math.abs(e1.getX() - e2.getX())+"y:"+Math.abs(e1.getY() - e2.getY()));  
         } else if (e2.getX() - e1.getX() > FLING_MIN_DISTANCE && Math.abs(velocityX) > FLING_MIN_VELOCITY) {   
             // Fling right   
         	Log.e("MyGesture", "Fling right "+"x:"+Math.abs(e1.getX() - e2.getX())+"y:"+Math.abs(e1.getY() - e2.getY()));   
         	direction = "Left";
         	System.out.println("fling222222222");
-        	animationStart(0.1f, 100.0f,0.1f,0.1f);
+        	animationStart(0, -100,0,0);
         	time = 700;
         }  else if (e2.getY() - e1.getY() > FLING_MIN_DISTANCE && Math.abs(velocityY) > FLING_MIN_VELOCITY) {   
             // Fling Down   
         	Log.e("MyGesture", "Fling Down "+"y:"+Math.abs(e1.getY() - e2.getY())+"x:"+Math.abs(e1.getX() - e2.getX()));   
         	direction = "Up";
-        	animationStart(0.1f, 0.1f,0.1f,100.0f);
+        	animationStart(0, 0,0,-100);
         	time = 500;
         }   else if (e1.getY() - e2.getY() > FLING_MIN_DISTANCE && Math.abs(velocityY) > FLING_MIN_VELOCITY) {   
             // Fling Up   
         	Log.e("MyGesture", "Fling Up "+"y:"+Math.abs(e1.getY() - e2.getY())+"x:"+Math.abs(e1.getX() - e2.getX()));   
         	direction = "Down";
         	time = 500;
-        	animationStart(0.1f, 0.1f,0.1f,-100.0f);
+        	animationStart(0, 0,0,100);
         }   else{
         	return true;
         }

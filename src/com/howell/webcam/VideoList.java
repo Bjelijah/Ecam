@@ -40,7 +40,7 @@ import com.howell.webcam.player.PlayerActivity;
 public class VideoList extends ListActivity implements OnItemClickListener {
 	
     public static Client client;
-    private Device dev;
+    private NodeDetails dev;
 //    private SoapManager mSoapManager;
 //    private LoginResponse mResponse;
     private ArrayList<VODRecord> mList;
@@ -222,7 +222,7 @@ public class VideoList extends ListActivity implements OnItemClickListener {
 //				int ret = 0;
 				try{
 			        Intent intent = getIntent();
-			        dev = (Device) intent.getSerializableExtra("Device");
+			        dev = (NodeDetails) intent.getSerializableExtra("Device");
 			        client = new Client(dev);
 //			        mSoapManager = SoapManager.getInstance();
 //			        mResponse = mSoapManager.getLoginResponse();
@@ -357,7 +357,6 @@ public class VideoList extends ListActivity implements OnItemClickListener {
 //        	Log.e("---------->>>>", "getView");
 //        	System.out.println("position"+position);
 			record = (VODRecord) getItem(position);
-            record.setDevice(dev);
             System.out.println(record.toString());
 			ViewHolder holder = null;
             if (convertView == null) {
@@ -401,6 +400,7 @@ public class VideoList extends ListActivity implements OnItemClickListener {
     	adapter.mAdapterList.get((int)arg3).setWatched(true);
         Intent intent = new Intent(this, PlayerActivity.class);
         intent.putExtra("arg", adapter.mAdapterList.get((int)arg3));
+        intent.putExtra("nodeDetails", dev);
         startActivity(intent);
         TextView tvName = (TextView)(arg1).findViewById(R.id.name);
 		tvName.setTextColor(Color.GRAY);

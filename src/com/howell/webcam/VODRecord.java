@@ -13,7 +13,6 @@ public class VODRecord implements Serializable {
     private String EndTime;
     private long FileSize;
     private String Desc;
-    private Device mDevice;
     private boolean isWatched;
     private boolean hasTitle;
     private String TimeZoneStartTime;
@@ -68,15 +67,6 @@ public class VODRecord implements Serializable {
 		this.isWatched = isWatched;
 	}
 
-
-	public Device getDevice() {
-        return mDevice;
-    }
-
-    public void setDevice(Device device) {
-        mDevice = device;
-    }
-
     public String getStartTime() {
         return StartTime;
     }
@@ -113,8 +103,7 @@ public class VODRecord implements Serializable {
 	@Override
 	public String toString() {
 		return "VODRecord [StartTime=" + StartTime + ", EndTime=" + EndTime
-				+ ", FileSize=" + FileSize + ", Desc=" + Desc + ", mDevice="
-				+ mDevice + ", isWatched=" + isWatched + ", hasTitle="
+				+ ", FileSize=" + FileSize + ", Desc=" + Desc + ", isWatched=" + isWatched + ", hasTitle="
 				+ hasTitle + ", TimeZoneStartTime=" + TimeZoneStartTime
 				+ ", TimeZoneEndTime=" + TimeZoneEndTime + "]";
 	}

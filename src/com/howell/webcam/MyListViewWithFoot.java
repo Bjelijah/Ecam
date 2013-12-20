@@ -382,11 +382,11 @@ public class MyListViewWithFoot extends ListView implements OnScrollListener {
 			Log.v(TAG, "当前状态，done");
 			break;
 		case FOOTREFRESH:
-			m_tipsTextview.setText("正在加载数据");
+			m_tipsTextview.setText(getResources().getString(R.string.load_data));
 			m_progressBar.setVisibility(View.VISIBLE);
 			break;
 		case FOOTDONE:
-			m_tipsTextview.setText("点击加载更多");
+			m_tipsTextview.setText(getResources().getString(R.string.load_more));
 			m_progressBar.setVisibility(View.GONE);
 			state = DONE;
 			break;

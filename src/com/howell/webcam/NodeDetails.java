@@ -20,12 +20,21 @@ public class NodeDetails implements Serializable {
     private int sharingFlag;
     private int applePushSubscribedFlag;
     private int androidPushSubscribedFlag;
-
+    private int infraredFlag;//∫ÏÕ‚
+    private int wirelessFlag;//Œﬁœﬂ
+    private String wirelessType;
+    private String sSID;
+    private int intensity;
+    
+    private int methodType;
+    private boolean hasUpdate;
     
 	public NodeDetails(String upnpIP, int upnpPort) {
 		super();
 		this.upnpIP = upnpIP;
 		this.upnpPort = upnpPort;
+		methodType = 0;
+		hasUpdate = false;
 	}
 	public NodeDetails(String devID, int channelNo, String name,
 			boolean onLine, boolean ptzFlag, int securityArea,
@@ -44,6 +53,8 @@ public class NodeDetails implements Serializable {
 		this.devVer = devVer;
 		this.curVideoNum = curVideoNum;
 		this.lastUpdated = lastUpdated;
+		methodType = 0;
+		hasUpdate = false;
 	}
 	
 	public NodeDetails(String devID, int channelNo, String name,
@@ -70,8 +81,84 @@ public class NodeDetails implements Serializable {
 		this.sharingFlag = sharingFlag;
 		this.applePushSubscribedFlag = applePushSubscribedFlag;
 		this.androidPushSubscribedFlag = androidPushSubscribedFlag;
+		methodType = 0;
+		hasUpdate = false;
 	}
 	
+	public NodeDetails(String devID, int channelNo, String name,
+			boolean onLine, boolean ptzFlag, int securityArea,
+			boolean eStoreFlag, String upnpIP, int upnpPort, String devVer,
+			int curVideoNum, String lastUpdated, int sMSSubscribedFlag,
+			int eMailSubscribedFlag, int sharingFlag,
+			int applePushSubscribedFlag, int androidPushSubscribedFlag,
+			int infraredFlag, int wirelessFlag) {
+		super();
+		this.devID = devID;
+		this.channelNo = channelNo;
+		this.name = name;
+		this.onLine = onLine;
+		this.ptzFlag = ptzFlag;
+		this.securityArea = securityArea;
+		this.eStoreFlag = eStoreFlag;
+		this.upnpIP = upnpIP;
+		this.upnpPort = upnpPort;
+		this.devVer = devVer;
+		this.curVideoNum = curVideoNum;
+		this.lastUpdated = lastUpdated;
+		this.sMSSubscribedFlag = sMSSubscribedFlag;
+		this.eMailSubscribedFlag = eMailSubscribedFlag;
+		this.sharingFlag = sharingFlag;
+		this.applePushSubscribedFlag = applePushSubscribedFlag;
+		this.androidPushSubscribedFlag = androidPushSubscribedFlag;
+		this.infraredFlag = infraredFlag;
+		this.wirelessFlag = wirelessFlag;
+		this.methodType = 0;
+		hasUpdate = false;
+	}
+	
+	
+	public boolean isHasUpdate() {
+		return hasUpdate;
+	}
+	public void setHasUpdate(boolean hasUpdate) {
+		this.hasUpdate = hasUpdate;
+	}
+	public int getMethodType() {
+		return methodType;
+	}
+	public void setMethodType(int methodType) {
+		this.methodType = methodType;
+	}
+	public int getInfraredFlag() {
+		return infraredFlag;
+	}
+	public void setInfraredFlag(int infraredFlag) {
+		this.infraredFlag = infraredFlag;
+	}
+	public int getWirelessFlag() {
+		return wirelessFlag;
+	}
+	public void setWirelessFlag(int wirelessFlag) {
+		this.wirelessFlag = wirelessFlag;
+	}
+	public String getWirelessType() {
+		return wirelessType;
+	}
+	public void setWirelessType(String wirelessType) {
+		this.wirelessType = wirelessType;
+	}
+	public String getsSID() {
+		return sSID;
+	}
+	public void setsSID(String sSID) {
+		this.sSID = sSID;
+	}
+	public int getIntensity() {
+		return intensity;
+	}
+	public void setIntensity(int intensity) {
+		this.intensity = intensity;
+	}
 	public String getDevID() {
 		return devID;
 	}
@@ -174,6 +261,7 @@ public class NodeDetails implements Serializable {
 	public void setAndroidPushSubscribedFlag(int androidPushSubscribedFlag) {
 		this.androidPushSubscribedFlag = androidPushSubscribedFlag;
 	}
+	
 	@Override
 	public String toString() {
 		return "NodeDetails [devID=" + devID + ", channelNo=" + channelNo
@@ -186,8 +274,10 @@ public class NodeDetails implements Serializable {
 				+ eMailSubscribedFlag + ", sharingFlag=" + sharingFlag
 				+ ", applePushSubscribedFlag=" + applePushSubscribedFlag
 				+ ", androidPushSubscribedFlag=" + androidPushSubscribedFlag
-				+ "]";
+				+ ", infraredFlag=" + infraredFlag + ", wirelessFlag="
+				+ wirelessFlag + ", wirelessType=" + wirelessType + ", sSID="
+				+ sSID + ", intensity=" + intensity + ", methodType="
+				+ methodType + "]";
 	}
-    
     
 }

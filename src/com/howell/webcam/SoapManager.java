@@ -122,7 +122,7 @@ public class SoapManager implements Serializable {
 	        queryDeviceRes.setResult(result.toString());
 	        //System.out.println("queryDeviceRes:"+queryDeviceRes.getResult());
 	        SoapObject NodeList = (SoapObject)object.getProperty("NodeList");
-	        //System.out.println("NodeList:"+NodeList.toString());
+	        System.out.println("queryDevice NodeList:"+NodeList.toString());
 	        //System.out.println(req.getDevID().toString());
 	        if(req.getDevID() != null){
 		        SoapObject NodeDetails = (SoapObject)NodeList.getProperty("NodeDetails");
@@ -189,8 +189,18 @@ public class SoapManager implements Serializable {
 	        				,Integer.valueOf(NodeDetails.getProperty("SecurityArea").toString()),Boolean.parseBoolean(NodeDetails.getProperty("EStoreFlag").toString()),NodeDetails.getProperty("UpnpIP").toString()
 	        				,Integer.valueOf(NodeDetails.getProperty("UpnpPort").toString()),NodeDetails.getProperty("DevVer").toString(),Integer.valueOf(NodeDetails.getProperty("CurVideoNum").toString())
 	        				,NodeDetails.getProperty("LastUpdated").toString(),Integer.valueOf(NodeDetails.getProperty("SMSSubscribedFlag").toString()),Integer.valueOf(NodeDetails.getProperty("EMailSubscribedFlag").toString())
-	        				,Integer.valueOf(NodeDetails.getProperty("SharingFlag").toString()),Integer.valueOf(NodeDetails.getProperty("ApplePushSubscribedFlag").toString()),Integer.valueOf(NodeDetails.getProperty("AndroidPushSubscribedFlag").toString()));
+	        				,Integer.valueOf(NodeDetails.getProperty("SharingFlag").toString()),Integer.valueOf(NodeDetails.getProperty("ApplePushSubscribedFlag").toString()),Integer.valueOf(NodeDetails.getProperty("AndroidPushSubscribedFlag").toString())
+	        				,Integer.valueOf(NodeDetails.getProperty("InfraredFlag").toString()),Integer.valueOf(NodeDetails.getProperty("WirelessFlag").toString()));
 	        		//System.out.println("node : "+i+" :"+node.toString());
+	        		if(node.getWirelessFlag() == 0){
+	        			node.setIntensity(0);
+	        		}else{
+		        		SoapObject wirelessNetwork = (SoapObject)NodeDetails.getProperty("WirelessNetwork");
+		        		System.out.println(wirelessNetwork.toString());
+		        		Object intensity = wirelessNetwork.getProperty("Intensity");
+		        		System.out.println(intensity.toString());
+		        		node.setIntensity(Integer.valueOf(intensity.toString()));
+	        		}
 	        		nodeDetails.add(node);
 	        	}
 	        }

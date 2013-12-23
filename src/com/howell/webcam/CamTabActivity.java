@@ -60,7 +60,7 @@ public class CamTabActivity extends TabActivity implements
         setContentView(R.layout.cam_tab);
         Log.e("CamTabActivity", "onCreate");
         updateNum = 0;
-        hasToggled =false;
+        hasToggled = false;
         cameraVerThread = false;
         mActivities = Activities.getInstance();
         mActivities.getmActivityList().add(CamTabActivity.this);
@@ -104,26 +104,22 @@ public class CamTabActivity extends TabActivity implements
         			}
         		}
         		try{
-        		for(NodeDetails d:list){
-                	System.out.println("aaaaaa");
-                	GetDevVerReq getDevVerReq = new GetDevVerReq(mResponse.getAccount(),mResponse.getLoginSession(),d.getDevID());
-                	GetDevVerRes res = mSoapManager.getGetDevVerRes(getDevVerReq);
-                	Log.e("GetDevVerRes", res.toString());
-                	if(d.isOnLine() && !res.getCurDevVer().equals(res.getNewDevVer())){
-                		System.out.println(res.getCurDevVer()+","+res.getNewDevVer());
-                		updateNum++;
-                		d.setHasUpdate(true);
-                		if(updateNum == 1){
-                        	//badge.setText(String.valueOf(updateNum));
-                    		handler.sendEmptyMessage(TOGGLEON);
-                        }
-                		//return;
-                	}
-                }
-        		for(int i = 0 ; i < list.size() ; i++){
-        			System.out.println("list:"+list.get(i).isHasUpdate());
-        			System.out.println("soapmanager:"+mSoapManager.getNodeDetails().get(i).isHasUpdate());
-        		}
+	        		for(NodeDetails d:list){
+	                	System.out.println("aaaaaa");
+	                	GetDevVerReq getDevVerReq = new GetDevVerReq(mResponse.getAccount(),mResponse.getLoginSession(),d.getDevID());
+	                	GetDevVerRes res = mSoapManager.getGetDevVerRes(getDevVerReq);
+	                	Log.e("GetDevVerRes", res.toString());
+	                	if(d.isOnLine() && !res.getCurDevVer().equals(res.getNewDevVer())){
+	                		System.out.println(res.getCurDevVer()+","+res.getNewDevVer());
+	                		updateNum++;
+	                		d.setHasUpdate(true);
+	                		if(updateNum == 1){
+	                        	//badge.setText(String.valueOf(updateNum));
+	                    		handler.sendEmptyMessage(TOGGLEON);
+	                        }
+	                		//return;
+	                	}
+	                }
         		}catch(Exception e){
                 	System.out.println("getDevVerReq crash");
                 }
@@ -135,18 +131,7 @@ public class CamTabActivity extends TabActivity implements
         		
         	}
         }.start();
-        
-
     }
-    
-    
-//    public static void setUpdateNum(int num){
-//    	updateNum = num;
-//    }
-//    
-//    public static int getUpdateNum(){
-//    	return updateNum ;
-//    }
     
 	@Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {

@@ -40,6 +40,12 @@
                 android:drawableTop="@drawable/tab_camera_selector"
                
                 android:text="@string/camera_list" />
+            <RadioButton
+                android:id="@+id/local_files"
+                style="@style/main_tab_bottom"
+                android:layout_marginTop="2.0dip"
+                android:drawableTop="@drawable/tab_files_selector"
+                android:text="@string/local_files" />
  <!--  android:background="@drawable/tab_press"-->
             <RadioButton
                 android:id="@+id/settings"

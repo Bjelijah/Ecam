@@ -65,7 +65,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	private static PlayerActivity mPlayer;
 	private Thread inviteThread;
 	private static boolean playback=false;
-	private NodeDetails dev;
+	private static NodeDetails dev;
 	private boolean mPausing=false;
 	private GLSurfaceView mGlView;
 	private VODRecord mRecord;
@@ -594,6 +594,13 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 				}else{
 					mWaitProgressBar.setVisibility(View.GONE);
 					System.out.println("frames: send message DETECT_IF_NO_STREAM_ARRIVE");
+					//有数据显示了开始截图
+					File destDir = new File("/sdcard/eCamera/cache");
+					if (!destDir.exists()) {
+						destDir.mkdirs();
+					}
+					String path = "/sdcard/eCamera/cache/"+dev.getDevID()+".jpg";
+					YV12Renderer.setCatchPictureFlag(path,path.length());
 					mPlayerHandler.sendEmptyMessage(DETECT_IF_NO_STREAM_ARRIVE);
 				}
 			}

@@ -188,7 +188,8 @@
                     <CheckBox
                         android:id="@+id/turn_over"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        style="@style/MyCheckBox" />
                 </TableRow>
             </LinearLayout>
             
@@ -218,7 +219,8 @@
                     <CheckBox
                         android:id="@+id/power_led"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        style="@style/MyCheckBox" />
                 </TableRow>
             </LinearLayout>
             
@@ -259,7 +261,8 @@
                     <CheckBox
                         android:id="@+id/vmd_enable"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        style="@style/MyCheckBox" />
                 </TableRow>
             </LinearLayout>
 
@@ -318,7 +321,8 @@
                     <CheckBox
                         android:id="@+id/alarm_notice"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        style="@style/MyCheckBox" />
                 </TableRow>
             </LinearLayout>
             

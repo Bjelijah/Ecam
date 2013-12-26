@@ -1,40 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/list_item_bg_middle" >
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
 
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="45dip"
-        android:paddingLeft="10dip"
-        android:textColor="@android:color/black"
-        android:textSize="18dip"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/online"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dip"
-        android:paddingTop="25dip"
-        android:textSize="12dip" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right|center_vertical"
+        android:orientation="vertical"
+        android:layout_marginLeft="5dip"
         android:layout_marginRight="5dip"
-        android:src="@drawable/selector_forward" />
+        android:background="@drawable/card_background_white" >
 
-    <ImageView
-        android:id="@+id/iv_intensity"
-        android:layout_width="50dip"
-        android:layout_height="20dip"
-        android:layout_gravity="right|center_vertical"
-        android:layout_marginRight="30dip"
-        android:src="@drawable/wifi_0" />
+        <LinearLayout
+            android:id="@+id/to_play"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dip"
+            android:layout_marginBottom="15dip">
 
-</FrameLayout>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dip" >
+
+                <ImageView
+                    android:id="@+id/iv_picture"
+                    android:layout_width="150dp"
+                    android:layout_height="100dp"
+                    android:contentDescription="@null"
+                    android:scaleType="fitXY" />
+
+                <ImageView
+                    android:id="@+id/iv_play_icon"
+                    android:layout_width="150dp"
+                    android:layout_height="100dp"
+                    android:scaleType="center"
+                    android:src="@drawable/audio_play" />
+
+            </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|bottom"
+                android:layout_weight="1.0"
+                android:textSize="20sp" />
+            <TextView
+	            android:id="@+id/tv_online"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:gravity="center_horizontal"
+	            android:layout_weight="1.0"
+	            android:textSize="16sp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+        <ImageView
+            android:id="@+id/divide"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/divide_heng" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/tv_playback"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:drawableRight="@drawable/divide_shu"
+                android:textColor="@color/blue"
+                android:text="回放" />
+
+            <TextView
+                android:id="@+id/tv_set"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:drawableRight="@drawable/divide_shu"
+                android:textColor="@color/blue"
+                android:text="设置" />
+
+            <TextView
+                android:id="@+id/tv_about"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/blue"
+                android:text="关于" />
+            
+        </LinearLayout>
+		
+    </LinearLayout>
+
+</LinearLayout>

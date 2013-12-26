@@ -3,18 +3,18 @@ package com.howell.webcam;
 import java.io.Serializable;
 
 public class NodeDetails implements Serializable {
-	public String devID;
-    public int channelNo;
-    public String name;
-    public boolean onLine;
-    public boolean ptzFlag;
-    public int securityArea;
-    public boolean eStoreFlag;
-    public String upnpIP;
-    public int upnpPort;
-    public String devVer;
-    public int curVideoNum;
-    public String lastUpdated;
+	private String devID;
+	private int channelNo;
+	private String name;
+	private boolean onLine;
+	private boolean ptzFlag;
+	private int securityArea;
+	private boolean eStoreFlag;
+	private String upnpIP;
+	private int upnpPort;
+	private String devVer;
+	private int curVideoNum;
+	private String lastUpdated;
     private int sMSSubscribedFlag;
     private int eMailSubscribedFlag;
     private int sharingFlag;
@@ -28,6 +28,7 @@ public class NodeDetails implements Serializable {
     
     private int methodType;
     private boolean hasUpdate;
+    private String picturePath;
     
 	public NodeDetails(String upnpIP, int upnpPort) {
 		super();
@@ -35,6 +36,7 @@ public class NodeDetails implements Serializable {
 		this.upnpPort = upnpPort;
 		methodType = 0;
 		hasUpdate = false;
+		picturePath = "/sdcard/eCamera/cache/"+devID+".jpg";
 	}
 	public NodeDetails(String devID, int channelNo, String name,
 			boolean onLine, boolean ptzFlag, int securityArea,
@@ -55,6 +57,7 @@ public class NodeDetails implements Serializable {
 		this.lastUpdated = lastUpdated;
 		methodType = 0;
 		hasUpdate = false;
+		picturePath = "/sdcard/eCamera/cache/"+devID+".jpg";
 	}
 	
 	public NodeDetails(String devID, int channelNo, String name,
@@ -83,6 +86,7 @@ public class NodeDetails implements Serializable {
 		this.androidPushSubscribedFlag = androidPushSubscribedFlag;
 		methodType = 0;
 		hasUpdate = false;
+		picturePath = "/sdcard/eCamera/cache/"+devID+".jpg";
 	}
 	
 	public NodeDetails(String devID, int channelNo, String name,
@@ -114,9 +118,16 @@ public class NodeDetails implements Serializable {
 		this.wirelessFlag = wirelessFlag;
 		this.methodType = 0;
 		hasUpdate = false;
+		picturePath = "/sdcard/eCamera/cache/"+devID+".jpg";
 	}
 	
 	
+	public String getPicturePath() {
+		return picturePath;
+	}
+	public void setPicturePath(String picturePath) {
+		this.picturePath = picturePath;
+	}
 	public boolean isHasUpdate() {
 		return hasUpdate;
 	}

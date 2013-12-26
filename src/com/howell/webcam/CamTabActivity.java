@@ -78,6 +78,11 @@ public class CamTabActivity extends TabActivity implements
                 .setIndicator(getResources().getString(R.string.camera_list),
                         getResources().getDrawable(R.drawable.camera))
                 .setContent(new Intent(this, CameraList.class)));
+        mHost.addTab(mHost
+                .newTabSpec("localfiles")
+                .setIndicator(getResources().getString(R.string.local_files),
+                        getResources().getDrawable(R.drawable.tab_camera_selector))
+                .setContent(new Intent(this, LocalFilesActivity.class)));
 
         mHost.addTab(mHost
                 .newTabSpec("settings")
@@ -139,6 +144,9 @@ public class CamTabActivity extends TabActivity implements
         switch (checkedId) {
         case R.id.camera_list:
             mHost.setCurrentTabByTag("cameralist");
+            break;
+        case R.id.local_files:
+            mHost.setCurrentTabByTag("localfiles");
             break;
         case R.id.settings:
             mHost.setCurrentTabByTag("settings");

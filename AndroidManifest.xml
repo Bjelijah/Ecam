@@ -70,6 +70,10 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
          -->
          <activity
+            android:name="com.howell.webcam.LocalFilesActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+         <activity
             android:name="com.howell.webcam.player.PlayerActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />

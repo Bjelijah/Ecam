@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,10 +20,12 @@ import android.provider.Settings.Secure;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -67,7 +71,7 @@ public class CameraList extends ListActivity implements OnItemClickListener {
 	        adapter = new CameraListAdapter(this);
             setListAdapter(adapter);
 	        
-            getListView().setOnItemClickListener(this);
+            //getListView().setOnItemClickListener(this);
         }catch (Exception e) {
 			// TODO: handle exception
         	Log.e("!!!", "null pointer exception");
@@ -266,6 +270,7 @@ public class CameraList extends ListActivity implements OnItemClickListener {
     	// TODO Auto-generated method stub
     	super.onRestart();
     	Log.e("CameraList", "onRestart()");
+    	adapter.notifyDataSetChanged();
     }
     
     @Override
@@ -295,9 +300,13 @@ public class CameraList extends ListActivity implements OnItemClickListener {
 
         private Context mContext;
 //        private ArrayList<Device> mList;
+        private int imageWidth;
+        private int imageHeight;
 
         public CameraListAdapter(Context context) {
             mContext = context;
+            imageWidth = PhoneConfig.getPhoneWidth(getApplicationContext())/2;
+            imageHeight = imageWidth * 10 / 16;
 //            mList = list;
         }
         
@@ -325,8 +334,8 @@ public class CameraList extends ListActivity implements OnItemClickListener {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             // TODO Auto-generated method stub
-        	System.out.println("getView");
-            NodeDetails dev = (NodeDetails) getItem(position);
+        	System.out.println("getView£∫"+position);
+            /*NodeDetails dev = (NodeDetails) getItem(position);
             LayoutInflater layoutInflater = LayoutInflater.from(mContext);
             View view = layoutInflater.inflate(R.layout.item, null);
             TextView name = (TextView) view.findViewById(R.id.name);
@@ -360,21 +369,122 @@ public class CameraList extends ListActivity implements OnItemClickListener {
             }else{
             	//intensity.setVisibility(View.GONE);
             }
-            return view;
+            return view;*/
+        	ViewHolder holder = null;
+            if (convertView == null) {
+            	LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+				convertView = layoutInflater.inflate(R.layout.item, null);
+				holder = new ViewHolder();
+				
+				holder.iv = (ImageView)convertView.findViewById(R.id.iv_picture);
+				holder.iv_play_icon = (ImageView)convertView.findViewById(R.id.iv_play_icon);
+				holder.playback = (TextView)convertView.findViewById(R.id.tv_playback);
+				holder.set = (TextView)convertView.findViewById(R.id.tv_set);
+				holder.about = (TextView)convertView.findViewById(R.id.tv_about);
+				holder.tv = (TextView)convertView.findViewById(R.id.tv_name);
+				holder.tv_online = (TextView)convertView.findViewById(R.id.tv_online);
+				
+				holder.tv.setTextColor(Color.BLACK);
+                convertView.setTag(holder);
+		        
+                holder.playback.setOnClickListener(listener);
+                holder.set.setOnClickListener(listener);
+                holder.about.setOnClickListener(listener);
+                holder.iv.setOnClickListener(listener);
+            }else{
+            	holder = (ViewHolder)convertView.getTag();
+            }
+            
+            holder.iv.setTag(position);
+            holder.playback.setTag(position);
+            holder.set.setTag(position);
+            holder.about.setTag(position);
+            holder.tv_online.setTag(position);
+            
+            holder.tv.setText(list.get(position).getName());
+            
+            if (list.get(position).isOnLine()) {
+            	holder.tv_online.setText(getResources().getString(R.string.online));
+	        } else {
+	        	holder.tv_online.setText(getResources().getString(R.string.not_online));
+	        }
+            
+            //holder.iv.setImageDrawable(images.get(position));
+            //String myJpgPath = "/sdcard/eCamera/20130902125951.jpg";
+            BitmapFactory.Options options = new BitmapFactory.Options();
+	        options.inSampleSize = 2;
+	        Bitmap bm = BitmapFactory.decodeFile(list.get(position).getPicturePath(), options);
+	        if(bm == null){
+	        	holder.iv.setImageDrawable(getResources().getDrawable(R.drawable.images_cache_bg));
+	        }else{
+	        	holder.iv.setImageBitmap(bm);
+	        }
+	        holder.iv.setLayoutParams(new FrameLayout.LayoutParams(imageWidth, imageHeight));
+	        holder.iv_play_icon.setLayoutParams(new FrameLayout.LayoutParams(imageWidth, imageHeight));
+        	//}
+			return convertView;
         }
 
+        private OnClickListener listener = new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				if(arg0.getId() == R.id.tv_playback){
+					if(!list.get(Integer.valueOf(arg0.getTag().toString())).isOnLine()){
+			    		MessageUtiles.postToast(getApplication(), getResources().getString(R.string.not_online_message),2000);
+			    		return;
+			    	}
+					if(!list.get(Integer.valueOf(arg0.getTag().toString())).iseStoreFlag()){
+			    		MessageUtiles.postToast(getApplication(), getResources().getString(R.string.no_estore),2000);
+			    		return;
+			    	}
+					System.out.println("tag:"+arg0.getTag().toString());
+					System.out.println(((NodeDetails) getItem(Integer.valueOf(arg0.getTag().toString()))).getName());
+					Intent intent = new Intent(CameraList.this, VideoList.class);
+		            intent.putExtra("Device", ((NodeDetails) getItem(Integer.valueOf(arg0.getTag().toString()))));
+		            startActivity(intent);
+				}else if(arg0.getId() == R.id.tv_set){
+					//System.out.println("…Ë÷√");
+					if(!list.get(Integer.valueOf(arg0.getTag().toString())).isOnLine()){
+			    		MessageUtiles.postToast(getApplication(), getResources().getString(R.string.not_online_message),2000);
+			    		return;
+			    	}
+					Intent intent = new Intent(CameraList.this,DeviceSetActivity.class);
+					intent.putExtra("Device", (NodeDetails) getItem(Integer.valueOf(arg0.getTag().toString())));
+					startActivity(intent);
+				}else if(arg0.getId() == R.id.tv_about){
+					System.out.println("πÿ”⁄");
+				}else if(arg0.getId() == R.id.iv_picture){
+					System.out.println(getItem(Integer.valueOf(arg0.getTag().toString())).toString());
+					if (!((NodeDetails)getItem(Integer.valueOf(arg0.getTag().toString()))).isOnLine()) {
+			        	MessageUtiles.postToast(getApplicationContext(), getResources().getString(R.string.not_online_message),1000);
+			        } else {
+			            Intent intent = new Intent(CameraList.this, PlayerActivity.class);
+			            intent.putExtra("arg", ((NodeDetails) getItem(Integer.valueOf(arg0.getTag().toString()))));
+			            startActivity(intent);
+			        }
+				}
+			}
+		};
+
     }
+    
+	public static class ViewHolder {
+		public ImageView iv,iv_play_icon;
+	    public TextView tv,playback,set,about,tv_online;
+	}
 
     @Override
     public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-        Integer tag = (Integer) arg1.getTag();
+        /*Integer tag = (Integer) arg1.getTag();
         if (tag == 0) {
         	MessageUtiles.postToast(getApplicationContext(), getResources().getString(R.string.not_online_message),1000);
         } else if (tag == 1) {
             Intent intent = new Intent(CameraList.this, PlayerActivity.class);
             intent.putExtra("arg", list.get((int) arg3));
             startActivity(intent);
-        }
+        }*/
     }
     
 }

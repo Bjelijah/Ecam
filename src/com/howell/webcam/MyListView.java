@@ -78,7 +78,6 @@ public class MyListView extends ListView implements OnScrollListener {
 	}
 
 	private void init(Context context) {
-		setCacheColorHint(Color.WHITE);
 		inflater = LayoutInflater.from(context);
 
 		headView = (LinearLayout) inflater.inflate(R.layout.head, null);
@@ -327,7 +326,7 @@ public class MyListView extends ListView implements OnScrollListener {
 
 			progressBar.setVisibility(View.GONE);
 			arrowImageView.clearAnimation();
-			arrowImageView.setImageResource(R.drawable.arrow);
+			arrowImageView.setImageResource(R.drawable.z_arrow_down);
 			tipsTextview.setText(getResources().getString(R.string.pull_to_refresh));
 			lastUpdatedTextView.setVisibility(View.VISIBLE);
 

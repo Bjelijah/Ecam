@@ -29,7 +29,7 @@
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
   android:layout_gravity="center"
-  android:src="@drawable/arrow"
+  android:src="@drawable/z_arrow_down"
   android:id="@+id/head_arrowImageView"
   />
   
@@ -61,8 +61,8 @@
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
   android:text="@string/pull_to_refresh"
-  android:textColor="@color/black"
-  android:textSize="20sp"
+  android:textColor="@color/gray"
+  android:textSize="14sp"
   android:id="@+id/head_tipsTextView"
   />
   
@@ -72,8 +72,8 @@
   android:layout_height="wrap_content"
   android:id="@+id/head_lastUpdatedTextView"
   android:text="@string/last_update"
-  android:textColor="@color/gold"
-  android:textSize="10sp"
+  android:textColor="@color/black"
+  android:textSize="12sp"
   />
   
   </LinearLayout>

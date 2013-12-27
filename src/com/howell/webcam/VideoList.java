@@ -259,6 +259,7 @@ public class VideoList extends ListActivity implements OnItemClickListener {
 				// TODO Auto-generated method stub
 				new AsyncTask<Void, Void, Void>() {
 					protected Void doInBackground(Void... params) {
+						position = mList.size();
 						int round = 6;
 						ArrayList<VODRecord> mTemp = utils.getMoreVideoList(client, lastRefreshStartTime, lastRefreshEndTime);
 						System.out.println("foot:"+mTemp.size());
@@ -282,7 +283,7 @@ public class VideoList extends ListActivity implements OnItemClickListener {
 							}
 						}
 						adapter.mAdapterList = mList;
-						position = mList.size()/2;
+//						position = mList.size()/2;
 						return null;
 					}
 

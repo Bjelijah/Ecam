@@ -35,6 +35,8 @@ public class LocalFilesActivity extends Activity {
 		File f = new File("/sdcard/eCamera");
 		getFile(f);
 System.out.println("pictures:"+mFileList.size());
+		LinearLayout.LayoutParams lp = new TableRow.LayoutParams(imageWidth, imageHeight);
+		lp.setMargins(0, 0, 0, 10);
 		int j ;
 		for(int i = 0 ; i < mFileList.size() ; i++){
 			System.out.println(f.getPath()+"/"+mFileList.get(i).getName());
@@ -53,8 +55,7 @@ System.out.println("pictures:"+mFileList.size());
 		        // SET SCALETYPE
 	//	        imageView.setScaleType(ScaleType.FIT_XY);
 		        imageView.setImageBitmap(bm);
-		        LinearLayout.LayoutParams lp = new TableRow.LayoutParams(imageWidth, imageHeight);
-		        lp.setMargins(0, 0, 0, 10);
+		        
 		        imageView.setLayoutParams(lp);
 				row.addView(imageView);
 			}

@@ -62,6 +62,10 @@
             android:label="@string/settings"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <activity
+            android:name="com.howell.webcam.BigImages"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <!-- 
         <activity
             android:name="org.libsdl.app.SDLActivity"

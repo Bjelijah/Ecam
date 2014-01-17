@@ -146,12 +146,13 @@ public class MyListViewWithFoot extends ListView implements OnScrollListener {
 			public void run() {
 				// TODO Auto-generated method stub
 				try {
-					Thread.sleep(100);
+//					Thread.sleep(100);
+					onFirstRefresh();
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				onFirstRefresh();
+				
 //				myHandler.sendEmptyMessage((int) SETADAPTER);
 			}
 		}).start();
@@ -421,10 +422,12 @@ public class MyListViewWithFoot extends ListView implements OnScrollListener {
 		}
 	}
 	
-	private void onFirstRefresh() {
-		if (refreshListener != null) {
-			refreshListener.onFirstRefresh();
+	private void onFirstRefresh() throws InterruptedException {
+		while (refreshListener == null) {
+			System.out.println("wait onFirstRefresh sleep");
+			Thread.sleep(100);
 		}
+		refreshListener.onFirstRefresh();
 	}
 	
 	private void onFootRefresh() {

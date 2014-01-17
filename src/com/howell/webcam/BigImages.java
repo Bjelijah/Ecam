@@ -6,13 +6,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ViewFlipper;
@@ -29,6 +32,7 @@ public class BigImages extends Activity implements OnTouchListener, OnGestureLis
 	
 	private int imageId;
 	private Bitmap bm;
+	private ImageButton mShare;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -55,6 +59,20 @@ public class BigImages extends Activity implements OnTouchListener, OnGestureLis
         iv1.setImageBitmap(bm);
         
         imageId = R.id.iv1;
+        mShare = (ImageButton)findViewById(R.id.ib_share);
+        mShare.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+//				Uri screenshotUri = Uri.parse("file:///sdcard/eCamera/20130902125951.jpg");
+				Uri screenshotUri = Uri.parse("file://"+mList.get(position));
+				sharingIntent.setType("image/jpeg");
+				sharingIntent.putExtra(Intent.EXTRA_STREAM, screenshotUri);
+				startActivity(Intent.createChooser(sharingIntent, "∑÷œÌÕº∆¨"));
+			}
+		});
 //        for(Integer i:mList){
 //        	System.out.println(i);
 //        }

@@ -127,12 +127,13 @@ public class MyListView extends ListView implements OnScrollListener {
 			public void run() {
 				// TODO Auto-generated method stub
 				try {
-					Thread.sleep(100);
+//					Thread.sleep(100);
+					onFirstRefresh();
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				onFirstRefresh();
+				
 //				myHandler.sendEmptyMessage((int) SETADAPTER);
 			}
 		}).start();
@@ -357,10 +358,12 @@ public class MyListView extends ListView implements OnScrollListener {
 		}
 	}
 	
-	private void onFirstRefresh() {
-		if (refreshListener != null) {
-			refreshListener.onFirstRefresh();
+	private void onFirstRefresh() throws InterruptedException {
+		while (refreshListener == null) {
+			System.out.println("wait onFirstRefresh sleep");
+			Thread.sleep(100);
 		}
+		refreshListener.onFirstRefresh();
 	}
 
 	// 此方法直接照搬自网络上的一个下拉刷新的demo，此处是“估计”headView的width以及height

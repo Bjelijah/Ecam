@@ -185,7 +185,7 @@ public class Client {
 	        		try {
 						sleep(3000);
 						System.out.println("thread isQuit2:"+isQuit);
-						//Èç¹ûÔÚÏß³Ì¿ªÆôÖ®Ç°ÒÑ¾­ÍË³ö Ôò²»Ö´ÐÐÏß³Ì
+						//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß³Ì¿ï¿½ï¿½ï¿½Ö®Ç°ï¿½Ñ¾ï¿½ï¿½Ë³ï¿½ ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ß³ï¿½
 						if(isQuit) return;
 						int count = getStreamCount(handle);
 						System.out.println("thread start111 count"+count);
@@ -306,6 +306,7 @@ public class Client {
             long end, int re_invite , int methodType) {
 //        StreamReqIceOpt opt = new StreamReqIceOpt(1, "180.166.7.214", 34780,
 //                "180.166.7.214", 34780, 0, "100", "100");
+    	System.out.println("methodType:"+methodType);
     	String UpnpIP = "";
     	int UpnpPort = 0;
     	System.out.println("fillStreamReqContext11111111111");

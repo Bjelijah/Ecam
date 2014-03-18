@@ -33,7 +33,9 @@ public class LocalFilesActivity extends Activity {
 	private ArrayList<String> mList ;
 	private int imageWidth;
 	private int imageHeight;
-	LinearLayout.LayoutParams lp;
+	private LinearLayout.LayoutParams lp;
+	private File f;
+	private MyAdapter adapter;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -41,21 +43,30 @@ public class LocalFilesActivity extends Activity {
 		setContentView(R.layout.local_files);
 		imageWidth = PhoneConfig.getPhoneWidth(getApplicationContext())/3;
 		imageHeight = imageWidth * 3 / 4;
-		File f = new File("/sdcard/eCamera");
+		f = new File("/sdcard/eCamera");
 		lp = new LinearLayout.LayoutParams(imageWidth, imageHeight);
 		lp.setMargins(0, 0, 0, 10);
 		listview = (ListView)findViewById(R.id.lv_localfiles);
 		mList = new ArrayList<String>();
 		getFileName(f);
-		MyAdapter adapter = new MyAdapter(this);
+		adapter = new MyAdapter(this);
 		listview.setAdapter(adapter);
+	}
+	
+	@Override
+	protected void onRestart() {
+		// TODO Auto-generated method stub
+		super.onRestart();
+		System.out.println("Local Files onRestart");
+		getFileName(f);
+		adapter.notifyDataSetChanged();
 	}
 	
 	public ArrayList<String> getFileName(File file){
 		File[] fileArray = file.listFiles();
 		for (File f : fileArray) {
 			System.out.println(f.getPath());
-			if(f.isFile()){
+			if(f.isFile() && !mList.contains(f.getPath())){
 				mList.add(f.getPath());
 			}
 		}
@@ -98,7 +109,7 @@ public class LocalFilesActivity extends Activity {
 		@Override
 		public View getView(int position, View convertView, ViewGroup arg2) {
 			// TODO Auto-generated method stub
-			System.out.println(position);
+			System.out.println("getView");
 			int firstImagePostion = position * 2 + position ;
 			int secondImagePositon = position * 2 + position + 1;
 			int thirdImagePositon = position * 2 + position + 2;
@@ -174,7 +185,7 @@ public class LocalFilesActivity extends Activity {
 		public void onClick(View view) {
 			// TODO Auto-generated method stub
 			System.out.println(view.getTag());
-			//放大缩小跳转  
+			//锟脚达拷锟斤拷小锟斤拷转  
 			Intent intent = new Intent(LocalFilesActivity.this, BigImages.class);
 			intent.putExtra("position", Integer.valueOf(view.getTag().toString()));
 			intent.putStringArrayListExtra("arrayList", mList);

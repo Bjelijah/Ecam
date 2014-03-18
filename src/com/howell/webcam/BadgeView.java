@@ -115,10 +115,10 @@ public class BadgeView extends TextView {
 		this.targetTabIndex = tabIndex;
 		
 		//WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-		int width = PhoneConfig.getPhoneWidth(context);//фад╩©М╤х
+		int width = PhoneConfig.getPhoneWidth(context);//О©╫О©╫д╩О©╫О©╫О©╫
 		System.out.println("width:"+width);
 		
-		badgeRightMargin = width/6;
+		badgeRightMargin = width/9;
 		// apply defaults
 		badgePosition = DEFAULT_POSITION;
 		badgeTopMargin = dipToPixels(DEFAULT_TOP_MARGIN_DIP);

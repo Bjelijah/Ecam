@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Point;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import cn.jpush.android.api.JPushInterface;
 
 import com.android.howell.webcam.R;
+import com.wyy.twodimcode.CaptureActivity;
 
 public class Settings extends Activity implements OnClickListener {
     private SoapManager mSoapManager;
@@ -29,6 +31,7 @@ public class Settings extends Activity implements OnClickListener {
 
     private View mAccount;
     private View mDeviceManage;
+    private View mQRcode;
    // private View mPushAlarm;
 
     private Button mButton;
@@ -52,6 +55,7 @@ public class Settings extends Activity implements OnClickListener {
     	
         mAccount = findViewById(R.id.account);
         mDeviceManage = findViewById(R.id.device_manage);
+        mQRcode = findViewById(R.id.qr_code);
         //mPushAlarm = findViewById(R.id.fl_push_alarm);
 
         mButton = (Button) findViewById(R.id.exit);
@@ -60,6 +64,7 @@ public class Settings extends Activity implements OnClickListener {
         
         mAccount.setOnClickListener(this);
         mDeviceManage.setOnClickListener(this);
+        mQRcode.setOnClickListener(this);
         //mPushAlarm.setOnClickListener(this);
         mButton.setOnClickListener(this);
         
@@ -96,6 +101,10 @@ public class Settings extends Activity implements OnClickListener {
         int id = v.getId();
         Log.e("",id+"");
         switch (id) {
+        case R.id.qr_code:
+        	Intent it = new Intent(Settings.this, CaptureActivity.class);
+			startActivityForResult(it, 1);
+        	break;
         case R.id.account:
             Intent intent = new Intent(this, InformationActivity.class);
             startActivity(intent);
@@ -134,6 +143,28 @@ public class Settings extends Activity implements OnClickListener {
         }
     }
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		switch (requestCode) {
+		case 1:
+			if(data != null){
+				String result = data.getStringExtra("result");
+				if(result != null){
+					Uri uri = Uri.parse(result);  
+					Intent it = new Intent(Intent.ACTION_VIEW, uri);  
+					startActivity(it);
+				}
+			}
+			break;
+
+		default:
+			break;
+		}
+		
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+    
     private void showDialog() {
         View view = getLayoutInflater().inflate(R.layout.dialog, null);
 

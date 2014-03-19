@@ -127,6 +127,47 @@
 
     </FrameLayout>
     
+    <FrameLayout
+        android:id="@+id/qr_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:background="@drawable/list_item_bg_middle"
+        android:clickable="true"
+        android:focusable="true" >
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:src="@drawable/qrcode_icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dip"
+            android:layout_gravity="center_vertical"
+            android:text="扫一扫"
+            android:textColor="#FF000000"
+            android:textSize="18sp" />
+        <ImageView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="right|center_vertical"
+	        android:layout_marginRight="5dip"
+	        android:src="@drawable/selector_forward" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+	        android:layout_marginRight="25dip"
+	        android:visibility="invisible"
+            android:src="@drawable/new_version" />
+
+    </FrameLayout>
+    
     <!--  <FrameLayout
 		android:id="@+id/fl_push_alarm"
         android:layout_width="match_parent"

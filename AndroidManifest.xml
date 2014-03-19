@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.howell.webcam"
-    android:versionCode="16"
-    android:versionName="1.0.6" >
+    android:versionCode="17"
+    android:versionName="1.0.7" >
     
     <!-- 极光   -->
     <permission
@@ -21,6 +21,11 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>  
+    
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"></uses-permission>  
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"></uses-permission>  
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>  
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission> 
 
 
     <!-- Optional for location -->
@@ -31,6 +36,11 @@
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.FLASHLIGHT"/>
+	<uses-feature android:name="android.hardware.camera"/>
+	<uses-feature android:name="android.hardware.camera.autofocus"/>
+
     <uses-sdk
         android:minSdkVersion="10"
         android:targetSdkVersion="10" />
@@ -39,8 +49,13 @@
         android:allowBackup="true"
         android:icon="@drawable/ecam_logo"
         android:label="@string/app_name"
-        android:vmSafeMode="true"
+       	android:vmSafeMode="true"
         >
+        <activity
+            android:name="com.wyy.twodimcode.CaptureActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar">
+        </activity>
         <activity
             android:name="com.howell.webcam.MainActivity"
             android:screenOrientation="portrait"
@@ -52,21 +67,21 @@
             android:name="com.howell.webcam.CameraList"
             android:label="@string/camera_list"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name="com.howell.webcam.CamTabActivity"
             android:label="@string/camera_list"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name="com.howell.webcam.Settings"
             android:label="@string/settings"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.howell.webcam.BigImages"
+            android:name="com.howell.webcam.AddCamera"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
+            android:theme="@android:style/Theme.Black.NoTitleBar" />
         <!-- 
         <activity
             android:name="org.libsdl.app.SDLActivity"
@@ -75,29 +90,25 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
          -->
          <activity
-            android:name="com.howell.webcam.LocalFilesActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-         <activity
             android:name="com.howell.webcam.player.PlayerActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <activity
             android:name="com.howell.webcam.InformationActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name="com.howell.webcam.DeviceManageActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name="com.howell.webcam.DeviceSetActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name="com.howell.webcam.PushAlarmActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+            android:theme="@android:style/Theme.NoTitleBar" />
          <activity
             android:name="com.howell.webcam.LogoActivity"
             android:screenOrientation="portrait"
@@ -112,7 +123,7 @@
             android:name="com.howell.webcam.VideoList"
             android:label="@string/video_list"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+            android:theme="@android:style/Theme.NoTitleBar" />
         
          <!-- Required SDK核心功能-->
         <activity

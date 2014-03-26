@@ -132,6 +132,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	
 	private static long correctedStartTime;
 	private static long correctedEndTime;
+	private static int stopTrackingTouchProgress;
 	
 	boolean bPause ;
 	boolean isAnimationStart;
@@ -209,6 +210,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		isAnimationStart = false;
 		correctedStartTime = -1;
 		correctedEndTime = -1;
+		stopTrackingTouchProgress = 0;
 		
 		//锟斤拷取锟斤拷锟斤拷锟侥硷拷锟斤拷锟斤拷图锟斤拷锟斤拷息
 		SharedPreferences sharedPreferences = getSharedPreferences("set",
@@ -367,7 +369,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 			public void onStopTrackingTouch(SeekBar seekBar) {
 				// TODO Auto-generated method stub
 				int progress = mReplaySeekBar.getProgress();
-//				Log.e("----------->>>", "onStopTrackingTouch progress:"+progress);
+				Log.e("----------->>>", "onStopTrackingTouch progress:"+progress);
 //				Log.e("---------->>>>", "onS startTime:"+startTime+"onS progress:"+progress+"onS endTime:"+endTime);
 				long replayStartTime = correctedStartTime + (long)progress/1000;
 				if(replayStartTime < startTime){
@@ -378,6 +380,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 				Log.e("---------->>>>", "replay end");
 				stopSendMessage = false;
 				progressHasStop = false;
+				stopTrackingTouchProgress = progress;
 				mPlayerHandler.sendEmptyMessage(REPLAYSEEKBAR);
 				//锟斤拷锟斤拷锟斤拷停锟斤拷
 				client.playbackPause(client.getHandle(), false);
@@ -546,7 +549,18 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	}
 	
     public static class PlayerHandler extends Handler{
+    	private boolean isTimeStampBreak;	//时标溢出标志位
+    	private int progress,progressTemp;	//progressTemp：记录时标未溢出时的拖动条播放长度
+    	private long firstBreakFrameTime;	//记录时标溢出时的第一帧数据的时标
     	
+		public PlayerHandler() {
+			super();
+			this.isTimeStampBreak = false;
+			this.progress = 0;
+			this.progressTemp = 0;
+			this.firstBreakFrameTime = 0;
+		}
+
 		@Override
 		public void handleMessage(Message msg) {
 			// TODO Auto-generated method stub
@@ -561,7 +575,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 				if(YV12Renderer.time != 0 && frameFlag == 0){
 					firstFrameTime = YV12Renderer.time;
 					frameFlag++;
-					
+					System.out.println("test firstFrame:"+firstFrameTime);
 					while(true){
 						correctedStartTime = client.getBeg();
 						correctedEndTime = client.getEnd();
@@ -571,18 +585,45 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 							break;
 					}
 					mReplaySeekBar.setMax((int)(correctedEndTime - correctedStartTime)*1000);
+					System.out.println("test maxFrame:"+(int)(correctedEndTime - correctedStartTime)*1000);
 				}else if(YV12Renderer.time != 0 && frameFlag > 0){
 					
 					endFrameTime = YV12Renderer.time;
+					
 					//Log.e("----------->>>", "handler msg.arg1 :"+time);
 //					Log.e("----------->>>", "firstFtame time:"+firstFrameTime+",endFrame time:"+endFrameTime);
 //					Log.e("----------->>>", "handler setProgress :"+(endFrameTime - firstFrameTime));
-					
+					System.out.println("test endFrameTime:"+endFrameTime);
+					System.out.println("test progress:"+(int)(endFrameTime - firstFrameTime));
 					if(!progressHasStop){
 						mPlayerHandler.sendEmptyMessage(HIDEPROGRESSBAR);
 						progressHasStop = true;
 					}
-					mReplaySeekBar.setProgress((int)(endFrameTime - firstFrameTime));
+					if((int)(endFrameTime - firstFrameTime) < 0 && !isTimeStampBreak ){
+						isTimeStampBreak = true;
+						firstBreakFrameTime = endFrameTime;
+						System.out.println("test isTimeStampBreak"+isTimeStampBreak);
+						progress = stopTrackingTouchProgress;
+						if(progress == 0){
+							progress = progressTemp;
+							System.out.println("test progressTemp:"+progressTemp);
+						}
+					}else if((int)(endFrameTime - firstFrameTime) > 0 && isTimeStampBreak){
+						isTimeStampBreak = false;
+					}
+					if(isTimeStampBreak){
+						System.out.println("test stopTrackingTouchProgress:"+progress);
+						System.out.println("test new progress:"+(int)(endFrameTime - firstBreakFrameTime));
+						mReplaySeekBar.setProgress(progress + (int)(endFrameTime - firstBreakFrameTime));
+					}else{
+						mReplaySeekBar.setProgress((int)(endFrameTime - firstFrameTime));
+						progressTemp = (int)(endFrameTime - firstFrameTime);
+						
+					}
+					if(stopTrackingTouchProgress != 0){
+						stopTrackingTouchProgress = 0;
+					}
+					//mReplaySeekBar.setProgress((int)(endFrameTime - firstFrameTime));
 				}
 				mPlayerHandler.sendEmptyMessageDelayed(REPLAYSEEKBAR,100);
 			}

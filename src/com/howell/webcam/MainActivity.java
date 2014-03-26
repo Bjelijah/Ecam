@@ -74,6 +74,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         mUserName.setText(account);
         mPassWord.setText(password);
+//        System.out.println("test password:"+password);
         
         handler = new MessageHandler();
         //thread = new LoginThread(account, password);

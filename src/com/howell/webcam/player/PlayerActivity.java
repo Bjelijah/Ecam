@@ -134,6 +134,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	private static long correctedEndTime;
 	
 	boolean bPause ;
+	boolean isAnimationStart;
 //	private FrameLayout mLayout;
 	public PlayerActivity() {   
         mGestureDetector = new GestureDetector(this);   
@@ -205,6 +206,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		lastSecondFrames = 0;
 		progressHasStop = false;
 		bPause = true;
+		isAnimationStart = false;
 		correctedStartTime = -1;
 		correctedEndTime = -1;
 		
@@ -596,14 +598,14 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 					mWaitProgressBar.setVisibility(View.GONE);
 					System.out.println("frames: send message DETECT_IF_NO_STREAM_ARRIVE");
 					//锟斤拷锟斤拷锟斤拷锟绞撅拷丝锟绞硷拷锟酵�
-					if(!playback){
-						File destDir = new File("/sdcard/eCamera/cache");
-						if (!destDir.exists()) {
-							destDir.mkdirs();
-						}
-						String path = "/sdcard/eCamera/cache/"+dev.getDevID()+".jpg";
-						YV12Renderer.setCatchPictureFlag(path,path.length());
-					}
+//					if(!playback){
+//						File destDir = new File("/sdcard/eCamera/cache");
+//						if (!destDir.exists()) {
+//							destDir.mkdirs();
+//						}
+//						String path = "/sdcard/eCamera/cache/"+dev.getDevID()+".jpg";
+//						YV12Renderer.setCatchPictureFlag(path,path.length());
+//					}
 					mPlayerHandler.sendEmptyMessage(DETECT_IF_NO_STREAM_ARRIVE);
 				}
 			}
@@ -628,7 +630,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 				MessageUtiles.postNewUIDialog(PlayerActivity.getContext(), PlayerActivity.getContext().getString(R.string.link_error), PlayerActivity.getContext().getString(R.string.ok), 1);
 			}
 			if (msg.what == SHOWSTREAMLEN) {
-				System.out.println("SHOWSTREAMLEN");
+				//System.out.println("SHOWSTREAMLEN");
 				int msg_boj = Integer.valueOf(msg.obj.toString());
 				if(mStreamLen != null){
 					streamLenFlag++;
@@ -668,18 +670,18 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 				if(stopSendMessage){
 					return;
 				}
-				System.out.println("frames:"+client.toString()+","+client.isQuit());
+				//System.out.println("frames:"+client.toString()+","+client.isQuit());
 				if(!client.isQuit()){
-					System.out.println("nowFrames:"+nowFrames+"lastSecondFrames:"+lastSecondFrames);
+					//System.out.println("nowFrames:"+nowFrames+"lastSecondFrames:"+lastSecondFrames);
 					if(nowFrames == lastSecondFrames){
-						System.out.println("frames send message show progress");
+						//System.out.println("frames send message show progress");
 						mPlayerHandler.sendEmptyMessage(SHOWPROGRESSBAR);
 					}else{
-						System.out.println("frames send message hide progress");
+						//System.out.println("frames send message hide progress");
 						mPlayerHandler.sendEmptyMessage(HIDEPROGRESSBAR);
 					}
 					lastSecondFrames = nowFrames;
-					if(nowFrames >= /*2000000000*/1000){
+					if(nowFrames >= 2000000000/*1000*/){
 						nowFrames = 0;
 						lastSecondFrames = 0;
 					}
@@ -797,6 +799,14 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	private void quitDisplay(){
 		if (backCount == 0) {
 			stopSendMessage = true;
+			if(!playback){
+				File destDir = new File("/sdcard/eCamera/cache");
+				if (!destDir.exists()) {
+					destDir.mkdirs();
+				}
+				String path = "/sdcard/eCamera/cache/"+dev.getDevID()+".jpg";
+				YV12Renderer.setCatchPictureFlag(path,path.length());
+			}
 			System.out.println("aaaaaaaaaa");
 			while(true){
 				if(client != null){
@@ -871,21 +881,32 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 
 	private void animationStart(float fromXDelta, float toXDelta, float fromYDelta, float toYDelta){
 		 //锟斤拷始锟斤拷 Translate锟斤拷锟斤拷  
-	   // translateAnimation = new TranslateAnimation(0.1f, 100.0f,0.1f,0.1f);  
-		System.out.println("flingAAAAAAAA");
+	   // translateAnimation = new TranslateAnimation(0.1f, 100.0f,0.1f,0.1f); 
+		System.out.println("Fling isAnimationStart:"+isAnimationStart);
+		if(fromXDelta == 0&&toXDelta ==100&&fromYDelta ==0&&toYDelta ==0){
+			System.out.println("Right");
+		}else if(fromXDelta == 0&&toXDelta == -100&&fromYDelta ==0&&toYDelta ==0){
+			System.out.println("Left");
+		}else if(fromXDelta == 0&&toXDelta == 0&&fromYDelta ==0&&toYDelta ==-100){
+			System.out.println("Up");
+		}else{
+			System.out.println("Down");
+		}
+		isAnimationStart = true;
+//		System.out.println("flingAAAAAAAA");
 	    translateAnimation = new TranslateAnimation(fromXDelta, toXDelta,fromYDelta,toYDelta);
-	    System.out.println("flingBBBBBBBB");
+//	    System.out.println("flingBBBBBBBB");
 	    translateAnimation.setAnimationListener(new AnimationListener() {
 			
 			@Override
 			public void onAnimationStart(Animation arg0) {
 				// TODO Auto-generated method stub
-				System.out.println("Fling00000000");
+//				System.out.println("Fling00000000");
 				animationAim.setVisibility(View.VISIBLE);
-				System.out.println("Fling1111111");
+//				System.out.println("Fling1111111");
 				animationBackground.setVisibility(View.VISIBLE);
 //				mAnimationLayout.setVisibility(View.VISIBLE);
-				System.out.println("Fling2222222");
+//				System.out.println("Fling2222222");
 			}
 			
 			@Override
@@ -897,30 +918,42 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 			@Override
 			public void onAnimationEnd(Animation arg0) {
 				// TODO Auto-generated method stub
-				System.out.println("Fling333333333");
+//				System.out.println("Fling333333333");
 				animationAim.setVisibility(View.GONE);
-				System.out.println("Fling44444444");
+//				System.out.println("Fling44444444");
 				animationBackground.setVisibility(View.GONE);
-				System.out.println("Fling5555555");
+//				System.out.println("Fling5555555");
 				animationAim.clearAnimation();
 //				mAnimationLayout.setVisibility(View.INVISIBLE);
-				System.out.println("Fling66666666");
+//				System.out.println("Fling66666666");
+				isAnimationStart = false;
 			}
         });
-	    System.out.println("flingCCCCCCCC");
+//	    System.out.println("flingCCCCCCCC");
 	    //translateAnimation.setFillAfter(true);
-	    System.out.println("flingDDDDDDDD");
+//	    System.out.println("flingDDDDDDDD");
 	    //锟斤拷始锟斤拷 Alpha锟斤拷锟斤拷  
 	    //Animation alphaAnimation = new AlphaAnimation(0.1f, 1.0f);  
 	      
 	    //锟斤拷锟矫讹拷锟斤拷时锟斤拷 (锟斤拷锟矫碉拷每锟斤拷锟斤拷锟斤拷)  
-	    System.out.println("flingEEEEEEE");
+//	    System.out.println("flingEEEEEEE");
 	    translateAnimation.setDuration(2000);  
-	    System.out.println("flingFFFFFFFF");
+//	    System.out.println("flingFFFFFFFF");
 		animationAim.startAnimation(translateAnimation);  
-		System.out.println("fling"+translateAnimation.willChangeBounds());
-		System.out.println("flingGGGGGGGG");
+//		System.out.println("flingGGGGGGGG");
+		
 	}
+	
+	Thread delay = new Thread(){
+		public void run() {
+			try {
+				Thread.sleep(4000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		};
+	};
 	
 	@Override
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
@@ -934,8 +967,8 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
       
         // 锟斤拷锟斤拷锟斤拷锟斤拷 锟斤拷   
         // X锟斤拷锟斤拷锟斤拷位锟狡达拷锟斤拷FLING_MIN_DISTANCE锟斤拷锟斤拷锟狡讹拷锟劫度达拷锟斤拷FLING_MIN_VELOCITY锟斤拷锟斤拷锟斤拷/锟斤拷   
-		
-		if(!dev.isPtzFlag() || playback){
+		//System.out.println("Animation flag:"+isAnimationStart);
+		if(isAnimationStart || !dev.isPtzFlag() || playback){
 			System.out.println("is not PTZ");
 			return false;
 		}
@@ -956,14 +989,12 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
             // Fling left   
         	direction = "Right";
         	time = 700;
-        	System.out.println("fling111111111");
         	animationStart(0,100,0,0);
         	Log.e("MyGesture", "Fling left "+"x:"+Math.abs(e1.getX() - e2.getX())+"y:"+Math.abs(e1.getY() - e2.getY()));  
         } else if (e2.getX() - e1.getX() > FLING_MIN_DISTANCE && Math.abs(velocityX) > FLING_MIN_VELOCITY) {   
             // Fling right   
         	Log.e("MyGesture", "Fling right "+"x:"+Math.abs(e1.getX() - e2.getX())+"y:"+Math.abs(e1.getY() - e2.getY()));   
         	direction = "Left";
-        	System.out.println("fling222222222");
         	animationStart(0, -100,0,0);
         	time = 700;
         }  else if (e2.getY() - e1.getY() > FLING_MIN_DISTANCE && Math.abs(velocityY) > FLING_MIN_VELOCITY) {   
@@ -983,7 +1014,6 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
         }
         mFlingTask = new MyFlingTask(direction,time);
         mFlingTask.execute();
-        Log.e("mFlingTask", mFlingTask.getStatus().toString());
         return true;   
 	}
 	
@@ -1049,23 +1079,23 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		// TODO Auto-generated method stub
-		switch (event.getAction() & MotionEvent.ACTION_MASK) {  
-		  
-        case MotionEvent.ACTION_DOWN:  
-            Log.w("FLAG", "ACTION_DOWN");
-            break;  
-        case MotionEvent.ACTION_POINTER_DOWN:  
-            Log.w("FLAG", "ACTION_POINTER_DOWN");  
-            break;  
-        case MotionEvent.ACTION_UP:  
-            Log.w("FLAG", "ACTION_UP");  
-        case MotionEvent.ACTION_POINTER_UP:  
-            Log.w("FLAG", "ACTION_POINTER_UP");  
-            break;  
-        case MotionEvent.ACTION_MOVE:  
-            Log.w("FLAG", "ACTION_MOVE");  
-            break;  
-        }  
+//		switch (event.getAction() & MotionEvent.ACTION_MASK) {  
+//		  
+//        case MotionEvent.ACTION_DOWN:  
+//            Log.w("FLAG", "ACTION_DOWN");
+//            break;  
+//        case MotionEvent.ACTION_POINTER_DOWN:  
+//            Log.w("FLAG", "ACTION_POINTER_DOWN");  
+//            break;  
+//        case MotionEvent.ACTION_UP:  
+//            Log.w("FLAG", "ACTION_UP");  
+//        case MotionEvent.ACTION_POINTER_UP:  
+//            Log.w("FLAG", "ACTION_POINTER_UP");  
+//            break;  
+//        case MotionEvent.ACTION_MOVE:  
+//            Log.w("FLAG", "ACTION_MOVE");  
+//            break;  
+//        }  
 		return mGestureDetector.onTouchEvent(event);   
 	}
 	

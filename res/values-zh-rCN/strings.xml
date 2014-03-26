@@ -77,6 +77,7 @@
 	<string name="no_sdcard">请先插入SD卡</string>
 	<string name="local_files">本地文件</string> 
 	<string name="no_estore">设备没有插入SD卡</string>
+	<string name="share_pic">分享图片</string>
 	
 	<string name="QR_code">二维码</string>
 	<string name="msg_default_status">将二维码放入框内，即可自动扫描</string>

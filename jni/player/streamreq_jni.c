@@ -5,6 +5,8 @@
 #include "ice.h"
 #include "hwplay/stream_type.h"
 #include "hwplay/play_def.h"
+#include <time.h>
+//#include <sys/timeb.h>
 
 #define RESOURCE_ARRAY_LENGHT 20
 struct StreamResource
@@ -38,7 +40,8 @@ static void global_init(void)
   ice_global_init();
   hwplay_init(1,0,0);
 }
-
+//static long timer = 0,lastTimer = 0;
+struct timeval last_tv;
 static void on_yuv_callback_ex(PLAY_HANDLE handle,
 									 const unsigned char* y,
 									 const unsigned char* u,
@@ -47,12 +50,20 @@ static void on_yuv_callback_ex(PLAY_HANDLE handle,
 									 int uv_stride,
 									 int width,
 									 int height,
-									 unsigned long long time,
+									 unsigned long long timee,
 									 long user)
 {	
 	//__android_log_print(ANDROID_LOG_INFO, "jni", "start decode  time: %llu",time);
 	//sdl_display_input_data(y,u,v,width,height,time);
-	__android_log_print(ANDROID_LOG_INFO, "yuv", "on_yuv_callback_ex:%d res[user]->is_exit:%d",user,res[user]->is_exit);
+	/*struct timeval now;
+	long diff;
+	gettimeofday(&now,NULL);
+	if (last_tv.tv_sec>0) {
+		diff=now.tv_sec/1000+now.tv_usec*1000-(last_tv.tv_sec/1000+last_tv.tv_usec*1000);
+	}
+	__android_log_print(ANDROID_LOG_INFO, "yuv", "on_yuv_callback_ex:%ld ",diff);
+	last_tv=now;*/
+
 	if(res[user]->is_exit == 1) return;
 	yv12gl_display(y,u,v,width,height,time);
 }
@@ -201,7 +212,7 @@ static PLAY_HANDLE init_play_handle(int is_playback,int arr_index){
 	media_head.vdec_code = VDEC_H264;
 	//__android_log_print(ANDROID_LOG_INFO, "JNI", "media_head finish");
 	PLAY_HANDLE  ph = hwplay_open_stream((char*)&media_head,sizeof(media_head),1024*1024,is_playback,area);
-	hwplay_set_max_framenum_in_buf(ph,25);
+	//hwplay_set_max_framenum_in_buf(ph,5);
 	//__android_log_print(ANDROID_LOG_INFO, "JNI", "media_head.media_fourcc is:%d",media_head.media_fourcc);
 	__android_log_print(ANDROID_LOG_INFO, "JNI", "ph is:%d",ph);
 	//resource->play_handle = ph;

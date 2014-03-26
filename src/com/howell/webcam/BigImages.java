@@ -122,7 +122,7 @@ public class BigImages extends Activity implements OnClickListener{
 			Uri screenshotUri = Uri.parse("file://"+mList.get(position));
 			sharingIntent.setType("image/jpeg");
 			sharingIntent.putExtra(Intent.EXTRA_STREAM, screenshotUri);
-			startActivity(Intent.createChooser(sharingIntent, "Õº∆¨∑÷œÌ"));
+			startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.share_pic)));
 			break;
 		case R.id.ib_bigimage_back:
 			BigImages.this.finish();

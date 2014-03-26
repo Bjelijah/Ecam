@@ -173,6 +173,7 @@ public class YV12Renderer
 		    //drawRectangle(yuvTextures[0], localVertices);
 		    checkNoGLES2Error();
 //		  }
+		    System.out.println("onDrawFrame over");
 	}
 	
 //	public static float getFrames(){
@@ -370,7 +371,7 @@ public class YV12Renderer
 	
 	//invoked by outside
 	public void requestRender() {
-		//Log.d("render","native invoke render ");
+		Log.d("render","native invoke render ");
 		gl_surface_view_.requestRender();
 	}
 	

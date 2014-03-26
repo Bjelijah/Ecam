@@ -16,8 +16,9 @@ import android.os.Vibrator;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
-
-import android.widget.TextView;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
 
 import com.android.howell.webcam.R;
 import com.google.zxing.BarcodeFormat;
@@ -40,7 +41,7 @@ public class CaptureActivity extends Activity implements Callback {
 	private boolean playBeep;
 	private static final float BEEP_VOLUME = 0.10f;
 	private boolean vibrate;//���ɨ��ʱ�Ƿ�����ʾ
-
+    private ImageView mBack;
 
 	
 	
@@ -52,9 +53,18 @@ public class CaptureActivity extends Activity implements Callback {
 		
 		CameraManager.init(getApplication());
 		viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
+        mBack = (ImageView)findViewById(R.id.iv_left);
+        mBack.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				finish();
+			}
+		});
 		hasSurface = false;
 		inactivityTimer = new InactivityTimer(this);//activity��ֹһ��ʱ����Զ��ر�
-
+		
 		
 	}
 

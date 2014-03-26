@@ -56,6 +56,17 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar">
         </activity>
+        
+        <activity
+            android:name="com.howell.webcam.BigImages"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar">
+        </activity>
+        
+        <activity
+            android:name="com.howell.webcam.LocalFilesActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <activity
             android:name="com.howell.webcam.MainActivity"
             android:screenOrientation="portrait"

@@ -63,7 +63,7 @@ LOGE("self.time :%llu %llu", self.time,time);
 
   /* get JAVA method first */
   if (!self.method_ready) {
-	  LOGE("111111111"); 
+	  //LOGE("111111111");
    
     jclass cls = (*self.env)->GetObjectClass(self.env,self.obj);
 	//self.clz = (*self.env)->FindClass(self.env, "com/howell/webcam/player/YV12Renderer");
@@ -71,16 +71,16 @@ LOGE("self.time :%llu %llu", self.time,time);
       LOGE("FindClass() Error.....");   
       goto error;   
     }
-    //ÔÙ»ñµÃÀàÖÐµÄ·½·¨   
+    //ï¿½Ù»ï¿½ï¿½ï¿½ï¿½ï¿½ÐµÄ·ï¿½ï¿½ï¿½   
     self.mid = (*self.env)->GetMethodID(self.env, cls, "requestRender", "()V");
 	self.mSetTime = (*self.env)->GetMethodID(self.env, cls, "setTime", "(J)V");
-    if (self.mid == NULL || self.mSetTime == NULL) {   
-      LOGE("GetMethodID() Error.....");   
-      goto error;   
+    if (self.mid == NULL || self.mSetTime == NULL) {
+      LOGE("GetMethodID() Error.....");
+      goto error;
     }
     self.method_ready=1;
   } 
-  LOGE("22222222");
+  //LOGE("22222222");
   (*self.env)->CallVoidMethod(self.env,self.obj,self.mSetTime,self.time);
   /*
   if (sem_trywait(&self.over_sem)==0) {
@@ -93,7 +93,7 @@ LOGE("self.time :%llu %llu", self.time,time);
 	  return;
   }
   */
-  LOGE("33333333");
+  //LOGE("33333333");
   pthread_mutex_lock(&self.lock);
   if (width!=self.width || height!=self.height) {
     self.y = realloc(self.y,width*height);
@@ -107,10 +107,10 @@ LOGE("self.time :%llu %llu", self.time,time);
   memcpy(self.v,v,width*height/4);
   pthread_mutex_unlock(&self.lock);
 
-LOGE("4444444");
+//LOGE("4444444");
   /* notify the JAVA */
   (*self.env)->CallVoidMethod(self.env, self.obj, self.mid, NULL);
-LOGE("555555555");
+//LOGE("555555555");
 
  if ((*self.jvm)->DetachCurrentThread(self.jvm) != JNI_OK) {   
 				LOGE("%s: DetachCurrentThread() failed", __FUNCTION__);   
@@ -130,7 +130,7 @@ JNIEXPORT void JNICALL Java_com_howell_webcam_player_YV12Renderer_nativeInit
 	//self = malloc(sizeof(YV12glDisplay));
 	//memset(&self,0,sizeof(YV12glDisplay));
   (*env)->GetJavaVM(env,&self.jvm);   
-  //²»ÄÜÖ±½Ó¸³Öµ(g_obj = obj)   
+  //ï¿½ï¿½ï¿½ï¿½Ö±ï¿½Ó¸ï¿½Öµ(g_obj = obj)   
   self.obj = (*env)->NewGlobalRef(env,obj);
   pthread_mutex_init(&self.lock,NULL);
   //sem_init(&self.over_sem,0,0);
@@ -185,7 +185,7 @@ JNIEXPORT void JNICALL Java_com_howell_webcam_player_YV12Renderer_nativeRenderU
 JNIEXPORT void JNICALL Java_com_howell_webcam_player_YV12Renderer_nativeRenderV
 (JNIEnv *env, jobject obj)
 {
-	LOGE("nativeRenderV");
+
   if (self.v==NULL) {
     char value[] = {128};
     glTexImage2D(GL_TEXTURE_2D,0,GL_LUMINANCE,1,1,0,GL_LUMINANCE,GL_UNSIGNED_BYTE,value);
@@ -194,6 +194,7 @@ JNIEXPORT void JNICALL Java_com_howell_webcam_player_YV12Renderer_nativeRenderV
     glTexImage2D(GL_TEXTURE_2D,0,GL_LUMINANCE,self.width/2,self.height/2,0,GL_LUMINANCE,GL_UNSIGNED_BYTE,self.v);
   }
   pthread_mutex_unlock(&self.lock);
+  LOGE("nativeRenderV");
 }
 
 JNIEXPORT void JNICALL Java_com_howell_webcam_player_YV12Renderer_nativeDeinit

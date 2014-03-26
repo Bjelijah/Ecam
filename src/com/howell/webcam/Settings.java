@@ -27,7 +27,7 @@ import com.wyy.twodimcode.CaptureActivity;
 
 public class Settings extends Activity implements OnClickListener {
     private SoapManager mSoapManager;
-    private AccountResponse mResponse;
+    //private AccountResponse mResponse;
 
     private View mAccount;
     private View mDeviceManage;
@@ -150,6 +150,7 @@ public class Settings extends Activity implements OnClickListener {
 		case 1:
 			if(data != null){
 				String result = data.getStringExtra("result");
+				System.out.println("result:"+result);
 				if(result != null){
 					Uri uri = Uri.parse(result);  
 					Intent it = new Intent(Intent.ACTION_VIEW, uri);  

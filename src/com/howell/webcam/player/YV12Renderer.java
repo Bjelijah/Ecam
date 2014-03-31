@@ -95,7 +95,7 @@ public class YV12Renderer
 	private native void nativeRenderU();
 	private native void nativeRenderV();
 	private native void nativeOnSurfaceCreated();
-	public static native void setCatchPictureFlag(String path,int length);
+	//public static native void setCatchPictureFlag(String path,int length);
 		
 	public void setTime(long time){
 		if(PlayerActivity.stopSendMessage){

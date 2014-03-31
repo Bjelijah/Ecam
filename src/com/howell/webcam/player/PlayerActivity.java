@@ -149,6 +149,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	public native void nativeAudioInit();
 	public static native void nativeAudioStop();
 //	public native void nativeAudioDeinit();
+	//public static native void setCatchPictureFlag(long handle,String path,int length);
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -270,7 +271,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 					destDir.mkdirs();
 				}
 				String path = "/sdcard/eCamera/"+FileUtils.getFileName()+".jpg";
-				YV12Renderer.setCatchPictureFlag(path,path.length());
+				client.setCatchPictureFlag(client.getHandle(),path,path.length());
 				MessageUtiles.postToast(getApplicationContext(), getResources().getString(R.string.save_picture),2000);
 			}
 	    });
@@ -841,12 +842,18 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		if (backCount == 0) {
 			stopSendMessage = true;
 			if(!playback){
+				System.out.println("test catch picture");
 				File destDir = new File("/sdcard/eCamera/cache");
 				if (!destDir.exists()) {
+					System.out.println("test 1111");
 					destDir.mkdirs();
 				}
+				System.out.println("test2222");
 				String path = "/sdcard/eCamera/cache/"+dev.getDevID()+".jpg";
-				YV12Renderer.setCatchPictureFlag(path,path.length());
+				System.out.println("test: "+path);
+				System.out.println("test3333");
+				client.setCatchPictureFlag(client.getHandle(),path,path.length());
+				System.out.println("test4444");
 			}
 			System.out.println("aaaaaaaaaa");
 			while(true){

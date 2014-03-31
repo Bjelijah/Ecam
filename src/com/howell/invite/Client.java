@@ -588,4 +588,5 @@ public class Client {
     public native int getSdpTime(long handle);
     public native int getBegSdpTime(long handle);
     public native int getEndSdpTime(long handle);
+    public native void setCatchPictureFlag(long handle,String path,int length);
 }

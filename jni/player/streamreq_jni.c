@@ -87,9 +87,9 @@ on_source_callback(PLAY_HANDLE handle,
   if (type == 0) {
     audio_play(buf,len,au_sample,au_channel,au_bits);
   } 
-  else if (type == 1) {
-    native_catch_picture(res[user]->play_handle);
-  }
+  //else if (type == 1) {
+    //native_catch_picture(res[user]->play_handle);
+  //}
   //__android_log_print(ANDROID_LOG_INFO, "JNI", "type0 over");
 }
 
@@ -447,6 +447,22 @@ static void free_resource(void* handle)
 	}else{
 		__android_log_print(ANDROID_LOG_INFO, "jni", "stop handle is NULL!! ");
 	}
+}
+
+JNIEXPORT void JNICALL Java_com_howell_invite_Client_setCatchPictureFlag(JNIEnv *env, jclass cls,jlong index,jstring jpath,jint jlength)
+{
+	#if 1
+	__android_log_print(ANDROID_LOG_INFO, "--->", "setflag");
+	//self.is_catch_picture = 1;
+	char* temp = (*env)-> GetStringUTFChars(env,jpath,NULL);
+	__android_log_print(ANDROID_LOG_INFO, ">>>", "index :%d",index);
+	__android_log_print(ANDROID_LOG_INFO, ">>>", "temp :%s",temp);
+	int ret = hwplay_save_to_jpg(res[index]->play_handle,temp,70);
+	__android_log_print(ANDROID_LOG_INFO, ">>>", "ret :%d",ret);
+	(*env)->ReleaseStringUTFChars(env,jpath,temp);
+	__android_log_print(ANDROID_LOG_INFO, ">>>", "finish fill buf");
+	__android_log_print(ANDROID_LOG_INFO, "--->", "setflag over");
+	#endif
 }
 
 JNIEXPORT void JNICALL Java_com_howell_invite_Client_joinThread

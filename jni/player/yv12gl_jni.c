@@ -212,7 +212,7 @@ JNIEXPORT void JNICALL Java_com_howell_webcam_player_YV12Renderer_nativeDeinit
   LOGE("nativeDeinit5");
 }
 
-void native_catch_picture(PLAY_HANDLE handle){
+/*void native_catch_picture(PLAY_HANDLE handle){
 	if(self.is_catch_picture == 0){
 		return;
 	}
@@ -234,7 +234,7 @@ JNIEXPORT void JNICALL Java_com_howell_webcam_player_YV12Renderer_setCatchPictur
 	(*env)->ReleaseStringUTFChars(env,jpath,temp);
 	__android_log_print(ANDROID_LOG_INFO, "--->", "setflag over");
 	#endif
-}
+}*/
 
 //JNIEXPORT unsigned long long JNICALL Java_com_howell_webcam_player_YV12Renderer_getDataTime(JNIEnv *env, jobject obj)
 //{

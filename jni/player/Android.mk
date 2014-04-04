@@ -35,10 +35,16 @@ LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/../SDL/include
 include $(PREBUILT_SHARED_LIBRARY)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE := jpush
+LOCAL_SRC_FILES := libjpush.so
+LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/../SDL/include
+include $(PREBUILT_SHARED_LIBRARY)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE := player_jni
 # Add your application source files here...
 LOCAL_SRC_FILES := yv12gl_jni.c streamreq_jni.c audio_jni.c
-LOCAL_SHARED_LIBRARIES := hwplay
+LOCAL_SHARED_LIBRARIES := hwplay jpush
 LOCAL_STATIC_LIBRARIES := ecamstream
 LOCAL_LDFLAGS := -LF:/Android/android-ndk-r8e/sources/cxx-stl/gnu-libstdc++/4.6/libs/armeabi-v7a
 LOCAL_LDLIBS := -llog -lgnustl_static -lGLESv2 -lz -ldl -lgcc

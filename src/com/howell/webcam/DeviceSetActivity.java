@@ -427,7 +427,7 @@ public class DeviceSetActivity extends Activity implements
     		// TODO Auto-generated method stub
     		super.handleMessage(msg);
     		if(msg.what == CRASH){
-    			MessageUtiles.postNewUIDialog(DeviceSetActivity.this, "Õ¯¬Á–≈∫≈»ı£¨ªÒ»°≈‰÷√ ß∞‹", "OK", 0);
+    			MessageUtiles.postNewUIDialog(DeviceSetActivity.this, getResources().getString(R.string.set_fail), "OK", 0);
     		}
     		if(msg.what == ALARMPUSHOFF){
     			cb_alarm_notice.setChecked(false);

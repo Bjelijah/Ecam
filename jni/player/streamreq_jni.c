@@ -6,6 +6,7 @@
 #include "hwplay/stream_type.h"
 #include "hwplay/play_def.h"
 #include <time.h>
+
 //#include <sys/timeb.h>
 
 #define RESOURCE_ARRAY_LENGHT 20
@@ -19,6 +20,7 @@ struct StreamResource
   int is_exit;
   int stream_count;
   pthread_t id;
+  pthread_t audio_thread_id;
 
   JavaVM * jvm;
   JNIEnv * env;
@@ -28,11 +30,23 @@ struct StreamResource
   size_t stream_len;
 
   time_t beg_time,end_time;
+  //unsigned long yuv_timestamp;
 };
 static pthread_once_t once_ctrl = PTHREAD_ONCE_INIT;
 //struct StreamResource * res = NULL;
 //static int quick_quit;
 static struct StreamResource *res[RESOURCE_ARRAY_LENGHT] ;
+
+/*struct audio_data datas[1024];
+
+struct audio_data{
+	unsigned long timestamp;//时标,单位为毫秒
+	const char* buf;//数据缓存,pcm数据
+	int len;//数据长度,如果为视频则应该等于w * h * 3 / 2
+	int au_sample;//音频采样率,视频数据无效
+	int au_channel;//音频通道数,视频数据无效
+	int au_bits;//音频位宽,视频数据无效
+};*/
 
 /* 鍏ㄥ眬鍒濆鍖�*/
 static void global_init(void)
@@ -50,10 +64,11 @@ static void on_yuv_callback_ex(PLAY_HANDLE handle,
 									 int uv_stride,
 									 int width,
 									 int height,
-									 unsigned long long timee,
+									 unsigned long long time,
 									 long user)
 {	
-	//__android_log_print(ANDROID_LOG_INFO, "jni", "start decode  time: %llu",time);
+	__android_log_print(ANDROID_LOG_INFO, "jni", "start decode  time: %llu",time);
+	//getNowTime();
 	//sdl_display_input_data(y,u,v,width,height,time);
 	/*struct timeval now;
 	long diff;
@@ -67,6 +82,14 @@ static void on_yuv_callback_ex(PLAY_HANDLE handle,
 	if(res[user]->is_exit == 1) return;
 	yv12gl_display(y,u,v,width,height,time);
 }
+
+/*void getNowTime(){
+	 struct  timeval tv;
+	 gettimeofday(&tv,NULL);
+	 printf("tv_sec:%d.tv_usec:%d\n",tv.tv_sec,tv.tv_usec);
+	 __android_log_print(ANDROID_LOG_INFO, "getNowTime", "tv_sec.tv_usec: %d.%d\n",tv.tv_sec,tv.tv_usec);
+	//return lpsystime;
+}*/
 
 on_source_callback(PLAY_HANDLE handle,
 			int type,//3-音频,1-视频
@@ -82,19 +105,42 @@ on_source_callback(PLAY_HANDLE handle,
 			int au_bits,//音频位宽,视频数据无效
 			long user)
 {
-  __android_log_print(ANDROID_LOG_INFO, "audio", "usr:%d on_source_callback is_exit: %d",user,res[user]->is_exit);
+  __android_log_print(ANDROID_LOG_INFO, "audio", "on_source_callback timestamp: %d type:%d",timestamp,type);
   if(res[user]->is_exit == 1) return;
   if (type == 0) {
-    audio_play(buf,len,au_sample,au_channel,au_bits);
-  } 
+	  //struct audio_data data;
+	  //data.timestamp = timestamp;
+	  //data.buf = buf;
+    //audio_play(buf,len,au_sample,au_channel,au_bits);
+  }/*else if(){
+	  res->yuv_timestamp
+  }*/
   //else if (type == 1) {
     //native_catch_picture(res[user]->play_handle);
   //}
   //__android_log_print(ANDROID_LOG_INFO, "JNI", "type0 over");
 }
 
+on_audio_callback(PLAY_HANDLE handle,
+		const char* buf,//数据缓存,如果是视频，则为YV12数据，如果是音频则为pcm数据
+		int len,//数据长度,如果为视频则应该等于w * h * 3 / 2
+		unsigned long timestamp,//时标,单位为毫秒
+		long user){
+	__android_log_print(ANDROID_LOG_INFO, "audio", "on_audio_callback timestamp: %lu ",timestamp);
+
+	if(res[user]->is_exit == 1) return;
+	audio_play(buf,len,0,0,0);
+
+}
+
+/*void audio_thread(void *arg){
+	__android_log_print(ANDROID_LOG_INFO, "audio", "pthread audio create success");
+
+
+}*/
+
 void timer_thread(void *arg){
-__android_log_print(ANDROID_LOG_INFO, "timer_thread", "1");
+//__android_log_print(ANDROID_LOG_INFO, "timer_thread", "1");
 	int arr_index = (int)arg;
 	if((*res[arr_index]->jvm)->AttachCurrentThread(res[arr_index]->jvm, &res[arr_index]->env, NULL) != JNI_OK) {
       //LOGE("%s: AttachCurrentThread() failed", __FUNCTION__);   
@@ -121,14 +167,14 @@ __android_log_print(ANDROID_LOG_INFO, "timer_thread", "1");
 		/* notify the JAVA */
 		(*res[arr_index]->env)->CallVoidMethod(res[arr_index]->env,res[arr_index]->obj,res[arr_index]->mid,res[arr_index]->stream_len);
 		res[arr_index]->stream_len = 0;
-		__android_log_print(ANDROID_LOG_INFO, "timer_thread", "3");
+		//__android_log_print(ANDROID_LOG_INFO, "timer_thread", "3");
 	}
 
-	__android_log_print(ANDROID_LOG_INFO, "timer_thread", "4");
+	//__android_log_print(ANDROID_LOG_INFO, "timer_thread", "4");
 	if ((*res[arr_index]->jvm)->DetachCurrentThread(res[arr_index]->jvm) != JNI_OK) {
 				//LOGE("%s: DetachCurrentThread() failed", __FUNCTION__);   
 	}   
-	__android_log_print(ANDROID_LOG_INFO, "timer_thread", "5");
+	//__android_log_print(ANDROID_LOG_INFO, "timer_thread", "5");
 
 	return;
 
@@ -141,12 +187,12 @@ error:
 }
 
 static void OnStreamArrive(ecam_stream_req_t * req, ECAM_STREAM_REQ_FRAME_TYPE media_type, const char * data, size_t len, uint32_t timestamp) {
-	//__android_log_print(ANDROID_LOG_INFO, "jni", "-------------media_type %d-",media_type);
+
 	//PLAY_HANDLE ph = ecam_stream_req_get_usr_data(req);
 	//__android_log_print(ANDROID_LOG_INFO, "OnStreamArrive", "len: %d",len);
 	//return;
 	int arr_index = ecam_stream_req_get_usr_data(req);
-	__android_log_print(ANDROID_LOG_INFO, "OnStreamArrive", "len: %d, arr_idx: %d",len,arr_index);
+	//__android_log_print(ANDROID_LOG_INFO, "OnStreamArrive", "len: %d, arr_idx: %d",len,arr_index);
 
 	res[arr_index]->stream_len += len;
 	if(media_type != 2){
@@ -168,8 +214,12 @@ static void OnStreamArrive(ecam_stream_req_t * req, ECAM_STREAM_REQ_FRAME_TYPE m
 	head.sys_time = time(NULL);
 	head.tag = 0x48574D49;
 	head.time_stamp =  (unsigned long long)timestamp / 90 * 1000;
+	if(media_type == kFrameTypeAudio){
+		head.time_stamp =  (unsigned long long)timestamp / 8 * 1000;
+	}
 	head.type = media_type;
-
+	//__android_log_print(ANDROID_LOG_INFO, "jni", "-------------media_type %d- timestamp: %llu",media_type,head.time_stamp);
+		//getNowTime();
 	if(res[arr_index]->is_playback == 0){
 		hwplay_input_data(res[arr_index]->play_handle, (char*)&head ,sizeof(head));
 		hwplay_input_data(res[arr_index]->play_handle, data ,len);
@@ -192,7 +242,14 @@ static void OnStreamArrive(ecam_stream_req_t * req, ECAM_STREAM_REQ_FRAME_TYPE m
 		}
 		#endif
 	}
-	__android_log_print(ANDROID_LOG_INFO, "OnStreamArrive", "OnStreamArrive exit arr_index:%d",arr_index);
+
+	int buf_len;
+	int ret = hwplay_get_stream_buf_remain(res[arr_index]->play_handle,&buf_len);
+	if(ret == 1)
+	{
+		__android_log_print(ANDROID_LOG_INFO, "jni", "buf_len %d",buf_len);
+	}
+	//__android_log_print(ANDROID_LOG_INFO, "OnStreamArrive", "OnStreamArrive exit arr_index:%d",arr_index);
 }
 
 static PLAY_HANDLE init_play_handle(int is_playback,int arr_index){
@@ -212,12 +269,22 @@ static PLAY_HANDLE init_play_handle(int is_playback,int arr_index){
 	media_head.vdec_code = VDEC_H264;
 	//__android_log_print(ANDROID_LOG_INFO, "JNI", "media_head finish");
 	PLAY_HANDLE  ph = hwplay_open_stream((char*)&media_head,sizeof(media_head),1024*1024,is_playback,area);
-	//hwplay_set_max_framenum_in_buf(ph,5);
+	int ret = hwplay_open_sound(ph);
+	__android_log_print(ANDROID_LOG_INFO, "JNI", "hwplay_open_sound ret:%d",ret);
+	__android_log_print(ANDROID_LOG_INFO, "JNI", "is_playback is:%d",is_playback);
+	hwplay_set_max_framenum_in_buf(ph,5);
 	//__android_log_print(ANDROID_LOG_INFO, "JNI", "media_head.media_fourcc is:%d",media_head.media_fourcc);
 	__android_log_print(ANDROID_LOG_INFO, "JNI", "ph is:%d",ph);
 	//resource->play_handle = ph;
 	hwplay_register_yuv_callback_ex(ph,on_yuv_callback_ex,arr_index);
-	hwplay_register_source_data_callback(ph,on_source_callback,arr_index);
+	//hwplay_register_source_data_callback(ph,on_source_callback,arr_index);
+	hwplay_register_audio_callback(ph,on_audio_callback,arr_index);
+
+	/*int ret = pthread_create(&res[arr_index]->audio_thread_id,NULL,(void *)audio_thread,NULL);
+	if(ret != 0){
+		__android_log_print(ANDROID_LOG_INFO, "thread", "create audio thread fail");
+		//return;
+	}*/
 	//	__android_log_print(ANDROID_LOG_INFO, "JNI", "true");
 	//else
 	//	__android_log_print(ANDROID_LOG_INFO, "JNI", "false");
@@ -381,6 +448,7 @@ static jlong new_resource(JNIEnv *env,jobject obj,const char * account,int is_pl
 	/* make sure init once */
 	int arr_index = -1;
 	pthread_once(&once_ctrl,global_init);
+	//memset(&datas,0,1024*sizeof(struct audio_data));
 	__android_log_print(ANDROID_LOG_INFO, "res[handle_flag]", "11111111");
 	int i;
 	for(i = 0 ; i < RESOURCE_ARRAY_LENGHT ; i++){

@@ -39,6 +39,7 @@ struct YV12glDisplay
   pthread_mutex_t lock;
   sem_t over_sem;
   sem_t over_ret_sem;
+  int lock_ret;
 };
 
 static struct YV12glDisplay self;
@@ -51,11 +52,12 @@ void yuv12gl_set_enable(int enable)
 
 void yv12gl_display(const unsigned char * y, const unsigned char *u, unsigned char *v, int width, int height, unsigned long long time)
 {
-LOGE("display");
+//LOGE("display timestamp: %llu",time);
+
   if (!self.enable) return;
   self.time = time/1000;
 
-LOGE("self.time :%llu %llu", self.time,time);
+//LOGE("self.time :%llu %llu", self.time,time);
   if((*self.jvm)->AttachCurrentThread(self.jvm, &self.env, NULL) != JNI_OK) {   
       LOGE("%s: AttachCurrentThread() failed", __FUNCTION__);   
       return;
@@ -111,7 +113,7 @@ LOGE("self.time :%llu %llu", self.time,time);
   /* notify the JAVA */
   (*self.env)->CallVoidMethod(self.env, self.obj, self.mid, NULL);
 //LOGE("555555555");
-
+  //getNowTime();
  if ((*self.jvm)->DetachCurrentThread(self.jvm) != JNI_OK) {   
 				LOGE("%s: DetachCurrentThread() failed", __FUNCTION__);   
 		   }   
@@ -157,7 +159,10 @@ JNIEXPORT void JNICALL Java_com_howell_webcam_player_YV12Renderer_nativeRenderY
 (JNIEnv *env, jobject obj)
 {
 	LOGE("nativeRenderY");
-  pthread_mutex_lock(&self.lock);
+  self.lock_ret = pthread_mutex_trylock(&self.lock);
+  if(self.lock_ret != 0){
+	  return;
+  }
   if (self.y == NULL) {
     char value[4] = {0,0,0,0};
     glTexImage2D(GL_TEXTURE_2D,0,GL_LUMINANCE,2,2,0,GL_LUMINANCE,GL_UNSIGNED_BYTE,value);
@@ -173,6 +178,9 @@ JNIEXPORT void JNICALL Java_com_howell_webcam_player_YV12Renderer_nativeRenderU
 (JNIEnv *env, jobject obj)
 {
 	LOGE("nativeRenderU");
+	if(self.lock_ret != 0){
+		  return;
+	  }
   if (self.u == NULL) {
     char value[] = {128};
     glTexImage2D(GL_TEXTURE_2D,0,GL_LUMINANCE,1,1,0,GL_LUMINANCE,GL_UNSIGNED_BYTE,value);
@@ -185,7 +193,9 @@ JNIEXPORT void JNICALL Java_com_howell_webcam_player_YV12Renderer_nativeRenderU
 JNIEXPORT void JNICALL Java_com_howell_webcam_player_YV12Renderer_nativeRenderV
 (JNIEnv *env, jobject obj)
 {
-
+	if(self.lock_ret != 0){
+		  return;
+	  }
   if (self.v==NULL) {
     char value[] = {128};
     glTexImage2D(GL_TEXTURE_2D,0,GL_LUMINANCE,1,1,0,GL_LUMINANCE,GL_UNSIGNED_BYTE,value);

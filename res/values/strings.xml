@@ -77,6 +77,7 @@
 	<string name="no_sdcard">Please insert the SD card</string>
 	<string name="local_files">LocalFiles</string> 
 	<string name="no_estore">No SDCard</string> 
+	<string name="set_fail">Bad Network Signal , set fail</string>
 	
 	<style name="MyCheckBox" parent="@android:style/Widget.CompoundButton.CheckBox">
 		<item name="android:button">@drawable/cb_select</item>

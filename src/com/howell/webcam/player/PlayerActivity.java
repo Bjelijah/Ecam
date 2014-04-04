@@ -734,7 +734,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	}
 
 	@Override
-	 public void onConfigurationChanged(Configuration newConfig) {
+	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 		Log.e("main","config change");
 		if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
@@ -881,7 +881,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         super.onKeyDown(keyCode, event);
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-        	Log.e("backCount", "backCount:"+backCount);
+        	Log.e("backCount", "press back button backCount:"+backCount);
         	//isQuit = true;
         	if(null != client)
         		client.setQuit(true);
@@ -931,11 +931,11 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		 //锟斤拷始锟斤拷 Translate锟斤拷锟斤拷  
 	   // translateAnimation = new TranslateAnimation(0.1f, 100.0f,0.1f,0.1f); 
 		System.out.println("Fling isAnimationStart:"+isAnimationStart);
-		if(fromXDelta == 0&&toXDelta ==100&&fromYDelta ==0&&toYDelta ==0){
+		if(fromXDelta == 0&&toXDelta ==40&&fromYDelta ==0&&toYDelta ==0){
 			System.out.println("Right");
-		}else if(fromXDelta == 0&&toXDelta == -100&&fromYDelta ==0&&toYDelta ==0){
+		}else if(fromXDelta == 0&&toXDelta == -40&&fromYDelta ==0&&toYDelta ==0){
 			System.out.println("Left");
-		}else if(fromXDelta == 0&&toXDelta == 0&&fromYDelta ==0&&toYDelta ==-100){
+		}else if(fromXDelta == 0&&toXDelta == 0&&fromYDelta ==0&&toYDelta ==-40){
 			System.out.println("Up");
 		}else{
 			System.out.println("Down");
@@ -1037,26 +1037,26 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
             // Fling left   
         	direction = "Right";
         	time = 700;
-        	animationStart(0,100,0,0);
+        	animationStart(0,40,0,0);
         	Log.e("MyGesture", "Fling left "+"x:"+Math.abs(e1.getX() - e2.getX())+"y:"+Math.abs(e1.getY() - e2.getY()));  
         } else if (e2.getX() - e1.getX() > FLING_MIN_DISTANCE && Math.abs(velocityX) > FLING_MIN_VELOCITY) {   
             // Fling right   
         	Log.e("MyGesture", "Fling right "+"x:"+Math.abs(e1.getX() - e2.getX())+"y:"+Math.abs(e1.getY() - e2.getY()));   
         	direction = "Left";
-        	animationStart(0, -100,0,0);
+        	animationStart(0, -40,0,0);
         	time = 700;
         }  else if (e2.getY() - e1.getY() > FLING_MIN_DISTANCE && Math.abs(velocityY) > FLING_MIN_VELOCITY) {   
             // Fling Down   
         	Log.e("MyGesture", "Fling Down "+"y:"+Math.abs(e1.getY() - e2.getY())+"x:"+Math.abs(e1.getX() - e2.getX()));   
         	direction = "Up";
-        	animationStart(0, 0,0,-100);
+        	animationStart(0, 0,0,-40);
         	time = 500;
         }   else if (e1.getY() - e2.getY() > FLING_MIN_DISTANCE && Math.abs(velocityY) > FLING_MIN_VELOCITY) {   
             // Fling Up   
         	Log.e("MyGesture", "Fling Up "+"y:"+Math.abs(e1.getY() - e2.getY())+"x:"+Math.abs(e1.getX() - e2.getX()));   
         	direction = "Down";
         	time = 500;
-        	animationStart(0, 0,0,100);
+        	animationStart(0, 0,0,40);
         }   else{
         	return true;
         }

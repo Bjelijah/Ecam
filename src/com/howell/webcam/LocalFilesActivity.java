@@ -2,45 +2,44 @@ package com.howell.webcam;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 
 import com.android.howell.webcam.R;
 
 public class LocalFilesActivity extends Activity {
 	private ListView listview;
+	private LinearLayout background;
 	private ArrayList<String> mList ;
 	private int imageWidth;
 	private int imageHeight;
 	private LinearLayout.LayoutParams lp;
 	private File f;
 	private MyAdapter adapter;
+	private Bitmap bm;
+	private static final int SHOWPICTURE = 1;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.local_files);
+		background = (LinearLayout)findViewById(R.id.lf_local_file);
 		imageWidth = PhoneConfig.getPhoneWidth(getApplicationContext())/3;
 		imageHeight = imageWidth * 3 / 4;
 		f = new File("/sdcard/eCamera");
@@ -49,8 +48,23 @@ public class LocalFilesActivity extends Activity {
 		listview = (ListView)findViewById(R.id.lv_localfiles);
 		mList = new ArrayList<String>();
 		getFileName(f);
+		if(mList.size() != 0){
+			background.setBackgroundColor(getResources().getColor(R.color.bg));
+		}else{
+			background.setBackgroundResource(R.drawable.local_file_bg);
+		}
 		adapter = new MyAdapter(this);
 		listview.setAdapter(adapter);
+	}
+	
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		if((bm!=null)&&(!bm.isRecycled())){
+	    	bm.recycle();
+	    	bm = null;
+    	}
 	}
 	
 	@Override
@@ -59,6 +73,11 @@ public class LocalFilesActivity extends Activity {
 		super.onRestart();
 		System.out.println("Local Files onRestart");
 		getFileName(f);
+		if(mList.size() != 0){
+			background.setBackgroundColor(getResources().getColor(R.color.bg));
+		}else{
+			background.setBackgroundResource(R.drawable.local_file_bg);
+		}
 		adapter.notifyDataSetChanged();
 	}
 	
@@ -71,6 +90,31 @@ public class LocalFilesActivity extends Activity {
 			}
 		}
 		return mList;
+	}
+	
+	class ShowPictureHandler extends Handler{
+		private int position;
+		private ImageView iv;
+		
+		public ShowPictureHandler(int position, ImageView iv) {
+			super();
+			this.position = position;
+			this.iv = iv;
+		}
+		@Override
+		public void handleMessage(Message msg) {
+			// TODO Auto-generated method stub
+			super.handleMessage(msg);
+			switch (msg.what) {
+			case SHOWPICTURE:
+				bm = BitmapFactory.decodeFile(mList.get(position));
+	            iv.setImageBitmap(bm);
+				break;
+
+			default:
+				break;
+			}
+		}
 	}
 	
 	public class MyAdapter extends BaseAdapter{
@@ -123,6 +167,10 @@ public class LocalFilesActivity extends Activity {
 				holder.iv2 = (ImageView)convertView.findViewById(R.id.imageView2);
 				holder.iv3 = (ImageView)convertView.findViewById(R.id.imageView3);
 				
+				holder.iv1.setLayoutParams(lp);
+				holder.iv2.setLayoutParams(lp);
+				holder.iv3.setLayoutParams(lp);
+				
 				holder.iv1.setOnClickListener(listener);
 				holder.iv2.setOnClickListener(listener);
 				holder.iv3.setOnClickListener(listener);
@@ -130,6 +178,10 @@ public class LocalFilesActivity extends Activity {
 				convertView.setTag(holder);
             }else{
             	holder = (ViewHolder)convertView.getTag();
+            	
+            	//holder.iv1.setImageResource(R.drawable.images_cache_bg);
+				//holder.iv2.setImageResource(R.drawable.images_cache_bg);
+				//holder.iv3.setImageResource(R.drawable.images_cache_bg);
             }
             
             if(firstImagePostion == mList.size()){
@@ -142,10 +194,12 @@ public class LocalFilesActivity extends Activity {
             	holder.iv2.setVisibility(View.VISIBLE);
             	holder.iv3.setVisibility(View.VISIBLE);
             }
-            Bitmap bm = BitmapFactory.decodeFile(mList.get(firstImagePostion));
-            holder.iv1.setImageBitmap(bm);
-            holder.iv1.setLayoutParams(lp);
+            //Bitmap bm = BitmapFactory.decodeFile(mList.get(firstImagePostion));
+            //holder.iv1.setImageBitmap(bm);
+            
             holder.iv1.setTag(firstImagePostion);
+            ShowPictureHandler handler = new ShowPictureHandler(firstImagePostion,holder.iv1);
+            handler.sendEmptyMessage(SHOWPICTURE);
             System.out.println(mList.get(firstImagePostion)+","+firstImagePostion);
 	        if(secondImagePositon == mList.size()){
 	        	holder.iv2.setVisibility(View.GONE);
@@ -155,10 +209,11 @@ public class LocalFilesActivity extends Activity {
             	holder.iv2.setVisibility(View.VISIBLE);
             	holder.iv3.setVisibility(View.VISIBLE);
             }
-	        bm = BitmapFactory.decodeFile(mList.get(secondImagePositon));
-	        holder.iv2.setImageBitmap(bm);
-	        holder.iv2.setLayoutParams(lp);
+	        
+	        //holder.iv2.setLayoutParams(lp);
 	        holder.iv2.setTag(secondImagePositon);
+	        ShowPictureHandler handler2 = new ShowPictureHandler(secondImagePositon,holder.iv2);
+            handler2.sendEmptyMessage(SHOWPICTURE);
 	        System.out.println(mList.get(secondImagePositon)+","+secondImagePositon);
             if(thirdImagePositon == mList.size()){
             	holder.iv3.setVisibility(View.GONE);
@@ -166,10 +221,12 @@ public class LocalFilesActivity extends Activity {
             }else{
             	holder.iv3.setVisibility(View.VISIBLE);
             }
-            bm = BitmapFactory.decodeFile(mList.get(thirdImagePositon));
-	        holder.iv3.setImageBitmap(bm);
-            holder.iv3.setLayoutParams(lp);
+            //bm = BitmapFactory.decodeFile(mList.get(thirdImagePositon));
+	        //holder.iv3.setImageBitmap(bm);
+            //holder.iv3.setLayoutParams(lp);
             holder.iv3.setTag(thirdImagePositon);
+            ShowPictureHandler handler3 = new ShowPictureHandler(thirdImagePositon,holder.iv3);
+            handler3.sendEmptyMessage(SHOWPICTURE);
             System.out.println(mList.get(thirdImagePositon)+","+thirdImagePositon);
 			return convertView;
 		}
@@ -194,4 +251,5 @@ public class LocalFilesActivity extends Activity {
 		}
 		
 	};
+	
 }

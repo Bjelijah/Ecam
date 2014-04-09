@@ -271,8 +271,8 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 					destDir.mkdirs();
 				}
 				String path = "/sdcard/eCamera/"+FileUtils.getFileName()+".jpg";
-				client.setCatchPictureFlag(client.getHandle(),path,path.length());
-				MessageUtiles.postToast(getApplicationContext(), getResources().getString(R.string.save_picture),2000);
+				if(client.setCatchPictureFlag(client.getHandle(),path,path.length()) == 1)
+					MessageUtiles.postToast(getApplicationContext(), getResources().getString(R.string.save_picture),2000);
 			}
 	    });
 	    System.out.println("audio init");

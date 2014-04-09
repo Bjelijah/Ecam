@@ -35,6 +35,10 @@ public class HackyViewPager extends ViewPager {
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 			return false;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return false;
 		}
 	}
 

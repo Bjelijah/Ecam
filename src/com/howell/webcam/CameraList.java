@@ -27,6 +27,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.howell.webcam.R;
@@ -48,6 +49,7 @@ public class CameraList extends ListActivity implements OnItemClickListener {
     private String url;
     
     private Activities mActivities;
+    private Bitmap bm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +92,7 @@ public class CameraList extends ListActivity implements OnItemClickListener {
 //							LoginRequest loginReq = mSoapManager.getLoginRequest();
 //					        mResponse = mSoapManager.getUserLoginRes(loginReq);
 //					        mSoapManager.getLoginResponse().setLoginResponse(mResponse);
-					        //¸üÐÂÉè±¸ÐÅÏ¢
+					        //ï¿½ï¿½ï¿½ï¿½ï¿½è±¸ï¿½ï¿½Ï¢
 //					        mSoapManager.getQueryDeviceRes(new QueryDeviceReq(mResponse.getAccount(),mResponse.getLoginSession()));
 //					        for(NodeDetails node:mSoapManager.getNodeDetails()){
 //					        	System.out.println("new Device info:"+node.toString());
@@ -130,19 +132,19 @@ public class CameraList extends ListActivity implements OnItemClickListener {
 			public void onFirstRefresh() {
 				// TODO Auto-generated method stub
 //				listView.onRefreshComplete();
-				//»ñÈ¡Éè±¸ÉèÖÃ£¨´æÓÚSoapManagerµ¥Àý¶ÔÏóÖÐ£©
+				//ï¿½ï¿½È¡ï¿½è±¸ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ï¿½ï¿½ï¿½SoapManagerï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½
 				Log.e("CameraList", "onFirstRefresh");
 				mSoapManager.getQueryDeviceRes(new QueryDeviceReq(mResponse.getAccount(), mResponse.getLoginSession()));
 				list = mSoapManager.getNodeDetails();
 		        sort(list);
 		        CamTabActivity.cameraVerThread = true;
-				//»ñÈ¡Éè±¸WIFIÇ¿¶È
+				//ï¿½ï¿½È¡ï¿½è±¸WIFIÇ¿ï¿½ï¿½
 //				for(int i = 0 ; i < list.size() ; i++){
 //					Device device = list.get(i);
 //					int intensity = getCameraWifiIntensity(device.getDeviceID());
 //					device.setIndensity(intensity);
 //				}
-				//ÏÔÊ¾Éè±¸ÁÐ±í
+				//ï¿½ï¿½Ê¾ï¿½è±¸ï¿½Ð±ï¿½
 				myHandler.sendEmptyMessage(refreshCameraList);
 			}
 		});
@@ -152,7 +154,7 @@ public class CameraList extends ListActivity implements OnItemClickListener {
         	public void run() {
         		// TODO Auto-generated method stub
         		super.run();
-        		//¼ì²é¿Í»§¶Ë°æ±¾¸üÐÂ
+        		//ï¿½ï¿½ï¿½Í»ï¿½ï¿½Ë°æ±¾ï¿½ï¿½ï¿½ï¿½
 		        QueryClientVersionReq queryClientVersionReq = new QueryClientVersionReq("Android");
 		        QueryClientVersionRes queryClientVersionRes = mSoapManager.getQueryClientVersionRes(queryClientVersionReq);
 				System.out.println(queryClientVersionRes.toString());
@@ -163,7 +165,7 @@ public class CameraList extends ListActivity implements OnItemClickListener {
 					//ClientUpdateUtils.showUpdataDialog(getApplicationContext(),url);
 					myHandler.sendEmptyMessage(postUpdateMessage);
 				}
-        		//ÍÆËÍÉèÖÃ
+        		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //		        SharedPreferences sharedPreferences = getSharedPreferences("set",
 //		                Context.MODE_PRIVATE);
 //		        boolean pushSet = sharedPreferences.getBoolean(mResponse.getAccount(), true);
@@ -280,6 +282,10 @@ public class CameraList extends ListActivity implements OnItemClickListener {
     	Log.e("CameraList", "onDestroy()");
     	mActivities.getmActivityList().remove(CameraList.this);
     	mActivities.toString();
+    	if((bm!=null)&&(!bm.isRecycled())){
+	    	bm.recycle();
+	    	bm = null;
+    	}
     }
     
     @Override
@@ -334,7 +340,7 @@ public class CameraList extends ListActivity implements OnItemClickListener {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             // TODO Auto-generated method stub
-        	System.out.println("getView£º"+position);
+        	System.out.println("getView:"+position);
             /*NodeDetails dev = (NodeDetails) getItem(position);
             LayoutInflater layoutInflater = LayoutInflater.from(mContext);
             View view = layoutInflater.inflate(R.layout.item, null);
@@ -378,11 +384,12 @@ public class CameraList extends ListActivity implements OnItemClickListener {
 				
 				holder.iv = (ImageView)convertView.findViewById(R.id.iv_picture);
 				holder.iv_play_icon = (ImageView)convertView.findViewById(R.id.iv_play_icon);
-				holder.playback = (TextView)convertView.findViewById(R.id.tv_playback);
-				holder.set = (TextView)convertView.findViewById(R.id.tv_set);
-				holder.about = (TextView)convertView.findViewById(R.id.tv_about);
+				holder.playback = (LinearLayout)convertView.findViewById(R.id.tv_playback);
+				holder.set = (LinearLayout)convertView.findViewById(R.id.tv_set);
+				holder.about = (LinearLayout)convertView.findViewById(R.id.tv_about);
 				holder.tv = (TextView)convertView.findViewById(R.id.tv_name);
-				holder.tv_online = (TextView)convertView.findViewById(R.id.tv_online);
+				//holder.tv_online = (TextView)convertView.findViewById(R.id.tv_online);
+				holder.iv_offline = (ImageView)convertView.findViewById(R.id.iv_offline);
 				
 				holder.tv.setTextColor(Color.BLACK);
                 convertView.setTag(holder);
@@ -399,23 +406,25 @@ public class CameraList extends ListActivity implements OnItemClickListener {
             holder.playback.setTag(position);
             holder.set.setTag(position);
             holder.about.setTag(position);
-            holder.tv_online.setTag(position);
+            //holder.tv_online.setTag(position);
             
             holder.tv.setText(list.get(position).getName());
             
             if (list.get(position).isOnLine()) {
-            	holder.tv_online.setText(getResources().getString(R.string.online));
-	        } else {
-	        	holder.tv_online.setText(getResources().getString(R.string.not_online));
+            	if(getResources().getConfiguration().locale.getCountry().equals("CN"))
+            		holder.iv_offline.setImageResource(R.drawable.card_online_image_blue);
+	        }else {
+	        	if(getResources().getConfiguration().locale.getCountry().equals("CN"))
+	        		holder.iv_offline.setImageResource(R.drawable.card_offline_image_gray);
 	        }
             
             //holder.iv.setImageDrawable(images.get(position));
             //String myJpgPath = "/sdcard/eCamera/20130902125951.jpg";
             BitmapFactory.Options options = new BitmapFactory.Options();
 	        options.inSampleSize = 2;
-	        Bitmap bm = BitmapFactory.decodeFile(list.get(position).getPicturePath(), options);
+	        bm = BitmapFactory.decodeFile(list.get(position).getPicturePath(), options);
 	        if(bm == null){
-	        	holder.iv.setImageDrawable(getResources().getDrawable(R.drawable.images_cache_bg));
+	        	holder.iv.setImageDrawable(getResources().getDrawable(R.drawable.card_camera_default_image));
 	        }else{
 	        	holder.iv.setImageBitmap(bm);
 	        }
@@ -445,7 +454,7 @@ public class CameraList extends ListActivity implements OnItemClickListener {
 		            intent.putExtra("Device", ((NodeDetails) getItem(Integer.valueOf(arg0.getTag().toString()))));
 		            startActivity(intent);
 				}else if(arg0.getId() == R.id.tv_set){
-					//System.out.println("ÉèÖÃ");
+					//System.out.println("ï¿½ï¿½ï¿½ï¿½");
 					if(!list.get(Integer.valueOf(arg0.getTag().toString())).isOnLine()){
 			    		MessageUtiles.postToast(getApplication(), getResources().getString(R.string.not_online_message),2000);
 			    		return;
@@ -454,7 +463,10 @@ public class CameraList extends ListActivity implements OnItemClickListener {
 					intent.putExtra("Device", (NodeDetails) getItem(Integer.valueOf(arg0.getTag().toString())));
 					startActivity(intent);
 				}else if(arg0.getId() == R.id.tv_about){
-					System.out.println("¹ØÓÚ");
+					//System.out.println("ï¿½ï¿½ï¿½ï¿½");
+					Intent intent = new Intent(CameraList.this,CameraProperty.class);
+					intent.putExtra("Device", (NodeDetails) getItem(Integer.valueOf(arg0.getTag().toString())));
+					startActivity(intent);
 				}else if(arg0.getId() == R.id.iv_picture){
 					System.out.println(getItem(Integer.valueOf(arg0.getTag().toString())).toString());
 					if (!((NodeDetails)getItem(Integer.valueOf(arg0.getTag().toString()))).isOnLine()) {
@@ -471,8 +483,9 @@ public class CameraList extends ListActivity implements OnItemClickListener {
     }
     
 	public static class ViewHolder {
-		public ImageView iv,iv_play_icon;
-	    public TextView tv,playback,set,about,tv_online;
+		public ImageView iv,iv_play_icon,iv_offline;
+	    public LinearLayout playback,set,about/*,tv_online*/;
+	    public TextView tv;
 	}
 
     @Override

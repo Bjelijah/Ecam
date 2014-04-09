@@ -3,12 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/bg"  >
+    android:background="@color/bg"  >
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="55dip"
-        android:background="@drawable/tenpay_top_bar"
+        android:background="@color/title_blue"
         android:gravity="center"
         android:text="@string/camera_list"
         android:textColor="#FFFFFFFF"
@@ -20,6 +20,7 @@
         android:layout_height="fill_parent"
         android:paddingTop="5dip"
         android:cacheColorHint="#00000000"
+    	android:fadingEdge="none"  
         android:listSelector="@android:color/transparent"
         android:divider="@null"
         android:scrollbars="none"/>

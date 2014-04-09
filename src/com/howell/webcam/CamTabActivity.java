@@ -9,8 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TabHost;
@@ -23,6 +22,7 @@ public class CamTabActivity extends TabActivity implements
 
     private TabHost mHost;
     private RadioGroup mGroup;
+    private RadioButton mCameraList,mLocalFiles,mSettings;
     
     private Activities mActivities;
     private HomeKeyEventBroadCastReceiver receiver;
@@ -71,6 +71,9 @@ public class CamTabActivity extends TabActivity implements
 
         mGroup = (RadioGroup) findViewById(R.id.radio_group);
         mGroup.setOnCheckedChangeListener(this);
+        mCameraList = (RadioButton)findViewById(R.id.rb_camera_list);
+        mLocalFiles = (RadioButton)findViewById(R.id.rb_local_files);
+        mSettings = (RadioButton)findViewById(R.id.rb_settings);
 
         mHost = getTabHost();
         mHost.addTab(mHost
@@ -142,14 +145,23 @@ public class CamTabActivity extends TabActivity implements
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         // TODO Auto-generated method stub
         switch (checkedId) {
-        case R.id.camera_list:
+        case R.id.rb_camera_list:
             mHost.setCurrentTabByTag("cameralist");
+            mCameraList.setTextColor(getResources().getColor(R.color.blue));
+            mLocalFiles.setTextColor(getResources().getColor(R.color.light_gray));
+            mSettings.setTextColor(getResources().getColor(R.color.light_gray));
             break;
-        case R.id.local_files:
+        case R.id.rb_local_files:
             mHost.setCurrentTabByTag("localfiles");
+            mLocalFiles.setTextColor(getResources().getColor(R.color.blue));
+            mCameraList.setTextColor(getResources().getColor(R.color.light_gray));
+            mSettings.setTextColor(getResources().getColor(R.color.light_gray));
             break;
-        case R.id.settings:
+        case R.id.rb_settings:
             mHost.setCurrentTabByTag("settings");
+            mSettings.setTextColor(getResources().getColor(R.color.blue));
+            mLocalFiles.setTextColor(getResources().getColor(R.color.light_gray));
+            mCameraList.setTextColor(getResources().getColor(R.color.light_gray));
             break;
         default:
             break;

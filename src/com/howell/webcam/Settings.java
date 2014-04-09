@@ -30,15 +30,15 @@ public class Settings extends Activity implements OnClickListener {
     //private AccountResponse mResponse;
 
     private View mAccount;
-    private View mDeviceManage;
-    private View mQRcode;
+    private View mSysMessage;
+    //private View mQRcode;
    // private View mPushAlarm;
 
     private Button mButton;
     private Button mExit;
     private Button mCancel;
 
-    private TextView mInformationTextView;
+    //private TextView mInformationTextView;
     private ImageView mRedIcon;
     private Dialog mDialog;
     
@@ -54,17 +54,17 @@ public class Settings extends Activity implements OnClickListener {
     	mActivities.getmActivityList().add(Settings.this);
     	
         mAccount = findViewById(R.id.account);
-        mDeviceManage = findViewById(R.id.device_manage);
-        mQRcode = findViewById(R.id.qr_code);
+        mSysMessage = findViewById(R.id.sys_message);
+        //mQRcode = findViewById(R.id.qr_code);
         //mPushAlarm = findViewById(R.id.fl_push_alarm);
 
         mButton = (Button) findViewById(R.id.exit);
-        mInformationTextView = (TextView) findViewById(R.id.information_text);
+       // mInformationTextView = (TextView) findViewById(R.id.information_text);
         mRedIcon = (ImageView)findViewById(R.id.setting_red_icon);
         
         mAccount.setOnClickListener(this);
-        mDeviceManage.setOnClickListener(this);
-        mQRcode.setOnClickListener(this);
+        mSysMessage.setOnClickListener(this);
+        //mQRcode.setOnClickListener(this);
         //mPushAlarm.setOnClickListener(this);
         mButton.setOnClickListener(this);
         
@@ -76,7 +76,7 @@ public class Settings extends Activity implements OnClickListener {
 	            //String loginSession = loginResponse.getLoginSession().toString();
 	            //AccountRequest request = new AccountRequest(account, loginSession);
 	            //mResponse = mSoapManager.getAccountRes(request);
-	            mInformationTextView.setText(account);
+	            //mInformationTextView.setText(account);
 	        }
         }catch (Exception e) {
 			// TODO: handle exception
@@ -101,10 +101,10 @@ public class Settings extends Activity implements OnClickListener {
         int id = v.getId();
         Log.e("",id+"");
         switch (id) {
-        case R.id.qr_code:
+        /*case R.id.qr_code:
         	Intent it = new Intent(Settings.this, CaptureActivity.class);
 			startActivityForResult(it, 1);
-        	break;
+        	break;*/
         case R.id.account:
             Intent intent = new Intent(this, InformationActivity.class);
             startActivity(intent);
@@ -113,9 +113,9 @@ public class Settings extends Activity implements OnClickListener {
 //            intent = new Intent(this, PushAlarmActivity.class);
 //            startActivity(intent);
 //            break;
-        case R.id.device_manage:
-            intent = new Intent(this, DeviceManageActivity.class);
-            startActivity(intent);
+        case R.id.sys_message:
+            //intent = new Intent(this, DeviceManageActivity.class);
+            //startActivity(intent);
             break;
 //        case R.id.dialog:
 //            showDialog();

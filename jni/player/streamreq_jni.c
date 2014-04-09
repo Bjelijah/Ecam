@@ -517,9 +517,8 @@ static void free_resource(void* handle)
 	}
 }
 
-JNIEXPORT void JNICALL Java_com_howell_invite_Client_setCatchPictureFlag(JNIEnv *env, jclass cls,jlong index,jstring jpath,jint jlength)
+JNIEXPORT int JNICALL Java_com_howell_invite_Client_setCatchPictureFlag(JNIEnv *env, jclass cls,jlong index,jstring jpath,jint jlength)
 {
-	#if 1
 	__android_log_print(ANDROID_LOG_INFO, "--->", "setflag");
 	//self.is_catch_picture = 1;
 	char* temp = (*env)-> GetStringUTFChars(env,jpath,NULL);
@@ -530,7 +529,7 @@ JNIEXPORT void JNICALL Java_com_howell_invite_Client_setCatchPictureFlag(JNIEnv 
 	(*env)->ReleaseStringUTFChars(env,jpath,temp);
 	__android_log_print(ANDROID_LOG_INFO, ">>>", "finish fill buf");
 	__android_log_print(ANDROID_LOG_INFO, "--->", "setflag over");
-	#endif
+	return ret;
 }
 
 JNIEXPORT void JNICALL Java_com_howell_invite_Client_joinThread

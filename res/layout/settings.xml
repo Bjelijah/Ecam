@@ -2,54 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg"
+    android:background="@color/bg"
     android:orientation="vertical" >
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="55dip"
-        android:background="@drawable/tenpay_top_bar"
+        android:background="@color/title_blue"
         android:gravity="center"
         android:text="@string/settings"
         android:textColor="#FFFFFFFF"
         android:textSize="23sp" />
-
-    <FrameLayout
-        android:id="@+id/information"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dip"
-        android:layout_marginRight="10dip"
-        android:layout_marginTop="20dip"
-        android:gravity="center_vertical"
-        android:background="@drawable/list_item_bg_top" >
-
-        <ImageButton
-            android:id="@+id/imageButton1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#00000000"
-            android:src="@drawable/image_information" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40dip"
-            android:layout_gravity="center_vertical"
-            android:text="@string/information"
-            android:textColor="#FF000000"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/information_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:ellipsize="start"
-	        android:layout_marginRight="5dip"
-            android:layout_gravity="right|center_vertical"
-            android:textColor="#FF7389A6" />
-    </FrameLayout>
 
     <FrameLayout
         android:id="@+id/account"
@@ -57,9 +20,9 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
-        android:background="@drawable/list_item_bg_middle"
-        android:clickable="true"
-        android:focusable="true" >
+        android:layout_marginTop="20dip"
+        android:gravity="center_vertical"
+        android:background="@drawable/list_item_bg_top">
 
         <ImageButton
             android:id="@+id/imageButton2"
@@ -85,7 +48,7 @@
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/device_manage"
+        android:id="@+id/sys_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dip"
@@ -106,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dip"
             android:layout_gravity="center_vertical"
-            android:text="@string/camera_manager"
+            android:text="@string/sys_message"
             android:textColor="#FF000000"
             android:textSize="18sp" />
         <ImageView
@@ -118,47 +81,6 @@
 
         <ImageView
             android:id="@+id/setting_red_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|center_vertical"
-	        android:layout_marginRight="25dip"
-	        android:visibility="invisible"
-            android:src="@drawable/new_version" />
-
-    </FrameLayout>
-    
-    <FrameLayout
-        android:id="@+id/qr_code"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dip"
-        android:layout_marginRight="10dip"
-        android:background="@drawable/list_item_bg_middle"
-        android:clickable="true"
-        android:focusable="true" >
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#00000000"
-            android:src="@drawable/qrcode_icon" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40dip"
-            android:layout_gravity="center_vertical"
-            android:text="扫一扫"
-            android:textColor="#FF000000"
-            android:textSize="18sp" />
-        <ImageView
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_gravity="right|center_vertical"
-	        android:layout_marginRight="5dip"
-	        android:src="@drawable/selector_forward" />
-
-        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"

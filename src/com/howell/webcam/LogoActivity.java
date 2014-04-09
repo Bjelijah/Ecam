@@ -35,22 +35,22 @@ public class LogoActivity extends Activity implements TagAliasCallback{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.logo);
 	    StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-    	.detectNetwork() // ÕâÀï¿ÉÒÔÌæ»»ÎªdetectAll() ¾Í°üÀ¨ÁË´ÅÅÌ¶ÁĞ´ºÍÍøÂçI/O
+    	.detectNetwork() // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ»»ÎªdetectAll() ï¿½Í°ï¿½ï¿½ï¿½ï¿½Ë´ï¿½ï¿½Ì¶ï¿½Ğ´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½I/O
     	.build());
-	    //ÍÆËÍ·şÎñ³õÊ¼»¯
+	    //ï¿½ï¿½ï¿½Í·ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
 		JPushInterface.init(getApplicationContext());
-		//ÉèÖÃÍÆËÍ±ğÃû
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í±ï¿½ï¿½ï¿½
 		setAlias();
 		if(JPushInterface.isPushStopped(getApplicationContext())) 
 			JPushInterface.resumePush(getApplicationContext());
 		//System.out.println(JPushInterface.isPushStopped(getApplicationContext()));
 //	    handler = new MyHandler();
-	    //intentFlag 1:Î´Á¬½ÓÍøÂç 2:Á¬½Ó´íÎó 
+	    //intentFlag 1:Î´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 2:ï¿½ï¿½ï¿½Ó´ï¿½ï¿½ï¿½ 
 		if (!isNetworkConnected()) {
 			MyPlayer myPlayer = new MyPlayer(3);
 	    	myPlayer.start();
 		}else{
-			//³ÌĞò¿ªÊ¼Ê±°Ñµ¥ÀıDeviceManager¶ÔÏóÀïµÄmapÇå¿Õ
+			//ï¿½ï¿½ï¿½ï¿½Ê¼Ê±ï¿½Ñµï¿½ï¿½ï¿½DeviceManagerï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½mapï¿½ï¿½ï¿½
 			DeviceManager mDeviceManager = DeviceManager.getInstance();
 			mDeviceManager.clearMember();
 			
@@ -71,12 +71,12 @@ public class LogoActivity extends Activity implements TagAliasCallback{
 	}
 	
 	/**
-	 *ÉèÖÃAlias
+	 *ï¿½ï¿½ï¿½ï¿½Alias
 	 */
 	private void setAlias(){
 		String alias = Secure.getString(getContentResolver(), Secure.ANDROID_ID);//"112233";
 		
-		//µ÷ÓÃJPush APIÉèÖÃAlias
+		//ï¿½ï¿½ï¿½ï¿½JPush APIï¿½ï¿½ï¿½ï¿½Alias
 		JPushInterface.setAliasAndTags(getApplicationContext(), alias, null, this);
 	}
 	

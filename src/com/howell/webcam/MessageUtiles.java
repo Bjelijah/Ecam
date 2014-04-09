@@ -28,11 +28,20 @@ public class MessageUtiles {
 	
 //	public static void postAlerDialog(Context context,String message){
 //		new AlertDialog.Builder(context)   
-////        .setTitle("ÓÃ»§Ãû»òÃÜÂë´íÎó")   
+////        .setTitle("ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")   
 //        .setMessage(message)                 
-//        .setPositiveButton("È·¶¨", null)   
+//        .setPositiveButton("È·ï¿½ï¿½", null)   
 //        .show();  
 //	}
+	
+	public static Dialog postNewUIDialog(Context context){
+		final Dialog lDialog = new Dialog(context,android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+//       lDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		lDialog.setContentView(R.layout.wait_dialog);
+//       ((TextView) lDialog.findViewById(R.id.dialog_title)).setText(pTitle);
+		//lDialog.show();
+		return lDialog;
+	}
 	
 	public static void postNewUIDialog2(Context context,String message,String buttonName,final int flag){
 		 final Dialog lDialog = new Dialog(context,android.R.style.Theme_Translucent_NoTitleBar);

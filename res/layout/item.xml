@@ -5,108 +5,178 @@
     android:orientation="vertical"
     android:gravity="center_horizontal">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_marginLeft="5dip"
-        android:layout_marginRight="5dip"
-        android:background="@drawable/card_background_white" >
-
+            android:layout_marginRight="5dip"
+            android:background="@drawable/card_background_white" >
+		
         <LinearLayout
-            android:id="@+id/to_play"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dip"
-            android:layout_marginBottom="15dip">
-
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="15dip" >
-
-                <ImageView
-                    android:id="@+id/iv_picture"
-                    android:layout_width="150dp"
-                    android:layout_height="100dp"
-                    android:contentDescription="@null"
-                    android:scaleType="fitXY" />
-
-                <ImageView
-                    android:id="@+id/iv_play_icon"
-                    android:layout_width="150dp"
-                    android:layout_height="100dp"
-                    android:scaleType="center"
-                    android:background="#00000000"
-                    android:src="@drawable/audio_play" />
-
-            </FrameLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            
             android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/tv_name"
+            <LinearLayout
+                android:id="@+id/to_play"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal|bottom"
-                android:layout_weight="1.0"
-                android:textSize="20sp" />
-            <TextView
-	            android:id="@+id/tv_online"
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:gravity="center_horizontal"
-	            android:layout_weight="1.0"
-	            android:textSize="16sp" />
+                android:layout_marginBottom="15dip"
+                android:layout_marginTop="15dip" >
 
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="15dip" >
+
+                    <ImageView
+                        android:id="@+id/iv_picture"
+                        android:layout_width="150dp"
+                        android:layout_height="100dp"
+                        android:contentDescription="@null"
+                        android:scaleType="fitXY" />
+
+                    <ImageView
+                        android:id="@+id/iv_play_icon"
+                        android:layout_width="150dp"
+                        android:layout_height="100dp"
+                        android:background="#00000000"
+                        android:scaleType="center"
+                        android:visibility="gone"
+                        android:src="@drawable/audio_play" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/tv_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:gravity="center"
+                        android:textSize="20sp" />
+
+                   <!--   <TextView
+                        android:id="@+id/tv_online"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:gravity="center_horizontal"
+                        android:textSize="16sp" />-->
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/divide"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/divide_heng" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/card_tab_blue" >
+
+                <LinearLayout
+                    android:id="@+id/tv_playback"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dip"
+                    android:layout_marginTop="5dip"
+                    android:layout_weight="1"
+                    android:gravity="center" >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="4dip"
+                        android:gravity="center"
+                        android:src="@drawable/card_tab_playback" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="录像"
+                        android:textColor="@color/light_gray"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:src="@drawable/divide_shu" />
+
+                <LinearLayout
+                    android:id="@+id/tv_set"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dip"
+                    android:layout_marginTop="5dip"
+                    android:layout_weight="1"
+                    android:gravity="center" >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="4dip"
+                        android:gravity="center"
+                        android:src="@drawable/card_tab_setting" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="设置"
+                        android:textColor="@color/light_gray"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:src="@drawable/divide_shu" />
+
+                <LinearLayout
+                    android:id="@+id/tv_about"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dip"
+                    android:layout_marginTop="5dip"
+                    android:layout_weight="1"
+                    android:gravity="center" >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="4dip"
+                        android:gravity="center"
+                        android:src="@drawable/card_tab_property" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="属性"
+                        android:textColor="@color/light_gray"
+                        android:textSize="18sp" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-
-        <ImageView
-            android:id="@+id/divide"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:src="@drawable/divide_heng" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/tv_playback"
+	<ImageView
+                android:id="@+id/iv_offline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:drawableRight="@drawable/divide_shu"
-                android:textColor="@color/blue"
-                android:text="回放" />
-
-            <TextView
-                android:id="@+id/tv_set"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:drawableRight="@drawable/divide_shu"
-                android:textColor="@color/blue"
-                android:text="设置" />
-
-            <TextView
-                android:id="@+id/tv_about"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textColor="@color/blue"
-                android:text="关于" />
-            
-        </LinearLayout>
-		
-    </LinearLayout>
-
+                android:layout_gravity="right|top" />
+    </FrameLayout>
+    
 </LinearLayout>

@@ -58,40 +58,40 @@ public class WheelMain {
 	}
 
 	/**
-	 * @Description: TODO 弹出日期时间选择�?
+	 * @Description: TODO 弹出日期时间选择�?
 	 */
 	public void initDateTimePicker(int year ,int month ,int day) {
 //		int year = calendar.get(Calendar.YEAR);
 //		int month = calendar.get(Calendar.MONTH);
 //		int day = calendar.get(Calendar.DATE);
 
-		// 添加大小月月份并将其转换为list,方便之后的判�?
+		// 添加大小月月份并将其转换为list,方便之后的判�?
 		String[] months_big = { "1", "3", "5", "7", "8", "10", "12" };
 		String[] months_little = { "4", "6", "9", "11" };
 
 		final List<String> list_big = Arrays.asList(months_big);
 		final List<String> list_little = Arrays.asList(months_little);
 
-		// �?
+		// �?
 		wv_year = (WheelView) view.findViewById(R.id.year);
-		wv_year.setAdapter(new NumericWheelAdapter(START_YEAR, END_YEAR));// 设置"�?的显示数�?
-		wv_year.setCyclic(true);// 可循环滚�?
+		wv_year.setAdapter(new NumericWheelAdapter(START_YEAR, END_YEAR));// 设置"�?的显示数�?
+		wv_year.setCyclic(true);// 可循环滚�?
 		if(country.equals("CN"))
-			wv_year.setLabel("��");// 添加文字
-		wv_year.setCurrentItem(year - START_YEAR);// 初始化时显示的数�?
+			wv_year.setLabel("年");// 添加文字
+		wv_year.setCurrentItem(year - START_YEAR);// 初始化时显示的数�?
 
-		// �?
+		// �?
 		wv_month = (WheelView) view.findViewById(R.id.month);
 		wv_month.setAdapter(new NumericWheelAdapter(1, 12));
 		wv_month.setCyclic(true);
 		if(country.equals("CN"))
-			wv_month.setLabel("��");
+			wv_month.setLabel("月");
 		wv_month.setCurrentItem(month);
 
-		// �?
+		// �?
 		wv_day = (WheelView) view.findViewById(R.id.day);
 		wv_day.setCyclic(true);
-		// 判断大小月及是否闰年,用来确定"�?的数�?
+		// 判断大小月及是否闰年,用来确定"�?的数�?
 		if (list_big.contains(String.valueOf(month + 1))) {
 			wv_day.setAdapter(new NumericWheelAdapter(1, 31));
 		} else if (list_little.contains(String.valueOf(month + 1))) {
@@ -104,14 +104,14 @@ public class WheelMain {
 				wv_day.setAdapter(new NumericWheelAdapter(1, 28));
 		}
 		if(country.equals("CN"))
-			wv_day.setLabel("��");
+			wv_day.setLabel("日");
 		wv_day.setCurrentItem(day - 1);
 
-		// 添加"�?监听
+		// 添加"�?监听
 		OnWheelChangedListener wheelListener_year = new OnWheelChangedListener() {
 			public void onChanged(WheelView wheel, int oldValue, int newValue) {
 				int year_num = newValue + START_YEAR;
-				// 判断大小月及是否闰年,用来确定"�?的数�?
+				// 判断大小月及是否闰年,用来确定"�?的数�?
 				if (list_big
 						.contains(String.valueOf(wv_month.getCurrentItem() + 1))) {
 					wv_day.setAdapter(new NumericWheelAdapter(1, 31));
@@ -127,11 +127,11 @@ public class WheelMain {
 				}
 			}
 		};
-		// 添加"�?监听
+		// 添加"�?监听
 		OnWheelChangedListener wheelListener_month = new OnWheelChangedListener() {
 			public void onChanged(WheelView wheel, int oldValue, int newValue) {
 				int month_num = newValue + 1;
-				// 判断大小月及是否闰年,用来确定"�?的数�?
+				// 判断大小月及是否闰年,用来确定"�?的数�?
 				if (list_big.contains(String.valueOf(month_num))) {
 					wv_day.setAdapter(new NumericWheelAdapter(1, 31));
 				} else if (list_little.contains(String.valueOf(month_num))) {
@@ -149,7 +149,7 @@ public class WheelMain {
 		wv_year.addChangingListener(wheelListener_year);
 		wv_month.addChangingListener(wheelListener_month);
 
-		// 根据屏幕密度来指定�?择器字体的大�?不同屏幕可能不同)
+		// 根据屏幕密度来指定�?择器字体的大�?不同屏幕可能不同)
 		int textSize = 0;
 		textSize = (screenheight / 100) * 4;
 		wv_day.TEXT_SIZE = textSize;
@@ -190,7 +190,7 @@ public class WheelMain {
 		java.util.Date date = null;
 		SimpleDateFormat foo = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 		foo.setTimeZone(TimeZone.getTimeZone("UTC"));
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");//Сд��mm��ʾ���Ƿ���  
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");//Сд��mm��ʾ���Ƿ���  
         try {
 			date=sdf.parse(sb);
 			System.out.println(date);

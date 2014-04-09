@@ -24,7 +24,7 @@
     <string name="settings">Settings</string>
     <string name="information">Information</string>
     <string name="account">My account</string>
-    <string name="camera_manager">Device management</string>
+    <string name="sys_message">System message</string>
     <string name="alarm">Alarm</string>
     <string name="about">About eCamera V1.0.6</string>
     <string name="exit">Logout</string>

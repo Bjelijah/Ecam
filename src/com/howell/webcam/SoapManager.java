@@ -38,6 +38,62 @@ public class SoapManager implements Serializable {
     public static SoapManager getInstance() {
         return sInstance;
     }
+    
+
+    public LoginRequest getLoginRequest() {
+        return mLoginRequest;
+    }
+//
+    public void setLoginRequest(LoginRequest loginRequest) {
+        mLoginRequest = loginRequest;
+    }
+
+    public LoginResponse getLoginResponse() {
+        return mLoginResponse;
+    }
+
+    public void setLoginResponse(LoginResponse loginResponse) {
+        mLoginResponse = loginResponse;
+    }
+
+    public GetNATServerRes getLocalGetNATServerRes() {
+		return mGetNATServerRes;
+	}
+
+	public void setGetNATServerRes(GetNATServerRes mGetNATServerRes) {
+		this.mGetNATServerRes = mGetNATServerRes;
+	}
+	
+	public ArrayList<NodeDetails> getNodeDetails() {
+		return nodeDetails;
+	}
+
+	public SoapObject initEnvelopAndTransport(SoapObject rpc , String sSoapAction) {
+
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
+                SoapEnvelope.VER10);
+
+        envelope.bodyOut = rpc;
+        envelope.dotNet = true;
+        envelope.encodingStyle = "UTF-8";
+        envelope.setOutputSoapObject(rpc);
+
+        HttpTransportSE transport;
+		transport = new HttpTransportSE(sEndPoint);
+		transport.debug = true;
+		try {
+		    transport.call(sSoapAction, envelope);
+		} catch (SocketTimeoutException e) {
+			Log.e("", "SocketTimeoutException");
+		    e.printStackTrace();
+		} catch (Exception e) {
+			Log.e("", "Exception");
+		    e.printStackTrace();
+		}
+
+        SoapObject soapObject = (SoapObject) envelope.bodyIn;
+        return soapObject;
+    }
 
     public LoginResponse getUserLoginRes(LoginRequest loginRequest) {
     	Log.e("SoapManager", "getUserLoginRes");
@@ -527,60 +583,6 @@ public class SoapManager implements Serializable {
 		}
     }
 
-    public LoginRequest getLoginRequest() {
-        return mLoginRequest;
-    }
-//
-    public void setLoginRequest(LoginRequest loginRequest) {
-        mLoginRequest = loginRequest;
-    }
-
-    public LoginResponse getLoginResponse() {
-        return mLoginResponse;
-    }
-
-    public void setLoginResponse(LoginResponse loginResponse) {
-        mLoginResponse = loginResponse;
-    }
-
-    public GetNATServerRes getLocalGetNATServerRes() {
-		return mGetNATServerRes;
-	}
-
-	public void setGetNATServerRes(GetNATServerRes mGetNATServerRes) {
-		this.mGetNATServerRes = mGetNATServerRes;
-	}
-	
-	public ArrayList<NodeDetails> getNodeDetails() {
-		return nodeDetails;
-	}
-
-	public SoapObject initEnvelopAndTransport(SoapObject rpc , String sSoapAction) {
-
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
-                SoapEnvelope.VER10);
-
-        envelope.bodyOut = rpc;
-        envelope.dotNet = true;
-        envelope.encodingStyle = "UTF-8";
-        envelope.setOutputSoapObject(rpc);
-
-        HttpTransportSE transport;
-		transport = new HttpTransportSE(sEndPoint);
-		transport.debug = true;
-		try {
-		    transport.call(sSoapAction, envelope);
-		} catch (SocketTimeoutException e) {
-			Log.e("", "SocketTimeoutException");
-		    e.printStackTrace();
-		} catch (Exception e) {
-			Log.e("", "Exception");
-		    e.printStackTrace();
-		}
-
-        SoapObject soapObject = (SoapObject) envelope.bodyIn;
-        return soapObject;
-    }
 
     public SetVideoParamRes getSetVideoParamRes(SetVideoParamReq req){
     	SetVideoParamRes res = new SetVideoParamRes();
@@ -686,7 +688,7 @@ public class SoapManager implements Serializable {
 	          AnalyzingDoNetOutput.analyzingVODRecord(o.toString(), list);
 	        }
 	        res.setRecord(list);
-	        System.out.println("list×ÜÊý£º"+list.size());
+	        System.out.println("listï¿½ï¿½ï¿½ï¿½"+list.size());
         }catch (Exception e) {
 			// TODO: handle exception
         	ArrayList<VODRecord> list = new ArrayList<VODRecord>();
@@ -935,6 +937,40 @@ public class SoapManager implements Serializable {
  	       	res.setsSID(sSID.toString());
  	        Object intensity = object.getProperty("Intensity");
 	       	res.setIntensity(Integer.valueOf(intensity.toString()));
+    	}catch (Exception e) {
+				// TODO: handle exception
+		}
+    	return res;
+    }
+    
+    public UpdatePasswordRes getUpdatePasswordRes(UpdatePasswordReq req){
+    	UpdatePasswordRes res = new UpdatePasswordRes();
+    	SoapObject rpc = new SoapObject(sNameSpace, "updatePasswordReq");
+    	rpc.addProperty("Account", req.getAccount());
+    	rpc.addProperty("LoginSession", req.getLoginSession());
+    	rpc.addProperty("Password", req.getPassword());
+    	rpc.addProperty("NewPassword", req.getNewPassword());
+    	SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/updatePassword");
+    	try{
+ 	       	Object result = object.getProperty("result");
+ 	       	res.setResult(result.toString());
+    	}catch (Exception e) {
+				// TODO: handle exception
+		}
+    	return res;
+    }
+    
+    public UpdateAccountRes getUpdateAccountRes(UpdateAccountReq req){
+    	UpdateAccountRes res = new UpdateAccountRes();
+    	SoapObject rpc = new SoapObject(sNameSpace, "updateAccountReq");
+    	rpc.addProperty("Account", req.getAccount());
+    	rpc.addProperty("LoginSession", req.getLoginSession());
+    	//rpc.addProperty("Username", "");
+    	rpc.addProperty("MobileTel", req.getMobileTel());
+    	SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/updateAccount");
+    	try{
+ 	       	Object result = object.getProperty("result");
+ 	       	res.setResult(result.toString());
     	}catch (Exception e) {
 				// TODO: handle exception
 		}

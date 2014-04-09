@@ -11,6 +11,12 @@
     <color name="red">#FF0000</color>
     <color name="gray">#A7A8A9</color>
     <color name="blue">#007AFF</color>
+    <color name="light_gray">#BABABA</color>
+    <color name="title_blue">#408EE1</color>
+    <color name="card_tab_blue">#F7FAFF</color>
+    <color name="tab_bottom_bg">#CBCBCB</color>
+    <color name="bg">#D2DCE8</color>
+    
     
     <color name="possible_result_points">#c0ffbd21</color> <!-- Android standard ICS color -->
   	<color name="result_text">#ff000000</color>

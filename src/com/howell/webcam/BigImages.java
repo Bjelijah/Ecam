@@ -39,6 +39,8 @@ public class BigImages extends Activity implements OnClickListener{
 	
 	private boolean isShown;
 	
+	private SamplePagerAdapter adapter;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -61,8 +63,21 @@ public class BigImages extends Activity implements OnClickListener{
         title.setOnClickListener(this);
         
         viewPager = (HackyViewPager) findViewById(R.id.viewPager);
-        viewPager.setAdapter(new SamplePagerAdapter());
+        adapter = new SamplePagerAdapter();
+        viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(position);
+	}
+	
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		for(Bitmap bm:adapter.sDrawables){
+			if((bm!=null)&&(!bm.isRecycled())){
+		    	bm.recycle();
+		    	bm = null;
+	    	}
+		}
 	}
 	
 	class SamplePagerAdapter extends PagerAdapter {

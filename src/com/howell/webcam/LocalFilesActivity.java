@@ -1,8 +1,10 @@
 package com.howell.webcam;
 
 import java.io.File;
+import java.lang.ref.SoftReference;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.app.Activity;
 import android.content.Context;
@@ -33,7 +35,9 @@ public class LocalFilesActivity extends Activity {
 	private File f;
 	private MyAdapter adapter;
 	private Bitmap bm;
+	private Bitmap bitmapReference;
 	private static final int SHOWPICTURE = 1;
+	private ShowPictureHandler handler/*,handler2,handler3*/;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -53,8 +57,39 @@ public class LocalFilesActivity extends Activity {
 		}else{
 			background.setBackgroundResource(R.drawable.local_file_bg);
 		}
+		handler = new ShowPictureHandler();
 		adapter = new MyAdapter(this);
 		listview.setAdapter(adapter);
+		/*listview.setOnScrollListener(new OnScrollListener() {
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				if(scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+					System.out.println("正在滑动！");
+					//mImageFetcher.setPauseWork(true);
+					if(handler != null && handler2 != null && handler3 != null){
+						handler.setMoved(true);
+						handler2.setMoved(true);
+						handler3.setMoved(true);
+					}
+				} else {
+					System.out.println("不在滑动！");
+					if(handler != null && handler2 != null && handler3 != null){
+						handler.setMoved(false);
+						handler2.setMoved(false);
+						handler3.setMoved(false);
+					}
+					//mImageFetcher.setPauseWork(false);
+				}
+			}
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				// TODO Auto-generated method stub
+
+			}
+		});*/
 	}
 	
 	@Override
@@ -65,6 +100,14 @@ public class LocalFilesActivity extends Activity {
 	    	bm.recycle();
 	    	bm = null;
     	}
+		if((bitmapReference!=null)&&(!bitmapReference.isRecycled())){
+			bitmapReference.recycle();
+			bitmapReference = null;
+    	}
+		handler = null;
+		//handler2 = null;
+		//handler3 = null;
+		mList = null;
 	}
 	
 	@Override
@@ -96,19 +139,29 @@ public class LocalFilesActivity extends Activity {
 		private int position;
 		private ImageView iv;
 		
-		public ShowPictureHandler(int position, ImageView iv) {
+		/*public ShowPictureHandler(int position, ImageView iv) {
 			super();
 			this.position = position;
 			this.iv = iv;
-		}
+		}*/
+		
 		@Override
 		public void handleMessage(Message msg) {
 			// TODO Auto-generated method stub
 			super.handleMessage(msg);
 			switch (msg.what) {
 			case SHOWPICTURE:
-				bm = BitmapFactory.decodeFile(mList.get(position));
-	            iv.setImageBitmap(bm);
+				//while(!isMoved){
+				 synchronized(this){
+					position = msg.arg1;
+					iv = (ImageView)msg.obj;
+					bm = BitmapFactory.decodeFile(mList.get(position));
+		            iv.setImageBitmap(bm);
+		            adapter.maps.put(position, new SoftReference<Bitmap>(bm));
+		            System.out.println("position:"+position);
+				 }
+		            //return;
+				//}
 				break;
 
 			default:
@@ -119,10 +172,12 @@ public class LocalFilesActivity extends Activity {
 	
 	public class MyAdapter extends BaseAdapter{
 		private Context mContext;
+		private Map<Integer,SoftReference<Bitmap>> maps;
 		
 		public MyAdapter(Context mContext) {
 			super();
 			this.mContext = mContext;
+			this.maps = new HashMap<Integer,SoftReference<Bitmap>>();
 		}
 
 		@Override
@@ -198,9 +253,29 @@ public class LocalFilesActivity extends Activity {
             //holder.iv1.setImageBitmap(bm);
             
             holder.iv1.setTag(firstImagePostion);
-            ShowPictureHandler handler = new ShowPictureHandler(firstImagePostion,holder.iv1);
-            handler.sendEmptyMessage(SHOWPICTURE);
+            if(!maps.containsKey(firstImagePostion)){
+            	Message msg = new Message();
+        		msg.what = SHOWPICTURE;
+        		msg.obj = holder.iv1;
+        		msg.arg1 = firstImagePostion;
+        		handler.sendMessage(msg);
+	            //handler = new ShowPictureHandler(firstImagePostion,holder.iv1);
+	            //handler.sendEmptyMessage(SHOWPICTURE);
+            }else{
+            	SoftReference<Bitmap> reference = maps.get(firstImagePostion);  
+                bitmapReference = reference.get();  
+                if(bitmapReference != null)
+                	holder.iv1.setImageBitmap(bitmapReference);
+                else{
+                	Message msg = new Message();
+            		msg.what = SHOWPICTURE;
+            		msg.obj = holder.iv1;
+            		msg.arg1 = firstImagePostion;
+                	handler.sendMessage(msg);
+                }
+            }
             System.out.println(mList.get(firstImagePostion)+","+firstImagePostion);
+            
 	        if(secondImagePositon == mList.size()){
 	        	holder.iv2.setVisibility(View.GONE);
 	        	holder.iv3.setVisibility(View.GONE);
@@ -212,8 +287,30 @@ public class LocalFilesActivity extends Activity {
 	        
 	        //holder.iv2.setLayoutParams(lp);
 	        holder.iv2.setTag(secondImagePositon);
-	        ShowPictureHandler handler2 = new ShowPictureHandler(secondImagePositon,holder.iv2);
-            handler2.sendEmptyMessage(SHOWPICTURE);
+	        if(!maps.containsKey(secondImagePositon)){
+	        	//handler = new ShowPictureHandler(secondImagePositon,holder.iv2);
+	            //handler.sendEmptyMessage(SHOWPICTURE);
+	        	Message msg = new Message();
+        		msg.what = SHOWPICTURE;
+        		msg.obj = holder.iv2;
+        		msg.arg1 = secondImagePositon;
+            	handler.sendMessage(msg);
+            }else{
+            	SoftReference<Bitmap> reference = maps.get(secondImagePositon);  
+                bitmapReference = reference.get();  
+                if(bitmapReference != null)
+                	holder.iv2.setImageBitmap(bitmapReference);
+                else{
+                	//handler = new ShowPictureHandler(secondImagePositon,holder.iv2);
+    	            //handler.sendEmptyMessage(SHOWPICTURE);
+                	Message msg = new Message();
+            		msg.what = SHOWPICTURE;
+            		msg.obj = holder.iv2;
+            		msg.arg1 = secondImagePositon;
+                	handler.sendMessage(msg);
+                }
+            }
+	        
 	        System.out.println(mList.get(secondImagePositon)+","+secondImagePositon);
             if(thirdImagePositon == mList.size()){
             	holder.iv3.setVisibility(View.GONE);
@@ -225,8 +322,29 @@ public class LocalFilesActivity extends Activity {
 	        //holder.iv3.setImageBitmap(bm);
             //holder.iv3.setLayoutParams(lp);
             holder.iv3.setTag(thirdImagePositon);
-            ShowPictureHandler handler3 = new ShowPictureHandler(thirdImagePositon,holder.iv3);
-            handler3.sendEmptyMessage(SHOWPICTURE);
+            if(!maps.containsKey(thirdImagePositon)){
+            	//handler = new ShowPictureHandler(thirdImagePositon,holder.iv3);
+                //handler.sendEmptyMessage(SHOWPICTURE);
+            	Message msg = new Message();
+        		msg.what = SHOWPICTURE;
+        		msg.obj = holder.iv3;
+        		msg.arg1 = thirdImagePositon;
+            	handler.sendMessage(msg);
+            }else{
+            	SoftReference<Bitmap> reference = maps.get(thirdImagePositon);  
+                bitmapReference = reference.get();  
+                if(bitmapReference != null)
+                	holder.iv3.setImageBitmap(bitmapReference);
+                else{
+                	//handler = new ShowPictureHandler(thirdImagePositon,holder.iv3);
+                    //handler.sendEmptyMessage(SHOWPICTURE);
+                	Message msg = new Message();
+            		msg.what = SHOWPICTURE;
+            		msg.obj = holder.iv3;
+            		msg.arg1 = thirdImagePositon;
+                	handler.sendMessage(msg);
+                }
+            }
             System.out.println(mList.get(thirdImagePositon)+","+thirdImagePositon);
 			return convertView;
 		}

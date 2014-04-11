@@ -34,7 +34,7 @@ import com.android.howell.webcam.R;
 import com.howell.webcam.MyListView.OnRefreshListener;
 import com.howell.webcam.player.PlayerActivity;
 
-public class CameraList extends ListActivity implements OnItemClickListener {
+public class CameraList extends ListActivity{
 
     public static final int REQUEST_CODE = 100;
     private SoapManager mSoapManager;
@@ -384,9 +384,9 @@ public class CameraList extends ListActivity implements OnItemClickListener {
 				
 				holder.iv = (ImageView)convertView.findViewById(R.id.iv_picture);
 				holder.iv_play_icon = (ImageView)convertView.findViewById(R.id.iv_play_icon);
-				holder.playback = (LinearLayout)convertView.findViewById(R.id.tv_playback);
-				holder.set = (LinearLayout)convertView.findViewById(R.id.tv_set);
-				holder.about = (LinearLayout)convertView.findViewById(R.id.tv_about);
+				holder.playback = (ImageView)convertView.findViewById(R.id.iv_playback);
+				holder.set = (ImageView)convertView.findViewById(R.id.iv_set);
+				holder.about = (ImageView)convertView.findViewById(R.id.iv_about);
 				holder.tv = (TextView)convertView.findViewById(R.id.tv_name);
 				//holder.tv_online = (TextView)convertView.findViewById(R.id.tv_online);
 				holder.iv_offline = (ImageView)convertView.findViewById(R.id.iv_offline);
@@ -424,7 +424,7 @@ public class CameraList extends ListActivity implements OnItemClickListener {
 	        options.inSampleSize = 2;
 	        bm = BitmapFactory.decodeFile(list.get(position).getPicturePath(), options);
 	        if(bm == null){
-	        	holder.iv.setImageDrawable(getResources().getDrawable(R.drawable.card_camera_default_image));
+	        	holder.iv.setImageResource(R.drawable.card_camera_default_image);
 	        }else{
 	        	holder.iv.setImageBitmap(bm);
 	        }
@@ -439,7 +439,7 @@ public class CameraList extends ListActivity implements OnItemClickListener {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				if(arg0.getId() == R.id.tv_playback){
+				if(arg0.getId() == R.id.iv_playback){
 					if(!list.get(Integer.valueOf(arg0.getTag().toString())).isOnLine()){
 			    		MessageUtiles.postToast(getApplication(), getResources().getString(R.string.not_online_message),2000);
 			    		return;
@@ -453,7 +453,7 @@ public class CameraList extends ListActivity implements OnItemClickListener {
 					Intent intent = new Intent(CameraList.this, VideoList.class);
 		            intent.putExtra("Device", ((NodeDetails) getItem(Integer.valueOf(arg0.getTag().toString()))));
 		            startActivity(intent);
-				}else if(arg0.getId() == R.id.tv_set){
+				}else if(arg0.getId() == R.id.iv_set){
 					//System.out.println("����");
 					if(!list.get(Integer.valueOf(arg0.getTag().toString())).isOnLine()){
 			    		MessageUtiles.postToast(getApplication(), getResources().getString(R.string.not_online_message),2000);
@@ -462,7 +462,7 @@ public class CameraList extends ListActivity implements OnItemClickListener {
 					Intent intent = new Intent(CameraList.this,DeviceSetActivity.class);
 					intent.putExtra("Device", (NodeDetails) getItem(Integer.valueOf(arg0.getTag().toString())));
 					startActivity(intent);
-				}else if(arg0.getId() == R.id.tv_about){
+				}else if(arg0.getId() == R.id.iv_about){
 					//System.out.println("����");
 					Intent intent = new Intent(CameraList.this,CameraProperty.class);
 					intent.putExtra("Device", (NodeDetails) getItem(Integer.valueOf(arg0.getTag().toString())));
@@ -484,20 +484,9 @@ public class CameraList extends ListActivity implements OnItemClickListener {
     
 	public static class ViewHolder {
 		public ImageView iv,iv_play_icon,iv_offline;
-	    public LinearLayout playback,set,about/*,tv_online*/;
+		/*public LinearLayout playback,set,about,tv_online*/;
+	    public ImageView about,set,playback;
 	    public TextView tv;
 	}
 
-    @Override
-    public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-        /*Integer tag = (Integer) arg1.getTag();
-        if (tag == 0) {
-        	MessageUtiles.postToast(getApplicationContext(), getResources().getString(R.string.not_online_message),1000);
-        } else if (tag == 1) {
-            Intent intent = new Intent(CameraList.this, PlayerActivity.class);
-            intent.putExtra("arg", list.get((int) arg3));
-            startActivity(intent);
-        }*/
-    }
-    
 }

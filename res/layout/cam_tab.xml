@@ -46,7 +46,7 @@
                 style="@style/main_tab_bottom"
                 android:layout_marginTop="2.0dip"
                 android:drawableTop="@drawable/tab_files_selector"
-                android:text="@string/local_files"
+                android:text="@string/media_lib"
                 android:textColor="@color/light_gray" />
  <!--  android:background="@drawable/tab_press"-->
             <RadioButton
@@ -55,7 +55,7 @@
                 android:layout_marginTop="2.0dip"
                 android:drawableTop="@drawable/tab_set_selector"
 
-                android:text="@string/settings"
+                android:text="@string/more"
                 android:textColor="@color/light_gray" />
  <!--  android:background="@drawable/tab_press"-->
         </RadioGroup>

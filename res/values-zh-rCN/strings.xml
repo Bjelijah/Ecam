@@ -90,6 +90,8 @@
 	<string name="wifi_intensity">设备wifi信号强度</string>
 	<string name="set_new_password">正在设置新密码</string>
 	<string name="set_new_phone_num">正在设置新手机号</string>
+	<string name="more">更多</string>
+	<string name="media_lib">媒体库</string>
 	
 	<string name="QR_code">二维码</string>
 	<string name="msg_default_status">将二维码放入框内，即可自动扫描</string>

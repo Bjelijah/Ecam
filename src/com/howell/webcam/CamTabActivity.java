@@ -27,19 +27,19 @@ public class CamTabActivity extends TabActivity implements
     private Activities mActivities;
     private HomeKeyEventBroadCastReceiver receiver;
     
-    private SoapManager mSoapManager;
+    //private SoapManager mSoapManager;
     static int updateNum;
     
     static boolean cameraVerThread;
     
-    private static BadgeView badge;
+    //private static BadgeView badge;
     ArrayList<NodeDetails> list;
     LoginResponse mResponse;
     private static final int TOGGLEON = 1;
     private static final int TOGGLEOFF = 2;
     private static boolean hasToggled;
     
-    static Handler handler = new Handler(){
+    /*static Handler handler = new Handler(){
     	@Override
     	public void handleMessage(Message msg) {
     		// TODO Auto-generated method stub
@@ -51,7 +51,7 @@ public class CamTabActivity extends TabActivity implements
     			badge.toggle(0);
     		}
     	}
-    };
+    };*/
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +94,7 @@ public class CamTabActivity extends TabActivity implements
                 .setContent(new Intent(this, Settings.class)));
         mHost.setCurrentTab(0);  
         
-        badge = new BadgeView(this, mGroup);
+       /* badge = new BadgeView(this, mGroup);
         
         mSoapManager = SoapManager.getInstance();
         mResponse = mSoapManager.getLoginResponse();
@@ -138,7 +138,7 @@ public class CamTabActivity extends TabActivity implements
 //                }
         		
         	}
-        }.start();
+        }.start();*/
     }
     
 	@Override
@@ -167,6 +167,7 @@ public class CamTabActivity extends TabActivity implements
             break;
         }
     }
+	
     
     @Override
     protected void onPause() {
@@ -183,13 +184,13 @@ public class CamTabActivity extends TabActivity implements
     	// TODO Auto-generated method stub
     	super.onRestart();
     	Log.e("CamTab","onRestart:"+hasToggled);
-    	if(updateNum == 0){
+    	/*if(updateNum == 0){
     		if(!hasToggled){
     			System.out.println("toggle");
     			handler.sendEmptyMessage(TOGGLEOFF);
     			hasToggled = true;
     		}
-    	}
+    	}*/
     }
     @Override
     protected void onResume() {

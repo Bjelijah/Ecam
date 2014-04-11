@@ -83,7 +83,7 @@
                 android:background="@color/card_tab_blue" >
 
                 <LinearLayout
-                    android:id="@+id/tv_playback"
+                    
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dip"
@@ -92,30 +92,28 @@
                     android:gravity="center" >
 
                     <ImageView
+                        android:id="@+id/iv_playback"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="4dip"
-                        android:gravity="center"
-                        android:src="@drawable/card_tab_playback" />
+                        android:src="@drawable/card_playback_selector" />
 
-                    <TextView
+                    <!--  <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="录像"
                         android:textColor="@color/light_gray"
-                        android:textSize="18sp" />
+                        android:textSize="18sp" />-->
                 </LinearLayout>
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="1"
                     android:src="@drawable/divide_shu" />
 
                 <LinearLayout
-                    android:id="@+id/tv_set"
+                    
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dip"
@@ -124,30 +122,28 @@
                     android:gravity="center" >
 
                     <ImageView
+                        android:id="@+id/iv_set"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="4dip"
                         android:gravity="center"
-                        android:src="@drawable/card_tab_setting" />
+                        android:src="@drawable/card_setting_selector" />
 
-                    <TextView
+                    <!--  <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="设置"
                         android:textColor="@color/light_gray"
-                        android:textSize="18sp" />
+                        android:textSize="18sp" />-->
                 </LinearLayout>
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="1"
                     android:src="@drawable/divide_shu" />
 
                 <LinearLayout
-                    android:id="@+id/tv_about"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dip"
@@ -156,19 +152,19 @@
                     android:gravity="center" >
 
                     <ImageView
+                        android:id="@+id/iv_about"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="4dip"
                         android:gravity="center"
-                        android:src="@drawable/card_tab_property" />
+                        android:src="@drawable/card_property_selector" />
 
-                    <TextView
+                    <!--  <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="属性"
                         android:textColor="@color/light_gray"
-                        android:textSize="18sp" />
+                        android:textSize="18sp" />-->
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

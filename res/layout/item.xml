@@ -91,10 +91,11 @@
                     android:layout_weight="1"
                     android:gravity="center" >
 
-                    <ImageView
+                    <ImageButton
                         android:id="@+id/iv_playback"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:background="#00000000"
                         android:src="@drawable/card_playback_selector" />
 
                     <!--  <TextView
@@ -121,11 +122,11 @@
                     android:layout_weight="1"
                     android:gravity="center" >
 
-                    <ImageView
+                    <ImageButton
                         android:id="@+id/iv_set"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
+                        android:background="#00000000"
                         android:src="@drawable/card_setting_selector" />
 
                     <!--  <TextView
@@ -151,11 +152,11 @@
                     android:layout_weight="1"
                     android:gravity="center" >
 
-                    <ImageView
+                    <ImageButton
                         android:id="@+id/iv_about"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
+                        android:background="#00000000"
                         android:src="@drawable/card_property_selector" />
 
                     <!--  <TextView

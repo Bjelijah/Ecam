@@ -941,20 +941,33 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 			System.out.println("Down");
 		}
 		isAnimationStart = true;
-//		System.out.println("flingAAAAAAAA");
+		System.out.println("flingAAAAAAAA");
 	    translateAnimation = new TranslateAnimation(fromXDelta, toXDelta,fromYDelta,toYDelta);
-//	    System.out.println("flingBBBBBBBB");
-	    translateAnimation.setAnimationListener(new AnimationListener() {
+	    System.out.println("flingBBBBBBBB");
+	    
+	    System.out.println("flingCCCCCCCC");
+	    translateAnimation.setFillAfter(true);
+	    System.out.println("flingDDDDDDDD");
+	    //锟斤拷始锟斤拷 Alpha锟斤拷锟斤拷  
+	    //Animation alphaAnimation = new AlphaAnimation(0.1f, 1.0f);  
+	      
+	    //锟斤拷锟矫讹拷锟斤拷时锟斤拷 (锟斤拷锟矫碉拷每锟斤拷锟斤拷锟斤拷)  
+	    System.out.println("flingEEEEEEE");
+	    translateAnimation.setDuration(2000);  
+	    System.out.println("flingFFFFFFFF");
+		
+		
+		translateAnimation.setAnimationListener(new AnimationListener() {
 			
 			@Override
 			public void onAnimationStart(Animation arg0) {
 				// TODO Auto-generated method stub
-//				System.out.println("Fling00000000");
+				System.out.println("Fling00000000");
 				animationAim.setVisibility(View.VISIBLE);
-//				System.out.println("Fling1111111");
+				System.out.println("Fling1111111");
 				animationBackground.setVisibility(View.VISIBLE);
 //				mAnimationLayout.setVisibility(View.VISIBLE);
-//				System.out.println("Fling2222222");
+				System.out.println("Fling2222222");
 			}
 			
 			@Override
@@ -966,42 +979,22 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 			@Override
 			public void onAnimationEnd(Animation arg0) {
 				// TODO Auto-generated method stub
-//				System.out.println("Fling333333333");
+				System.out.println("Fling333333333");
 				animationAim.setVisibility(View.GONE);
-//				System.out.println("Fling44444444");
+				System.out.println("Fling44444444");
 				animationBackground.setVisibility(View.GONE);
-//				System.out.println("Fling5555555");
+				System.out.println("Fling5555555");
 				animationAim.clearAnimation();
 //				mAnimationLayout.setVisibility(View.INVISIBLE);
-//				System.out.println("Fling66666666");
+				System.out.println("Fling66666666");
 				isAnimationStart = false;
 			}
         });
-//	    System.out.println("flingCCCCCCCC");
-	    //translateAnimation.setFillAfter(true);
-//	    System.out.println("flingDDDDDDDD");
-	    //锟斤拷始锟斤拷 Alpha锟斤拷锟斤拷  
-	    //Animation alphaAnimation = new AlphaAnimation(0.1f, 1.0f);  
-	      
-	    //锟斤拷锟矫讹拷锟斤拷时锟斤拷 (锟斤拷锟矫碉拷每锟斤拷锟斤拷锟斤拷)  
-//	    System.out.println("flingEEEEEEE");
-	    translateAnimation.setDuration(2000);  
-//	    System.out.println("flingFFFFFFFF");
+		
 		animationAim.startAnimation(translateAnimation);  
 //		System.out.println("flingGGGGGGGG");
 		
 	}
-	
-	Thread delay = new Thread(){
-		public void run() {
-			try {
-				Thread.sleep(4000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		};
-	};
 	
 	@Override
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,

@@ -26,15 +26,15 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.howell.webcam.R;
 import com.howell.webcam.MyListView.OnRefreshListener;
 import com.howell.webcam.player.PlayerActivity;
 
-public class CameraList extends ListActivity{
+public class CameraList extends ListActivity {
 
     public static final int REQUEST_CODE = 100;
     private SoapManager mSoapManager;
@@ -73,7 +73,7 @@ public class CameraList extends ListActivity{
 	        adapter = new CameraListAdapter(this);
             setListAdapter(adapter);
 	        
-            //getListView().setOnItemClickListener(this);
+//            getListView().setOnItemClickListener(this);
         }catch (Exception e) {
 			// TODO: handle exception
         	Log.e("!!!", "null pointer exception");
@@ -384,9 +384,9 @@ public class CameraList extends ListActivity{
 				
 				holder.iv = (ImageView)convertView.findViewById(R.id.iv_picture);
 				holder.iv_play_icon = (ImageView)convertView.findViewById(R.id.iv_play_icon);
-				holder.playback = (ImageView)convertView.findViewById(R.id.iv_playback);
-				holder.set = (ImageView)convertView.findViewById(R.id.iv_set);
-				holder.about = (ImageView)convertView.findViewById(R.id.iv_about);
+				holder.playback = (ImageButton)convertView.findViewById(R.id.iv_playback);
+				holder.set = (ImageButton)convertView.findViewById(R.id.iv_set);
+				holder.about = (ImageButton)convertView.findViewById(R.id.iv_about);
 				holder.tv = (TextView)convertView.findViewById(R.id.tv_name);
 				//holder.tv_online = (TextView)convertView.findViewById(R.id.tv_online);
 				holder.iv_offline = (ImageView)convertView.findViewById(R.id.iv_offline);
@@ -398,6 +398,11 @@ public class CameraList extends ListActivity{
                 holder.set.setOnClickListener(listener);
                 holder.about.setOnClickListener(listener);
                 holder.iv.setOnClickListener(listener);
+                
+//                holder.playback.setOnTouchListener(listener);
+//                holder.set.setOnTouchListener(listener);
+//                holder.about.setOnTouchListener(listener);
+//                holder.iv.setOnTouchListener(listener);
             }else{
             	holder = (ViewHolder)convertView.getTag();
             }
@@ -433,6 +438,25 @@ public class CameraList extends ListActivity{
         	//}
 			return convertView;
         }
+        
+//        private OnTouchListener listener = new OnTouchListener() {
+//			
+//			@Override
+//			public boolean onTouch(View view, MotionEvent event) {
+//				// TODO Auto-generated method stub
+//				if(view.getId() == R.id.iv_playback){
+//					ImageView iv = (ImageView)view;
+//					if(event.getAction() == MotionEvent.ACTION_DOWN){   
+//						iv.setImageResource(R.drawable.card_tab_playback_highlight);   
+//		                Log.i("TestAndroid Button", "MotionEvent.ACTION_DOWN");
+//		            }else if(event.getAction() == MotionEvent.ACTION_UP){   
+//		                iv.setImageResource(R.drawable.card_tab_playback); 
+//		                Log.i("TestAndroid Button", "MotionEvent.ACTION_UP");
+//		            } 
+//				}
+//				return false;
+//			}
+//		};
 
         private OnClickListener listener = new OnClickListener() {
 			
@@ -485,7 +509,7 @@ public class CameraList extends ListActivity{
 	public static class ViewHolder {
 		public ImageView iv,iv_play_icon,iv_offline;
 		/*public LinearLayout playback,set,about,tv_online*/;
-	    public ImageView about,set,playback;
+	    public ImageButton about,set,playback;
 	    public TextView tv;
 	}
 

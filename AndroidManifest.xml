@@ -26,8 +26,7 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"></uses-permission>  
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>  
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission> 
-
-
+    
     <!-- Optional for location -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -40,6 +39,10 @@
     <uses-permission android:name="android.permission.FLASHLIGHT"/>
 	<uses-feature android:name="android.hardware.camera"/>
 	<uses-feature android:name="android.hardware.camera.autofocus"/>
+	
+	<uses-permission android:name="android.permission.RECORD_AUDIO"></uses-permission>
+	<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"></uses-permission>
+	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
 
     <uses-sdk
         android:minSdkVersion="10"
@@ -53,6 +56,12 @@
         >
         <activity
             android:name="com.wyy.twodimcode.CaptureActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar">
+        </activity>
+        
+        <activity
+            android:name="com.howell.webcam.SetDeviceWifi"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar">
         </activity>

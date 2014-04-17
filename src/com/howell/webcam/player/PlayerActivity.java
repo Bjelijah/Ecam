@@ -931,7 +931,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		 //锟斤拷始锟斤拷 Translate锟斤拷锟斤拷  
 	   // translateAnimation = new TranslateAnimation(0.1f, 100.0f,0.1f,0.1f); 
 		System.out.println("Fling isAnimationStart:"+isAnimationStart);
-		if(fromXDelta == 0&&toXDelta ==40&&fromYDelta ==0&&toYDelta ==0){
+		/*if(fromXDelta == 0&&toXDelta ==40&&fromYDelta ==0&&toYDelta ==0){
 			System.out.println("Right");
 		}else if(fromXDelta == 0&&toXDelta == -40&&fromYDelta ==0&&toYDelta ==0){
 			System.out.println("Left");
@@ -939,17 +939,15 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 			System.out.println("Up");
 		}else{
 			System.out.println("Down");
-		}
+		}*/
 		isAnimationStart = true;
 		System.out.println("flingAAAAAAAA");
 	    translateAnimation = new TranslateAnimation(fromXDelta, toXDelta,fromYDelta,toYDelta);
 	    System.out.println("flingBBBBBBBB");
 	    
 	    System.out.println("flingCCCCCCCC");
-	    translateAnimation.setFillAfter(true);
+	    //translateAnimation.setFillAfter(true);
 	    System.out.println("flingDDDDDDDD");
-	    //锟斤拷始锟斤拷 Alpha锟斤拷锟斤拷  
-	    //Animation alphaAnimation = new AlphaAnimation(0.1f, 1.0f);  
 	      
 	    //锟斤拷锟矫讹拷锟斤拷时锟斤拷 (锟斤拷锟矫碉拷每锟斤拷锟斤拷锟斤拷)  
 	    System.out.println("flingEEEEEEE");
@@ -962,12 +960,12 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 			@Override
 			public void onAnimationStart(Animation arg0) {
 				// TODO Auto-generated method stub
-				System.out.println("Fling00000000");
-				animationAim.setVisibility(View.VISIBLE);
-				System.out.println("Fling1111111");
-				animationBackground.setVisibility(View.VISIBLE);
-//				mAnimationLayout.setVisibility(View.VISIBLE);
-				System.out.println("Fling2222222");
+//				System.out.println("Fling00000000");
+//				animationAim.setVisibility(View.VISIBLE);
+//				System.out.println("Fling1111111");
+//				animationBackground.setVisibility(View.VISIBLE);
+////				mAnimationLayout.setVisibility(View.VISIBLE);
+//				System.out.println("Fling2222222");
 			}
 			
 			@Override
@@ -1025,6 +1023,15 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	        	return true;
 	        }
         }
+        
+        //显示平移动画素材
+        System.out.println("Fling00000000");
+		animationAim.setVisibility(View.VISIBLE);
+		System.out.println("Fling1111111");
+		animationBackground.setVisibility(View.VISIBLE);
+//		mAnimationLayout.setVisibility(View.VISIBLE);
+		System.out.println("Fling2222222");
+		
         final int FLING_MIN_DISTANCE = 100, FLING_MIN_VELOCITY = 200;   
         if (e1.getX() - e2.getX() > FLING_MIN_DISTANCE && Math.abs(velocityX) > FLING_MIN_VELOCITY) {   
             // Fling left   

@@ -17,6 +17,7 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -108,6 +109,10 @@ public class LocalFilesActivity extends Activity {
 		//handler2 = null;
 		//handler3 = null;
 		mList = null;
+		if(adapter.maps != null){
+			adapter.maps.clear();
+			adapter.maps = null;
+		}
 	}
 	
 	@Override
@@ -151,7 +156,6 @@ public class LocalFilesActivity extends Activity {
 			super.handleMessage(msg);
 			switch (msg.what) {
 			case SHOWPICTURE:
-				//while(!isMoved){
 				 synchronized(this){
 					position = msg.arg1;
 					iv = (ImageView)msg.obj;
@@ -160,8 +164,6 @@ public class LocalFilesActivity extends Activity {
 		            adapter.maps.put(position, new SoftReference<Bitmap>(bm));
 		            System.out.println("position:"+position);
 				 }
-		            //return;
-				//}
 				break;
 
 			default:
@@ -170,7 +172,21 @@ public class LocalFilesActivity extends Activity {
 		}
 	}
 	
-	public class MyAdapter extends BaseAdapter{
+//	class MyThread extends Thread{
+//		private Message msg;
+//
+//		public MyThread(Message msg) {
+//			super();
+//			this.msg = msg;
+//		}
+//		
+//		public void run() {
+//			handler.sendMessage(msg);
+//		};
+//    	
+//	}
+	
+	public class MyAdapter extends BaseAdapter {
 		private Context mContext;
 		private Map<Integer,SoftReference<Bitmap>> maps;
 		
@@ -259,8 +275,8 @@ public class LocalFilesActivity extends Activity {
         		msg.obj = holder.iv1;
         		msg.arg1 = firstImagePostion;
         		handler.sendMessage(msg);
-	            //handler = new ShowPictureHandler(firstImagePostion,holder.iv1);
-	            //handler.sendEmptyMessage(SHOWPICTURE);
+//        		MyThread thread = new MyThread(msg);
+//        		thread.start();
             }else{
             	SoftReference<Bitmap> reference = maps.get(firstImagePostion);  
                 bitmapReference = reference.get();  
@@ -272,6 +288,8 @@ public class LocalFilesActivity extends Activity {
             		msg.obj = holder.iv1;
             		msg.arg1 = firstImagePostion;
                 	handler.sendMessage(msg);
+//            		MyThread thread = new MyThread(msg);
+//            		thread.start();
                 }
             }
             System.out.println(mList.get(firstImagePostion)+","+firstImagePostion);
@@ -295,6 +313,8 @@ public class LocalFilesActivity extends Activity {
         		msg.obj = holder.iv2;
         		msg.arg1 = secondImagePositon;
             	handler.sendMessage(msg);
+//        		MyThread thread = new MyThread(msg);
+//        		thread.start();
             }else{
             	SoftReference<Bitmap> reference = maps.get(secondImagePositon);  
                 bitmapReference = reference.get();  
@@ -308,6 +328,8 @@ public class LocalFilesActivity extends Activity {
             		msg.obj = holder.iv2;
             		msg.arg1 = secondImagePositon;
                 	handler.sendMessage(msg);
+//            		MyThread thread = new MyThread(msg);
+//            		thread.start();
                 }
             }
 	        
@@ -330,6 +352,8 @@ public class LocalFilesActivity extends Activity {
         		msg.obj = holder.iv3;
         		msg.arg1 = thirdImagePositon;
             	handler.sendMessage(msg);
+//        		MyThread thread = new MyThread(msg);
+//        		thread.start();
             }else{
             	SoftReference<Bitmap> reference = maps.get(thirdImagePositon);  
                 bitmapReference = reference.get();  
@@ -343,11 +367,14 @@ public class LocalFilesActivity extends Activity {
             		msg.obj = holder.iv3;
             		msg.arg1 = thirdImagePositon;
                 	handler.sendMessage(msg);
+//            		MyThread thread = new MyThread(msg);
+//            		thread.start();
                 }
             }
             System.out.println(mList.get(thirdImagePositon)+","+thirdImagePositon);
 			return convertView;
 		}
+
 	}
 	
 	public static class ViewHolder {

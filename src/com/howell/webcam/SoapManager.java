@@ -95,6 +95,7 @@ public class SoapManager implements Serializable {
         return soapObject;
     }
 
+//	MCU登录
     public LoginResponse getUserLoginRes(LoginRequest loginRequest) {
     	Log.e("SoapManager", "getUserLoginRes");
         setLoginRequest(loginRequest);
@@ -158,7 +159,7 @@ public class SoapManager implements Serializable {
     } 
     
     
-    // queryDevice
+    // 设备状态查询
     public QueryDeviceRes getQueryDeviceRes(QueryDeviceReq req) {
     	Log.e("SoapManager", "getQueryDeviceRes");
         QueryDeviceRes queryDeviceRes = new QueryDeviceRes();
@@ -274,7 +275,7 @@ public class SoapManager implements Serializable {
         return queryDeviceRes;
     }
 
-    // invite
+    // 请求视频流
     public InviteResponse getIviteRes(InviteRequest req) {
     	Log.e("SoapManager", "getIviteRes");
         InviteResponse inviteRes = new InviteResponse();
@@ -306,6 +307,7 @@ public class SoapManager implements Serializable {
         return inviteRes;
     }
     
+//    视频流断开
     public ByeResponse getByeRes(ByeRequest req) {
     	Log.e("SoapManager", "getByeRes");
         ByeResponse byeRes = new ByeResponse();
@@ -331,6 +333,7 @@ public class SoapManager implements Serializable {
         return byeRes;
     }
 
+//    查询账户信息
     public AccountResponse getAccountRes(AccountRequest req) {
     	Log.e("SoapManager", "getAccountRes");
         AccountResponse accountRes = new AccountResponse();
@@ -384,6 +387,7 @@ public class SoapManager implements Serializable {
         return accountRes;
     }
 
+//    摄像头音视频流编码参数查询
     public CodingParamRes getCodingParamRes(CodingParamReq req) {
     	Log.e("SoapManager", "getCodingParamRes");
         CodingParamRes res = new CodingParamRes();
@@ -470,7 +474,7 @@ public class SoapManager implements Serializable {
 //        Log.e("-----222----->>>>", "result = " + result.toString());
 //    }
 
-
+//		摄像头音视频编码参数设置 
     public void setCodingParam(CodingParamRes res) {
     	Log.e("SoapManager", "setCodingParam");
         SoapObject rpc = new SoapObject(sNameSpace, "setCodingParamReq");
@@ -498,6 +502,7 @@ public class SoapManager implements Serializable {
 		}
     }
     
+//    运动侦测参数查询
     public VMDParamRes getVMDParam(VMDParamReq req) {
     	Log.e("SoapManager", "getVMDParam");
     	VMDParamRes res = new VMDParamRes();
@@ -552,6 +557,7 @@ public class SoapManager implements Serializable {
         return res;
     }
     
+//    运动侦测参数设置
     public void setVMDParam(VMDParamRes res) {
     	//TODO
     	
@@ -583,7 +589,7 @@ public class SoapManager implements Serializable {
 		}
     }
 
-
+//		设备视频调节参数设置
     public SetVideoParamRes getSetVideoParamRes(SetVideoParamReq req){
     	SetVideoParamRes res = new SetVideoParamRes();
     	SoapObject rpc = new SoapObject(sNameSpace, "setVideoParamReq");
@@ -602,6 +608,7 @@ public class SoapManager implements Serializable {
     	return res;
     }
     
+//    设备视频调节参数查询 （旋转 亮度等）
     public GetVideoParamRes getGetVideoParamRes(GetVideoParamReq req){
     	GetVideoParamRes res = new GetVideoParamRes();
     	SoapObject rpc = new SoapObject(sNameSpace, "getVideoParamReq");
@@ -622,6 +629,7 @@ public class SoapManager implements Serializable {
         return res;
     }
     
+//    查询视频存储记录
     public VodSearchRes getVodSearchReq(String account, String loginSession,
             String devID, int channelNo, String streamType,int pageNo,String startTime,String endTime) {
         SoapObject rpc = new SoapObject(sNameSpace, "vodSearchReq");
@@ -698,6 +706,7 @@ public class SoapManager implements Serializable {
         return res;
     }
     
+//    递交NAT结果（Other-其他 TURN-转发 STUN-穿透 UPnP-直连）
     public NotifyNATResultRes getNotifyNATResultRes(NotifyNATResultReq req){
     	Log.e("SoapManager", "getNotifyNATResultRes");
     	NotifyNATResultRes res = new NotifyNATResultRes();
@@ -717,6 +726,7 @@ public class SoapManager implements Serializable {
     	return res;
     }
     
+//    NAT服务器查询（STUN TURN server）
     public GetNATServerRes getGetNATServerRes(GetNATServerReq req){
     	Log.e("SoapManager", "getGetNATServerRes");
 //    	GetNATServerRes res = new GetNATServerRes();
@@ -753,6 +763,7 @@ public class SoapManager implements Serializable {
     	return mGetNATServerRes;
     }
     
+//    Android推送服务注册
     public UpdateAndroidTokenRes GetUpdateAndroidTokenRes(UpdateAndroidTokenReq req){
     	UpdateAndroidTokenRes res = new UpdateAndroidTokenRes();
     	SoapObject rpc = new SoapObject(sNameSpace, "updateAndroidTokenReq");
@@ -772,6 +783,7 @@ public class SoapManager implements Serializable {
     	return res;
     }
     
+//    查询Android推送服务
     public QueryAndroidTokenRes GetQueryAndroidTokenRes(QueryAndroidTokenReq req){
     	QueryAndroidTokenRes res = new QueryAndroidTokenRes();
     	SoapObject rpc = new SoapObject(sNameSpace, "queryAndroidTokenReq");
@@ -794,6 +806,7 @@ public class SoapManager implements Serializable {
     	return res;
     }
     
+//    MCU云台控制
     public PtzControlRes GetPtzControlRes(PtzControlReq req){
     	PtzControlRes res = new PtzControlRes();
     	SoapObject rpc = new SoapObject(sNameSpace, "ptzControlReq");
@@ -812,6 +825,7 @@ public class SoapManager implements Serializable {
     	return res;
     }
     
+//    查询客户端软件的最新版本号
     public QueryClientVersionRes getQueryClientVersionRes(QueryClientVersionReq req){
     	QueryClientVersionRes res = new QueryClientVersionRes();
     	SoapObject rpc = new SoapObject(sNameSpace, "queryClientVersionReq");
@@ -830,6 +844,7 @@ public class SoapManager implements Serializable {
     	return res;
     }
     
+//    设备固件版本查询
     public GetDevVerRes getGetDevVerRes(GetDevVerReq req){
     	GetDevVerRes res = new GetDevVerRes();
     	SoapObject rpc = new SoapObject(sNameSpace, "getDevVerReq");
@@ -850,6 +865,7 @@ public class SoapManager implements Serializable {
     	return res;
     }
     
+//    远程升级通知
     public UpgradeDevVerRes getUpgradeDevVerRes(UpgradeDevVerReq req){
     	UpgradeDevVerRes res = new UpgradeDevVerRes();
     	SoapObject rpc = new SoapObject(sNameSpace, "upgradeDevVerReq");
@@ -866,6 +882,7 @@ public class SoapManager implements Serializable {
     	return res;
     }
     
+//    查询摄像机辅助器状态
     public GetAuxiliaryRes getGetAuxiliaryRes(GetAuxiliaryReq req){
     	GetAuxiliaryRes res = new GetAuxiliaryRes();
     	SoapObject rpc = new SoapObject(sNameSpace, "getAuxiliaryReq");
@@ -885,6 +902,7 @@ public class SoapManager implements Serializable {
     	return res;
     }
     
+//    设置摄像机辅助器状态 （辅助照明 信号灯）
     public SetAuxiliaryRes getSetAuxiliaryRes(SetAuxiliaryReq req){
     	SetAuxiliaryRes res = new SetAuxiliaryRes();
     	SoapObject rpc = new SoapObject(sNameSpace, "setAuxiliaryReq");
@@ -903,6 +921,7 @@ public class SoapManager implements Serializable {
     	return res;
     }
 
+//    开通Android推送服务
     public SubscribeAndroidPushRes getSubscribeAndroidPushRes(SubscribeAndroidPushReq req){
     	SubscribeAndroidPushRes res = new SubscribeAndroidPushRes();
     	SoapObject rpc = new SoapObject(sNameSpace, "subscribeAndroidPushReq");
@@ -921,6 +940,7 @@ public class SoapManager implements Serializable {
     	return res;
     }
     
+//    查询无线网络状态
     public GetWirelessNetworkRes getGetWirelessNetworkRes(GetWirelessNetworkReq req){
     	GetWirelessNetworkRes res = new GetWirelessNetworkRes();
     	SoapObject rpc = new SoapObject(sNameSpace, "getWirelessNetworkReq");
@@ -943,6 +963,7 @@ public class SoapManager implements Serializable {
     	return res;
     }
     
+//    修改账户密码
     public UpdatePasswordRes getUpdatePasswordRes(UpdatePasswordReq req){
     	UpdatePasswordRes res = new UpdatePasswordRes();
     	SoapObject rpc = new SoapObject(sNameSpace, "updatePasswordReq");
@@ -960,6 +981,7 @@ public class SoapManager implements Serializable {
     	return res;
     }
     
+//    修改账户信息
     public UpdateAccountRes getUpdateAccountRes(UpdateAccountReq req){
     	UpdateAccountRes res = new UpdateAccountRes();
     	SoapObject rpc = new SoapObject(sNameSpace, "updateAccountReq");
@@ -975,6 +997,45 @@ public class SoapManager implements Serializable {
 				// TODO: handle exception
 		}
     	return res;
+    }
+    
+//    创建账户
+    public CreateAccountRes getCreateAccountRes(CreateAccountReq req){
+    	CreateAccountRes res = new CreateAccountRes();
+    	SoapObject rpc = new SoapObject(sNameSpace, "createAccountReq");
+    	rpc.addProperty("Account", req.getAccount());
+    	rpc.addProperty("Username", req.getUsername());
+    	rpc.addProperty("Password", req.getPassword());
+    	    	//rpc.addProperty("Email", req.getEmail());
+    	rpc.addProperty("MobileTel", req.getMobileTel());
+    	SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/createAccount");
+    	try{
+    		Object result = object.getProperty("result");
+    	 	res.setResult(result.toString());
+    	}catch (Exception e) {
+    		// TODO: handle exception
+    	}
+    	   	return res;
+    }
+    
+//    用户绑定设备
+    public AddDeviceRes getAddDeviceRes(AddDeviceReq req){
+    	AddDeviceRes res = new AddDeviceRes();
+    	SoapObject rpc = new SoapObject(sNameSpace, "addDeviceReq");
+    	rpc.addProperty("Account", req.getAccount());
+    	rpc.addProperty("LoginSession", req.getLoginSession());
+    	rpc.addProperty("DevID", req.getDevID());
+    	rpc.addProperty("DevKey", req.getDevKey());
+    	rpc.addProperty("DevName", req.getDevName());
+    	rpc.addProperty("Forcible", req.isForcible());
+    	SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/addDevice");
+    	try{
+    	 	Object result = object.getProperty("result");
+    	 	res.setResult(result.toString());
+    	}catch (Exception e) {
+    		// TODO: handle exception
+    	}
+    	    return res;
     }
     
 	@Override

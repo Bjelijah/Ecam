@@ -46,6 +46,8 @@ public class CameraList extends ListActivity {
     private static final int postUpdateMessage = 2;
     private static final int refreshCameraList = 3;
     
+    private ImageButton mAddDevice;
+    
     private String url;
     
     private Activities mActivities;
@@ -81,6 +83,10 @@ public class CameraList extends ListActivity {
 //        	startActivity(intent);
 //        	finish();
 		}
+        
+        mAddDevice = (ImageButton)findViewById(R.id.ib_add);
+        mAddDevice.setOnClickListener(adapter.listener);
+        
         listView = (MyListView)findViewById(android.R.id.list);
         listView.setonRefreshListener(new OnRefreshListener() {
 			public void onRefresh() {
@@ -385,6 +391,8 @@ public class CameraList extends ListActivity {
 				holder.iv = (ImageView)convertView.findViewById(R.id.iv_picture);
 				holder.iv_play_icon = (ImageView)convertView.findViewById(R.id.iv_play_icon);
 				holder.playback = (ImageButton)convertView.findViewById(R.id.iv_playback);
+				//holder.iv_wifi = (ImageView)convertView.findViewById(R.id.iv_wifi_idensity);
+				holder.tv_wifi = (TextView)convertView.findViewById(R.id.tv_wifi_idensity);
 				holder.set = (ImageButton)convertView.findViewById(R.id.iv_set);
 				holder.about = (ImageButton)convertView.findViewById(R.id.iv_about);
 				holder.tv = (TextView)convertView.findViewById(R.id.tv_name);
@@ -393,6 +401,9 @@ public class CameraList extends ListActivity {
 				
 				holder.tv.setTextColor(Color.BLACK);
                 convertView.setTag(holder);
+                
+                holder.iv.setLayoutParams(new FrameLayout.LayoutParams(imageWidth, imageHeight));
+    	        holder.iv_play_icon.setLayoutParams(new FrameLayout.LayoutParams(imageWidth, imageHeight));
 		        
                 holder.playback.setOnClickListener(listener);
                 holder.set.setOnClickListener(listener);
@@ -413,15 +424,37 @@ public class CameraList extends ListActivity {
             holder.about.setTag(position);
             //holder.tv_online.setTag(position);
             
-            holder.tv.setText(list.get(position).getName());
+            NodeDetails camera = list.get(position);
             
-            if (list.get(position).isOnLine()) {
+            holder.tv.setText(camera.getName());
+            
+            if (camera.isOnLine()) {
             	if(getResources().getConfiguration().locale.getCountry().equals("CN"))
             		holder.iv_offline.setImageResource(R.drawable.card_online_image_blue);
+            	if(camera.getIntensity() > 0 && camera.getIntensity() <= 33){
+            		holder.tv_wifi.setText("wifi强度:强");
+            	}else if(camera.getIntensity() > 33 && camera.getIntensity() <= 66){
+            		holder.tv_wifi.setText("wifi强度:中");
+            	}else {
+            		holder.tv_wifi.setText("wifi强度:弱");
+            	}
 	        }else {
 	        	if(getResources().getConfiguration().locale.getCountry().equals("CN"))
 	        		holder.iv_offline.setImageResource(R.drawable.card_offline_image_gray);
+	        	holder.tv_wifi.setText("");
 	        }
+            
+//            if(camera.getIntensity() == 0){
+//            	holder.iv_wifi.setImageResource(R.drawable.wifi_0);
+//            }else if((camera.getIntensity() > 0 && camera.getIntensity() <= 25)){
+//            	holder.iv_wifi.setImageResource(R.drawable.wifi_1);
+//            }else if(camera.getIntensity() > 25 && camera.getIntensity() <= 50){
+//            	holder.iv_wifi.setImageResource(R.drawable.wifi_2);
+//            }else if(camera.getIntensity() > 50 && camera.getIntensity() <= 75){
+//            	holder.iv_wifi.setImageResource(R.drawable.wifi_3);
+//            }else{
+//            	holder.iv_wifi.setImageResource(R.drawable.wifi_4);
+//            }
             
             //holder.iv.setImageDrawable(images.get(position));
             //String myJpgPath = "/sdcard/eCamera/20130902125951.jpg";
@@ -433,30 +466,9 @@ public class CameraList extends ListActivity {
 	        }else{
 	        	holder.iv.setImageBitmap(bm);
 	        }
-	        holder.iv.setLayoutParams(new FrameLayout.LayoutParams(imageWidth, imageHeight));
-	        holder.iv_play_icon.setLayoutParams(new FrameLayout.LayoutParams(imageWidth, imageHeight));
         	//}
 			return convertView;
         }
-        
-//        private OnTouchListener listener = new OnTouchListener() {
-//			
-//			@Override
-//			public boolean onTouch(View view, MotionEvent event) {
-//				// TODO Auto-generated method stub
-//				if(view.getId() == R.id.iv_playback){
-//					ImageView iv = (ImageView)view;
-//					if(event.getAction() == MotionEvent.ACTION_DOWN){   
-//						iv.setImageResource(R.drawable.card_tab_playback_highlight);   
-//		                Log.i("TestAndroid Button", "MotionEvent.ACTION_DOWN");
-//		            }else if(event.getAction() == MotionEvent.ACTION_UP){   
-//		                iv.setImageResource(R.drawable.card_tab_playback); 
-//		                Log.i("TestAndroid Button", "MotionEvent.ACTION_UP");
-//		            } 
-//				}
-//				return false;
-//			}
-//		};
 
         private OnClickListener listener = new OnClickListener() {
 			
@@ -500,6 +512,9 @@ public class CameraList extends ListActivity {
 			            intent.putExtra("arg", ((NodeDetails) getItem(Integer.valueOf(arg0.getTag().toString()))));
 			            startActivity(intent);
 			        }
+				}else if(arg0.getId() == R.id.ib_add){
+					Intent intent = new Intent(CameraList.this, SetDeviceWifi.class);
+		            startActivity(intent);
 				}
 			}
 		};
@@ -507,10 +522,10 @@ public class CameraList extends ListActivity {
     }
     
 	public static class ViewHolder {
-		public ImageView iv,iv_play_icon,iv_offline;
+		public ImageView iv,iv_play_icon,iv_offline/*,iv_wifi*/;
 		/*public LinearLayout playback,set,about,tv_online*/;
 	    public ImageButton about,set,playback;
-	    public TextView tv;
+	    public TextView tv, tv_wifi;
 	}
 
 }

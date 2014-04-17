@@ -5,14 +5,28 @@
     android:orientation="vertical"
     android:background="@color/bg"  >
 
-    <TextView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="55dip"
-        android:background="@color/title_blue"
-        android:gravity="center"
-        android:text="@string/camera_list"
-        android:textColor="#FFFFFFFF"
-        android:textSize="23sp" />
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="55dip"
+            android:background="@color/title_blue"
+            android:gravity="center"
+            android:text="@string/camera_list"
+            android:textColor="#FFFFFFFF"
+            android:textSize="23sp" />
+
+        <ImageButton
+            android:id="@+id/ib_add"
+            android:layout_width="55dip"
+            android:layout_height="55dip"
+            android:background="#00000000"
+            android:layout_gravity="right|center"
+            android:src="@drawable/add_button_selector" />
+
+    </FrameLayout>
 
     <com.howell.webcam.MyListView
         android:id="@id/android:list"

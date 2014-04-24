@@ -131,7 +131,7 @@ public class Settings extends Activity implements OnClickListener {
             if(!JPushInterface.isPushStopped(getApplicationContext()))
             	JPushInterface.stopPush(getApplicationContext());
             System.out.println(JPushInterface.isPushStopped(getApplicationContext()));
-            intent = new Intent(this, MainActivity.class);
+            intent = new Intent(this, RegisterOrLogin.class);
             startActivity(intent);
             finish();
             break;

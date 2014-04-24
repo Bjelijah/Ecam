@@ -34,8 +34,9 @@ public class MessageUtiles {
 //        .show();  
 //	}
 	
+	
 	public static Dialog postNewUIDialog(Context context){
-		final Dialog lDialog = new Dialog(context,android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+		final Dialog lDialog = new Dialog(context,android.R.style.Theme_Translucent_NoTitleBar);
 //       lDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		lDialog.setContentView(R.layout.wait_dialog);
 //       ((TextView) lDialog.findViewById(R.id.dialog_title)).setText(pTitle);

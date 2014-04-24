@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical" >
+    <FrameLayout
+	    android:id="@+id/fl_title"
+	    android:layout_width="fill_parent"
+	    android:layout_height="55dip"
+	    android:background="@color/title_blue" >
+        <ImageButton
+            android:id="@+id/ib_register_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:src="@drawable/back_btn_selector"
+            android:layout_gravity="left|center" />
+        <Button
+            android:id="@+id/btn_register_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|right"
+            android:layout_marginRight="10dip"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:background="@drawable/common_button_white"
+            android:text="注册" />
+    </FrameLayout>
+    
+    <EditText
+        android:id="@+id/et_register_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dip"
+        android:hint="用户名:6-32个字符"
+        android:background="@drawable/list_item_bg_normal" >
+
+        <requestFocus />
+    </EditText>
+    
+    <EditText
+        android:id="@+id/et_register_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="您的邮箱，用于密码找回"
+        android:background="@drawable/list_item_bg_normal">
+
+    </EditText>
+    
+    <EditText
+        android:id="@+id/et_register_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="密码:6-20个字母或数字，区分大小写"
+        android:background="@drawable/list_item_bg_normal" >
+
+    </EditText>
+    
+    <EditText
+        android:id="@+id/et_register_password_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="确认密码"
+        android:background="@drawable/list_item_bg_normal" >
+
+    </EditText>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="100dip"
+        android:textColor="@color/black"
+        android:text="点击注册，即同意我们的注册条款" />
+
+</LinearLayout>

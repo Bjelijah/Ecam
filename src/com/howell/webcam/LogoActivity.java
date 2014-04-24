@@ -197,10 +197,10 @@ public class LogoActivity extends Activity implements TagAliasCallback{
 						        Intent intent = new Intent(LogoActivity.this,CamTabActivity.class);
 						        startActivity(intent);
 					        }else if(loginRes.getResult().equals("PasswordFormat")){
-					        	Intent intent = new Intent(LogoActivity.this,MainActivity.class);
+					        	Intent intent = new Intent(LogoActivity.this,RegisterOrLogin.class);
 								startActivity(intent);
 					        }else{
-					        	Intent intent = new Intent(LogoActivity.this,MainActivity.class);
+					        	Intent intent = new Intent(LogoActivity.this,RegisterOrLogin.class);
 								startActivity(intent);
 					        }
 					        
@@ -210,16 +210,16 @@ public class LogoActivity extends Activity implements TagAliasCallback{
 					        }*/
 					    }catch (Exception e) {
 								// TODO: handle exception
-					    	Intent intent = new Intent(LogoActivity.this,MainActivity.class);
+					    	Intent intent = new Intent(LogoActivity.this,RegisterOrLogin.class);
 							intent.putExtra("intentFlag", 2);
 							startActivity(intent);
 		//			    	MessageUtiles.postNewUIDialog(LogoActivity.getContext(), LogoActivity.getContext().getString(R.string.login_error), LogoActivity.getContext().getString(R.string.ok), 1);
 						}
 						break;
-				case 2:Intent intent = new Intent(LogoActivity.this,MainActivity.class);
+				case 2:Intent intent = new Intent(LogoActivity.this,RegisterOrLogin.class);
 					   startActivity(intent);
 					   break;
-				case 3:Intent intent2 = new Intent(LogoActivity.this,MainActivity.class);
+				case 3:Intent intent2 = new Intent(LogoActivity.this,RegisterOrLogin.class);
 					   intent2.putExtra("intentFlag", 1);
 					   startActivity(intent2);
 					   break;

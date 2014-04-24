@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical" >
+    <FrameLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="55dip"
+	    android:background="@color/title_blue" >
+        <ImageButton
+            android:id="@+id/ib_flash_light_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:src="@drawable/back_btn_selector"
+            android:layout_gravity="left|center" />
+
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dip"
+        android:text="请将手机闪光灯对准摄像机镜头"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/tv_flash_light_success"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:textColor="@color/gray"
+        android:visibility="gone"
+        android:text="完成啦！摄像机的灯变红了吗？若没有，请对准镜头再重试哦~" />
+    
+    <Button
+        android:id="@+id/btn_flash_light_ok"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dip"
+        android:paddingTop="10dip"
+        android:paddingBottom="10dip"
+        android:background="@drawable/register_btn_selector"
+        android:text="设置"
+        android:textSize="18dp"
+        android:textColor="@color/black" />
+
+</LinearLayout>

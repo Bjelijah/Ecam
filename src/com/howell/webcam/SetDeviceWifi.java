@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.android.howell.webcam.R;
 import com.howell.wificontrol.WifiAdmin;
@@ -22,6 +23,7 @@ public class SetDeviceWifi extends Activity implements OnClickListener, XQuquerL
 	private XQuquerService xququerService;
 	
 	private Button btnSend;
+	private ImageButton mBack;
 	public  AudioManager audiomanage;  
 	
 	@Override
@@ -34,13 +36,15 @@ public class SetDeviceWifi extends Activity implements OnClickListener, XQuquerL
 		wifi_ssid = (EditText)findViewById(R.id.et_wifi);
 		wifi_password = (EditText)findViewById(R.id.et_wifi_password);
 		btnSend = (Button)findViewById(R.id.btn_send);
+		mBack = (ImageButton)findViewById(R.id.ib_set_device_wifi_back);
 		wifi_ssid.setText(removeMarks(mWifiAdmin.getWifiSSID()));
-		//audiomanage = (AudioManager)getSystemService(Context.AUDIO_SERVICE); 
-	    //int maxVolume = audiomanage.getStreamMaxVolume(AudioManager.STREAM_MUSIC);  
-	    //audiomanage.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume - 1 , 0);
+		audiomanage = (AudioManager)getSystemService(Context.AUDIO_SERVICE); 
+	    int maxVolume = audiomanage.getStreamMaxVolume(AudioManager.STREAM_MUSIC);  
+	    audiomanage.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume - 1 , 0);
 	    
 	    xququerService = XQuquerService.getInstance();
 	    btnSend.setOnClickListener(this);
+	    mBack.setOnClickListener(this);
 	}
 	
 	private String removeMarks(String SSID){
@@ -88,6 +92,10 @@ public class SetDeviceWifi extends Activity implements OnClickListener, XQuquerL
 			
 			send();
 			break;
+			
+		case R.id.ib_set_device_wifi_back:
+			finish();
+			break;
 
 		default:
 			break;
@@ -96,7 +104,7 @@ public class SetDeviceWifi extends Activity implements OnClickListener, XQuquerL
 	
 	private void send()
 	{
-		String message = wifi_ssid.getText().toString()+";"+wifi_password.getText().toString();
+		String message = "W:"+wifi_ssid.getText().toString()+";"+wifi_password.getText().toString();
 		System.out.println(message);
 		byte[] data = message.getBytes();
 		if(data.length>0) xququerService.sendData(data, 0.5f);  //0.0 ~ 1.0

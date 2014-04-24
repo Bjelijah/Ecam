@@ -18,11 +18,9 @@
         android:id="@+id/account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dip"
-        android:layout_marginRight="10dip"
         android:layout_marginTop="20dip"
         android:gravity="center_vertical"
-        android:background="@drawable/list_item_bg_top">
+        android:background="@drawable/list_item_bg_middle">
 
         <ImageButton
             android:id="@+id/imageButton2"
@@ -51,8 +49,6 @@
         android:id="@+id/sys_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dip"
-        android:layout_marginRight="10dip"
         android:background="@drawable/list_item_bg_middle"
         android:clickable="true"
         android:focusable="true" >
@@ -127,8 +123,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dip"
-        android:layout_marginLeft="10dip"
-        android:layout_marginRight="10dip"
         android:background="@drawable/list_item_bg_bottom"
         android:clickable="true"
         android:focusable="true" >
@@ -155,8 +149,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dip"
-        android:layout_marginLeft="10dip"
-        android:layout_marginRight="10dip"
         android:layout_marginTop="50dip"
         android:background="@drawable/common_btn_red"
         android:text="@string/exit"

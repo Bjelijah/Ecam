@@ -14,10 +14,9 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.android.howell.webcam.R;
 
@@ -48,6 +47,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private HomeKeyEventBroadCastReceiver receiver;
     
     private ResizeLayout layout;
+    
+    private ImageButton mBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +67,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
         mUserName = (EditText) findViewById(R.id.username);
         mPassWord = (EditText) findViewById(R.id.password);
         mButton = (Button) findViewById(R.id.ok);
+        
+        mBack = (ImageButton)findViewById(R.id.ib_login_back);
+        
         
         SharedPreferences sharedPreferences = getSharedPreferences("set",
                 Context.MODE_PRIVATE);
@@ -90,6 +94,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
         }*/
         mButton.setOnClickListener(this);
+        mBack.setOnClickListener(this);
         Intent intent = getIntent();
         intentFlag = intent.getIntExtra("intentFlag", 0);
         if(intentFlag == 1){
@@ -98,7 +103,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         	MessageUtiles.postNewUIDialog(this, getResources().getString(R.string.login_error), getResources().getString(R.string.ok), 1);
         }
         
-        layout = (ResizeLayout) findViewById(R.id.layout);   
+        /*layout = (ResizeLayout) findViewById(R.id.layout);   
 		layout.setOnResizeListener(new ResizeLayout.OnResizeListener() {   
 		       
 			public void OnResize(int w, int h, int oldw, int oldh) { 
@@ -115,7 +120,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 					return;
 				}
 			}   
-		});   
+		});   */
         
     }
     
@@ -139,18 +144,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         // TODO Auto-generated method stub
-    	//handler.sendEmptyMessage(POSTTOAST);
-    	Log.e("", "onClick");
-//    	if(intentFlag == 1){
-//    		System.out.println("1");
-//        	MessageUtiles.postNewUIDialog(this, getResources().getString(R.string.message), getResources().getString(R.string.ok), 1);
-//        }else if(intentFlag == 2){
-//        	System.out.println("2");
-//        	MessageUtiles.postNewUIDialog(this, getResources().getString(R.string.login_error), getResources().getString(R.string.ok), 1);
-//        }else{
-//        	System.out.println("3");
-////	    	MessageUtiles.postToast(MainActivity.getContext(), MainActivity.getContext().getString(R.string.loading), 100);
-	        String account = mUserName.getText().toString().trim();
+    	switch (v.getId()) {
+		case R.id.ib_login_back:
+			finish();
+			break;
+		case R.id.ok:
+			String account = mUserName.getText().toString().trim();
 	        String password = mPassWord.getText().toString().trim();
 	//        	Log.e("----------->>>", "inviteThread");
 	        if(thread == null){
@@ -159,9 +158,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
 		        thread.setName("LoginThread");
 		        thread.start();
 	        }
+			break;
+		default:
+			break;
+		}
 	        
-//        }
-//        enterToNextActivity(account,password);
     }
     
     private static void ThreadJoin(){
@@ -198,6 +199,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 	                     Intent intent = new Intent(MainActivity.this,CamTabActivity.class);
 	                     startActivity(intent);
 	                     finish();
+	                     mActivities.getmActivityList().get(0).finish();
 	                     handler.sendEmptyMessage(THREADJOIN);
 	             }else if(loginRes.getResult().toString().equals("AccountNotExist")){
 	            	 handler.sendEmptyMessage(POSTACCOUNTERROR);

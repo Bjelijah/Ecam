@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical" >
+    <FrameLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="55dip"
+	    android:background="@color/title_blue" >
+        <ImageButton
+            android:id="@+id/ib_add_device_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:src="@drawable/back_btn_selector"
+            android:layout_gravity="left|center" />
+        
+    </FrameLayout>
+    
+    <FrameLayout
+        android:id="@+id/fl_set_wifi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dip"
+        android:background="@drawable/list_item_bg_middle" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="设置摄像机wifi"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center"
+            android:src="@drawable/qz_icon_forward_normal" />
+
+    </FrameLayout>
+    
+    <FrameLayout
+        android:id="@+id/fl_add_device"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/list_item_bg_middle" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="添加摄像机"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center"
+            android:src="@drawable/qz_icon_forward_normal" />
+
+    </FrameLayout>
+
+</LinearLayout>

@@ -30,7 +30,7 @@ public class ModifyPhoneNum extends Activity implements OnClickListener{
 		setContentView(R.layout.modify_phone_num);
 		mSoapManager = SoapManager.getInstance();
 		mActivities = Activities.getInstance();
-        mActivities.getmActivityList().add(ModifyPhoneNum.this);
+        mActivities.addActivity("ModifyPhoneNum",ModifyPhoneNum.this);
         receiver = new HomeKeyEventBroadCastReceiver();
 		registerReceiver(receiver, new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
 		mPhoneNum = (EditText)findViewById(R.id.et_modify_phone_num);
@@ -44,7 +44,7 @@ public class ModifyPhoneNum extends Activity implements OnClickListener{
     protected void onDestroy() {
     	// TODO Auto-generated method stub
     	super.onDestroy();
-    	mActivities.getmActivityList().remove(ModifyPhoneNum.this);
+    	mActivities.removeActivity("ModifyPhoneNum");
     	unregisterReceiver(receiver);
     }
 	

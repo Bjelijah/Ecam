@@ -31,7 +31,7 @@ public class PushAlarmActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.push_alarm);
 		mActivities = Activities.getInstance();
-        mActivities.getmActivityList().add(PushAlarmActivity.this);
+        mActivities.addActivity("PushAlarmActivity",PushAlarmActivity.this);
         receiver = new HomeKeyEventBroadCastReceiver();
 		registerReceiver(receiver, new IntentFilter(
 				Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
@@ -102,7 +102,7 @@ public class PushAlarmActivity extends Activity {
     protected void onDestroy() {
     	// TODO Auto-generated method stub
     	super.onDestroy();
-    	mActivities.getmActivityList().remove(PushAlarmActivity.this);
+    	mActivities.removeActivity("PushAlarmActivity");
     	unregisterReceiver(receiver);
     }
     

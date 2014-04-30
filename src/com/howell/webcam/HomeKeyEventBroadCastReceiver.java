@@ -1,6 +1,7 @@
 package com.howell.webcam;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -24,10 +25,12 @@ public class HomeKeyEventBroadCastReceiver extends BroadcastReceiver {
 				if (reason.equals(SYSTEM_HOME_KEY)) {
 					// home key澶勭悊鐐�
 					Log.e("homekey", "home 按下");
-					for(Activity a:mActivities.getmActivityList()){
-						System.out.println("haha");
-			    		a.finish();
-			    	}
+					for (Map.Entry entry : mActivities.getmActivityList().entrySet()) {       
+					    
+					    Object value = entry.getValue();
+					    ((Activity) value).finish();
+					    
+					}   
 //					Toast.makeText(BaseActivity.this, "Home閿鐐瑰嚮", Toast.LENGTH_SHORT).show();
 				} else if (reason.equals(SYSTEM_RECENT_APPS)) {
 					// long homekey澶勭悊鐐�

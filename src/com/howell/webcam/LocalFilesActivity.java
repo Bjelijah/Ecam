@@ -39,11 +39,14 @@ public class LocalFilesActivity extends Activity {
 	private Bitmap bitmapReference;
 	private static final int SHOWPICTURE = 1;
 	private ShowPictureHandler handler/*,handler2,handler3*/;
+    private Activities mActivities;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.local_files);
+    	mActivities = Activities.getInstance();
+    	mActivities.addActivity("LocalFilesActivity",LocalFilesActivity.this);
 		background = (LinearLayout)findViewById(R.id.lf_local_file);
 		imageWidth = PhoneConfig.getPhoneWidth(getApplicationContext())/3;
 		imageHeight = imageWidth * 3 / 4;
@@ -113,6 +116,7 @@ public class LocalFilesActivity extends Activity {
 			adapter.maps.clear();
 			adapter.maps = null;
 		}
+		mActivities.removeActivity("LocalFilesActivity");
 	}
 	
 	@Override

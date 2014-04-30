@@ -6,6 +6,7 @@ import uk.co.senab.photoview.PhotoView;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -40,12 +41,20 @@ public class BigImages extends Activity implements OnClickListener{
 	private boolean isShown;
 	
 	private SamplePagerAdapter adapter;
+	private Activities mActivities;
+	private HomeKeyEventBroadCastReceiver receiver;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.big_images);
+		
+		mActivities = Activities.getInstance();
+        mActivities.addActivity("BigImages",BigImages.this);
+        receiver = new HomeKeyEventBroadCastReceiver();
+		registerReceiver(receiver, new IntentFilter(
+				Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
         
         Intent intent = getIntent();
         position = intent.getIntExtra("position", 0);
@@ -78,6 +87,8 @@ public class BigImages extends Activity implements OnClickListener{
 		    	bm = null;
 	    	}
 		}
+    	mActivities.removeActivity("BigImages");
+    	unregisterReceiver(receiver);
 	}
 	
 	class SamplePagerAdapter extends PagerAdapter {

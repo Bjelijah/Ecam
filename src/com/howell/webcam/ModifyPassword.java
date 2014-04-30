@@ -33,7 +33,7 @@ public class ModifyPassword extends Activity implements OnClickListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.modify_password);
 		mActivities = Activities.getInstance();
-        mActivities.getmActivityList().add(ModifyPassword.this);
+        mActivities.addActivity("ModifyPassword",ModifyPassword.this);
         receiver = new HomeKeyEventBroadCastReceiver();
 		registerReceiver(receiver, new IntentFilter(
 				Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
@@ -56,7 +56,7 @@ public class ModifyPassword extends Activity implements OnClickListener{
     protected void onDestroy() {
     	// TODO Auto-generated method stub
     	super.onDestroy();
-    	mActivities.getmActivityList().remove(ModifyPassword.this);
+    	mActivities.removeActivity("ModifyPassword");
     	unregisterReceiver(receiver);
     }
 

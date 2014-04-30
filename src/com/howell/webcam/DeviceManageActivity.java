@@ -43,7 +43,7 @@ public class DeviceManageActivity extends ListActivity implements
         setContentView(R.layout.device_manager);
         
         mActivities = Activities.getInstance();
-    	mActivities.getmActivityList().add(DeviceManageActivity.this);
+    	mActivities.addActivity("DeviceManageActivity",DeviceManageActivity.this);
     	receiver = new HomeKeyEventBroadCastReceiver();
  		registerReceiver(receiver, new IntentFilter(
  				Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
@@ -173,7 +173,7 @@ public class DeviceManageActivity extends ListActivity implements
     	System.out.println();
     	if(curDevice != null && curRedIcon != null){
     		//System.out.println(mList.get(line).toString());
-    		//System.out.println("Éè±¸ÊÇ·ñÉý¼¶£º"+curDevice.isHasUpdate());
+    		//System.out.println("ï¿½è±¸ï¿½Ç·ï¿½ï¿½ï¿½"+curDevice.isHasUpdate());
     		if(!curDevice.isHasUpdate()) {
     			curRedIcon.setVisibility(View.INVISIBLE);
     		}else {
@@ -186,8 +186,7 @@ public class DeviceManageActivity extends ListActivity implements
     protected void onDestroy() {
     	// TODO Auto-generated method stub
     	super.onDestroy();
-    	mActivities.getmActivityList().remove(DeviceManageActivity.this);
-    	mActivities.toString();
+    	mActivities.removeActivity("DeviceManageActivity");
     	unregisterReceiver(receiver);
     }
 }

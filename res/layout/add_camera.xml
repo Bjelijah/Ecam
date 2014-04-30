@@ -31,7 +31,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/list_item_bg_normal"
+        android:layout_marginLeft="5dip"
+        android:layout_marginRight="5dip"
+        android:layout_marginBottom="5dip"
+        android:background="@drawable/list_single_item_bg_normal"
          >
         
         <TextView
@@ -56,7 +59,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/list_item_bg_normal"
+        android:layout_marginLeft="5dip"
+        android:layout_marginRight="5dip"
+        android:background="@drawable/list_single_item_bg_normal"
          >
         
         <TextView
@@ -83,9 +88,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dip"
-        android:paddingTop="10dip"
-        android:paddingBottom="10dip"
-        android:background="@drawable/register_btn_selector"
+        android:layout_marginLeft="5dip"
+        android:layout_marginRight="5dip"
+        android:background="@drawable/list_single_item_bg"
         android:text="确认"
         android:textSize="18dp"
         android:textColor="@color/black" />
@@ -106,7 +111,9 @@
         android:layout_marginTop="20dip"
         android:paddingTop="10dip"
         android:paddingBottom="10dip"
-        android:background="@drawable/register_btn_selector"
+        android:layout_marginLeft="5dip"
+        android:layout_marginRight="5dip"
+        android:background="@drawable/list_single_item_bg"
         android:text="扫一扫"
         android:textSize="18dp"
         android:textColor="@color/black" />
@@ -127,7 +134,9 @@
         android:layout_marginTop="20dip"
         android:paddingTop="10dip"
         android:paddingBottom="10dip"
-        android:background="@drawable/register_btn_selector"
+        android:layout_marginLeft="5dip"
+        android:layout_marginRight="5dip"
+        android:background="@drawable/list_single_item_bg"
         android:text="搜索"
         android:textSize="18dp"
         android:textColor="@color/black" />

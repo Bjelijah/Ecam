@@ -64,7 +64,7 @@ public class VideoList extends ListActivity implements OnItemClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.video_list);
         mActivities = Activities.getInstance();
-    	mActivities.getmActivityList().add(VideoList.this);
+    	mActivities.addActivity("VideoList",VideoList.this);
     	
     	utils = new PlaybackUtils();
         mSearch = (ImageButton)findViewById(R.id.ib_search);
@@ -419,8 +419,7 @@ public class VideoList extends ListActivity implements OnItemClickListener {
     protected void onDestroy() {
     	// TODO Auto-generated method stub
     	super.onDestroy();
-    	mActivities.getmActivityList().remove(VideoList.this);
-    	mActivities.toString();
+    	mActivities.removeActivity("VideoList");
     }
     
     @Override

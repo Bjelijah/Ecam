@@ -34,7 +34,15 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dip"
         android:hint="用户名:6-32个字符"
-        android:background="@drawable/list_item_bg_normal" >
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:paddingTop="10dip"
+        android:paddingBottom="10dip"
+        android:layout_marginBottom="5dip"
+        android:background="@drawable/list_single_item_bg_normal" 
+        android:textCursorDrawable="@null"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray">
 
         <requestFocus />
     </EditText>
@@ -44,7 +52,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="您的邮箱，用于密码找回"
-        android:background="@drawable/list_item_bg_normal">
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:paddingTop="10dip"
+        android:paddingBottom="10dip"
+        android:layout_marginBottom="5dip"
+        android:textColorHint="@color/gray"
+        android:background="@drawable/list_single_item_bg_normal" >
 
     </EditText>
     
@@ -53,7 +67,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="密码:6-20个字母或数字，区分大小写"
-        android:background="@drawable/list_item_bg_normal" >
+        android:password="true"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:paddingTop="10dip"
+        android:paddingBottom="10dip"
+        android:layout_marginBottom="5dip"
+        android:textColorHint="@color/gray"
+        android:background="@drawable/list_single_item_bg_normal"  >
 
     </EditText>
     
@@ -62,9 +83,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="确认密码"
-        android:background="@drawable/list_item_bg_normal" >
+        android:password="true"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:paddingTop="10dip"
+        android:paddingBottom="10dip"
+        android:textColorHint="@color/gray"
+        android:background="@drawable/list_single_item_bg_normal"  >
 
     </EditText>
+
+    <CheckBox
+        android:id="@+id/cb_register_show_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dip"
+        android:textColor="@color/black"
+        android:layout_marginLeft="10dip"
+        android:text="显示密码" />
 
     <TextView
         android:layout_width="wrap_content"

@@ -27,7 +27,7 @@ public class RegisterOrLogin extends Activity implements OnClickListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register_or_login);
     	mActivities = Activities.getInstance();
-    	mActivities.getmActivityList().add(RegisterOrLogin.this);
+    	mActivities.addActivity("RegisterOrLogin",RegisterOrLogin.this);
 		mSoapManager = SoapManager.getInstance();
 		
 		receiver = new HomeKeyEventBroadCastReceiver();
@@ -105,7 +105,7 @@ public class RegisterOrLogin extends Activity implements OnClickListener{
     	// TODO Auto-generated method stub
     	super.onDestroy();
     	Log.e("CameraList", "onDestroy()");
-	    mActivities.getmActivityList().remove(RegisterOrLogin.this);
+	    mActivities.removeActivity("RegisterOrLogin");
 	    mActivities.toString();
     	unregisterReceiver(receiver);
     }

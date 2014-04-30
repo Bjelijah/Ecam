@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.howell.webcam"
-    android:versionCode="17"
-    android:versionName="1.0.7" >
+    android:versionCode="18"
+    android:versionName="1.0.8" >
     
     <!-- 极光   -->
     <permission
@@ -73,6 +73,12 @@
         </activity>
         
         <activity
+            android:name="com.howell.webcam.SendWifi"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar">
+        </activity>
+        
+        <activity
             android:name="com.howell.webcam.RegisterOrLogin"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar">
@@ -80,6 +86,18 @@
         
         <activity
             android:name="com.howell.webcam.Register"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar">
+        </activity>
+        
+        <activity
+            android:name="com.howell.webcam.ChangeDeviceName"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar">
+        </activity>
+        
+        <activity
+            android:name="com.howell.webcam.FlashLighting"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar">
         </activity>

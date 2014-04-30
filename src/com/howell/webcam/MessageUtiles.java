@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,7 +34,6 @@ public class MessageUtiles {
 //        .setPositiveButton("ȷ��", null)   
 //        .show();  
 //	}
-	
 	
 	public static Dialog postNewUIDialog(Context context){
 		final Dialog lDialog = new Dialog(context,android.R.style.Theme_Translucent_NoTitleBar);

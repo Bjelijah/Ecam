@@ -56,7 +56,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
         
         mActivities = Activities.getInstance();
-        mActivities.getmActivityList().add(MainActivity.this);
+        mActivities.addActivity("MainActivity",MainActivity.this);
         receiver = new HomeKeyEventBroadCastReceiver();
 		registerReceiver(receiver, new IntentFilter(
 				Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
@@ -199,7 +199,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 	                     Intent intent = new Intent(MainActivity.this,CamTabActivity.class);
 	                     startActivity(intent);
 	                     finish();
-	                     mActivities.getmActivityList().get(0).finish();
+	                     mActivities.getmActivityList().get("RegisterOrLogin").finish();
 	                     handler.sendEmptyMessage(THREADJOIN);
 	             }else if(loginRes.getResult().toString().equals("AccountNotExist")){
 	            	 handler.sendEmptyMessage(POSTACCOUNTERROR);
@@ -308,7 +308,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     	// TODO Auto-generated method stub
     	Log.e("Main", "onDestroy");
     	super.onDestroy();
-    	mActivities.getmActivityList().remove(MainActivity.this);
+    	mActivities.removeActivity("MainActivity");
     	unregisterReceiver(receiver);
     }
 }

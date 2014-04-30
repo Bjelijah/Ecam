@@ -20,6 +20,23 @@ public class CreateAccountReq {
 		this.email = email;
 		this.mobileTel = mobileTel;
 	}
+	
+	public CreateAccountReq(String account, String username, String password,
+			String email) {
+		super();
+		this.account = account;
+		this.username = username;
+		this.password = password;
+		this.email = email;
+	}
+	
+	public CreateAccountReq(String account, String password,String email) {
+		super();
+		this.account = account;
+		this.password = password;
+		this.email = email;
+	}
+	
 	public String getAccount() {
 		return account;
 	}

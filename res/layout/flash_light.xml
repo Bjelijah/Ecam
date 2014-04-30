@@ -22,11 +22,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dip"
-        android:text="请将手机闪光灯对准摄像机镜头"
+        android:text="请将手机闪光灯靠近摄像机镜头"
         android:textSize="20sp"
         android:textColor="@color/black"
         android:gravity="center" />
 
+    <ImageView
+        android:id="@+id/iv_flash_background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dip"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:src="@drawable/flash_background" />
+    
     <TextView
         android:id="@+id/tv_flash_light_success"
         android:layout_width="wrap_content"
@@ -35,19 +44,40 @@
         android:gravity="center"
         android:textSize="18sp"
         android:textColor="@color/gray"
-        android:visibility="gone"
-        android:text="完成啦！摄像机的灯变红了吗？若没有，请对准镜头再重试哦~" />
-    
-    <Button
-        android:id="@+id/btn_flash_light_ok"
+        android:visibility="invisible"
+        android:text="摄像机的指示灯变成红色了吗？变红了即可点击完成" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dip"
-        android:paddingTop="10dip"
-        android:paddingBottom="10dip"
-        android:background="@drawable/register_btn_selector"
-        android:text="设置"
-        android:textSize="18dp"
-        android:textColor="@color/black" />
+         >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center" >
+
+            <ImageButton
+                android:id="@+id/ib_flash_light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:layout_marginBottom="5dip"
+                android:src="@drawable/flash_light_btn_selecor" />
+
+            <TextView
+                android:id="@+id/tv_flash_light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="设置" />
+
+        </LinearLayout>
+        
+    </LinearLayout>
+
+    
 
 </LinearLayout>

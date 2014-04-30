@@ -51,7 +51,7 @@ public class Settings extends Activity implements OnClickListener {
         setContentView(R.layout.settings);
         Log.e("Settings", "onCreate");
         mActivities = Activities.getInstance();
-    	mActivities.getmActivityList().add(Settings.this);
+    	mActivities.addActivity("Settings",Settings.this);
     	
         mAccount = findViewById(R.id.account);
         mSysMessage = findViewById(R.id.sys_message);
@@ -217,6 +217,6 @@ public class Settings extends Activity implements OnClickListener {
     protected void onDestroy() {
     	// TODO Auto-generated method stub
     	super.onDestroy();
-    	mActivities.getmActivityList().remove(Settings.this);
+    	mActivities.removeActivity("Settings");
     }
 }

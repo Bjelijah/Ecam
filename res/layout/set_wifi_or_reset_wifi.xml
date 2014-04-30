@@ -35,9 +35,11 @@
             android:background="@drawable/cam_set_image_green" >
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_green_light_tips"
+                android:layout_width="150dip"
                 android:layout_height="wrap_content"
-                android:text="TextView"
+                android:text="绿灯长亮或闪烁，请点击配置摄像机进入设置状态"
+                android:textColor="@color/black"
                 android:layout_marginRight="10dip"
                 android:layout_gravity="right|center" />
 
@@ -51,9 +53,11 @@
             android:layout_marginBottom="5dip"
             android:background="@drawable/cam_set_image_red" >
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_red_light_tips"
+                android:layout_width="150dip"
                 android:layout_height="wrap_content"
-                android:text="TextView"
+                android:text="红灯闪烁，摄像机已在设置状态，请点击设置wifi"
+                android:textColor="@color/black"
                 android:layout_marginRight="10dip"
                 android:layout_gravity="right|center" />
         </FrameLayout>

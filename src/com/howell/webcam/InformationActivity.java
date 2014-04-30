@@ -28,7 +28,7 @@ public class InformationActivity extends Activity implements OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.information);
         mActivities = Activities.getInstance();
-        mActivities.getmActivityList().add(InformationActivity.this);
+        mActivities.addActivity("InformationActivity",InformationActivity.this);
         receiver = new HomeKeyEventBroadCastReceiver();
 		registerReceiver(receiver, new IntentFilter(
 				Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
@@ -74,7 +74,7 @@ public class InformationActivity extends Activity implements OnClickListener{
     protected void onDestroy() {
     	// TODO Auto-generated method stub
     	super.onDestroy();
-    	mActivities.getmActivityList().remove(InformationActivity.this);
+    	mActivities.removeActivity("InformationActivity");
     	unregisterReceiver(receiver);
     }
 

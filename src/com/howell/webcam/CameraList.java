@@ -68,7 +68,7 @@ public class CameraList extends ListActivity {
     		}
         	
         	mActivities = Activities.getInstance();
-        	mActivities.getmActivityList().add(CameraList.this);
+        	mActivities.addActivity("CameraList",CameraList.this);
         	
 	        mResponse = mSoapManager.getLoginResponse();
 	        
@@ -289,8 +289,7 @@ public class CameraList extends ListActivity {
     	// TODO Auto-generated method stub
     	super.onDestroy();
     	Log.e("CameraList", "onDestroy()");
-    	mActivities.getmActivityList().remove(CameraList.this);
-    	mActivities.toString();
+    	mActivities.removeActivity("CameraList");
     	if((bm!=null)&&(!bm.isRecycled())){
 	    	bm.recycle();
 	    	bm = null;
@@ -428,6 +427,10 @@ public class CameraList extends ListActivity {
             //holder.tv_online.setTag(position);
             
             NodeDetails camera = list.get(position);
+            
+            if(!camera.iseStoreFlag()){
+            	holder.playback.setImageResource(R.drawable.card_tab_playback_no_sdcard);
+            }
             
             holder.tv.setText(camera.getName());
             

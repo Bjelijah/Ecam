@@ -1004,10 +1004,10 @@ public class SoapManager implements Serializable {
     	CreateAccountRes res = new CreateAccountRes();
     	SoapObject rpc = new SoapObject(sNameSpace, "createAccountReq");
     	rpc.addProperty("Account", req.getAccount());
-    	rpc.addProperty("Username", req.getUsername());
+    	rpc.addProperty("Username", " ");
     	rpc.addProperty("Password", req.getPassword());
-    	    	//rpc.addProperty("Email", req.getEmail());
-    	rpc.addProperty("MobileTel", req.getMobileTel());
+    	rpc.addProperty("Email", req.getEmail());
+    	//rpc.addProperty("MobileTel", " ");
     	SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/createAccount");
     	try{
     		Object result = object.getProperty("result");
@@ -1023,19 +1023,48 @@ public class SoapManager implements Serializable {
     	AddDeviceRes res = new AddDeviceRes();
     	SoapObject rpc = new SoapObject(sNameSpace, "addDeviceReq");
     	rpc.addProperty("Account", req.getAccount());
+    	System.out.println(req.getAccount());
     	rpc.addProperty("LoginSession", req.getLoginSession());
-    	rpc.addProperty("DevID", req.getDevID());
-    	rpc.addProperty("DevKey", req.getDevKey());
-    	rpc.addProperty("DevName", req.getDevName());
+    	
+    	SoapObject so = new SoapObject(sNameSpace,"Device");
+        so.addProperty("DevID", req.getDevID());
+        so.addProperty("DevKey", req.getDevKey());
+        System.out.println("devName:"+req.getDevName());
+        so.addProperty("DevName", req.getDevName());
+        
+        SoapObject so2 = new SoapObject(sNameSpace,"ArrayOfDevice");
+        so2.addProperty("Device", so);
+        rpc.addProperty("DeviceAll", so2);
+    	
     	rpc.addProperty("Forcible", req.isForcible());
     	SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/addDevice");
     	try{
     	 	Object result = object.getProperty("result");
     	 	res.setResult(result.toString());
+    	 	System.out.println("getAddDeviceRes:"+result.toString());
     	}catch (Exception e) {
     		// TODO: handle exception
     	}
     	    return res;
+    }
+    
+    //修改设备名
+    public UpdateChannelNameRes getUpdateChannelNameRes(UpdateChannelNameReq req){
+    	UpdateChannelNameRes res = new UpdateChannelNameRes();
+    	SoapObject rpc = new SoapObject(sNameSpace, "updateChannelNameReq");
+    	rpc.addProperty("Account", req.getAccount());
+    	rpc.addProperty("LoginSession", req.getLoginSession());
+    	rpc.addProperty("DevID", req.getDevID());
+    	rpc.addProperty("ChannelNo", 0);
+    	rpc.addProperty("ChannelName", req.getChannelName());
+    	SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/updateChannelName");
+    	try{
+    		Object result = object.getProperty("result");
+    	 	res.setResult(result.toString());
+    	}catch (Exception e) {
+    		// TODO: handle exception
+    	}
+    	   	return res;
     }
     
 	@Override

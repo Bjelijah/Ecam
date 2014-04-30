@@ -63,7 +63,7 @@ public class CamTabActivity extends TabActivity implements
         hasToggled = false;
         cameraVerThread = false;
         mActivities = Activities.getInstance();
-        mActivities.getmActivityList().add(CamTabActivity.this);
+        mActivities.addActivity("CamTabActivity",CamTabActivity.this);
         
         receiver = new HomeKeyEventBroadCastReceiver();
 		registerReceiver(receiver, new IntentFilter(
@@ -210,7 +210,7 @@ public class CamTabActivity extends TabActivity implements
     	// TODO Auto-generated method stub
     	Log.e("CamTab", "onDestroy");
     	super.onDestroy();
-    	mActivities.getmActivityList().remove(CamTabActivity.this);
+    	mActivities.removeActivity("CamTabActivity");
     	unregisterReceiver(receiver);
     }
 }

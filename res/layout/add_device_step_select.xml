@@ -61,4 +61,37 @@
 
     </FrameLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dip"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:textSize="16sp"
+        android:text="*为观看摄像机图像您需要:"
+        android:textColor="@color/black" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dip"
+        android:textSize="16sp"
+        android:text="1.配置摄像机Wifi,让它连接您的Wifi网络"
+        android:textColor="@color/black" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dip"
+        android:textSize="16sp"
+        android:text="2.添加摄像机到您的账户"
+        android:textColor="@color/black" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:textSize="16sp"
+        android:text="*若摄像机已经添加到您的账户,再次配置Wifi后无需重新添加"
+        android:textColor="@color/black" />
+
 </LinearLayout>

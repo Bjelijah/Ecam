@@ -83,7 +83,7 @@ public class DeviceSetActivity extends Activity implements
         setContentView(R.layout.deviceset);
         
         mActivities = Activities.getInstance();
-    	mActivities.getmActivityList().add(DeviceSetActivity.this);
+    	mActivities.addActivity("DeviceSetActivity",DeviceSetActivity.this);
     	receiver = new HomeKeyEventBroadCastReceiver();
 		registerReceiver(receiver, new IntentFilter(
 				Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
@@ -134,16 +134,16 @@ public class DeviceSetActivity extends Activity implements
 			}
 		});
         
-        //Í¼Ïñ·­×ª
+        //Í¼ï¿½ï¿½×ª
         video_checkbox.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				pd = new ProgressDialog(DeviceSetActivity.this);  
-		        pd.setTitle(getResources().getString(R.string.save_set)+"...");   //ÉèÖÃ±êÌâ  
-		        pd.setMessage(getResources().getString(R.string.please_wait)+"..."); //ÉèÖÃbodyÐÅÏ¢  
-		        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER); //ÉèÖÃ½ø¶ÈÌõÑùÊ½ÊÇ ºáÏòµÄ 
+		        pd.setTitle(getResources().getString(R.string.save_set)+"...");   //ï¿½ï¿½ï¿½Ã±ï¿½ï¿½ï¿½  
+		        pd.setMessage(getResources().getString(R.string.please_wait)+"..."); //ï¿½ï¿½ï¿½ï¿½bodyï¿½ï¿½Ï¢  
+		        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER); //ï¿½ï¿½ï¿½Ã½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ 
 				pd.show();
 				new AsyncTask<Void, Void, Void>() {
 					protected Void doInBackground(Void... params) {
@@ -167,16 +167,16 @@ public class DeviceSetActivity extends Activity implements
 			}
 		});
         
-        //µçÔ´Ö¸Ê¾µÆ
+        //ï¿½ï¿½Ô´Ö¸Ê¾ï¿½ï¿½
         power_led_checkbox.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				pd = new ProgressDialog(DeviceSetActivity.this);  
-		        pd.setTitle(getResources().getString(R.string.save_set)+"...");   //ÉèÖÃ±êÌâ  
-		        pd.setMessage(getResources().getString(R.string.please_wait)+"..."); //ÉèÖÃbodyÐÅÏ¢  
-		        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER); //ÉèÖÃ½ø¶ÈÌõÑùÊ½ÊÇ ºáÏòµÄ 
+		        pd.setTitle(getResources().getString(R.string.save_set)+"...");   //ï¿½ï¿½ï¿½Ã±ï¿½ï¿½ï¿½  
+		        pd.setMessage(getResources().getString(R.string.please_wait)+"..."); //ï¿½ï¿½ï¿½ï¿½bodyï¿½ï¿½Ï¢  
+		        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER); //ï¿½ï¿½ï¿½Ã½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ 
 				pd.show();
 				new AsyncTask<Void, Void, Void>() {
 					protected Void doInBackground(Void... params) {
@@ -200,7 +200,7 @@ public class DeviceSetActivity extends Activity implements
 			}
 		});
         
-        //ÒÆ¶¯Õì²â
+        //ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½
         vmd_checkbox_.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -208,9 +208,9 @@ public class DeviceSetActivity extends Activity implements
 				// TODO Auto-generated method stub
 				//ll_load.setVisibility(View.VISIBLE);
 				pd = new ProgressDialog(DeviceSetActivity.this);  
-		        pd.setTitle(getResources().getString(R.string.save_set)+"...");   //ÉèÖÃ±êÌâ  
-		        pd.setMessage(getResources().getString(R.string.please_wait)+"..."); //ÉèÖÃbodyÐÅÏ¢  
-		        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER); //ÉèÖÃ½ø¶ÈÌõÑùÊ½ÊÇ ºáÏòµÄ 
+		        pd.setTitle(getResources().getString(R.string.save_set)+"...");   //ï¿½ï¿½ï¿½Ã±ï¿½ï¿½ï¿½  
+		        pd.setMessage(getResources().getString(R.string.please_wait)+"..."); //ï¿½ï¿½ï¿½ï¿½bodyï¿½ï¿½Ï¢  
+		        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER); //ï¿½ï¿½ï¿½Ã½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ 
 				pd.show();
 				new AsyncTask<Void, Void, Void>() {
 					protected Void doInBackground(Void... params) {
@@ -236,16 +236,16 @@ public class DeviceSetActivity extends Activity implements
 			}
 		});
         
-        //±¨¾¯ÍÆËÍÉèÖÃ
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         cb_alarm_notice.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				pd = new ProgressDialog(DeviceSetActivity.this);  
-		        pd.setTitle(getResources().getString(R.string.save_set)+"...");   //ÉèÖÃ±êÌâ  
-		        pd.setMessage(getResources().getString(R.string.please_wait)+"..."); //ÉèÖÃbodyÐÅÏ¢  
-		        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER); //ÉèÖÃ½ø¶ÈÌõÑùÊ½ÊÇ ºáÏòµÄ 
+		        pd.setTitle(getResources().getString(R.string.save_set)+"...");   //ï¿½ï¿½ï¿½Ã±ï¿½ï¿½ï¿½  
+		        pd.setMessage(getResources().getString(R.string.please_wait)+"..."); //ï¿½ï¿½ï¿½ï¿½bodyï¿½ï¿½Ï¢  
+		        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER); //ï¿½ï¿½ï¿½Ã½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ 
 				pd.show();
 				new AsyncTask<Void, Void, Void>() {
 					protected Void doInBackground(Void... params) {
@@ -270,11 +270,11 @@ public class DeviceSetActivity extends Activity implements
 			}
 		});
         
-        //»ñÈ¡Ô¶³ÌÉè±¸ÉèÖÃ
+        //ï¿½ï¿½È¡Ô¶ï¿½ï¿½ï¿½è±¸ï¿½ï¿½ï¿½ï¿½
         pd = new ProgressDialog(DeviceSetActivity.this);  
-        pd.setTitle(getResources().getString(R.string.gain_set)+"...");   //ÉèÖÃ±êÌâ  
-        pd.setMessage(getResources().getString(R.string.please_wait)+"..."); //ÉèÖÃbodyÐÅÏ¢  
-        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER); //ÉèÖÃ½ø¶ÈÌõÑùÊ½ÊÇ ºáÏòµÄ 
+        pd.setTitle(getResources().getString(R.string.gain_set)+"...");   //ï¿½ï¿½ï¿½Ã±ï¿½ï¿½ï¿½  
+        pd.setMessage(getResources().getString(R.string.please_wait)+"..."); //ï¿½ï¿½ï¿½ï¿½bodyï¿½ï¿½Ï¢  
+        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER); //ï¿½ï¿½ï¿½Ã½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ 
 		pd.show();
 		
 		new AsyncTask<Void, Void, Void>() {
@@ -304,7 +304,7 @@ public class DeviceSetActivity extends Activity implements
 				            VMDParamReq vmd_req = new VMDParamReq(account,loginSession,dev.getDevID(),dev.getChannelNo());
 				            vmd_res_ = mSoapManager.getVMDParam(vmd_req);
 				            Log.v("dev", "vmd enable: "+vmd_res_.getEnabled());
-				            //Èç¹ûÒÆ¶¯Õì²â¿ªÆô ¼ì²âÊÇ·ñÍÆËÍ
+				            //ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½â¿ªï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½
 				            if(vmd_res_.getEnabled()){
 				            	QueryDeviceReq queryDeviceReq = new QueryDeviceReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDevID());
 				            	queryDeviceRes = new QueryDeviceRes();
@@ -322,19 +322,19 @@ public class DeviceSetActivity extends Activity implements
 				        		break;
 				        	}
 				        }
-				        //»ñÈ¡µçÔ´Ö¸Ê¾µÆ
+				        //ï¿½ï¿½È¡ï¿½ï¿½Ô´Ö¸Ê¾ï¿½ï¿½
 				        GetAuxiliaryReq getAuxiliaryReq = new GetAuxiliaryReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDevID(),"SignalLamp");
 				        getAuxiliaryRes = mSoapManager.getGetAuxiliaryRes(getAuxiliaryReq);
 				        System.out.println("getAuxiliaryRes"+getAuxiliaryRes.getResult());
 				        
 				        System.out.println("333333333333333");
-				        //»ñÈ¡ÊÓÆµ·­×ªÐÅÏ¢
+				        //ï¿½ï¿½È¡ï¿½ï¿½Æµï¿½ï¿½×ªï¿½ï¿½Ï¢
 				        GetVideoParamReq getVideoParamReq = new GetVideoParamReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDevID(), dev.getChannelNo());
 				    	rotationDegree = mSoapManager.getGetVideoParamRes(getVideoParamReq).getRotationDegree();
 				    	System.out.println("rotationDegree"+rotationDegree);
 				    	
 				    	 System.out.println("4444444444444444444");
-				        //»ñÈ¡Éè±¸°æ±¾ÐÅÏ¢
+				        //ï¿½ï¿½È¡ï¿½è±¸ï¿½æ±¾ï¿½ï¿½Ï¢
 				    	GetDevVerReq getDevVerReq = new GetDevVerReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDevID());
 				    	res = mSoapManager.getGetDevVerRes(getDevVerReq);
 				    	Log.e("GetDevVerRes", res.toString());
@@ -355,14 +355,14 @@ public class DeviceSetActivity extends Activity implements
 				try{
 					System.out.println("re11111111111");
 					 if (reso_idx>=0) {
-						 //±£´æ»ñÈ¡µÄ·Ö±æÂÊÖµ
+						 //ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½Ä·Ö±ï¿½ï¿½ï¿½Öµ
 						 gainedReso = reso_idx;
 				        	mSeekBar_reso.setProgress(reso_idx);
 				        	refreshResolutionText(reso_idx);
 				        	
 				        	for (int i=0; i<reso_bitrate_map_[reso_idx].length; ++i) {
 				        		if (reso_bitrate_map_[reso_idx][i]>=bitrate) {
-				        			//±£´æ»ñÈ¡µÄ»­ÖÊ
+				        			//ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½Ä»ï¿½ï¿½ï¿½
 				        			gainedQuality = i;
 				        			mSeekBar_quality.setProgress(i);
 				        			refreshImageQualityText(i);
@@ -492,15 +492,15 @@ public class DeviceSetActivity extends Activity implements
         	}
         	int reso_idx = mSeekBar_reso.getProgress();
         	int qual_idx = mSeekBar_quality.getProgress();
-        	//Èç¹ûÃ»ÉèÖÃÖ±½ÓÍË³ö
+        	//ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½Ë³ï¿½
         	if(gainedReso == reso_idx && gainedQuality == qual_idx){
         		finish();
         		return false;
         	}
         		pd = new ProgressDialog(DeviceSetActivity.this);  
-		        pd.setTitle(getResources().getString(R.string.save_set)+"...");   //ÉèÖÃ±êÌâ  
-		        pd.setMessage(getResources().getString(R.string.please_wait)+"..."); //ÉèÖÃbodyÐÅÏ¢  
-		        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER); //ÉèÖÃ½ø¶ÈÌõÑùÊ½ÊÇ ºáÏòµÄ 
+		        pd.setTitle(getResources().getString(R.string.save_set)+"...");   //ï¿½ï¿½ï¿½Ã±ï¿½ï¿½ï¿½  
+		        pd.setMessage(getResources().getString(R.string.please_wait)+"..."); //ï¿½ï¿½ï¿½ï¿½bodyï¿½ï¿½Ï¢  
+		        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER); //ï¿½ï¿½ï¿½Ã½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ 
 				pd.show();
 				new AsyncTask<Void, Void, Void>() {
 					protected Void doInBackground(Void... params) {
@@ -546,16 +546,16 @@ public class DeviceSetActivity extends Activity implements
     	}
     }
 
-    //±£´æÍ¼ÏñÖÊÁ¿ÉèÖÃ
+    //ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     private boolean saveEncodingParam() {
     	int reso_idx = mSeekBar_reso.getProgress();
-    	//TODO  hd720pÉèÖÃµÄÊÇÖ÷ÂëÁ÷£¬ÏÈ²»´¦Àí
+    	//TODO  hd720pï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È²ï¿½ï¿½ï¿½ï¿½ï¿½
     	if (reso_idx==2) {
     		return true;
     	}
     	int qual_idx = mSeekBar_quality.getProgress();
     	
-    	//Èç¹ûÃ»ÉèÖÃÖ±½ÓÍË³ö
+    	//ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½Ë³ï¿½
     	if(gainedReso == reso_idx && gainedQuality == qual_idx){
     		return false;
     	}
@@ -569,7 +569,7 @@ public class DeviceSetActivity extends Activity implements
     	return true;
     }
     
-    //±£´æÒÆ¶¯Õì²âÉèÖÃ
+    //ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     private boolean saveVMDParam() {
     	boolean use_vmd = vmd_checkbox_.isChecked();
     	vmd_res_.setEnabled(use_vmd);
@@ -580,7 +580,7 @@ public class DeviceSetActivity extends Activity implements
     	}else{
     		VMDGrid grids = new VMDGrid(VMD_ZERO_GRIDS);
     		vmd_res_.setGrids(grids);
-    		//¹Ø±Õ¾¯±¨ÍÆËÍ
+    		//ï¿½Ø±Õ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			handler.sendEmptyMessage(ALARMPUSHOFF);
 			saveAlarmPushParam(false);
     	}
@@ -588,7 +588,7 @@ public class DeviceSetActivity extends Activity implements
     	return true;
     }
     
-    //±£´æÍ¼Ïñ·­×ªÉèÖÃ
+    //ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½
     private boolean saveVideoParam(){
     	System.out.println(mLoginResponse.getAccount()+","+mLoginResponse.getLoginSession()+","+dev.getDevID()+","+dev.getChannelNo());
     	boolean isTurnOver = video_checkbox.isChecked();
@@ -605,7 +605,7 @@ public class DeviceSetActivity extends Activity implements
     	return true;
     }
     
-    //±£´æµçÔ´Ö¸Ê¾µÆÉèÖÃ
+    //ï¿½ï¿½ï¿½ï¿½ï¿½Ô´Ö¸Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     private boolean savePowerLedParam(){
     	System.out.println(mLoginResponse.getAccount()+","+mLoginResponse.getLoginSession()+","+dev.getDevID()+","+dev.getChannelNo());
     	boolean powerLed = power_led_checkbox.isChecked();
@@ -622,7 +622,7 @@ public class DeviceSetActivity extends Activity implements
     	return true;
     }
     
-  //±£´æ¾¯±¨ÍÆËÍÉèÖÃ
+  //ï¿½ï¿½ï¿½æ¾¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     private boolean saveAlarmPushParam(boolean alarmPush){
     	//boolean alarmPush = cb_alarm_notice.isChecked();
     	SubscribeAndroidPushReq req = null;
@@ -648,8 +648,7 @@ public class DeviceSetActivity extends Activity implements
     protected void onDestroy() {
     	// TODO Auto-generated method stub
     	super.onDestroy();
-    	mActivities.getmActivityList().remove(DeviceSetActivity.this);
-    	mActivities.toString();
+    	mActivities.removeActivity("DeviceSetActivity");
     	unregisterReceiver(receiver);
     }
     

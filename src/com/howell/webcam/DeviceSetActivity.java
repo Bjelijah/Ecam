@@ -551,6 +551,7 @@ public class DeviceSetActivity extends Activity implements
     	int reso_idx = mSeekBar_reso.getProgress();
     	//TODO  hd720p���õ������������Ȳ�����
     	if (reso_idx==2) {
+    		//mCodingParamRes.setStreamType("Main");
     		return true;
     	}
     	int qual_idx = mSeekBar_quality.getProgress();

@@ -62,7 +62,7 @@
 	        android:text="Wifi名称:"
 	        android:textColor="@color/black" />
 
-        <EditText
+        <!--  <EditText
             android:id="@+id/et_wifi"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -70,7 +70,15 @@
             android:layout_marginLeft="5dip"
             android:background="@null">
 
-        </EditText>
+        </EditText>-->
+        
+        <Spinner
+	        android:id="@+id/spinner_wifi"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingLeft="10dip"
+	        android:gravity="center"
+	        android:background="@drawable/dropdown_disabled_holo_dark" />
 
     </LinearLayout>
     

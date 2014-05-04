@@ -72,7 +72,7 @@ public class FlashLighting extends Activity implements OnClickListener{
 			break;*/
 		case R.id.ib_flash_light:
 			if(!isBtnClicked){
-				c.twinkle(tips);
+				c.twinkle();
 				tips.setVisibility(View.VISIBLE);
 				isBtnClicked = true;
 				mFlashLight.setImageDrawable(getResources().getDrawable(R.drawable.send_wifi_finish_btn_selector));

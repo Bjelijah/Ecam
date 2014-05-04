@@ -51,71 +51,54 @@ public class CameraUtils {
 		}
 	}
 	
-	public void twinkle(final TextView tips){
+	public void twinkle(){
 		//myThread.start();	
 //		int num;
-		//打开摄像机
-		openCamera();
-		//闪烁 500ms亮 500ms灭
-//		for(num = 1;num <= 4 ;num++){
-//			System.out.println("次数："+num);
-//			try {
-//				turnLightOn(camera);
-//				Thread.sleep(500);
-//				turnLightOff(camera);
-//				Thread.sleep(500);
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
-		
-		timer = new Timer();//实例化Timer类
-		timer.schedule(new TimerTask(){
-			int num = 0;
-			public void run(){
-				System.out.println(num);
-				/*if(num == 8){
-					//this.cancel();
-					//closeCamera();
-					
-					Message msg = new Message();
-					msg.what = 1;
-					msg.obj = tips;
-					handler.sendMessage(msg);
-//					tips.setVisibility(View.VISIBLE);
-					//return;
-				}*/
-				if(num % 2 == 0){
-					turnLightOn(camera);
-					System.out.println("亮");
-				}else{
-					turnLightOff(camera);
-					System.out.println("灭");
-				}
-				num++;
+		new Thread(){
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				super.run();
+				//打开摄像机
+				openCamera();
+				//闪烁 500ms亮 500ms灭
+				
+				timer = new Timer();//实例化Timer类
+				timer.schedule(new TimerTask(){
+					int num = 0;
+					public void run(){
+						System.out.println(num);
+						if(num % 2 == 0){
+							turnLightOn(camera);
+							System.out.println("亮");
+						}else{
+							turnLightOff(camera);
+							System.out.println("灭");
+						}
+						num++;
+					}
+				},0,500);
 			}
-		},0,500);
-		//关闭摄像机
+		}.start();
 		
 	}
 	
-	Handler handler = new Handler(){
-		@Override
-		public void handleMessage(Message msg) {
-			// TODO Auto-generated method stub
-			super.handleMessage(msg);
-			switch (msg.what) {
-			case 1:
-				TextView tv = (TextView) msg.obj;
-				tv.setVisibility(View.VISIBLE);
-				break;
-
-			default:
-				break;
-			}
-		}
-	};
+//	Handler handler = new Handler(){
+//		@Override
+//		public void handleMessage(Message msg) {
+//			// TODO Auto-generated method stub
+//			super.handleMessage(msg);
+//			switch (msg.what) {
+//			case 1:
+//				TextView tv = (TextView) msg.obj;
+//				tv.setVisibility(View.VISIBLE);
+//				break;
+//
+//			default:
+//				break;
+//			}
+//		}
+//	};
 	
 	/**
 	 * 通过设置Camera打开闪光灯

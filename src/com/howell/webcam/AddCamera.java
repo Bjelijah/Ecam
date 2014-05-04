@@ -112,14 +112,29 @@ public class AddCamera extends Activity implements OnClickListener{
 					// TODO Auto-generated method stub
 					super.onPostExecute(result);
 					waitDialog.dismiss();
-					if(res.getResult().equals("OK")){
+					if(res!= null && res.getResult().equals("OK")){
 						Intent intent = new Intent(AddCamera.this,ChangeDeviceName.class);
 						intent.putExtra("devid", devId.getText().toString());
 						startActivity(intent);
+					}else if (res!= null && res.getResult().equals("DeviceNotExist")){
+						Dialog alertDialog = new AlertDialog.Builder(AddCamera.this).   
+					            setTitle("错误").   
+					            setMessage("添加失败，设备id或设备key错误").   
+					            setIcon(R.drawable.expander_ic_minimized).   
+					            setPositiveButton("确定", new DialogInterface.OnClickListener() {   
+
+					                @Override   
+					                public void onClick(DialogInterface dialog, int which) {   
+					                    // TODO Auto-generated method stub    
+					                	
+					                }   
+					            }).   
+					    create();   
+						alertDialog.show(); 
 					}else{
 						Dialog alertDialog = new AlertDialog.Builder(AddCamera.this).   
 					            setTitle("错误").   
-					            setMessage("添加失败，请重新添加设备").   
+					            setMessage("添加失败,请重新添加").   
 					            setIcon(R.drawable.expander_ic_minimized).   
 					            setPositiveButton("确定", new DialogInterface.OnClickListener() {   
 

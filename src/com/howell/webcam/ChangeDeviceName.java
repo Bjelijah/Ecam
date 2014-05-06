@@ -81,14 +81,20 @@ public class ChangeDeviceName extends Activity implements OnClickListener{
 						MessageUtiles.postToast(ChangeDeviceName.this, "设置成功", 1000);
 						finish();
 						mActivities.getmActivityList().get("AddCamera").finish();
-						if(mActivities.getmActivityList().containsKey("SetOrResetWifi")){
-							mActivities.getmActivityList().get("SetOrResetWifi").finish();
+						if(mActivities.getmActivityList().containsKey("SendWifi")){
+							mActivities.getmActivityList().get("SendWifi").finish();
 						}
 						if(mActivities.getmActivityList().containsKey("SetDeviceWifi")){
 							mActivities.getmActivityList().get("SetDeviceWifi").finish();
 						}
+						if(mActivities.getmActivityList().containsKey("SetDeviceWifi")){
+							mActivities.getmActivityList().get("SetDeviceWifi").finish();
+						}
+						if(mActivities.getmActivityList().containsKey("AddDeviceOrNot")){
+							mActivities.getmActivityList().get("AddDeviceOrNot").finish();
+						}
 						mActivities.getmActivityList().get("CamTabActivity").finish();
-						mActivities.getmActivityList().get("SetWifiOrAddDevice").finish();
+						mActivities.getmActivityList().get("SetWifiOrNot").finish();
 						Intent intent = new Intent(ChangeDeviceName.this,CamTabActivity.class);
 						startActivity(intent);
 					}else{

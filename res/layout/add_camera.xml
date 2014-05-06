@@ -16,6 +16,14 @@
             android:src="@drawable/back_btn_selector"
             android:layout_gravity="left|center" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="55dip"
+            android:gravity="center"
+            android:text="添加摄像机"
+            android:textColor="#FFFFFFFF"
+            android:textSize="23sp" />
+
     </FrameLayout>
 
     <TextView

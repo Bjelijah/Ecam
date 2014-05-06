@@ -519,7 +519,7 @@ public class CameraList extends ListActivity {
 			            startActivity(intent);
 			        }
 				}else if(arg0.getId() == R.id.ib_add){
-					Intent intent = new Intent(CameraList.this, SetWifiOrAddDevice.class);
+					Intent intent = new Intent(CameraList.this, SetWifiOrNot.class);
 		            startActivity(intent);
 				}
 			}

@@ -26,8 +26,8 @@ public class SendWifi extends Activity implements OnClickListener , XQuquerListe
 	private HomeKeyEventBroadCastReceiver receiver;
 	private String wifiMeesage;
 	
-	private ImageButton mBack,mBtnSend,mBtnAdd,mBtnFinish;
-	private LinearLayout mSend,mAddCamera,mFinish;
+	private ImageButton mBack,mBtnSend,mBtnFinish;
+	private LinearLayout mSend,mFinish;
 	private TextView tips,btnTips;
 	
 	@Override
@@ -52,15 +52,15 @@ public class SendWifi extends Activity implements OnClickListener , XQuquerListe
 		btnTips = (TextView)findViewById(R.id.tv_send_btn_tip);
 		mBack = (ImageButton)findViewById(R.id.ib_send_wifi_back);
 		mSend = (LinearLayout)findViewById(R.id.ll_ib_send_wifi);
-		mAddCamera = (LinearLayout)findViewById(R.id.ll_ib_add_device);
+		//mAddCamera = (LinearLayout)findViewById(R.id.ll_ib_add_device);
 		mFinish = (LinearLayout)findViewById(R.id.ll_ib_finish_set);
-		mBtnAdd = (ImageButton)findViewById(R.id.ib_add_device);
+		//mBtnAdd = (ImageButton)findViewById(R.id.ib_add_device);
 		mBtnSend = (ImageButton)findViewById(R.id.ib_send_wifi);
 		mBtnFinish = (ImageButton)findViewById(R.id.ib_finish_set);
 		
 		mBack.setOnClickListener(this);
 		mBtnSend.setOnClickListener(this);
-		mBtnAdd.setOnClickListener(this);
+		//mBtnAdd.setOnClickListener(this);
 		mBtnFinish.setOnClickListener(this);
 	}
 
@@ -100,9 +100,9 @@ public class SendWifi extends Activity implements OnClickListener , XQuquerListe
 	public void onSend() {
 		// TODO Auto-generated method stub
 		Log.i("", "onSend");
-		tips.setText("发送完毕,若指示灯变为绿色常亮则成功，若一直闪烁请重新发送");
+		tips.setText("发送完毕,若红色指示灯变为绿色则成功，否则请重新发送");
 		btnTips.setText("重新发送");
-		mAddCamera.setVisibility(View.VISIBLE);
+		//mAddCamera.setVisibility(View.VISIBLE);
 		mFinish.setVisibility(View.VISIBLE);
 	}
 	@Override
@@ -116,16 +116,18 @@ public class SendWifi extends Activity implements OnClickListener , XQuquerListe
 		case R.id.ib_send_wifi_back:
 			finish();
 			break;
-		case R.id.ib_add_device:
+		/*case R.id.ib_add_device:
 			Intent intent = new Intent(SendWifi.this,AddCamera.class);
         	startActivity(intent);
         	finish();
-        	break;
+        	break;*/
 		case R.id.ib_finish_set:
-			finish();
-        	mActivities.getmActivityList().get("SetOrResetWifi").finish();
-        	mActivities.getmActivityList().get("SetDeviceWifi").finish();
-        	mActivities.getmActivityList().get("SetWifiOrAddDevice").finish();
+			//finish();
+        	//mActivities.getmActivityList().get("SetOrResetWifi").finish();
+        	//mActivities.getmActivityList().get("SetDeviceWifi").finish();
+        	//mActivities.getmActivityList().get("SetWifiOrAddDevice").finish();
+			Intent intent = new Intent(SendWifi.this,AddDeviceOrNot.class);
+        	startActivity(intent);
 		default:
 			break;
 		}

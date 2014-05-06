@@ -75,8 +75,8 @@ public class FlashLighting extends Activity implements OnClickListener{
 				c.twinkle();
 				tips.setVisibility(View.VISIBLE);
 				isBtnClicked = true;
-				mFlashLight.setImageDrawable(getResources().getDrawable(R.drawable.send_wifi_finish_btn_selector));
-				btnTips.setText("完成");
+				mFlashLight.setImageDrawable(getResources().getDrawable(R.drawable.ok_btn_red_selector));
+				btnTips.setText("变红了");
 			}else{
 				c.stopTwinkle();
 				Intent intent = new Intent(FlashLighting.this,SetDeviceWifi.class);

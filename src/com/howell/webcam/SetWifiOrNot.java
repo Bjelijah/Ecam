@@ -11,8 +11,8 @@ import android.widget.ImageButton;
 
 import com.android.howell.webcam.R;
 
-public class SetWifiOrAddDevice extends Activity implements OnClickListener{
-	private FrameLayout mSetWifi,mAddDevice;
+public class SetWifiOrNot extends Activity implements OnClickListener{
+	private ImageButton mSetWifi,mAddDevice;
 	private ImageButton mBack;
 	private Activities mActivities;
 	private HomeKeyEventBroadCastReceiver receiver;
@@ -22,12 +22,11 @@ public class SetWifiOrAddDevice extends Activity implements OnClickListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.add_device_step_select);
 		mActivities = Activities.getInstance();
-        mActivities.addActivity("SetWifiOrAddDevice",SetWifiOrAddDevice.this);
+        mActivities.addActivity("SetWifiOrNot",SetWifiOrNot.this);
         receiver = new HomeKeyEventBroadCastReceiver();
-		registerReceiver(receiver, new IntentFilter(
-				Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
-		mSetWifi = (FrameLayout)findViewById(R.id.fl_set_wifi);
-		mAddDevice = (FrameLayout)findViewById(R.id.fl_add_device);
+		registerReceiver(receiver, new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+		mSetWifi = (ImageButton)findViewById(R.id.ib_set_device_yes);
+		mAddDevice = (ImageButton)findViewById(R.id.ib_set_device_no);
 		
 		mBack = (ImageButton)findViewById(R.id.ib_add_device_back);
 		
@@ -40,13 +39,13 @@ public class SetWifiOrAddDevice extends Activity implements OnClickListener{
 	public void onClick(View view) {
 		// TODO Auto-generated method stub
 		switch (view.getId()) {
-		case R.id.fl_set_wifi:
-			Intent intent = new Intent(SetWifiOrAddDevice.this,SetOrResetWifi.class);
+		case R.id.ib_set_device_yes:
+			Intent intent = new Intent(SetWifiOrNot.this,FlashLighting.class);
 			startActivity(intent);
 			break;
 
-		case R.id.fl_add_device:
-			intent = new Intent(SetWifiOrAddDevice.this,AddCamera.class);
+		case R.id.ib_set_device_no:
+			intent = new Intent(SetWifiOrNot.this,AddCamera.class);
 			startActivity(intent);
 			break;
 			
@@ -62,7 +61,7 @@ public class SetWifiOrAddDevice extends Activity implements OnClickListener{
     protected void onDestroy() {
     	// TODO Auto-generated method stub
     	super.onDestroy();
-    	mActivities.removeActivity("SetWifiOrAddDevice");
+    	mActivities.removeActivity("SetWifiOrNot");
     	unregisterReceiver(receiver);
     }
 }

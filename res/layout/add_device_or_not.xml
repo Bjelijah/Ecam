@@ -9,101 +9,78 @@
 	    android:layout_height="55dip"
 	    android:background="@color/title_blue" >
         <ImageButton
-            android:id="@+id/ib_send_wifi_back"
+            android:id="@+id/ib_add_device_or_not_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#00000000"
             android:src="@drawable/back_btn_selector"
             android:layout_gravity="left|center" />
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <ImageView
-            android:id="@+id/iv_flash_background"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dip"
-            android:paddingRight="10dip"
-            android:src="@drawable/wifi_background" />
-
-        <ImageView
-            android:id="@+id/iv_flash_background_red_light"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dip"
-            android:paddingRight="10dip"
-            android:src="@drawable/wifi_background_red_light" />
-
+        
     </FrameLayout>
 
     <TextView
-        android:id="@+id/tv_send_wifi_tips"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:textColor="@color/black"
-        android:text="将手机扬声器靠近摄像机麦克风" />
-
+        android:layout_marginTop="30dip"
+        android:layout_marginLeft="5dip"
+        android:gravity="center"
+        android:text="您是否要添加摄像机到账户" />
+    
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:layout_marginTop="40dip">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dip" >
 
         <LinearLayout
-            android:id="@+id/ll_ib_send_wifi"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_weight="1"
-            android:gravity="center" >
+            android:gravity="center"
+            android:layout_weight="1" >
 
             <ImageButton
-                android:id="@+id/ib_send_wifi"
+                android:id="@+id/ib_add_device_yes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="#00000000"
                 android:layout_marginBottom="5dip"
-                android:src="@drawable/send_wifi_btn_selector" />
+                android:src="@drawable/send_wifi_finish_btn_selector" />
 
             <TextView
-                android:id="@+id/tv_send_btn_tip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:text="发送配置" />
+                android:text="添加" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ll_ib_finish_set"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_weight="1"
             android:gravity="center"
-            android:visibility="gone"  >
+            android:layout_weight="1" >
 
             <ImageButton
-                android:id="@+id/ib_finish_set"
+                android:id="@+id/ib_add_device_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="#00000000"
                 android:layout_marginBottom="5dip"
-                android:src="@drawable/ok_btn_green_selector" />
+                android:src="@drawable/no_btn_red_selector" />
 
             <TextView
+                android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:text="变绿了" />
+                android:text="不添加" 
+                android:textColor="@color/red"/>
 
         </LinearLayout>
 
     </LinearLayout>
+    
 
 </LinearLayout>

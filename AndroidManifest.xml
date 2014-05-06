@@ -67,7 +67,7 @@
         </activity>
         
         <activity
-            android:name="com.howell.webcam.SetWifiOrAddDevice"
+            android:name="com.howell.webcam.SetWifiOrNot"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar">
         </activity>
@@ -98,6 +98,12 @@
         
         <activity
             android:name="com.howell.webcam.FlashLighting"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar">
+        </activity>
+        
+        <activity
+            android:name="com.howell.webcam.AddDeviceOrNot"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar">
         </activity>

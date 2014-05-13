@@ -126,7 +126,7 @@ public class SendWifi extends Activity implements OnClickListener , XQuquerListe
         	//mActivities.getmActivityList().get("SetOrResetWifi").finish();
         	//mActivities.getmActivityList().get("SetDeviceWifi").finish();
         	//mActivities.getmActivityList().get("SetWifiOrAddDevice").finish();
-			Intent intent = new Intent(SendWifi.this,AddDeviceOrNot.class);
+			Intent intent = new Intent(SendWifi.this,GetMatchResult.class);
         	startActivity(intent);
 		default:
 			break;

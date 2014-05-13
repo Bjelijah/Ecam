@@ -27,6 +27,8 @@ public class SoapManager implements Serializable {
     private LoginRequest mLoginRequest;
     private LoginResponse mLoginResponse;
     private GetNATServerRes mGetNATServerRes;
+    
+    private GetDeviceMatchingCodeRes mGetDeviceMatchingCodeRes;
 
     private ArrayList<NodeDetails> nodeDetails = new ArrayList<NodeDetails>();
     private static final int REPLAYTIME = 10 * 24 * 60 * 60 * 1000;
@@ -38,9 +40,17 @@ public class SoapManager implements Serializable {
     public static SoapManager getInstance() {
         return sInstance;
     }
-    
 
-    public LoginRequest getLoginRequest() {
+    public GetDeviceMatchingCodeRes getmGetDeviceMatchingCodeRes() {
+		return mGetDeviceMatchingCodeRes;
+	}
+
+	public void setmGetDeviceMatchingCodeRes(
+			GetDeviceMatchingCodeRes mGetDeviceMatchingCodeRes) {
+		this.mGetDeviceMatchingCodeRes = mGetDeviceMatchingCodeRes;
+	}
+
+	public LoginRequest getLoginRequest() {
         return mLoginRequest;
     }
 //
@@ -1061,6 +1071,48 @@ public class SoapManager implements Serializable {
     	try{
     		Object result = object.getProperty("result");
     	 	res.setResult(result.toString());
+    	}catch (Exception e) {
+    		// TODO: handle exception
+    	}
+    	   	return res;
+    }
+    
+    //获取账户摄像机匹配码
+    public GetDeviceMatchingCodeRes getGetDeviceMatchingCodeRes(GetDeviceMatchingCodeReq req){
+    	GetDeviceMatchingCodeRes res = new GetDeviceMatchingCodeRes();
+    	SoapObject rpc = new SoapObject(sNameSpace, "getDeviceMatchingCodeReq");
+    	rpc.addProperty("Account", req.getAccount());
+    	rpc.addProperty("LoginSession", req.getLoginSession());
+    	SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/getDeviceMatchingCode");
+    	try{
+    		Object result = object.getProperty("result");
+    	 	res.setResult(result.toString());
+    	 	
+    	 	Object matchingCode = object.getProperty("MatchingCode");
+    	 	res.setMatchingCode(matchingCode.toString());
+    	 	
+    	 	setmGetDeviceMatchingCodeRes(res);
+    	}catch (Exception e) {
+    		// TODO: handle exception
+    	}
+    	   	return res;
+    }
+    
+    //查询摄像机匹配结果
+    public GetDeviceMatchingResultRes getGetDeviceMatchingResultRes(GetDeviceMatchingResultReq req){
+    	GetDeviceMatchingResultRes res = new GetDeviceMatchingResultRes();
+    	SoapObject rpc = new SoapObject(sNameSpace, "getDeviceMatchingResultReq");
+    	rpc.addProperty("Account", req.getAccount());
+    	rpc.addProperty("LoginSession", req.getLoginSession());
+    	rpc.addProperty("MatchingCode", req.getMatchingCode());
+    	SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/getDeviceMatchingResult");
+    	try{
+    		Object result = object.getProperty("result");
+    	 	res.setResult(result.toString());
+    	 	
+    	 	Object devid = object.getProperty("DevID");
+    	 	res.setDevID(devid.toString());
+    	 	
     	}catch (Exception e) {
     		// TODO: handle exception
     	}

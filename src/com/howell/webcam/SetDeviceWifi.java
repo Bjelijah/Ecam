@@ -136,7 +136,8 @@ public class SetDeviceWifi extends Activity implements OnClickListener{
 			alertDialog.show();   
 			break;*/
 		case R.id.ib_set_device_ok:
-			String message = "W:"+wifi_ssid.getSelectedItem().toString()+"|"+wifi_password.getText().toString();
+			String code = SoapManager.getInstance().getmGetDeviceMatchingCodeRes().getMatchingCode();
+			String message = "Wo:"+wifi_ssid.getSelectedItem().toString()+"|"+wifi_password.getText().toString()+"|"+code;
 			System.out.println("message:"+message);
 			Intent intent = new Intent(SetDeviceWifi.this,SendWifi.class);
 			intent.putExtra("wifi_message", message);

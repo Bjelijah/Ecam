@@ -3,7 +3,9 @@ package com.howell.webcam;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
@@ -16,6 +18,8 @@ public class SetWifiOrNot extends Activity implements OnClickListener{
 	private ImageButton mBack;
 	private Activities mActivities;
 	private HomeKeyEventBroadCastReceiver receiver;
+	private SoapManager mSoapManager;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -25,6 +29,11 @@ public class SetWifiOrNot extends Activity implements OnClickListener{
         mActivities.addActivity("SetWifiOrNot",SetWifiOrNot.this);
         receiver = new HomeKeyEventBroadCastReceiver();
 		registerReceiver(receiver, new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+		
+		mSoapManager = SoapManager.getInstance();
+		SendMatchCodeTask task = new SendMatchCodeTask();
+		task.execute();
+		
 		mSetWifi = (ImageButton)findViewById(R.id.ib_set_device_yes);
 		mAddDevice = (ImageButton)findViewById(R.id.ib_set_device_no);
 		
@@ -34,6 +43,26 @@ public class SetWifiOrNot extends Activity implements OnClickListener{
 		mAddDevice.setOnClickListener(this);
 		mBack.setOnClickListener(this);
 	}
+	
+	public class SendMatchCodeTask extends AsyncTask<Void, Integer, Void> {
+		GetDeviceMatchingCodeRes res;
+        @Override
+        protected Void doInBackground(Void... params) {
+            // TODO Auto-generated method stub
+            System.out.println("call doInBackground");
+            GetDeviceMatchingCodeReq req = new GetDeviceMatchingCodeReq(mSoapManager.getLoginResponse().getAccount(),mSoapManager.getLoginResponse().getLoginSession());
+            res = mSoapManager.getGetDeviceMatchingCodeRes(req);
+            
+            return null;
+        }
+        
+        @Override
+        protected void onPostExecute(Void result) {
+        	// TODO Auto-generated method stub
+        	super.onPostExecute(result);
+        	System.out.println(res.getResult()+","+res.getMatchingCode());
+        }
+    }
 
 	@Override
 	public void onClick(View view) {

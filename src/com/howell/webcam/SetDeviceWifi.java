@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,7 +22,7 @@ import com.howell.wificontrol.WifiAdmin;
 public class SetDeviceWifi extends Activity implements OnClickListener{
 	private WifiAdmin mWifiAdmin;
 	
-	private EditText wifi_password;
+	private EditText wifi_password,device_name;
 	//private Button btnSend,btnSendFinish;
 	private Button mOk;
 	private ImageButton mBack;
@@ -32,6 +33,8 @@ public class SetDeviceWifi extends Activity implements OnClickListener{
 	private Spinner wifi_ssid;  
     private String[] Member;  
     private ArrayAdapter<String> myAdapter;  
+    
+    private SoapManager mSoapManager;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +45,12 @@ public class SetDeviceWifi extends Activity implements OnClickListener{
         mActivities.addActivity("SetDeviceWifi",SetDeviceWifi.this);
         receiver = new HomeKeyEventBroadCastReceiver();
 		registerReceiver(receiver, new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+		mSoapManager = SoapManager.getInstance();
 		mWifiAdmin = new WifiAdmin(this);
 		System.out.println(mWifiAdmin.getWifiSSID());
 		//wifi_ssid = (EditText)findViewById(R.id.et_wifi);
 		wifi_password = (EditText)findViewById(R.id.et_wifi_password);
+		device_name  = (EditText)findViewById(R.id.et_device_name);
 		//btnSend = (Button)findViewById(R.id.btn_send);
 		//btnSendFinish = (Button)findViewById(R.id.btn_send_finish);
 		mOk = (Button)findViewById(R.id.ib_set_device_ok);
@@ -76,8 +81,31 @@ public class SetDeviceWifi extends Activity implements OnClickListener{
 	    //btnSend.setOnClickListener(this);
 	    mBack.setOnClickListener(this);
 	    mOk.setOnClickListener(this);
+	    
+	    SendMatchCodeTask task = new SendMatchCodeTask();
+		task.execute();
 	    //btnSendFinish.setOnClickListener(this);
 	}
+	
+	public class SendMatchCodeTask extends AsyncTask<Void, Integer, Void> {
+		GetDeviceMatchingCodeRes res;
+        @Override
+        protected Void doInBackground(Void... params) {
+            // TODO Auto-generated method stub
+            System.out.println("call doInBackground");
+            GetDeviceMatchingCodeReq req = new GetDeviceMatchingCodeReq(mSoapManager.getLoginResponse().getAccount(),mSoapManager.getLoginResponse().getLoginSession());
+            res = mSoapManager.getGetDeviceMatchingCodeRes(req);
+            
+            return null;
+        }
+        
+        @Override
+        protected void onPostExecute(Void result) {
+        	// TODO Auto-generated method stub
+        	super.onPostExecute(result);
+        	System.out.println(res.getResult()+","+res.getMatchingCode());
+        }
+    }
 	
 	private String removeMarks(String SSID){
 		if(SSID.startsWith("\"") && SSID.endsWith("\"")){
@@ -136,11 +164,13 @@ public class SetDeviceWifi extends Activity implements OnClickListener{
 			alertDialog.show();   
 			break;*/
 		case R.id.ib_set_device_ok:
-			String code = SoapManager.getInstance().getmGetDeviceMatchingCodeRes().getMatchingCode();
-			String message = "Wo:"+wifi_ssid.getSelectedItem().toString()+"|"+wifi_password.getText().toString()+"|"+code;
-			System.out.println("message:"+message);
-			Intent intent = new Intent(SetDeviceWifi.this,SendWifi.class);
-			intent.putExtra("wifi_message", message);
+			//String code = SoapManager.getInstance().getmGetDeviceMatchingCodeRes().getMatchingCode();
+			//String message = "Wo:"+wifi_ssid.getSelectedItem().toString()+"|"+wifi_password.getText().toString()+"|"+code;
+			//System.out.println("message:"+message);
+			Intent intent = new Intent(SetDeviceWifi.this,FlashLighting.class);
+			intent.putExtra("wifi_ssid", wifi_ssid.getSelectedItem().toString());
+			intent.putExtra("wifi_password", wifi_password.getText().toString());
+			intent.putExtra("device_name", device_name.getText().toString());
         	startActivity(intent);
 			break;
 		case R.id.ib_set_device_wifi_back:

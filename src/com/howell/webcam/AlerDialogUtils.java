@@ -22,15 +22,15 @@ public class AlerDialogUtils {
 		    		public void run() {
 		    			// TODO Auto-generated method stub
 		    			super.run();
-		    			CamTabActivity.updateNum -- ;
+		    			//CamTabActivity.updateNum -- ;
 		    			System.out.println(DeviceSetActivity.dev.toString());
 		    			DeviceSetActivity.dev.setHasUpdate(false);
-		    			for(NodeDetails d:DeviceManageActivity.mList){
-		    	    		if(d.getName().equals(DeviceSetActivity.dev.getName())){
-		    	    			d.setHasUpdate(DeviceSetActivity.dev.isHasUpdate());
-		    	    			break;
-		    	    		}
-		    	    	}
+//		    			for(NodeDetails d:DeviceManageActivity.mList){
+//		    	    		if(d.getName().equals(DeviceSetActivity.dev.getName())){
+//		    	    			d.setHasUpdate(DeviceSetActivity.dev.isHasUpdate());
+//		    	    			break;
+//		    	    		}
+//		    	    	}
 		    			System.out.println(DeviceSetActivity.dev.toString());
 		    			DeviceSetActivity.cameraUpdate();
 		    		}

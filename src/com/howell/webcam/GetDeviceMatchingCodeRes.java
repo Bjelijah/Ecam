@@ -1,6 +1,8 @@
 package com.howell.webcam;
 
-public class GetDeviceMatchingCodeRes {
+import java.io.Serializable;
+
+public class GetDeviceMatchingCodeRes  implements Serializable{
 	private String result;
 	private String matchingCode;
 	public String getResult() {

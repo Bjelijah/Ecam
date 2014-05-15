@@ -1079,6 +1079,7 @@ public class SoapManager implements Serializable {
     
     //获取账户摄像机匹配码
     public GetDeviceMatchingCodeRes getGetDeviceMatchingCodeRes(GetDeviceMatchingCodeReq req){
+    	setmGetDeviceMatchingCodeRes(null);
     	GetDeviceMatchingCodeRes res = new GetDeviceMatchingCodeRes();
     	SoapObject rpc = new SoapObject(sNameSpace, "getDeviceMatchingCodeReq");
     	rpc.addProperty("Account", req.getAccount());

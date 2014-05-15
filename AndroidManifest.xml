@@ -63,6 +63,7 @@
         <activity
             android:name="com.howell.webcam.SetDeviceWifi"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible"
             android:theme="@android:style/Theme.Black.NoTitleBar">
         </activity>
         

@@ -1,7 +1,10 @@
 package com.howell.webcam;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
@@ -24,7 +27,7 @@ public class SendWifi extends Activity implements OnClickListener , XQuquerListe
 	
 	private Activities mActivities;
 	private HomeKeyEventBroadCastReceiver receiver;
-	private String wifiMeesage;
+	private String wifi_ssid,wifi_password,device_name;
 	
 	private ImageButton mBack,mBtnSend,mBtnFinish;
 	private LinearLayout mSend,mFinish;
@@ -46,7 +49,9 @@ public class SendWifi extends Activity implements OnClickListener , XQuquerListe
 		xququerService = XQuquerService.getInstance();
 		
 		Intent intent = getIntent();
-		wifiMeesage = intent.getStringExtra("wifi_message");
+		wifi_ssid = intent.getStringExtra("wifi_ssid");
+		wifi_password = intent.getStringExtra("wifi_password");
+		device_name = intent.getStringExtra("device_name");
 		
 		tips = (TextView)findViewById(R.id.tv_send_wifi_tips);
 		btnTips = (TextView)findViewById(R.id.tv_send_btn_tip);
@@ -110,6 +115,29 @@ public class SendWifi extends Activity implements OnClickListener , XQuquerListe
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.ib_send_wifi:
+			if(SoapManager.getInstance().getmGetDeviceMatchingCodeRes() == null){
+				Dialog alertDialog = new AlertDialog.Builder(SendWifi.this).   
+			            setTitle("错误").   
+			            setMessage("网络不稳定，请检查网络").   
+			            setIcon(R.drawable.expander_ic_minimized).   
+			            setPositiveButton("确定", new DialogInterface.OnClickListener() {   
+
+			                @Override   
+			                public void onClick(DialogInterface dialog, int which) {   
+			                    // TODO Auto-generated method stub    
+			                	finish();
+			                	if(mActivities.getmActivityList().containsKey("FlashLighting")){
+									mActivities.getmActivityList().get("FlashLighting").finish();
+								}
+			                	if(mActivities.getmActivityList().containsKey("SetDeviceWifi")){
+									mActivities.getmActivityList().get("SetDeviceWifi").finish();
+								}
+			                }   
+			            }).   
+			    create();   
+				alertDialog.show(); 
+				return;
+			}
 			send();
 			tips.setText("正在发送指令...");
 			break;
@@ -127,6 +155,7 @@ public class SendWifi extends Activity implements OnClickListener , XQuquerListe
         	//mActivities.getmActivityList().get("SetDeviceWifi").finish();
         	//mActivities.getmActivityList().get("SetWifiOrAddDevice").finish();
 			Intent intent = new Intent(SendWifi.this,GetMatchResult.class);
+			intent.putExtra("device_name", device_name);
         	startActivity(intent);
 		default:
 			break;
@@ -136,7 +165,7 @@ public class SendWifi extends Activity implements OnClickListener , XQuquerListe
 	
 	private void send()
 	{
-		
+		String wifiMeesage = "Wo:"+wifi_ssid+"|"+wifi_password+"|"+SoapManager.getInstance().getmGetDeviceMatchingCodeRes().getMatchingCode();
 		System.out.println(wifiMeesage);
 		byte[] data = wifiMeesage.getBytes();
 		if(data.length>0) xququerService.sendData(data, 0.5f);  //0.0 ~ 1.0

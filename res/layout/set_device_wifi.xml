@@ -20,7 +20,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Wifi配置"
             android:textColor="#FFFFFFFF"
         	android:textSize="23sp"
         	android:layout_gravity="center" />
@@ -38,21 +37,38 @@
         
     </FrameLayout>
     
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dip"
-        android:layout_marginTop="20dip"
-        android:text="输入您的Wifi信息,用于配置摄像机的Wifi环境"
-        android:textSize="20sp"
-        android:textColor="@color/black" />
+        android:layout_marginTop="10dip"
+        android:background="@drawable/list_item_bg_normal"
+         >
+        
+        <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textSize="18sp"
+	        android:text="摄像机名:"
+	        android:textColor="@color/black" />
+        <EditText
+            android:id="@+id/et_device_name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginLeft="5dip"
+            android:hint="我的摄像头"
+            android:background="@null" >
+            <requestFocus />
+		</EditText>
+
+    </LinearLayout>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dip"
         android:background="@drawable/list_item_bg_normal"
+        android:layout_marginTop="10dip"
          >
         
         <TextView
@@ -100,8 +116,9 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_marginLeft="5dip"
+            android:hint="摄像机连接wifi的密码"
             android:background="@null" >
-            <requestFocus />
+            
 		</EditText>
 
     </LinearLayout>

@@ -22,6 +22,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.android.howell.webcam.R;
+import com.howell.updateCameraUtil.UpdateCameraUtils;
 
 public class DeviceSetActivity extends Activity implements
         OnSeekBarChangeListener {
@@ -403,7 +404,7 @@ public class DeviceSetActivity extends Activity implements
 			    	}
 					System.out.println("re4444444444444");
 					mCameraVersion.setText(getResources().getString(R.string.camera_version_title)+"(V"+res.getCurDevVer()+")");
-					if(res.getCurDevVer().equals(res.getNewDevVer())){
+					if(!UpdateCameraUtils.needToUpdate(res.getCurDevVer(), res.getNewDevVer())){
 			    		mCameraUpdateStatus.setText(getResources().getString(R.string.camera_old_version1)+res.getCurDevVer()+getResources().getString(R.string.camera_old_version2));
 			    		mUpdateButton.setVisibility(View.INVISIBLE);
 			    	}else{

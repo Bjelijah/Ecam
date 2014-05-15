@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -22,17 +23,24 @@ public class FlashLighting extends Activity implements OnClickListener{
 	private HomeKeyEventBroadCastReceiver receiver;
 	private CameraUtils c;
 	private boolean isBtnClicked;
+	private String wifi_ssid,wifi_password,device_name;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.flash_light);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		isBtnClicked = false;
 		mActivities = Activities.getInstance();
         mActivities.addActivity("FlashLighting",FlashLighting.this);
         receiver = new HomeKeyEventBroadCastReceiver();
 		registerReceiver(receiver, new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+		
+		Intent intent = getIntent();
+		wifi_ssid = intent.getStringExtra("wifi_ssid");
+		wifi_password = intent.getStringExtra("wifi_password");
+		device_name = intent.getStringExtra("device_name");
 		
 		c = new CameraUtils();
 		
@@ -79,9 +87,12 @@ public class FlashLighting extends Activity implements OnClickListener{
 				btnTips.setText("变红了");
 			}else{
 				c.stopTwinkle();
-				Intent intent = new Intent(FlashLighting.this,SetDeviceWifi.class);
+				Intent intent = new Intent(FlashLighting.this,SendWifi.class);
+				intent.putExtra("wifi_ssid", wifi_ssid);
+				intent.putExtra("wifi_password", wifi_password);
+				intent.putExtra("device_name", device_name);
 				startActivity(intent);
-				finish();
+				//finish();
 			}
 			break;
 			
@@ -107,6 +118,15 @@ public class FlashLighting extends Activity implements OnClickListener{
         }
         return false;
     }
+	
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onRestart();
+		isBtnClicked = false;
+		mFlashLight.setImageDrawable(getResources().getDrawable(R.drawable.flash_light_btn_selecor));
+		btnTips.setText("设置");
+	}
 	
     @Override
     protected void onDestroy() {

@@ -39,7 +39,7 @@ public class Settings extends Activity implements OnClickListener {
     private Button mCancel;
 
     //private TextView mInformationTextView;
-    private ImageView mRedIcon;
+    //private ImageView mRedIcon;
     private Dialog mDialog;
     
     private Activities mActivities;
@@ -60,7 +60,7 @@ public class Settings extends Activity implements OnClickListener {
 
         mButton = (Button) findViewById(R.id.exit);
        // mInformationTextView = (TextView) findViewById(R.id.information_text);
-        mRedIcon = (ImageView)findViewById(R.id.setting_red_icon);
+//        mRedIcon = (ImageView)findViewById(R.id.setting_red_icon);
         
         mAccount.setOnClickListener(this);
         mSysMessage.setOnClickListener(this);
@@ -84,16 +84,16 @@ public class Settings extends Activity implements OnClickListener {
         	startActivity(intent);
         	finish();
 		}
-        Log.e("setting", CamTabActivity.updateNum+"");
+        //Log.e("setting", CamTabActivity.updateNum+"");
 //        if(CamTabActivity.updateNum > 0) mRedIcon.setVisibility(View.VISIBLE);
 //        else mRedIcon.setVisibility(View.INVISIBLE);
-        showIcon();
+//        showIcon();
     }
     
-    private void showIcon(){
-   	 	if(CamTabActivity.updateNum > 0) mRedIcon.setVisibility(View.VISIBLE);
-        else mRedIcon.setVisibility(View.INVISIBLE);
-    }
+//    private void showIcon(){
+//   	 	if(CamTabActivity.updateNum > 0) mRedIcon.setVisibility(View.VISIBLE);
+//        else mRedIcon.setVisibility(View.INVISIBLE);
+//    }
     
     @Override
     public void onClick(View v) {
@@ -196,7 +196,7 @@ public class Settings extends Activity implements OnClickListener {
     	// TODO Auto-generated method stub
     	super.onPause();
         Log.e("Setting","onPause");
-        showIcon();
+//        showIcon();
 //        if(CamTabActivity.updateNum > 0) mRedIcon.setVisibility(View.VISIBLE);
 //        else mRedIcon.setVisibility(View.INVISIBLE);
 //    	for(Activity a:mActivities.getmActivityList()){
@@ -208,9 +208,9 @@ public class Settings extends Activity implements OnClickListener {
     protected void onRestart() {
     	// TODO Auto-generated method stub
     	super.onRestart();
-    	if(CamTabActivity.updateNum == 0){
-    		mRedIcon.setVisibility(View.INVISIBLE);
-    	}
+//    	if(CamTabActivity.updateNum == 0){
+//    		mRedIcon.setVisibility(View.INVISIBLE);
+//    	}
     }
     
     @Override

@@ -15,6 +15,7 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TabHost;
 
 import com.android.howell.webcam.R;
+import com.howell.updateCameraUtil.UpdateCameraUtils;
 
 @SuppressWarnings("deprecation")
 public class CamTabActivity extends TabActivity implements
@@ -27,8 +28,8 @@ public class CamTabActivity extends TabActivity implements
     private Activities mActivities;
     private HomeKeyEventBroadCastReceiver receiver;
     
-    //private SoapManager mSoapManager;
-    static int updateNum;
+    private SoapManager mSoapManager;
+    //static int updateNum;
     
     static boolean cameraVerThread;
     
@@ -59,7 +60,7 @@ public class CamTabActivity extends TabActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cam_tab);
         Log.e("CamTabActivity", "onCreate");
-        updateNum = 0;
+        //updateNum = 0;
         hasToggled = false;
         cameraVerThread = false;
         mActivities = Activities.getInstance();
@@ -94,7 +95,7 @@ public class CamTabActivity extends TabActivity implements
                 .setContent(new Intent(this, Settings.class)));
         mHost.setCurrentTab(0);  
         
-       /* badge = new BadgeView(this, mGroup);
+       /* badge = new BadgeView(this, mGroup);*/
         
         mSoapManager = SoapManager.getInstance();
         mResponse = mSoapManager.getLoginResponse();
@@ -117,28 +118,28 @@ public class CamTabActivity extends TabActivity implements
 	                	GetDevVerReq getDevVerReq = new GetDevVerReq(mResponse.getAccount(),mResponse.getLoginSession(),d.getDevID());
 	                	GetDevVerRes res = mSoapManager.getGetDevVerRes(getDevVerReq);
 	                	Log.e("GetDevVerRes", res.toString());
-	                	if(d.isOnLine() && !res.getCurDevVer().equals(res.getNewDevVer())){
+	                	if(d.isOnLine() && UpdateCameraUtils.needToUpdate(res.getCurDevVer(), res.getNewDevVer())){
 	                		System.out.println(res.getCurDevVer()+","+res.getNewDevVer());
-	                		updateNum++;
+	                		//updateNum++;
 	                		d.setHasUpdate(true);
-	                		if(updateNum == 1){
-	                        	//badge.setText(String.valueOf(updateNum));
-	                    		handler.sendEmptyMessage(TOGGLEON);
-	                        }
+//	                		if(updateNum == 1){
+//	                        	//badge.setText(String.valueOf(updateNum));
+//	                    		handler.sendEmptyMessage(TOGGLEON);
+//	                        }
 	                		//return;
 	                	}
 	                }
         		}catch(Exception e){
                 	System.out.println("getDevVerReq crash");
                 }
-        		Log.e("updateNum", updateNum+"");
+        		//Log.e("updateNum", updateNum+"");
 //                if(updateNum > 0){
 //                	//badge.setText(String.valueOf(updateNum));
 //            		handler.sendEmptyMessage(TOGGLEON);
 //                }
         		
         	}
-        }.start();*/
+        }.start();
     }
     
 	@Override

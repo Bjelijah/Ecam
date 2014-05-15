@@ -4,8 +4,15 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.android.howell.webcam.R;
+import com.howell.webcam.GetMatchResult;
+
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -14,8 +21,8 @@ import android.widget.TextView;
 
 public class CameraUtils {
 	private Camera camera;
-	private Timer timer;
-	
+	//private Timer timer;
+	private TimerTask task;
 	
 	public Camera getCamera() {
 		return camera;
@@ -27,8 +34,11 @@ public class CameraUtils {
 
 	private void openCamera(){
 		try{
+			System.out.println("start open camera 1");	
 			camera = Camera.open();
+			System.out.println("start open camera 2");	
 			camera.startPreview();
+			System.out.println("start open camera 3");	
 		}
 		catch(RuntimeException e){
 			camera = Camera.open(Camera.getNumberOfCameras()-1);
@@ -37,51 +47,119 @@ public class CameraUtils {
 	}
 	
 	public void stopTwinkle(){
-		if(timer != null){
-			timer.cancel();
-			closeCamera();
-		}
+		new Thread(){
+			public void run() {
+				System.out.println("start stop 1");
+				if(task != null){
+					System.out.println("start stop 2");
+					task.cancel(true);
+				}
+				System.out.println("start stop 3");
+				closeCamera();
+			};
+		}.start();
+		
+//		if(timer != null){
+//			timer.cancel();
+//			closeCamera();
+//		}
 	}
 	
 	private void closeCamera(){
+		System.out.println("start close camera 1");
 		if(camera != null){
+			System.out.println("start close camera 2");
 			camera.stopPreview();
+			System.out.println("start close camera 3");
 			camera.release();
+			System.out.println("start close camera 4");
 			camera = null;
+			System.out.println("start close camera 5");
 		}
 	}
 	
 	public void twinkle(){
+		
+		task = new TimerTask();
+		task.execute();
 		//myThread.start();	
 //		int num;
-		new Thread(){
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				super.run();
+//		new Thread(){
+//			@Override
+//			public void run() {
+//				// TODO Auto-generated method stub
+//				super.run();
 				//打开摄像机
-				openCamera();
-				//闪烁 500ms亮 500ms灭
-				
-				timer = new Timer();//实例化Timer类
-				timer.schedule(new TimerTask(){
-					int num = 0;
-					public void run(){
-						System.out.println(num);
-						if(num % 2 == 0){
-							turnLightOn(camera);
-							System.out.println("亮");
-						}else{
-							turnLightOff(camera);
-							System.out.println("灭");
-						}
-						num++;
-					}
-				},0,500);
-			}
-		}.start();
+//				System.out.println("start open camera");
+//				openCamera();
+//				System.out.println("finish open camera");
+//				//闪烁 500ms亮 500ms灭
+//				System.out.println("start init timer");
+//				
+//				while(!isThreadCancelled){
+//					try {
+//						turnLightOn(camera);
+//						Thread.sleep(500);
+//						turnLightOff(camera);
+//						Thread.sleep(500);
+//					} catch (InterruptedException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//				}
+//				timer = new Timer();//实例化Timer类
+//				timer.schedule(new TimerTask(){
+//					int num = 0;
+//					public void run(){
+//						System.out.println(num);
+//						if(num % 2 == 0){
+//							turnLightOn(camera);
+//							System.out.println("亮");
+//						}else{
+//							turnLightOff(camera);
+//							System.out.println("灭");
+//						}
+//						num++;
+//					}
+//				},0,500);
+//			}
+//		}.start();
 		
 	}
+	
+	class TimerTask extends AsyncTask<Void, Integer, Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            // TODO Auto-generated method stub
+        	System.out.println("start open camera");
+			openCamera();
+			System.out.println("finish open camera");
+			//闪烁 500ms亮 500ms灭
+			System.out.println("start init timer");
+			
+			while(true){
+				System.out.println("1111111");
+				if(isCancelled()){
+					return null;
+				}
+				try {
+					turnLightOn(camera);
+					Thread.sleep(500);
+					turnLightOff(camera);
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+        }
+        
+        @Override
+        protected void onPostExecute(Void result) {
+        	// TODO Auto-generated method stub
+        	super.onPostExecute(result);
+        }
+    }
 	
 //	Handler handler = new Handler(){
 //		@Override

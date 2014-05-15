@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -23,12 +25,27 @@ public class GetMatchResult extends Activity implements OnClickListener{
 	private TextView mTips;
 	private ImageButton mBack;
 	
+	private String device_name;
+	
+	private Activities mActivities;
+	private HomeKeyEventBroadCastReceiver receiver;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.get_match_result);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		Intent intent = getIntent();
+		device_name = intent.getStringExtra("device_name");
+		if(device_name.equals("")){
+			device_name = "我的e看";
+		}
+		mActivities = Activities.getInstance();
+        mActivities.addActivity("GetMatchResult",GetMatchResult.this);
+        receiver = new HomeKeyEventBroadCastReceiver();
+		registerReceiver(receiver, new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+		//等待时间 60秒
 		int progress = 60;
 		mSeekBar = (ProgressBar)findViewById(R.id.sb_get_match_result);
 		mSeekBar.setMax(progress);
@@ -44,6 +61,14 @@ public class GetMatchResult extends Activity implements OnClickListener{
 		getResultTask.execute();
 		
 	}
+	
+    @Override
+    protected void onDestroy() {
+    	// TODO Auto-generated method stub
+    	super.onDestroy();
+    	mActivities.removeActivity("GetMatchResult");
+    	unregisterReceiver(receiver);
+    }
 	
 	class TimerTask extends AsyncTask<Void, Integer, Void> {
 		private int progress;
@@ -90,7 +115,16 @@ public class GetMatchResult extends Activity implements OnClickListener{
 		                @Override   
 		                public void onClick(DialogInterface dialog, int which) {   
 		                    // TODO Auto-generated method stub    
-		                	
+		                	finish();
+		                	if(mActivities.getmActivityList().containsKey("FlashLighting")){
+								mActivities.getmActivityList().get("FlashLighting").finish();
+							}
+		                	if(mActivities.getmActivityList().containsKey("SetDeviceWifi")){
+								mActivities.getmActivityList().get("SetDeviceWifi").finish();
+							}
+		                	if(mActivities.getmActivityList().containsKey("SendWifi")){
+								mActivities.getmActivityList().get("SendWifi").finish();
+							}
 		                }   
 		            }).   
 		    create();   
@@ -99,7 +133,8 @@ public class GetMatchResult extends Activity implements OnClickListener{
     }
 	
 	class GetResultTask extends AsyncTask<Void, Integer, Void> {
-		private GetDeviceMatchingResultRes res ;
+		private GetDeviceMatchingResultRes getDeviceMatchingResultRes ;
+		private UpdateChannelNameRes updateChannelNameRes ;
 		private int progress;
 		
 		public GetResultTask(int progress) {
@@ -109,15 +144,21 @@ public class GetMatchResult extends Activity implements OnClickListener{
 
 		private void queryResult(){
 			GetDeviceMatchingResultReq req = new GetDeviceMatchingResultReq(mSoapManager.getLoginResponse().getAccount(),mSoapManager.getLoginResponse().getLoginSession(),mSoapManager.getmGetDeviceMatchingCodeRes().getMatchingCode());
-            res = mSoapManager.getGetDeviceMatchingResultRes(req);
-            System.out.println("GetResult:"+res.getResult());
+			getDeviceMatchingResultRes = mSoapManager.getGetDeviceMatchingResultRes(req);
+            System.out.println("GetResult:"+getDeviceMatchingResultRes.getResult());
+		}
+		
+		private void chanegName(){
+			UpdateChannelNameReq req = new UpdateChannelNameReq(mSoapManager.getLoginResponse().getAccount(),mSoapManager.getLoginResponse().getLoginSession(),getDeviceMatchingResultRes.getDevID(),0,device_name);
+			updateChannelNameRes = mSoapManager.getUpdateChannelNameRes(req);
+            System.out.println("UpdateChannelName Result:"+updateChannelNameRes.getResult());
 		}
 		
         @Override
         protected Void doInBackground(Void... params) {
             // TODO Auto-generated method stub
         	queryResult();
-        	while(res.getResult() != "OK"){
+        	while(!getDeviceMatchingResultRes.getResult().equals("OK")){
         		if (isCancelled()) break;
         		try {
 					Thread.sleep(10000);
@@ -127,6 +168,7 @@ public class GetMatchResult extends Activity implements OnClickListener{
 				}
         		queryResult();
         	}
+        	chanegName();
 //        	while(true){
 //        	try {
 //        		if (isCancelled()) break;
@@ -144,12 +186,43 @@ public class GetMatchResult extends Activity implements OnClickListener{
         protected void onPostExecute(Void result) {
         	// TODO Auto-generated method stub
         	super.onPostExecute(result);
-        	System.out.println(res.getResult());
+        	System.out.println(getDeviceMatchingResultRes.getResult());
         	if(task != null)
         		task.cancel(true);
         	mSeekBar.setProgress(progress);
-        	mSeekBar.setVisibility(View.GONE);
-        	mTips.setText("添加成功");
+        	Dialog alertDialog = new AlertDialog.Builder(GetMatchResult.this).   
+		            setTitle("成功").   
+		            setMessage("摄像机添加成功").   
+		            setIcon(R.drawable.expander_ic_minimized).   
+		            setPositiveButton("确定", new DialogInterface.OnClickListener() {   
+
+		                @Override   
+		                public void onClick(DialogInterface dialog, int which) {   
+		                    // TODO Auto-generated method stub    
+		                	finish();
+		                	if(mActivities.getmActivityList().containsKey("SendWifi")){
+								mActivities.getmActivityList().get("SendWifi").finish();
+							}
+		                	if(mActivities.getmActivityList().containsKey("FlashLighting")){
+								mActivities.getmActivityList().get("FlashLighting").finish();
+							}
+		                	if(mActivities.getmActivityList().containsKey("SetDeviceWifi")){
+								mActivities.getmActivityList().get("SetDeviceWifi").finish();
+							}
+		                	if(mActivities.getmActivityList().containsKey("CamTabActivity")){
+		                		mActivities.getmActivityList().get("CamTabActivity").finish();
+							}
+		                	Intent intent = new Intent(GetMatchResult.this,CamTabActivity.class);
+		                	startActivity(intent);
+		                }   
+		            }).   
+		    create();   
+			alertDialog.show(); 
+        	//mSeekBar.setVisibility(View.GONE);
+        	//Intent intent = new Intent(GetMatchResult.this,ChangeDeviceName.class);
+        	//intent.putExtra("devid", getDeviceMatchingResultRes.getDevID());
+        	//startActivity(intent);
+        	//mTips.setText("添加成功");
         }
     }
 

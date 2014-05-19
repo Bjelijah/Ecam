@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -72,6 +72,7 @@ public class DeviceSetActivity extends Activity implements
     private LinearLayout ll_alarm_push;
     private CheckBox cb_alarm_notice;
     private TextView mCameraVersion;
+//    private ImageButton mBack;
     
     private static final int CRASH = 1;
     private static final int ALARMPUSHOFF = 2;
@@ -111,6 +112,7 @@ public class DeviceSetActivity extends Activity implements
         cb_alarm_notice = (CheckBox)findViewById(R.id.alarm_notice);
         mCameraVersion = (TextView)findViewById(R.id.tv_camera_version);
 //        tv_font = (TextView)findViewById(R.id.tv_font);
+//        mBack = (ImageButton)findViewById(R.id.ib_deviceset_back);
         
         mSeekBar_reso.setOnSeekBarChangeListener(this);
         mSeekBar_quality.setOnSeekBarChangeListener(this);

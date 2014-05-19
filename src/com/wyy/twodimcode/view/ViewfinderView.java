@@ -31,7 +31,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.android.howell.webcam.R;
+import com.android.howell.webcam.test.R;
 import com.google.zxing.ResultPoint;
 import com.wyy.twodimcode.camera.CameraManager;
 

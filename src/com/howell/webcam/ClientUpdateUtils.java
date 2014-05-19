@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import com.android.howell.webcam.R;
+import com.android.howell.webcam.test.R;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -27,27 +27,27 @@ public class ClientUpdateUtils {
 	private static final int DOWN_ERROR = 1;
     /*  
      *   
-     * µ¯³ö¶Ô»°¿òÍ¨ÖªÓÃ»§¸üÐÂ³ÌÐò   
+     * ï¿½ï¿½ï¿½ï¿½ï¿½Ô»ï¿½ï¿½ï¿½Í¨Öªï¿½Ã»ï¿½ï¿½ï¿½ï¿½Â³ï¿½ï¿½ï¿½   
      *   
-     * µ¯³ö¶Ô»°¿òµÄ²½Öè£º  
-     *  1.´´½¨alertDialogµÄbuilder.    
-     *  2.Òª¸øbuilderÉèÖÃÊôÐÔ, ¶Ô»°¿òµÄÄÚÈÝ,ÑùÊ½,°´Å¥  
-     *  3.Í¨¹ýbuilder ´´½¨Ò»¸ö¶Ô»°¿ò  
-     *  4.¶Ô»°¿òshow()³öÀ´    
+     * ï¿½ï¿½ï¿½ï¿½ï¿½Ô»ï¿½ï¿½ï¿½Ä²ï¿½ï¿½è£º  
+     *  1.ï¿½ï¿½ï¿½ï¿½alertDialogï¿½ï¿½builder.    
+     *  2.Òªï¿½ï¿½builderï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½Ô»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½Ê½,ï¿½ï¿½Å¥  
+     *  3.Í¨ï¿½ï¿½builder ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ô»ï¿½ï¿½ï¿½  
+     *  4.ï¿½Ô»ï¿½ï¿½ï¿½show()ï¿½ï¿½ï¿½ï¿½    
      */    
     protected static void showUpdataDialog(final Context context,final String httpUrl) {    
         AlertDialog.Builder builer = new Builder(context) ;   
         builer.setIcon(R.drawable.expander_ic_minimized);
         builer.setTitle(context.getResources().getString(R.string.update_dialog_title));   
         builer.setMessage(context.getResources().getString(R.string.update_dialog_message));    
-        //µ±µãÈ·¶¨°´Å¥Ê±´Ó·þÎñÆ÷ÉÏÏÂÔØ ÐÂµÄapk È»ºó°²×°      
+        //ï¿½ï¿½ï¿½ï¿½È·ï¿½ï¿½ï¿½ï¿½Å¥Ê±ï¿½Ó·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Âµï¿½apk È»ï¿½ï¿½×°      
         builer.setPositiveButton(context.getResources().getString(R.string.ok), new OnClickListener() {    
         public void onClick(DialogInterface dialog, int which) {    
-                Log.i("","ÏÂÔØapk,¸üÐÂ");    
+                Log.i("","ï¿½ï¿½ï¿½ï¿½apk,ï¿½ï¿½ï¿½ï¿½");    
                 downLoadApk(context,httpUrl);    
             }       
         });    
-        //µ±µãÈ¡Ïû°´Å¥Ê±½øÐÐµÇÂ¼     
+        //ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½Å¥Ê±ï¿½ï¿½ï¿½Ðµï¿½Â¼     
         builer.setNegativeButton(context.getResources().getString(R.string.cancel), new OnClickListener() {    
             public void onClick(DialogInterface dialog, int which) {    
                 // TODO Auto-generated method stub     
@@ -59,10 +59,10 @@ public class ClientUpdateUtils {
     }   
     
     /*  
-     * ´Ó·þÎñÆ÷ÖÐÏÂÔØAPK  
+     * ï¿½Ó·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½APK  
      */    
     protected static void downLoadApk(final Context context,final String httpUrl) {    
-        final ProgressDialog pd;    //½ø¶ÈÌõ¶Ô»°¿ò     
+        final ProgressDialog pd;    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô»ï¿½ï¿½ï¿½     
         pd = new  ProgressDialog(context);    
         pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);    
         pd.setMessage(context.getResources().getString(R.string.download_dialog_message));    
@@ -74,7 +74,7 @@ public class ClientUpdateUtils {
                     File file = getFileFromServer(httpUrl, pd);    
                     //sleep(3000);    
                     installApk(file,context);    
-                    pd.dismiss(); //½áÊøµô½ø¶ÈÌõ¶Ô»°¿ò     
+                    pd.dismiss(); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô»ï¿½ï¿½ï¿½     
                 } catch (Exception e) {    
                     Message msg = new Message();    
                     msg.what = DOWN_ERROR;
@@ -92,16 +92,16 @@ public class ClientUpdateUtils {
             super.handleMessage(msg);    
             switch (msg.what) {    
 //            case UPDATA_CLIENT:    
-//                 //¶Ô»°¿òÍ¨ÖªÓÃ»§Éý¼¶³ÌÐò      
+//                 //ï¿½Ô»ï¿½ï¿½ï¿½Í¨Öªï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½      
 //                 showUpdataDialog();    
 //                 break;    
 //            case GET_UNDATAINFO_ERROR:    
-//                    //·þÎñÆ÷³¬Ê±      
-//                    Toast.makeText(getApplicationContext(), "»ñÈ¡·þÎñÆ÷¸üÐÂÐÅÏ¢Ê§°Ü", 1).show();    
+//                    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±      
+//                    Toast.makeText(getApplicationContext(), "ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢Ê§ï¿½ï¿½", 1).show();    
 //                    LoginMain();    
 //                    break;      
             case DOWN_ERROR:    
-                    //ÏÂÔØapkÊ§°Ü     
+                    //ï¿½ï¿½ï¿½ï¿½apkÊ§ï¿½ï¿½     
             		Context context = (Context)msg.obj;
                     Toast.makeText((Context)msg.obj, context.getResources().getString(R.string.download_dialog_fail), 1).show();    
                     break;      
@@ -109,23 +109,23 @@ public class ClientUpdateUtils {
         }    
     };   
     
-    //°²×°apk      
+    //ï¿½ï¿½×°apk      
     protected static void installApk(File file,Context context) {    
         Intent intent = new Intent();    
-        //Ö´ÐÐ¶¯×÷     
+        //Ö´ï¿½Ð¶ï¿½ï¿½ï¿½     
         intent.setAction(Intent.ACTION_VIEW);    
-        //Ö´ÐÐµÄÊý¾ÝÀàÐÍ     
-        intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");//±àÕß°´£º´Ë´¦AndroidÓ¦Îªandroid£¬·ñÔòÔì³É°²×°²»ÁË      
+        //Ö´ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½     
+        intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");//ï¿½ï¿½ï¿½ß°ï¿½ï¿½ï¿½ï¿½Ë´ï¿½AndroidÓ¦Îªandroidï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É°ï¿½×°ï¿½ï¿½ï¿½ï¿½      
         context.startActivity(intent);    
     }    
     
 	public static File getFileFromServer(String httpUrl, ProgressDialog pd) throws Exception{     
-		//Èç¹ûÏàµÈµÄ»°±íÊ¾µ±Ç°µÄsdcard¹ÒÔØÔÚÊÖ»úÉÏ²¢ÇÒÊÇ¿ÉÓÃµÄ      
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ÈµÄ»ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Ç°ï¿½ï¿½sdcardï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö»ï¿½ï¿½Ï²ï¿½ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½Ãµï¿½      
 		if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){     
 			URL url = new URL(httpUrl);     
 			HttpURLConnection conn =  (HttpURLConnection) url.openConnection();     
 			conn.setConnectTimeout(5000);     
-			//»ñÈ¡µ½ÎÄ¼þµÄ´óÐ¡       
+			//ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½Ä´ï¿½Ð¡       
 			pd.setMax(conn.getContentLength());     
 			InputStream is = conn.getInputStream();     
 			File file = new File(Environment.getExternalStorageDirectory(), "ecamera.apk");     
@@ -137,7 +137,7 @@ public class ClientUpdateUtils {
 			while((len =bis.read(buffer))!=-1){     
 				fos.write(buffer, 0, len);     
 				total+= len;     
-				//»ñÈ¡µ±Ç°ÏÂÔØÁ¿      
+				//ï¿½ï¿½È¡ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½      
 				pd.setProgress(total);     
 			}     
 			fos.close();     

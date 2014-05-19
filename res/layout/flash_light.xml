@@ -31,21 +31,54 @@
         android:id="@+id/iv_flash_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dip"
+        android:layout_marginTop="20dip"
         android:paddingLeft="10dip"
         android:paddingRight="10dip"
         android:src="@drawable/flash_background" />
     
-    <TextView
-        android:id="@+id/tv_flash_light_success"
-        android:layout_width="wrap_content"
+    <!--  -->
+
+    <LinearLayout
+        android:id="@+id/ll_flash_light_success"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:textSize="18sp"
-        android:textColor="@color/gray"
-        android:visibility="invisible"
-        android:text="摄像机的指示灯变成红色了吗？变红了即可点击完成" />
+        android:gravity="center" 
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_marginLeft="20dip"
+            android:layout_width="80dip"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="指示灯变成红色了吗？"
+            android:textColor="@color/red"
+            android:textSize="18sp" />
+
+    	<FrameLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1" >
+    
+	        <ImageView
+	            
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:paddingLeft="10dip"
+	            android:paddingRight="10dip"
+	            android:src="@drawable/flash_background2"
+	             />
+	        <ImageView
+	            
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:paddingLeft="10dip"
+	            android:paddingRight="10dip"
+	            android:src="@drawable/flash_background2_red_light"
+	             />
+		</FrameLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -71,13 +104,11 @@
                 android:id="@+id/tv_flash_light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:text="设置" />
+                android:textColor="@color/btn_blue_color"
+                android:text="闪一闪" />
 
         </LinearLayout>
         
     </LinearLayout>
-
-    
 
 </LinearLayout>

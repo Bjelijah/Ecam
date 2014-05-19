@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.android.howell.webcam.R;
 import com.howell.webcam.GetMatchResult;
 
 import android.app.AlertDialog;

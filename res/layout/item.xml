@@ -70,13 +70,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="right"
+                            android:text="信号强度："
                             android:textSize="15sp" />
                         
-                       <!--   <ImageView
+                        <ImageView
                             android:id="@+id/iv_wifi_idensity"
 			                android:layout_width="wrap_content"
 			                android:layout_height="wrap_content"
-			                android:scaleType="fitCenter" />-->
+			                android:scaleType="fitCenter" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -147,12 +148,13 @@
 
                     
 
-                        <!--  <ImageView
-                            android:id="@+id/iv_badge"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="right|center_vertical"
-                            android:src="@drawable/badge" />-->
+                    <ImageView
+                        android:id="@+id/iv_badge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|center_vertical"
+                        android:src="@drawable/badge"
+                        android:visibility="gone" />
 
                     </FrameLayout>
 

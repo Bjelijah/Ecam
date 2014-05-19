@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
-import com.android.howell.webcam.R;
+import com.android.howell.webcam.test.R;
 
 public class RegisterOrLogin extends Activity implements OnClickListener{
 	private TextView mRegister,mLogin,mTest;

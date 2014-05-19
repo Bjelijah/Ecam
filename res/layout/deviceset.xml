@@ -384,6 +384,42 @@
 
                 </TableRow>
             </LinearLayout>
+            
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingLeft="25.0dip"
+                android:layout_marginTop="10dip"
+                android:layout_marginBottom="10dip"
+                android:text="删除设备"
+                android:textColor="#ffffff"
+                android:textSize="16.0sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <TableRow
+                    android:id="@+id/tr_remove_device"
+                    android:layout_width="match_parent"
+				    android:layout_height="50dip"
+				    android:layout_marginLeft="10dip"
+				    android:layout_marginRight="10dip"
+				    android:layout_marginBottom="10dip"
+				    android:gravity="center_vertical"
+	                android:background="@drawable/list_single_item_bg_normal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textColor="#ff333333"
+                        android:textSize="16.0sp"
+                        android:text="删除设备" />
+
+                </TableRow>
+            </LinearLayout>
         </TableLayout>
 
     </ScrollView>

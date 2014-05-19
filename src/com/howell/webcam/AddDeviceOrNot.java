@@ -1,5 +1,7 @@
 package com.howell.webcam;
 
+import com.android.howell.webcam.test.R;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -9,7 +11,6 @@ import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
-import com.android.howell.webcam.R;
 
 public class AddDeviceOrNot extends Activity implements OnClickListener{
 	private ImageButton mBack;

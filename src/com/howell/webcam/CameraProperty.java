@@ -1,11 +1,12 @@
 package com.howell.webcam;
 
+import com.android.howell.webcam.test.R;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.android.howell.webcam.R;
 
 public class CameraProperty extends Activity {
 	private TextView mDeviceName,mDeviceId,mWifiIntensity;

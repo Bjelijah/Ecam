@@ -1,5 +1,7 @@
 package com.howell.webcam;
 
+import com.android.howell.webcam.test.R;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -15,7 +17,6 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.android.howell.webcam.R;
 
 public class GetMatchResult extends Activity implements OnClickListener{
 	private ProgressBar mSeekBar;
@@ -70,6 +71,7 @@ public class GetMatchResult extends Activity implements OnClickListener{
     	unregisterReceiver(receiver);
     }
 	
+    //计时器 progressbar每秒前进一格
 	class TimerTask extends AsyncTask<Void, Integer, Void> {
 		private int progress;
 		private int nowProgress;
@@ -105,10 +107,10 @@ public class GetMatchResult extends Activity implements OnClickListener{
         	if(getResultTask != null)
         		getResultTask.cancel(true);
         	mSeekBar.setVisibility(View.GONE);
-        	mTips.setText("添加失败，网络不稳定，请检查网络");
+        	mTips.setText("添加失败，网络不稳定，检查网络后请重新添加");
         	Dialog alertDialog = new AlertDialog.Builder(GetMatchResult.this).   
-		            setTitle("错误").   
-		            setMessage("添加失败，网络不稳定，请检查网络").   
+		            setTitle("添加失败").   
+		            setMessage("网络不稳定，检查网络后请重新添加").   
 		            setIcon(R.drawable.expander_ic_minimized).   
 		            setPositiveButton("确定", new DialogInterface.OnClickListener() {   
 
@@ -132,6 +134,7 @@ public class GetMatchResult extends Activity implements OnClickListener{
         }
     }
 	
+	//获取匹配摄像机结果
 	class GetResultTask extends AsyncTask<Void, Integer, Void> {
 		private GetDeviceMatchingResultRes getDeviceMatchingResultRes ;
 		private UpdateChannelNameRes updateChannelNameRes ;

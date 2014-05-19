@@ -1,6 +1,7 @@
 package com.howell.webcam;
 
-import com.android.howell.webcam.R;
+
+import com.android.howell.webcam.test.R;
 
 import android.content.Context;
 import android.content.res.Resources;

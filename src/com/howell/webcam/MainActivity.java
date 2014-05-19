@@ -18,7 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import com.android.howell.webcam.R;
+import com.android.howell.webcam.test.R;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 

@@ -16,7 +16,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.android.howell.webcam.R;
+import com.android.howell.webcam.test.R;
 import com.xququ.OfflineSDK.XQuquerService;
 import com.xququ.OfflineSDK.XQuquerService.XQuquerListener;
 
@@ -32,6 +32,7 @@ public class SendWifi extends Activity implements OnClickListener , XQuquerListe
 	private ImageButton mBack,mBtnSend,mBtnFinish;
 	private LinearLayout mSend,mFinish;
 	private TextView tips,btnTips;
+	private LinearLayout mSucceedTips;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +63,7 @@ public class SendWifi extends Activity implements OnClickListener , XQuquerListe
 		//mBtnAdd = (ImageButton)findViewById(R.id.ib_add_device);
 		mBtnSend = (ImageButton)findViewById(R.id.ib_send_wifi);
 		mBtnFinish = (ImageButton)findViewById(R.id.ib_finish_set);
+		mSucceedTips = (LinearLayout)findViewById(R.id.ll_send_wifi_success);
 		
 		mBack.setOnClickListener(this);
 		mBtnSend.setOnClickListener(this);
@@ -109,6 +111,7 @@ public class SendWifi extends Activity implements OnClickListener , XQuquerListe
 		btnTips.setText("重新发送");
 		//mAddCamera.setVisibility(View.VISIBLE);
 		mFinish.setVisibility(View.VISIBLE);
+		mSucceedTips.setVisibility(View.VISIBLE);
 	}
 	@Override
 	public void onClick(View v) {
@@ -117,8 +120,8 @@ public class SendWifi extends Activity implements OnClickListener , XQuquerListe
 		case R.id.ib_send_wifi:
 			if(SoapManager.getInstance().getmGetDeviceMatchingCodeRes() == null){
 				Dialog alertDialog = new AlertDialog.Builder(SendWifi.this).   
-			            setTitle("错误").   
-			            setMessage("网络不稳定，请检查网络").   
+			            setTitle("网络不稳定").   
+			            setMessage("请检查wifi连接后重试").   
 			            setIcon(R.drawable.expander_ic_minimized).   
 			            setPositiveButton("确定", new DialogInterface.OnClickListener() {   
 

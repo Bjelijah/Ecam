@@ -6,15 +6,13 @@ import android.app.TabActivity;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TabHost;
 
-import com.android.howell.webcam.R;
+import com.android.howell.webcam.test.R;
 import com.howell.updateCameraUtil.UpdateCameraUtils;
 
 @SuppressWarnings("deprecation")
@@ -36,8 +34,8 @@ public class CamTabActivity extends TabActivity implements
     //private static BadgeView badge;
     ArrayList<NodeDetails> list;
     LoginResponse mResponse;
-    private static final int TOGGLEON = 1;
-    private static final int TOGGLEOFF = 2;
+//    private static final int TOGGLEON = 1;
+//    private static final int TOGGLEOFF = 2;
     private static boolean hasToggled;
     
     /*static Handler handler = new Handler(){
@@ -128,6 +126,7 @@ public class CamTabActivity extends TabActivity implements
 //	                        }
 	                		//return;
 	                	}
+	                	//CameraList.adapter.notifyDataSetChanged();
 	                }
         		}catch(Exception e){
                 	System.out.println("getDevVerReq crash");

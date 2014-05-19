@@ -30,13 +30,13 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.howell.webcam.R;
+import com.android.howell.webcam.test.R;
 import com.howell.webcam.MyListView.OnRefreshListener;
 import com.howell.webcam.player.PlayerActivity;
 
 public class CameraList extends ListActivity {
 
-    public static final int REQUEST_CODE = 100;
+    //public static final int REQUEST_CODE = 100;
     private SoapManager mSoapManager;
     private LoginResponse mResponse;
     private MyListView listView;
@@ -394,12 +394,13 @@ public class CameraList extends ListActivity {
 				//holder.iv_play_icon = (ImageView)convertView.findViewById(R.id.iv_play_icon);
 				holder.playback = (ImageButton)convertView.findViewById(R.id.iv_playback);
 				//holder.iv_wifi = (ImageView)convertView.findViewById(R.id.iv_wifi_idensity);
-				holder.tv_wifi = (TextView)convertView.findViewById(R.id.tv_wifi_idensity);
+				holder.iv_wifi = (ImageView)convertView.findViewById(R.id.iv_wifi_idensity);
 				holder.set = (ImageButton)convertView.findViewById(R.id.iv_set);
 				holder.about = (ImageButton)convertView.findViewById(R.id.iv_about);
 				holder.tv = (TextView)convertView.findViewById(R.id.tv_name);
 				//holder.tv_online = (TextView)convertView.findViewById(R.id.tv_online);
 				holder.iv_offline = (ImageView)convertView.findViewById(R.id.iv_offline);
+				holder.iv_badge = (ImageView)convertView.findViewById(R.id.iv_badge);
 				
 				holder.tv.setTextColor(Color.BLACK);
                 convertView.setTag(holder);
@@ -437,30 +438,36 @@ public class CameraList extends ListActivity {
             if (camera.isOnLine()) {
             	if(getResources().getConfiguration().locale.getCountry().equals("CN"))
             		holder.iv_offline.setImageResource(R.drawable.card_online_image_blue);
-            	if(camera.getIntensity() >= 0 && camera.getIntensity() <= 33){
-            		holder.tv_wifi.setText("wifi强度:弱");
-            	}else if(camera.getIntensity() > 33 && camera.getIntensity() <= 66){
-            		holder.tv_wifi.setText("wifi强度:中");
-            	}else {
-            		holder.tv_wifi.setText("wifi强度:强");
-            	}
+//            	if(camera.getIntensity() >= 0 && camera.getIntensity() <= 33){
+//            		holder.tv_wifi.setText("wifi强度:弱");
+//            	}else if(camera.getIntensity() > 33 && camera.getIntensity() <= 66){
+//            		holder.tv_wifi.setText("wifi强度:中");
+//            	}else {
+//            		holder.tv_wifi.setText("wifi强度:强");
+//            	}
 	        }else {
 	        	if(getResources().getConfiguration().locale.getCountry().equals("CN"))
 	        		holder.iv_offline.setImageResource(R.drawable.card_offline_image_gray);
-	        	holder.tv_wifi.setText("");
+//	        	holder.tv_wifi.setText("");
 	        }
             
-//            if(camera.getIntensity() == 0){
-//            	holder.iv_wifi.setImageResource(R.drawable.wifi_0);
-//            }else if((camera.getIntensity() > 0 && camera.getIntensity() <= 25)){
-//            	holder.iv_wifi.setImageResource(R.drawable.wifi_1);
-//            }else if(camera.getIntensity() > 25 && camera.getIntensity() <= 50){
-//            	holder.iv_wifi.setImageResource(R.drawable.wifi_2);
-//            }else if(camera.getIntensity() > 50 && camera.getIntensity() <= 75){
-//            	holder.iv_wifi.setImageResource(R.drawable.wifi_3);
-//            }else{
-//            	holder.iv_wifi.setImageResource(R.drawable.wifi_4);
-//            }
+            if(camera.isHasUpdate()){
+            	holder.iv_badge.setVisibility(View.VISIBLE);
+            }else{
+            	holder.iv_badge.setVisibility(View.GONE);
+            }
+            
+            if(camera.getIntensity() == 0){
+            	holder.iv_wifi.setImageResource(R.drawable.wifi_0);
+            }else if((camera.getIntensity() > 0 && camera.getIntensity() <= 25)){
+            	holder.iv_wifi.setImageResource(R.drawable.wifi_1);
+            }else if(camera.getIntensity() > 25 && camera.getIntensity() <= 50){
+            	holder.iv_wifi.setImageResource(R.drawable.wifi_2);
+            }else if(camera.getIntensity() > 50 && camera.getIntensity() <= 75){
+            	holder.iv_wifi.setImageResource(R.drawable.wifi_3);
+            }else{
+            	holder.iv_wifi.setImageResource(R.drawable.wifi_4);
+            }
             
             //holder.iv.setImageDrawable(images.get(position));
             //String myJpgPath = "/sdcard/eCamera/20130902125951.jpg";
@@ -528,10 +535,10 @@ public class CameraList extends ListActivity {
     }
     
 	public static class ViewHolder {
-		public ImageView iv,iv_play_icon,iv_offline/*,iv_wifi*/;
+		public ImageView iv,iv_play_icon,iv_offline/*,iv_wifi*/,iv_badge,iv_wifi;
 		/*public LinearLayout playback,set,about,tv_online*/;
 	    public ImageButton about,set,playback;
-	    public TextView tv, tv_wifi;
+	    public TextView tv;
 	}
 
 }

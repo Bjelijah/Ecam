@@ -2,6 +2,8 @@ package com.howell.webcam;
 
 import java.util.ArrayList;
 
+import com.android.howell.webcam.test.R;
+
 import uk.co.senab.photoview.PhotoView;
 
 import android.app.Activity;
@@ -25,7 +27,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-import com.android.howell.webcam.R;
 
 public class BigImages extends Activity implements OnClickListener{
 	private LinearLayout ll;

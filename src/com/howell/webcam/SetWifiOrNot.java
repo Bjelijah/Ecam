@@ -11,7 +11,7 @@ import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
-import com.android.howell.webcam.R;
+import com.android.howell.webcam.test.R;
 
 public class SetWifiOrNot extends Activity implements OnClickListener{
 	private ImageButton mSetWifi,mAddDevice;

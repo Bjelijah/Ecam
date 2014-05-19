@@ -4,21 +4,22 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.android.howell.webcam.R;
+import com.android.howell.webcam.test.R;
 import com.howell.cameraconctrol.CameraUtils;
 
 public class FlashLighting extends Activity implements OnClickListener{
-	private TextView tips,btnTips;
+	private TextView /*tips,*/btnTips;
 	private ImageButton mBack,mFlashLight;
+	//private ImageView mBackground;
+	private LinearLayout mSucceedTips;
 	private Activities mActivities;
 	private HomeKeyEventBroadCastReceiver receiver;
 	private CameraUtils c;
@@ -44,10 +45,12 @@ public class FlashLighting extends Activity implements OnClickListener{
 		
 		c = new CameraUtils();
 		
-		tips = (TextView)findViewById(R.id.tv_flash_light_success);
+		//tips = (TextView)findViewById(R.id.tv_flash_light_success);
 		mBack = (ImageButton)findViewById(R.id.ib_flash_light_back);
 		mFlashLight = (ImageButton)findViewById(R.id.ib_flash_light);
 		btnTips = (TextView)findViewById(R.id.tv_flash_light);
+		mSucceedTips = (LinearLayout)findViewById(R.id.ll_flash_light_success);
+		//mBackground = (ImageView)findViewById(R.id.iv_flash_background2);
 		//mFinish = (Button)findViewById(R.id.btn_flash_light_finish);
 		
 		mBack.setOnClickListener(this);
@@ -81,10 +84,12 @@ public class FlashLighting extends Activity implements OnClickListener{
 		case R.id.ib_flash_light:
 			if(!isBtnClicked){
 				c.twinkle();
-				tips.setVisibility(View.VISIBLE);
+//				tips.setVisibility(View.VISIBLE);
 				isBtnClicked = true;
 				mFlashLight.setImageDrawable(getResources().getDrawable(R.drawable.ok_btn_red_selector));
-				btnTips.setText("变红了");
+				btnTips.setText("变红了，点这里");
+				btnTips.setTextColor(getResources().getColor(R.color.red));
+				mSucceedTips.setVisibility(View.VISIBLE);
 			}else{
 				c.stopTwinkle();
 				Intent intent = new Intent(FlashLighting.this,SendWifi.class);
@@ -125,7 +130,9 @@ public class FlashLighting extends Activity implements OnClickListener{
 		super.onRestart();
 		isBtnClicked = false;
 		mFlashLight.setImageDrawable(getResources().getDrawable(R.drawable.flash_light_btn_selecor));
-		btnTips.setText("设置");
+		btnTips.setText("闪一闪");
+		btnTips.setTextColor(getResources().getColor(R.color.btn_blue_color));
+		mSucceedTips.setVisibility(View.GONE);
 	}
 	
     @Override

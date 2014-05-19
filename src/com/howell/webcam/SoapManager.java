@@ -1120,6 +1120,67 @@ public class SoapManager implements Serializable {
     	   	return res;
     }
     
+    //添加设备视频分享 
+    public AddDeviceSharerRes getAddDeviceSharerRes(AddDeviceSharerReq req){
+    	AddDeviceSharerRes res = new AddDeviceSharerRes();
+    	SoapObject rpc = new SoapObject(sNameSpace, "addDeviceSharerReq");
+    	rpc.addProperty("Account", req.getAccount());
+    	rpc.addProperty("LoginSession", req.getLoginSession());
+    	rpc.addProperty("DevID", req.getDevID());
+    	rpc.addProperty("ChannelNo", req.getChannelNo());
+    	rpc.addProperty("SharerAccount", req.getSharerAccount());
+    	rpc.addProperty("SharingPriority", req.getSharingPriority());
+    	SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/addDeviceSharer");
+    	try{
+    		Object result = object.getProperty("result");
+    	 	res.setResult(result.toString());
+    	 	
+    	}catch (Exception e) {
+    		// TODO: handle exception
+    	}
+    	   	return res;
+    }
+    
+    //删除设备视频分享
+    public NullifyDeviceSharerRes getNullifyDeviceSharerRes(NullifyDeviceSharerReq req){
+    	NullifyDeviceSharerRes res = new NullifyDeviceSharerRes();
+    	SoapObject rpc = new SoapObject(sNameSpace, "nullifyDeviceSharerReq");
+    	rpc.addProperty("Account", req.getAccount());
+    	rpc.addProperty("LoginSession", req.getLoginSession());
+    	rpc.addProperty("DevID", req.getDevID());
+    	rpc.addProperty("ChannelNo", req.getChannelNo());
+    	rpc.addProperty("SharerAccount", req.getSharerAccount());
+    	SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/nullifyDeviceSharer");
+    	try{
+    		Object result = object.getProperty("result");
+    	 	res.setResult(result.toString());
+    	 	
+    	}catch (Exception e) {
+    		// TODO: handle exception
+    	}
+    	   	return res;
+    }
+    
+    //用户移除设备
+    public NullifyDeviceRes getNullifyDeviceRes(NullifyDeviceReq req){
+    	NullifyDeviceRes res = new NullifyDeviceRes();
+    	SoapObject rpc = new SoapObject(sNameSpace, "nullifyDeviceReq");
+    	rpc.addProperty("Account", req.getAccount());
+    	rpc.addProperty("LoginSession", req.getLoginSession());
+    	rpc.addProperty("DevID", req.getDevID());
+    	rpc.addProperty("DevKey", req.getDevKey());
+    	SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/nullifyDevice");
+    	try{
+    		Object result = object.getProperty("result");
+    	 	res.setResult(result.toString());
+    	 	
+    	}catch (Exception e) {
+    		// TODO: handle exception
+    	}
+    	   	return res;
+    }
+    
+    
 	@Override
 	public String toString() {
 		return "SoapManager [mLoginRequest=" + mLoginRequest

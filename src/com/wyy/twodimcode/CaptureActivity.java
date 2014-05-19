@@ -20,7 +20,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
-import com.android.howell.webcam.R;
+import com.android.howell.webcam.test.R;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 import com.howell.webcam.Settings;

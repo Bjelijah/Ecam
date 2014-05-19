@@ -45,7 +45,7 @@
          >
         
         <TextView
-	        android:layout_width="wrap_content"
+	        android:layout_width="100dip"
 	        android:layout_height="wrap_content"
 	        android:textSize="18sp"
 	        android:text="摄像机名:"
@@ -56,7 +56,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_marginLeft="5dip"
-            android:hint="我的摄像头"
+            android:hint="输入摄像机名称"
+            android:textColorHint="@color/light_gray"
             android:background="@null" >
             <requestFocus />
 		</EditText>
@@ -72,10 +73,10 @@
          >
         
         <TextView
-	        android:layout_width="wrap_content"
+	        android:layout_width="100dip"
 	        android:layout_height="wrap_content"
 	        android:textSize="18sp"
-	        android:text="Wifi名称:"
+	        android:text="无线局域网:"
 	        android:textColor="@color/black" />
 
         <!--  <EditText
@@ -105,10 +106,10 @@
          >
         
         <TextView
-	        android:layout_width="wrap_content"
+	        android:layout_width="100dip"
 	        android:layout_height="wrap_content"
 	        android:textSize="18sp"
-	        android:text="Wifi密码:"
+	        android:text="密码:"
 	        android:textColor="@color/black" />
         <EditText
             android:id="@+id/et_wifi_password"
@@ -116,7 +117,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_marginLeft="5dip"
-            android:hint="摄像机连接wifi的密码"
+            android:hint="输入wifi密码"
+            android:textColorHint="@color/light_gray"
             android:background="@null" >
             
 		</EditText>

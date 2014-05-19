@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">e看</string>
+    <string name="app_name">e看测试</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="username">帐号：</string>
+    <string name="username">用户名：</string>
     <string name="password">密码：</string>
     <string name="remember_password">记住密码</string>
     <string name="message">请先连接网络!</string>

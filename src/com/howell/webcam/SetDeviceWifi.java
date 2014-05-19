@@ -16,7 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 
-import com.android.howell.webcam.R;
+import com.android.howell.webcam.test.R;
 import com.howell.wificontrol.WifiAdmin;
 
 public class SetDeviceWifi extends Activity implements OnClickListener{

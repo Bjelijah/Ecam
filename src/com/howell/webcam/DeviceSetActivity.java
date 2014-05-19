@@ -21,7 +21,7 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-import com.android.howell.webcam.R;
+import com.android.howell.webcam.test.R;
 import com.howell.updateCameraUtil.UpdateCameraUtils;
 
 public class DeviceSetActivity extends Activity implements

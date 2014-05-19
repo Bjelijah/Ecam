@@ -16,7 +16,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import com.android.howell.webcam.test.R;
+import com.android.howell.webcam.R;
 
 public class Register extends Activity implements OnClickListener{
 	private ImageButton mBack;

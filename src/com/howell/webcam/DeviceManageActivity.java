@@ -19,7 +19,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.howell.webcam.test.R;
+import com.android.howell.webcam.R;
 
 public class DeviceManageActivity extends ListActivity implements
         OnItemClickListener {

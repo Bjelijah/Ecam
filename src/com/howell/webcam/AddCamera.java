@@ -16,7 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import com.android.howell.webcam.test.R;
+import com.android.howell.webcam.R;
 import com.wyy.twodimcode.CaptureActivity;
 
 public class AddCamera extends Activity implements OnClickListener{

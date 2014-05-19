@@ -2,7 +2,7 @@ package com.howell.webcam;
 
 import java.util.Date;
 
-import com.android.howell.webcam.test.R;
+import com.android.howell.webcam.R;
 
 import android.content.Context;
 import android.graphics.Canvas;

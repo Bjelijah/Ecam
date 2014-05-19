@@ -22,7 +22,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.android.howell.webcam.test.R;
+import com.android.howell.webcam.R;
 
 public class MyListView extends ListView implements OnScrollListener {
 

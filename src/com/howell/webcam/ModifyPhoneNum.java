@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import com.android.howell.webcam.test.R;
+import com.android.howell.webcam.R;
 
 public class ModifyPhoneNum extends Activity implements OnClickListener{
 	private ImageButton mBack;

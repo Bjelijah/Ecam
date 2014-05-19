@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import com.android.howell.webcam.test.R;
+import com.android.howell.webcam.R;
 
 public class ModifyPassword extends Activity implements OnClickListener{
 	private Activities mActivities;

@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.howell.webcam.test.R;
+import com.android.howell.webcam.R;
 
 public class MessageUtiles {
 //	private static Context context;

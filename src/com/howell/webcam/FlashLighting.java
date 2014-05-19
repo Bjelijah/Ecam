@@ -15,9 +15,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.android.howell.webcam.test.R;
+import com.android.howell.webcam.R;
 import com.howell.cameraconctrol.CameraUtils;
-import com.howell.webcam.SetOrResetWifi.FlashThread;
 
 public class FlashLighting extends Activity implements OnClickListener{
 	private TextView /*tips,*/btnTips;

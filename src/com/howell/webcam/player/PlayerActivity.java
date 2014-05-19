@@ -47,7 +47,7 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-import com.android.howell.webcam.test.R;
+import com.android.howell.webcam.R;
 import com.howell.invite.Client;
 import com.howell.webcam.FileUtils;
 import com.howell.webcam.LoginResponse;

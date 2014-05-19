@@ -1,6 +1,6 @@
 package com.howell.webcam;
 
-import com.android.howell.webcam.test.R;
+import com.android.howell.webcam.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;

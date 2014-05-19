@@ -19,7 +19,7 @@ import android.opengl.GLSurfaceView;
 import android.opengl.GLSurfaceView.Renderer;
 import android.util.Log;
 
-import com.android.howell.webcam.test.R;
+import com.android.howell.webcam.R;
 //import com.example.yuvtest.GraphicsUtil;
 //import com.howell.webcam.player.R;
 

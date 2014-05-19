@@ -2,7 +2,7 @@ package com.howell.webcam;
 
 import java.util.ArrayList;
 
-import com.android.howell.webcam.test.R;
+import com.android.howell.webcam.R;
 
 import uk.co.senab.photoview.PhotoView;
 

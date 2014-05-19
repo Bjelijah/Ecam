@@ -24,7 +24,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import com.android.howell.webcam.test.R;
+import com.android.howell.webcam.R;
 
 public class LocalFilesActivity extends Activity {
 	private ListView listview;

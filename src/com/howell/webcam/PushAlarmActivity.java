@@ -13,7 +13,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.CheckBox;
 
-import com.android.howell.webcam.test.R;
+import com.android.howell.webcam.R;
 
 
 public class PushAlarmActivity extends Activity {

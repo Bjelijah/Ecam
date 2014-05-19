@@ -22,7 +22,7 @@ package com.howell.datetime;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.android.howell.webcam.test.R;
+import com.android.howell.webcam.R;
 
 
 import android.content.Context;

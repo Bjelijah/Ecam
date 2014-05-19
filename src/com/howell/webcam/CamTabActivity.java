@@ -12,7 +12,7 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TabHost;
 
-import com.android.howell.webcam.test.R;
+import com.android.howell.webcam.R;
 import com.howell.updateCameraUtil.UpdateCameraUtils;
 
 @SuppressWarnings("deprecation")

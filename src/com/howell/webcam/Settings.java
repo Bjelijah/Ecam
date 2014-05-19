@@ -22,7 +22,7 @@ import android.widget.TextView;
 
 import cn.jpush.android.api.JPushInterface;
 
-import com.android.howell.webcam.test.R;
+import com.android.howell.webcam.R;
 import com.wyy.twodimcode.CaptureActivity;
 
 public class Settings extends Activity implements OnClickListener {

@@ -48,16 +48,10 @@ public class InformationActivity extends Activity implements OnClickListener{
 	        LoginResponse loginResponse = mSoapManager.getLoginResponse();
 	        if (loginResponse.getResult().toString().equals("OK")) {
 	            String account = loginResponse.getAccount().toString();
-	            //String loginSession = loginResponse.getLoginSession().toString();
-	            //AccountRequest request = new AccountRequest(account, loginSession);
-	            //mResponse = mSoapManager.getAccountRes(request);
 	            mAccountName.setText(account);
 	        }
         }catch (Exception e) {
 			// TODO: handle exception
-        	//Intent intent = new Intent(InformationActivity.this,LogoActivity.class);
-        	//startActivity(intent);
-        	//finish();
 		}
     }
     
@@ -65,9 +59,6 @@ public class InformationActivity extends Activity implements OnClickListener{
     protected void onPause() {
     	// TODO Auto-generated method stub
     	super.onPause();
-//    	for(Activity a:mActivities.getmActivityList()){
-//    		a.finish();
-//    	}
     }
     
     @Override

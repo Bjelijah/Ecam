@@ -78,21 +78,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         mUserName.setText(account);
         mPassWord.setText(password);
-//        System.out.println("test password:"+password);
         
         handler = new MessageHandler();
-        //thread = new LoginThread(account, password);
-       /* 
-        if(!account.equals("") && !password.equals("")){
-        	MessageUtiles.postToast(getApplicationContext(), getResources().getString(R.string.loading), 1000);
-        	//enterToNextActivity(account, password);
-        	if (thread == null) {
-//            	Log.e("----------->>>", "inviteThread");
-            	thread = new LoginThread(account,password);
-            	thread.setName("LoginThread");
-            	thread.start();
-            }
-        }*/
         mButton.setOnClickListener(this);
         mBack.setOnClickListener(this);
         Intent intent = getIntent();
@@ -125,18 +112,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
     
 
-//    public void loading() {
-//        mLoadingDialog = new ProgressDialog(this);
-//        mLoadingDialog.setTitle(R.string.loading);
-//        mLoadingDialog.setMessage(getResources().getText(R.string.please_wait));
-//        mLoadingDialog.show();
-//    }
-//
-//    public void stopLoading() {
-//        if (mLoadingDialog != null) {
-//            mLoadingDialog.dismiss();
-//        }
-//    }
     private static MainActivity getContext(){
     	return mActivity;
     }
@@ -151,7 +126,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
 		case R.id.ok:
 			String account = mUserName.getText().toString().trim();
 	        String password = mPassWord.getText().toString().trim();
-	//        	Log.e("----------->>>", "inviteThread");
 	        if(thread == null){
 	        	Log.e("----------->>>", "inviteThread");
 	        	thread = new LoginThread(account,password);
@@ -246,29 +220,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
  		}
  	}
 
-    /*private String getEncodedPassword(String password) {
-        byte[] key = { 0x48, 0x4F, 0x57, 0x45, 0x4C, 0x4C, 0x4B, 0x45 };
-        byte[] iv = { 0x48, 0x4F, 0x57, 0x45, 0x4C, 0x4C, 0x56, 0x49 };
-        byte[] rdKey = RandomBytes.getRandombyte();
-        byte[] rdIv = RandomBytes.getRandombyte();
-        String DES2Password = null;
-        try {
-            String MD5Password = MD5.getMD5(password);
-            String hexKey = HEXTranslate.getHexString(rdKey);
-            String hexIv = HEXTranslate.getHexString(rdIv);
-            String DES1Password = DES.CBCEncrypt(MD5Password, rdKey, rdIv);
-            DES2Password = DES.CBCEncrypt(hexKey + hexIv + DES1Password, key,
-                    iv);
-        } catch (NoSuchAlgorithmException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return DES2Password;
-    }*/
-    
     class LoginThread extends Thread{
     	private String account;
     	private String password;
@@ -290,23 +241,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
     protected void onPause() {
     	// TODO Auto-generated method stub
     	super.onPause();
-        Log.e("Setting","onPause");
-//    	for(Activity a:mActivities.getmActivityList()){
-//    		a.finish();
-//    	}
     }
     
     @Override
     protected void onStop() {
     	// TODO Auto-generated method stub
-    	Log.e("Main", "onStop");
     	super.onStop();
     }
     
     @Override
     protected void onDestroy() {
     	// TODO Auto-generated method stub
-    	Log.e("Main", "onDestroy");
     	super.onDestroy();
     	mActivities.removeActivity("MainActivity");
     	unregisterReceiver(receiver);

@@ -9,14 +9,19 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextPaint;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
@@ -25,7 +30,7 @@ import com.android.howell.webcam.R;
 import com.howell.updateCameraUtil.UpdateCameraUtils;
 
 public class DeviceSetActivity extends Activity implements
-        OnSeekBarChangeListener {
+        OnSeekBarChangeListener ,OnClickListener{
 	
     private TextView mTvDeviceName,mCameraUpdateStatus;
     private static SoapManager mSoapManager;
@@ -39,7 +44,6 @@ public class DeviceSetActivity extends Activity implements
     private static int backCount;
     public static NodeDetails dev;
     private boolean isCrashed;
-    // row is reoslution, col is quality, map to bitrate, unit is kbps
     private static int[][] reso_bitrate_map_ = {{96,128,196},{128,256,384},{1024,1536,2048}};
     private static String[] VMD_DEFAULT_GRIDS = {
     	"00000000000",
@@ -68,15 +72,15 @@ public class DeviceSetActivity extends Activity implements
     private HomeKeyEventBroadCastReceiver receiver;
     private ProgressDialog pd;
     private Button mUpdateButton;
-//    private TextView tv_font;
-    private LinearLayout ll_alarm_push;
+    private LinearLayout ll_alarm_push,mShareDevice,mRemoveDevice;
     private CheckBox cb_alarm_notice;
     private TextView mCameraVersion;
-//    private ImageButton mBack;
     
     private static final int CRASH = 1;
     private static final int ALARMPUSHOFF = 2;
     private int gainedReso,gainedQuality;
+    
+	private PopupWindow popupWindow;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,8 +91,7 @@ public class DeviceSetActivity extends Activity implements
         mActivities = Activities.getInstance();
     	mActivities.addActivity("DeviceSetActivity",DeviceSetActivity.this);
     	receiver = new HomeKeyEventBroadCastReceiver();
-		registerReceiver(receiver, new IntentFilter(
-				Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+		registerReceiver(receiver, new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
 		
         backCount = 0;
         gainedReso = -1;
@@ -107,15 +110,16 @@ public class DeviceSetActivity extends Activity implements
         power_led_checkbox = (CheckBox)findViewById(R.id.power_led);
         mCameraUpdateStatus = (TextView)findViewById(R.id.camera_update_status);
         mUpdateButton = (Button)findViewById(R.id.setting_update_button);
-        //ll_load = (LinearLayout)findViewById(R.id.ll_load);
         ll_alarm_push = (LinearLayout)findViewById(R.id.ll_alarm_push);
+        mShareDevice = (LinearLayout)findViewById(R.id.ll_deviceset_share);
+        mRemoveDevice = (LinearLayout)findViewById(R.id.ll_deviceset_remove);
         cb_alarm_notice = (CheckBox)findViewById(R.id.alarm_notice);
         mCameraVersion = (TextView)findViewById(R.id.tv_camera_version);
-//        tv_font = (TextView)findViewById(R.id.tv_font);
-//        mBack = (ImageButton)findViewById(R.id.ib_deviceset_back);
         
         mSeekBar_reso.setOnSeekBarChangeListener(this);
         mSeekBar_quality.setOnSeekBarChangeListener(this);
+        mShareDevice.setOnClickListener(this);
+        mRemoveDevice.setOnClickListener(this);
 
         Intent intent = getIntent();
         dev = (NodeDetails) intent.getSerializableExtra("Device");
@@ -123,10 +127,6 @@ public class DeviceSetActivity extends Activity implements
 
         mLoginResponse = mSoapManager.getLoginResponse();
         
-//        Typeface fontFace = Typeface.createFromAsset(getAssets(),
-//                "fonts/new_font.ttf");
-//        
-//        tv_font.setTypeface(fontFace);
         mUpdateButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -137,16 +137,15 @@ public class DeviceSetActivity extends Activity implements
 			}
 		});
         
-        //ͼ��ת
         video_checkbox.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				pd = new ProgressDialog(DeviceSetActivity.this);  
-		        pd.setTitle(getResources().getString(R.string.save_set)+"...");   //���ñ���  
-		        pd.setMessage(getResources().getString(R.string.please_wait)+"..."); //����body��Ϣ  
-		        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER); //���ý������ʽ�� ����� 
+		        pd.setTitle(getResources().getString(R.string.save_set)+"...");   
+		        pd.setMessage(getResources().getString(R.string.please_wait)+"..."); 
+		        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER); 
 				pd.show();
 				new AsyncTask<Void, Void, Void>() {
 					protected Void doInBackground(Void... params) {
@@ -170,7 +169,6 @@ public class DeviceSetActivity extends Activity implements
 			}
 		});
         
-        //��Դָʾ��
         power_led_checkbox.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -203,13 +201,11 @@ public class DeviceSetActivity extends Activity implements
 			}
 		});
         
-        //�ƶ����
         vmd_checkbox_.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				//ll_load.setVisibility(View.VISIBLE);
 				pd = new ProgressDialog(DeviceSetActivity.this);  
 		        pd.setTitle(getResources().getString(R.string.save_set)+"...");   //���ñ���  
 		        pd.setMessage(getResources().getString(R.string.please_wait)+"..."); //����body��Ϣ  
@@ -227,7 +223,6 @@ public class DeviceSetActivity extends Activity implements
 
 					@Override
 					protected void onPostExecute(Void result) {
-						//ll_load.setVisibility(View.GONE);
 						pd.dismiss();
 						if(vmd_checkbox_.isChecked()){
 							ll_alarm_push.setVisibility(View.VISIBLE);
@@ -239,7 +234,6 @@ public class DeviceSetActivity extends Activity implements
 			}
 		});
         
-        //������������
         cb_alarm_notice.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -273,11 +267,10 @@ public class DeviceSetActivity extends Activity implements
 			}
 		});
         
-        //��ȡԶ���豸����
         pd = new ProgressDialog(DeviceSetActivity.this);  
-        pd.setTitle(getResources().getString(R.string.gain_set)+"...");   //���ñ���  
-        pd.setMessage(getResources().getString(R.string.please_wait)+"..."); //����body��Ϣ  
-        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER); //���ý������ʽ�� ����� 
+        pd.setTitle(getResources().getString(R.string.gain_set)+"...");   
+        pd.setMessage(getResources().getString(R.string.please_wait)+"...");  
+        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER); 
 		pd.show();
 		
 		new AsyncTask<Void, Void, Void>() {
@@ -307,7 +300,6 @@ public class DeviceSetActivity extends Activity implements
 				            VMDParamReq vmd_req = new VMDParamReq(account,loginSession,dev.getDevID(),dev.getChannelNo());
 				            vmd_res_ = mSoapManager.getVMDParam(vmd_req);
 				            Log.v("dev", "vmd enable: "+vmd_res_.getEnabled());
-				            //����ƶ���⿪�� ����Ƿ�����
 				            if(vmd_res_.getEnabled()){
 				            	QueryDeviceReq queryDeviceReq = new QueryDeviceReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDevID());
 				            	queryDeviceRes = new QueryDeviceRes();
@@ -325,19 +317,16 @@ public class DeviceSetActivity extends Activity implements
 				        		break;
 				        	}
 				        }
-				        //��ȡ��Դָʾ��
 				        GetAuxiliaryReq getAuxiliaryReq = new GetAuxiliaryReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDevID(),"SignalLamp");
 				        getAuxiliaryRes = mSoapManager.getGetAuxiliaryRes(getAuxiliaryReq);
 				        System.out.println("getAuxiliaryRes"+getAuxiliaryRes.getResult());
 				        
 				        System.out.println("333333333333333");
-				        //��ȡ��Ƶ��ת��Ϣ
 				        GetVideoParamReq getVideoParamReq = new GetVideoParamReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDevID(), dev.getChannelNo());
 				    	rotationDegree = mSoapManager.getGetVideoParamRes(getVideoParamReq).getRotationDegree();
 				    	System.out.println("rotationDegree"+rotationDegree);
 				    	
 				    	 System.out.println("4444444444444444444");
-				        //��ȡ�豸�汾��Ϣ
 				    	GetDevVerReq getDevVerReq = new GetDevVerReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDevID());
 				    	res = mSoapManager.getGetDevVerRes(getDevVerReq);
 				    	Log.e("GetDevVerRes", res.toString());
@@ -358,14 +347,12 @@ public class DeviceSetActivity extends Activity implements
 				try{
 					System.out.println("re11111111111");
 					 if (reso_idx>=0) {
-						 //�����ȡ�ķֱ���ֵ
 						 gainedReso = reso_idx;
 				        	mSeekBar_reso.setProgress(reso_idx);
 				        	refreshResolutionText(reso_idx);
 				        	
 				        	for (int i=0; i<reso_bitrate_map_[reso_idx].length; ++i) {
 				        		if (reso_bitrate_map_[reso_idx][i]>=bitrate) {
-				        			//�����ȡ�Ļ���
 				        			gainedQuality = i;
 				        			mSeekBar_quality.setProgress(i);
 				        			refreshImageQualityText(i);
@@ -485,10 +472,6 @@ public class DeviceSetActivity extends Activity implements
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         super.onKeyDown(keyCode, event);
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-        	//MessageUtiles.postToast(getApplicationContext(), getResources().getString(R.string.save_set),2000);
-        	//if (backCount == 0) {
-//                MyTask mTask = new MyTask();
-//                mTask.execute();
         	if(isCrashed){
         		finish();
         		return false;
@@ -509,8 +492,6 @@ public class DeviceSetActivity extends Activity implements
 					protected Void doInBackground(Void... params) {
 						try{
 						saveEncodingParam();
-			        	//saveVMDParam();
-			        	//saveVideoParam();
 						}catch (Exception e) {
 							// TODO: handle exception
 						}
@@ -527,10 +508,6 @@ public class DeviceSetActivity extends Activity implements
 						}
 					}
 				}.execute();
-           // }//else{
-//            	MessageUtiles.postToast(getApplicationContext(), getResources().getString(R.string.save_set),2000);
-//            }
-        	 //backCount++;
         }
         return false;
     }
@@ -549,17 +526,13 @@ public class DeviceSetActivity extends Activity implements
     	}
     }
 
-    //����ͼ����������
     private boolean saveEncodingParam() {
     	int reso_idx = mSeekBar_reso.getProgress();
-    	//TODO  hd720p���õ������������Ȳ�����
     	if (reso_idx==2) {
-    		//mCodingParamRes.setStreamType("Main");
     		return true;
     	}
     	int qual_idx = mSeekBar_quality.getProgress();
     	
-    	//���û����ֱ���˳�
     	if(gainedReso == reso_idx && gainedQuality == qual_idx){
     		return false;
     	}
@@ -573,7 +546,6 @@ public class DeviceSetActivity extends Activity implements
     	return true;
     }
     
-    //�����ƶ��������
     private boolean saveVMDParam() {
     	boolean use_vmd = vmd_checkbox_.isChecked();
     	vmd_res_.setEnabled(use_vmd);
@@ -584,7 +556,6 @@ public class DeviceSetActivity extends Activity implements
     	}else{
     		VMDGrid grids = new VMDGrid(VMD_ZERO_GRIDS);
     		vmd_res_.setGrids(grids);
-    		//�رվ�������
 			handler.sendEmptyMessage(ALARMPUSHOFF);
 			saveAlarmPushParam(false);
     	}
@@ -592,7 +563,6 @@ public class DeviceSetActivity extends Activity implements
     	return true;
     }
     
-    //����ͼ��ת����
     private boolean saveVideoParam(){
     	System.out.println(mLoginResponse.getAccount()+","+mLoginResponse.getLoginSession()+","+dev.getDevID()+","+dev.getChannelNo());
     	boolean isTurnOver = video_checkbox.isChecked();
@@ -609,7 +579,6 @@ public class DeviceSetActivity extends Activity implements
     	return true;
     }
     
-    //�����Դָʾ������
     private boolean savePowerLedParam(){
     	System.out.println(mLoginResponse.getAccount()+","+mLoginResponse.getLoginSession()+","+dev.getDevID()+","+dev.getChannelNo());
     	boolean powerLed = power_led_checkbox.isChecked();
@@ -626,9 +595,7 @@ public class DeviceSetActivity extends Activity implements
     	return true;
     }
     
-  //���澯����������
     private boolean saveAlarmPushParam(boolean alarmPush){
-    	//boolean alarmPush = cb_alarm_notice.isChecked();
     	SubscribeAndroidPushReq req = null;
     	SubscribeAndroidPushRes res = null;
     	if(alarmPush){
@@ -643,6 +610,52 @@ public class DeviceSetActivity extends Activity implements
     	return true;
     }
     
+    private void removeDevice(){
+    	NullifyDeviceReq req = new NullifyDeviceReq(mSoapManager.getLoginResponse().getAccount(),mSoapManager.getLoginResponse().getLoginSession(),dev.getDevID(),dev.getDevID());
+    	NullifyDeviceRes res = mSoapManager.getNullifyDeviceRes(req);
+    	System.out.println("removeDevice:"+res.getResult());
+    }
+    
+	private void showPopupWindow() {
+
+		View view = (LinearLayout) LayoutInflater.from(DeviceSetActivity.this)
+				.inflate(R.layout.popmenu, null);
+
+		LinearLayout bt_clear = (LinearLayout) view.findViewById(R.id.bt_remove);
+		LinearLayout bt_exit = (LinearLayout) view.findViewById(R.id.bt_exit);
+		
+		TextView tv_clear = (TextView) view.findViewById(R.id.tv_remove);
+		TextView tv_exit = (TextView) view.findViewById(R.id.tv_exit);
+		TextPaint tp = tv_clear.getPaint();
+        tp.setFakeBoldText(true);
+        tp = tv_exit.getPaint();
+        tp.setFakeBoldText(true);
+
+		bt_clear.setOnClickListener(this);
+		bt_exit.setOnClickListener(this);
+
+		if (popupWindow == null) {
+
+			popupWindow = new PopupWindow(DeviceSetActivity.this);
+
+//			popupWindow.setFocusable(true); // 设置PopupWindow可获得焦点
+			popupWindow.setTouchable(true); // 设置PopupWindow可触摸
+			popupWindow.setOutsideTouchable(true); // 设置非PopupWindow区域可触摸
+
+			popupWindow.setContentView(view);
+			
+			popupWindow.setWidth(LayoutParams.MATCH_PARENT);
+			popupWindow.setHeight(LayoutParams.WRAP_CONTENT);
+			
+			popupWindow.setAnimationStyle(R.style.popuStyle);	//设置 popupWindow 动画样式
+		}
+
+		popupWindow.showAtLocation(mRemoveDevice, Gravity.BOTTOM, 0, 0);
+
+		popupWindow.update();
+
+	}
+	
     @Override
     protected void onStop() {
     	// TODO Auto-generated method stub
@@ -660,8 +673,65 @@ public class DeviceSetActivity extends Activity implements
     protected void onPause() {
     	// TODO Auto-generated method stub
     	super.onPause();
-//    	for(Activity a:mActivities.getmActivityList()){
-//    		a.finish();
-//    	}
     }
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.ll_deviceset_share:
+			//被分享帐号
+			if(dev.getSharingFlag() == 1){
+				MessageUtiles.postToast(this, "无操作权限，您是被分享用户", 1000);
+				return;
+			}
+			Intent intent = new Intent(DeviceSetActivity.this,DeviceShareToOther.class);
+			intent.putExtra("Device", dev);
+			startActivity(intent);
+			break;
+		case R.id.ll_deviceset_remove:
+			showPopupWindow();
+			break;
+			
+		case R.id.bt_exit:
+			popupWindow.dismiss();
+			break;
+		case R.id.bt_remove:
+			popupWindow.dismiss();
+			System.out.println("remove");
+			pd = new ProgressDialog(DeviceSetActivity.this);  
+	        pd.setTitle(getResources().getString(R.string.save_set)+"...");   //���ñ���  
+	        pd.setMessage(getResources().getString(R.string.please_wait)+"..."); //����body��Ϣ  
+	        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER); //���ý������ʽ�� ����� 
+			pd.show();
+			new AsyncTask<Void, Void, Void>() {
+				protected Void doInBackground(Void... params) {
+					try{
+						removeDevice();
+					}catch (Exception e) {
+						// TODO: handle exception
+					}
+					return null;
+				}
+
+				@Override
+				protected void onPostExecute(Void result) {
+					try{
+						pd.dismiss();
+						finish();
+						if(mActivities.getmActivityList().containsKey("CamTabActivity")){
+							mActivities.getmActivityList().get("CamTabActivity").finish();
+						}
+						Intent intent = new Intent(DeviceSetActivity.this,CamTabActivity.class);
+						startActivity(intent);
+					}catch (Exception e) {
+						// TODO: handle exception
+					}
+				}
+			}.execute();
+			break;
+		default:
+			break;
+		}
+	}
 }

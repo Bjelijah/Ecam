@@ -1180,6 +1180,45 @@ public class SoapManager implements Serializable {
     	   	return res;
     }
     
+    //查询设备视频分享的用户
+    public QueryDeviceSharerRes getQueryDeviceSharerRes(QueryDeviceSharerReq req){
+    	QueryDeviceSharerRes res = new QueryDeviceSharerRes();
+    	SoapObject rpc = new SoapObject(sNameSpace, "queryDeviceSharerReq");
+    	rpc.addProperty("Account", req.getAccount());
+    	rpc.addProperty("LoginSession", req.getLoginSession());
+    	rpc.addProperty("DevID", req.getDevID());
+    	rpc.addProperty("ChannelNo", req.getChannelNo());
+    	SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/queryDeviceSharer");
+    	try{
+    		Object result = object.getProperty("result");
+    	 	res.setResult(result.toString());
+    	 	System.out.println(result);
+    	 	
+    	 	SoapObject sharerList = (SoapObject)object.getProperty("SharerList");
+	        System.out.println("QueryDeviceSharerRes SharerList:"+sharerList.toString());
+	        
+	        for(int i = 0 ;i<sharerList.getPropertyCount();i++){
+	        	DeviceSharer d = new DeviceSharer();
+	        	
+		        SoapObject deviceSharer = (SoapObject)sharerList.getProperty(i);
+		        System.out.println("DeviceSharer:"+deviceSharer.toString());
+		        
+		        Object account = deviceSharer.getProperty("Account");
+		        d.setSharerAccount(account.toString());
+		        
+		        Object sharingPriority = deviceSharer.getProperty("SharingPriority");
+		        d.setSharingPriority(Integer.valueOf(sharingPriority.toString()));
+		        
+		        System.out.println(d.toString());
+		        res.addDeviceSharer(d);
+	        }
+    	 	
+    	}catch (Exception e) {
+    		// TODO: handle exception
+    	}
+    	   	return res;
+    }
+    
     
 	@Override
 	public String toString() {

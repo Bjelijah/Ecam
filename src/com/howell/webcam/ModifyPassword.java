@@ -89,9 +89,9 @@ public class ModifyPassword extends Activity implements OnClickListener{
 			break;
 		case R.id.ib_modify_password_ok:
 			pd = new ProgressDialog(ModifyPassword.this);  
-	        pd.setTitle(getResources().getString(R.string.set_new_password)+"...");   //���ñ���  
-	        pd.setMessage(getResources().getString(R.string.please_wait)+"..."); //����body��Ϣ  
-	        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER); //���ý������ʽ�� ����� 
+	        pd.setTitle(getResources().getString(R.string.set_new_password)+"...");  
+	        pd.setMessage(getResources().getString(R.string.please_wait)+"..."); 
+	        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER); 
 			pd.show();
 			new AsyncTask<Void, Void, Void>() {
 				protected Void doInBackground(Void... params) {

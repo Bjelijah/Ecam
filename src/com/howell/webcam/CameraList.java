@@ -325,7 +325,11 @@ public class CameraList extends ListActivity {
             	holder.playback.setImageResource(R.drawable.card_tab_playback_no_sdcard);
             }
             
-            holder.tv.setText(camera.getName());
+            if(camera.getSharingFlag() == 1){
+            	holder.tv.setText(camera.getName()+"-分享");
+            }else{
+            	holder.tv.setText(camera.getName());
+            }
             
             if (camera.isOnLine()) {
             	if(getResources().getConfiguration().locale.getCountry().equals("CN"))

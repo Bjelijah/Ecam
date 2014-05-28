@@ -75,6 +75,7 @@ public class DeviceSetActivity extends Activity implements
     private LinearLayout ll_alarm_push,mShareDevice,mRemoveDevice;
     private CheckBox cb_alarm_notice;
     private TextView mCameraVersion;
+    private TextView mTvTurnOver,mTvLightState;
     
     private static final int CRASH = 1;
     private static final int ALARMPUSHOFF = 2;
@@ -115,6 +116,8 @@ public class DeviceSetActivity extends Activity implements
         mRemoveDevice = (LinearLayout)findViewById(R.id.ll_deviceset_remove);
         cb_alarm_notice = (CheckBox)findViewById(R.id.alarm_notice);
         mCameraVersion = (TextView)findViewById(R.id.tv_camera_version);
+        mTvTurnOver = (TextView)findViewById(R.id.tv_device_set_picture_turn_over);
+        mTvLightState = (TextView)findViewById(R.id.tv_device_set_light_state);
         
         mSeekBar_reso.setOnSeekBarChangeListener(this);
         mSeekBar_quality.setOnSeekBarChangeListener(this);
@@ -132,6 +135,10 @@ public class DeviceSetActivity extends Activity implements
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				if(dev.getSharingFlag() == 1){
+					MessageUtiles.postToast(DeviceSetActivity.this, "无操作权限，您是被分享用户", 1000);
+					return ;
+				}
 				if(!dev.isHasUpdate())return;
 				AlerDialogUtils.postDialog(DeviceSetActivity.this);
 			}
@@ -148,9 +155,10 @@ public class DeviceSetActivity extends Activity implements
 		        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER); 
 				pd.show();
 				new AsyncTask<Void, Void, Void>() {
+					boolean isTurnedOver;
 					protected Void doInBackground(Void... params) {
 						try{
-							saveVideoParam();
+							isTurnedOver = saveVideoParam();
 						}catch (Exception e) {
 							// TODO: handle exception
 						}
@@ -161,6 +169,11 @@ public class DeviceSetActivity extends Activity implements
 					protected void onPostExecute(Void result) {
 						try{
 							pd.dismiss();
+							if(isTurnedOver){
+								mTvTurnOver.setText("图像翻转 - 180°");
+							}else{
+								mTvTurnOver.setText("图像翻转 - 0°");
+							}
 						}catch (Exception e) {
 							// TODO: handle exception
 						}
@@ -180,9 +193,10 @@ public class DeviceSetActivity extends Activity implements
 		        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER); //���ý������ʽ�� ����� 
 				pd.show();
 				new AsyncTask<Void, Void, Void>() {
+					boolean isLighted;
 					protected Void doInBackground(Void... params) {
 						try{
-							savePowerLedParam();
+							isLighted = savePowerLedParam();
 						}catch (Exception e) {
 							// TODO: handle exception
 						}
@@ -193,6 +207,11 @@ public class DeviceSetActivity extends Activity implements
 					protected void onPostExecute(Void result) {
 						try{
 							pd.dismiss();
+							if(isLighted){
+								mTvLightState.setText("电源指示灯 - 亮");
+							}else{
+								mTvLightState.setText("电源指示灯 - 灭");
+							}
 						}catch (Exception e) {
 							// TODO: handle exception
 						}
@@ -380,15 +399,19 @@ public class DeviceSetActivity extends Activity implements
 					System.out.println("re222222222222");
 					if(getAuxiliaryRes.getResult().equals("OK")){
 						if(getAuxiliaryRes.getAuxiliaryState().equals("Inactive")){
+							mTvLightState.setText("电源指示灯 - 灭");
 							power_led_checkbox.setChecked(false);
 						}else if(getAuxiliaryRes.getAuxiliaryState().equals("Active")){
+							mTvLightState.setText("电源指示灯 - 亮");
 							power_led_checkbox.setChecked(true);
 						}
 					}
 					System.out.println("re333333333333");
 					if(rotationDegree == 0){
+						mTvTurnOver.setText("图像翻转 - 0°");
 			    		video_checkbox.setChecked(false);
 			    	}else if(rotationDegree == 180){
+			    		mTvTurnOver.setText("图像翻转 - 180°");
 			    		video_checkbox.setChecked(true);
 			    	}
 					System.out.println("re4444444444444");
@@ -571,12 +594,15 @@ public class DeviceSetActivity extends Activity implements
     	if(isTurnOver){
     		req_set = new SetVideoParamReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDevID(), dev.getChannelNo(),180);
 			res = mSoapManager.getSetVideoParamRes(req_set);
+			System.out.println("turn over:"+res.getResult());
+			return true;
     	}else{
     		req_set = new SetVideoParamReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDevID(), dev.getChannelNo(),0);
 			res = mSoapManager.getSetVideoParamRes(req_set);
+			System.out.println("turn over:"+res.getResult());
+			return false;
     	}
-    	System.out.println("turn over:"+res.getResult());
-    	return true;
+    	
     }
     
     private boolean savePowerLedParam(){
@@ -587,12 +613,15 @@ public class DeviceSetActivity extends Activity implements
     	if(powerLed){
     		req_set = new SetAuxiliaryReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDevID(), "SignalLamp","Active");
     		res = mSoapManager.getSetAuxiliaryRes(req_set);
+    		System.out.println("power led:"+res.getResult());
+        	return true;
     	}else{
     		req_set = new SetAuxiliaryReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDevID(), "SignalLamp","Inactive");
     		res = mSoapManager.getSetAuxiliaryRes(req_set);
+    		System.out.println("power led:"+res.getResult());
+        	return false;
     	}
-    	System.out.println("power led:"+res.getResult());
-    	return true;
+    	
     }
     
     private boolean saveAlarmPushParam(boolean alarmPush){

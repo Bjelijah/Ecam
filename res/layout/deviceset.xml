@@ -175,6 +175,7 @@
 	                android:background="@drawable/list_item_bg_top" >
 
                     <TextView
+                        android:id="@+id/tv_device_set_picture_turn_over"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -206,6 +207,7 @@
 	                android:background="@drawable/list_item_bg_bottom" >
 
                     <TextView
+                        android:id="@+id/tv_device_set_light_state"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"

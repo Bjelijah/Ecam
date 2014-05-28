@@ -93,6 +93,9 @@
 	<string name="more">更多</string>
 	<string name="media_lib">媒体库</string>
 	
+	<string name="camera_list_wifi_intensity">信号强度：</string>
+	<string name="set_device_wifi_device_name">摄像机名：</string>
+	
 	<string name="QR_code">二维码</string>
 	<string name="msg_default_status">将二维码放入框内，即可自动扫描</string>
 	<style name="MyCheckBox" parent="@android:style/Widget.CompoundButton.CheckBox">

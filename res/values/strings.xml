@@ -79,6 +79,8 @@
 	<string name="no_estore">No SDCard</string> 
 	<string name="set_fail">Bad Network Signal , set fail</string>
 	
+	<string name="camera_list_wifi_intensity">wifi intensity:</string>
+	
 	<style name="MyCheckBox" parent="@android:style/Widget.CompoundButton.CheckBox">
 		<item name="android:button">@drawable/cb_select</item>
 	</style>

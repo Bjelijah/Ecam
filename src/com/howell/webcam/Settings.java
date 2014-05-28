@@ -10,14 +10,19 @@ import android.graphics.Point;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextPaint;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import cn.jpush.android.api.JPushInterface;
@@ -36,7 +41,7 @@ public class Settings extends Activity implements OnClickListener {
     private Button mCancel;
 
     private Dialog mDialog;
-    
+	private PopupWindow popupWindow;
     private Activities mActivities;
     
     @Override
@@ -84,7 +89,17 @@ public class Settings extends Activity implements OnClickListener {
         case R.id.sys_message:
             break;
         case R.id.exit:
-        	SharedPreferences sharedPreferences = getSharedPreferences("set",
+        	showPopupWindow();
+            break;
+        case R.id.cancel:
+            mDialog.dismiss();
+            break;
+        case R.id.bt_exit:
+			popupWindow.dismiss();
+			break;
+		case R.id.bt_remove:
+			popupWindow.dismiss();
+			SharedPreferences sharedPreferences = getSharedPreferences("set",
                     Context.MODE_PRIVATE);
         	Editor editor = sharedPreferences.edit();
             editor.putString("account", "");
@@ -97,10 +112,6 @@ public class Settings extends Activity implements OnClickListener {
             intent = new Intent(this, RegisterOrLogin.class);
             startActivity(intent);
             finish();
-            break;
-        case R.id.cancel:
-            mDialog.dismiss();
-            break;
         default:
             break;
         }
@@ -127,6 +138,47 @@ public class Settings extends Activity implements OnClickListener {
 		}
 		
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
+	private void showPopupWindow() {
+
+		View view = (LinearLayout) LayoutInflater.from(Settings.this)
+				.inflate(R.layout.popmenu, null);
+
+		LinearLayout bt_clear = (LinearLayout) view.findViewById(R.id.bt_remove);
+		LinearLayout bt_exit = (LinearLayout) view.findViewById(R.id.bt_exit);
+		
+		TextView tv_clear = (TextView) view.findViewById(R.id.tv_remove);
+		TextView tv_exit = (TextView) view.findViewById(R.id.tv_exit);
+		tv_clear.setText("注销");
+		TextPaint tp = tv_clear.getPaint();
+        tp.setFakeBoldText(true);
+        tp = tv_exit.getPaint();
+        tp.setFakeBoldText(true);
+
+		bt_clear.setOnClickListener(this);
+		bt_exit.setOnClickListener(this);
+
+		if (popupWindow == null) {
+
+			popupWindow = new PopupWindow(Settings.this);
+
+//			popupWindow.setFocusable(true); // 设置PopupWindow可获得焦点
+			popupWindow.setTouchable(true); // 设置PopupWindow可触摸
+			popupWindow.setOutsideTouchable(true); // 设置非PopupWindow区域可触摸
+
+			popupWindow.setContentView(view);
+			
+			popupWindow.setWidth(LayoutParams.MATCH_PARENT);
+			popupWindow.setHeight(LayoutParams.WRAP_CONTENT);
+			
+			popupWindow.setAnimationStyle(R.style.popuStyle);	//设置 popupWindow 动画样式
+		}
+
+		popupWindow.showAtLocation(mButton, Gravity.BOTTOM, 0, 0);
+
+		popupWindow.update();
+
 	}
     
     private void showDialog() {

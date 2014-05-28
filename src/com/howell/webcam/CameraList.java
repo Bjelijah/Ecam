@@ -19,22 +19,23 @@ import android.os.Message;
 import android.provider.Settings.Secure;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.howell.webcam.R;
 import com.howell.webcam.MyListView.OnRefreshListener;
 import com.howell.webcam.player.PlayerActivity;
 
-public class CameraList extends ListActivity {
+public class CameraList extends ListActivity{
 
     private SoapManager mSoapManager;
     private LoginResponse mResponse;
@@ -45,7 +46,10 @@ public class CameraList extends ListActivity {
     private static final int postUpdateMessage = 2;
     private static final int refreshCameraList = 3;
     
-    private ImageButton mAddDevice;
+    private LinearLayout mAddDevice;
+    private ImageButton mBack;
+    private TextView mTvAdd;
+    private ImageView mIvAdd;
     
     private String url;
     
@@ -78,10 +82,35 @@ public class CameraList extends ListActivity {
 			// TODO: handle exception
 		}
         
-        mAddDevice = (ImageButton)findViewById(R.id.ib_add);
-        mAddDevice.setOnClickListener(adapter.listener);
+        mTvAdd = (TextView)findViewById(R.id.tv_add);
+        mIvAdd = (ImageView)findViewById(R.id.iv_add);
+        mAddDevice = (LinearLayout)findViewById(R.id.ll_add);
+        //mAddDevice.setOnClickListener(adapter.listener);
+        mAddDevice.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View arg0, MotionEvent event) {
+				// TODO Auto-generated method stub
+				if(event.getAction()==MotionEvent.ACTION_DOWN){  
+					System.out.println("ACTION DOWN");
+					mTvAdd.setTextColor(getResources().getColor(R.color.gray));
+					mIvAdd.setImageResource(R.drawable.arrow_right_gray);
+	            }
+				if(event.getAction()==MotionEvent.ACTION_UP){  
+	            	System.out.println("ACTION UP");
+	            	mTvAdd.setTextColor(getResources().getColor(R.color.white)); 
+	            	mIvAdd.setImageResource(R.drawable.arrow_right);
+	            	Intent intent = new Intent(CameraList.this, SetDeviceWifi.class);
+		            startActivity(intent);
+	            }  
+				return true;
+			}
+		});
+        mBack = (ImageButton)findViewById(R.id.ib_camera_list_back);
+        mBack.setOnClickListener(adapter.listener);
         if(mResponse.getAccount().equals("100868")){
         	mAddDevice.setVisibility(View.GONE);
+        	mBack.setVisibility(View.VISIBLE);
         }
         
         listView = (MyListView)findViewById(android.R.id.list);
@@ -299,6 +328,7 @@ public class CameraList extends ListActivity {
 				holder.tv = (TextView)convertView.findViewById(R.id.tv_name);
 				holder.iv_offline = (ImageView)convertView.findViewById(R.id.iv_offline);
 				holder.iv_badge = (ImageView)convertView.findViewById(R.id.iv_badge);
+				holder.mPlay = (LinearLayout)convertView.findViewById(R.id.to_play);
 				
 				holder.tv.setTextColor(Color.BLACK);
                 convertView.setTag(holder);
@@ -308,13 +338,13 @@ public class CameraList extends ListActivity {
                 holder.playback.setOnClickListener(listener);
                 holder.set.setOnClickListener(listener);
                 holder.about.setOnClickListener(listener);
-                holder.iv.setOnClickListener(listener);
+                holder.mPlay.setOnClickListener(listener);
                 
             }else{
             	holder = (ViewHolder)convertView.getTag();
             }
             
-            holder.iv.setTag(position);
+            holder.mPlay.setTag(position);
             holder.playback.setTag(position);
             holder.set.setTag(position);
             holder.about.setTag(position);
@@ -408,7 +438,21 @@ public class CameraList extends ListActivity {
 					Intent intent = new Intent(CameraList.this,CameraProperty.class);
 					intent.putExtra("Device", (NodeDetails) getItem(Integer.valueOf(arg0.getTag().toString())));
 					startActivity(intent);
-				}else if(arg0.getId() == R.id.iv_picture){
+				}
+//				else if(arg0.getId() == R.id.iv_picture){
+//					System.out.println(getItem(Integer.valueOf(arg0.getTag().toString())).toString());
+//					if (!((NodeDetails)getItem(Integer.valueOf(arg0.getTag().toString()))).isOnLine()) {
+//			        	MessageUtiles.postToast(getApplicationContext(), getResources().getString(R.string.not_online_message),1000);
+//			        } else {
+//			            Intent intent = new Intent(CameraList.this, PlayerActivity.class);
+//			            intent.putExtra("arg", ((NodeDetails) getItem(Integer.valueOf(arg0.getTag().toString()))));
+//			            startActivity(intent);
+//			        }
+//				}
+				else if(arg0.getId() == R.id.ll_add){
+					Intent intent = new Intent(CameraList.this, SetDeviceWifi.class);
+		            startActivity(intent);
+				}else if(arg0.getId() == R.id.to_play){
 					System.out.println(getItem(Integer.valueOf(arg0.getTag().toString())).toString());
 					if (!((NodeDetails)getItem(Integer.valueOf(arg0.getTag().toString()))).isOnLine()) {
 			        	MessageUtiles.postToast(getApplicationContext(), getResources().getString(R.string.not_online_message),1000);
@@ -417,9 +461,8 @@ public class CameraList extends ListActivity {
 			            intent.putExtra("arg", ((NodeDetails) getItem(Integer.valueOf(arg0.getTag().toString()))));
 			            startActivity(intent);
 			        }
-				}else if(arg0.getId() == R.id.ib_add){
-					Intent intent = new Intent(CameraList.this, SetDeviceWifi.class);
-		            startActivity(intent);
+				}else if(arg0.getId() == R.id.ib_camera_list_back){
+					finish();
 				}
 			}
 		};
@@ -430,6 +473,7 @@ public class CameraList extends ListActivity {
 		public ImageView iv,iv_play_icon,iv_offline/*,iv_wifi*/,iv_badge,iv_wifi;
 	    public ImageButton about,set,playback;
 	    public TextView tv;
+	    public LinearLayout mPlay;
 	}
 
 }

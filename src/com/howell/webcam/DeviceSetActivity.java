@@ -82,6 +82,7 @@ public class DeviceSetActivity extends Activity implements
     private int gainedReso,gainedQuality;
     
 	private PopupWindow popupWindow;
+	private ImageButton mBack;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,11 +119,13 @@ public class DeviceSetActivity extends Activity implements
         mCameraVersion = (TextView)findViewById(R.id.tv_camera_version);
         mTvTurnOver = (TextView)findViewById(R.id.tv_device_set_picture_turn_over);
         mTvLightState = (TextView)findViewById(R.id.tv_device_set_light_state);
+        mBack = (ImageButton)findViewById(R.id.ib_device_set_back);
         
         mSeekBar_reso.setOnSeekBarChangeListener(this);
         mSeekBar_quality.setOnSeekBarChangeListener(this);
         mShareDevice.setOnClickListener(this);
         mRemoveDevice.setOnClickListener(this);
+        mBack.setOnClickListener(this);
 
         Intent intent = getIntent();
         dev = (NodeDetails) intent.getSerializableExtra("Device");
@@ -758,6 +761,44 @@ public class DeviceSetActivity extends Activity implements
 					}
 				}
 			}.execute();
+			break;
+		case R.id.ib_device_set_back:
+			if(isCrashed){
+        		finish();
+        		return ;
+        	}
+        	int reso_idx = mSeekBar_reso.getProgress();
+        	int qual_idx = mSeekBar_quality.getProgress();
+        	//���û����ֱ���˳�
+        	if(gainedReso == reso_idx && gainedQuality == qual_idx){
+        		finish();
+        		return ;
+        	}
+        		pd = new ProgressDialog(DeviceSetActivity.this);  
+		        pd.setTitle(getResources().getString(R.string.save_set)+"...");   //���ñ���  
+		        pd.setMessage(getResources().getString(R.string.please_wait)+"..."); //����body��Ϣ  
+		        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER); //���ý������ʽ�� ����� 
+				pd.show();
+				new AsyncTask<Void, Void, Void>() {
+					protected Void doInBackground(Void... params) {
+						try{
+						saveEncodingParam();
+						}catch (Exception e) {
+							// TODO: handle exception
+						}
+						return null;
+					}
+
+					@Override
+					protected void onPostExecute(Void result) {
+						try{
+							pd.dismiss();
+							finish();
+						}catch (Exception e) {
+							// TODO: handle exception
+						}
+					}
+				}.execute();
 			break;
 		default:
 			break;

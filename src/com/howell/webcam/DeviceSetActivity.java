@@ -289,6 +289,7 @@ public class DeviceSetActivity extends Activity implements
 			}
 		});
         
+		if(dev.isOnLine()){
         pd = new ProgressDialog(DeviceSetActivity.this);  
         pd.setTitle(getResources().getString(R.string.gain_set)+"...");   
         pd.setMessage(getResources().getString(R.string.please_wait)+"...");  
@@ -434,6 +435,8 @@ public class DeviceSetActivity extends Activity implements
 				pd.dismiss();
 			}
 		}.execute();
+		
+		}
 
     }
     
@@ -498,7 +501,7 @@ public class DeviceSetActivity extends Activity implements
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         super.onKeyDown(keyCode, event);
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-        	if(isCrashed){
+        	if(isCrashed || !dev.isOnLine()){
         		finish();
         		return false;
         	}
@@ -763,7 +766,7 @@ public class DeviceSetActivity extends Activity implements
 			}.execute();
 			break;
 		case R.id.ib_device_set_back:
-			if(isCrashed){
+			if(isCrashed || !dev.isOnLine()){
         		finish();
         		return ;
         	}

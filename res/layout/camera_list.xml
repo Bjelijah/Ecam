@@ -18,13 +18,13 @@
             android:textColor="@color/white"
             android:textSize="23sp" />
 
-        <!--  <ImageButton
+        <ImageButton
             android:id="@+id/ib_add"
             android:layout_width="55dip"
             android:layout_height="55dip"
             android:background="#00000000"
-            
-            android:src="@drawable/add_button_selector" />-->
+            android:layout_gravity="right|center_vertical"
+            android:src="@drawable/add_button_selector" />
         
         <ImageButton
             android:id="@+id/ib_camera_list_back"
@@ -34,28 +34,6 @@
             android:src="@drawable/back_btn_selector"
             android:layout_gravity="left|center"
             android:visibility="gone" />
-
-        <LinearLayout
-            android:id="@+id/ll_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|center"
-            android:gravity="center"
-            android:layout_marginRight="10dip" >
-            <TextView
-                android:id="@+id/tv_add"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:textSize="15sp"
-	            android:textColor="@color/white"
-	            android:text="新增设备" />
-              <ImageView
-                android:id="@+id/iv_add"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:src="@drawable/arrow_right"
-	             />
-        </LinearLayout>
 
     </FrameLayout>
 

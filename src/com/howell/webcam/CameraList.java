@@ -46,10 +46,10 @@ public class CameraList extends ListActivity{
     private static final int postUpdateMessage = 2;
     private static final int refreshCameraList = 3;
     
-    private LinearLayout mAddDevice;
+    private ImageButton mAddDevice;
     private ImageButton mBack;
-    private TextView mTvAdd;
-    private ImageView mIvAdd;
+//    private TextView mTvAdd;
+//    private ImageView mIvAdd;
     
     private String url;
     
@@ -82,30 +82,30 @@ public class CameraList extends ListActivity{
 			// TODO: handle exception
 		}
         
-        mTvAdd = (TextView)findViewById(R.id.tv_add);
-        mIvAdd = (ImageView)findViewById(R.id.iv_add);
-        mAddDevice = (LinearLayout)findViewById(R.id.ll_add);
-        //mAddDevice.setOnClickListener(adapter.listener);
-        mAddDevice.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View arg0, MotionEvent event) {
-				// TODO Auto-generated method stub
-				if(event.getAction()==MotionEvent.ACTION_DOWN){  
-					System.out.println("ACTION DOWN");
-					mTvAdd.setTextColor(getResources().getColor(R.color.gray));
-					mIvAdd.setImageResource(R.drawable.arrow_right_gray);
-	            }
-				if(event.getAction()==MotionEvent.ACTION_UP){  
-	            	System.out.println("ACTION UP");
-	            	mTvAdd.setTextColor(getResources().getColor(R.color.white)); 
-	            	mIvAdd.setImageResource(R.drawable.arrow_right);
-	            	Intent intent = new Intent(CameraList.this, SetDeviceWifi.class);
-		            startActivity(intent);
-	            }  
-				return true;
-			}
-		});
+//        mTvAdd = (TextView)findViewById(R.id.tv_add);
+//        mIvAdd = (ImageView)findViewById(R.id.iv_add);
+        mAddDevice = (ImageButton)findViewById(R.id.ib_add);
+        mAddDevice.setOnClickListener(adapter.listener);
+//        mAddDevice.setOnTouchListener(new OnTouchListener() {
+//			
+//			@Override
+//			public boolean onTouch(View arg0, MotionEvent event) {
+//				// TODO Auto-generated method stub
+//				if(event.getAction()==MotionEvent.ACTION_DOWN){  
+//					System.out.println("ACTION DOWN");
+//					mTvAdd.setTextColor(getResources().getColor(R.color.gray));
+//					mIvAdd.setImageResource(R.drawable.arrow_right_gray);
+//	            }
+//				if(event.getAction()==MotionEvent.ACTION_UP){  
+//	            	System.out.println("ACTION UP");
+//	            	mTvAdd.setTextColor(getResources().getColor(R.color.white)); 
+//	            	mIvAdd.setImageResource(R.drawable.arrow_right);
+//	            	Intent intent = new Intent(CameraList.this, SetDeviceWifi.class);
+//		            startActivity(intent);
+//	            }  
+//				return true;
+//			}
+//		});
         mBack = (ImageButton)findViewById(R.id.ib_camera_list_back);
         mBack.setOnClickListener(adapter.listener);
         if(mResponse.getAccount().equals("100868")){
@@ -371,9 +371,21 @@ public class CameraList extends ListActivity{
 //            	}else {
 //            		holder.tv_wifi.setText("wifi强度:强");
 //            	}
+            	if(camera.getIntensity() == 0){
+                	holder.iv_wifi.setImageResource(R.drawable.wifi_0);
+                }else if((camera.getIntensity() > 0 && camera.getIntensity() <= 25)){
+                	holder.iv_wifi.setImageResource(R.drawable.wifi_1);
+                }else if(camera.getIntensity() > 25 && camera.getIntensity() <= 50){
+                	holder.iv_wifi.setImageResource(R.drawable.wifi_2);
+                }else if(camera.getIntensity() > 50 && camera.getIntensity() <= 75){
+                	holder.iv_wifi.setImageResource(R.drawable.wifi_3);
+                }else{
+                	holder.iv_wifi.setImageResource(R.drawable.wifi_4);
+                }
 	        }else {
 	        	if(getResources().getConfiguration().locale.getCountry().equals("CN"))
 	        		holder.iv_offline.setImageResource(R.drawable.card_offline_image_gray);
+	        	holder.iv_wifi.setImageResource(R.drawable.wifi_0);
 //	        	holder.tv_wifi.setText("");
 	        }
             
@@ -383,17 +395,7 @@ public class CameraList extends ListActivity{
             	holder.iv_badge.setVisibility(View.GONE);
             }
             
-            if(camera.getIntensity() == 0){
-            	holder.iv_wifi.setImageResource(R.drawable.wifi_0);
-            }else if((camera.getIntensity() > 0 && camera.getIntensity() <= 25)){
-            	holder.iv_wifi.setImageResource(R.drawable.wifi_1);
-            }else if(camera.getIntensity() > 25 && camera.getIntensity() <= 50){
-            	holder.iv_wifi.setImageResource(R.drawable.wifi_2);
-            }else if(camera.getIntensity() > 50 && camera.getIntensity() <= 75){
-            	holder.iv_wifi.setImageResource(R.drawable.wifi_3);
-            }else{
-            	holder.iv_wifi.setImageResource(R.drawable.wifi_4);
-            }
+            
             
             BitmapFactory.Options options = new BitmapFactory.Options();
 	        options.inSampleSize = 2;
@@ -427,10 +429,10 @@ public class CameraList extends ListActivity{
 		            startActivity(intent);
 				}else if(arg0.getId() == R.id.iv_set){
 					//System.out.println("����");
-					if(!list.get(Integer.valueOf(arg0.getTag().toString())).isOnLine()){
-			    		MessageUtiles.postToast(getApplication(), getResources().getString(R.string.not_online_message),2000);
-			    		return;
-			    	}
+//					if(!list.get(Integer.valueOf(arg0.getTag().toString())).isOnLine()){
+//			    		MessageUtiles.postToast(getApplication(), getResources().getString(R.string.not_online_message),2000);
+//			    		return;
+//			    	}
 					Intent intent = new Intent(CameraList.this,DeviceSetActivity.class);
 					intent.putExtra("Device", (NodeDetails) getItem(Integer.valueOf(arg0.getTag().toString())));
 					startActivity(intent);
@@ -449,7 +451,7 @@ public class CameraList extends ListActivity{
 //			            startActivity(intent);
 //			        }
 //				}
-				else if(arg0.getId() == R.id.ll_add){
+				else if(arg0.getId() == R.id.ib_add){
 					Intent intent = new Intent(CameraList.this, SetDeviceWifi.class);
 		            startActivity(intent);
 				}else if(arg0.getId() == R.id.to_play){

@@ -353,6 +353,8 @@ public class CameraList extends ListActivity{
             
             if(!camera.iseStoreFlag()){
             	holder.playback.setImageResource(R.drawable.card_tab_playback_no_sdcard);
+            }else{
+            	holder.playback.setImageResource(R.drawable.card_tab_playback);
             }
             
             if(camera.getSharingFlag() == 1){

@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dip"
-        android:text="请将手机闪光灯靠近摄像机镜头"
+        android:text="@string/flash_lighting_tips"
         android:textSize="20sp"
         android:textColor="@color/black"
         android:gravity="center" />
@@ -105,7 +105,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/btn_blue_color"
-                android:text="闪一闪" />
+                android:text="@string/flash_lighting_btn_tips" />
 
         </LinearLayout>
         

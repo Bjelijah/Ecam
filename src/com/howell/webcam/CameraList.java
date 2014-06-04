@@ -358,7 +358,7 @@ public class CameraList extends ListActivity{
             }
             
             if(camera.getSharingFlag() == 1){
-            	holder.tv.setText(camera.getName()+"-分享");
+            	holder.tv.setText(camera.getName()+getResources().getString(R.string.camera_list_sharer_tip));
             }else{
             	holder.tv.setText(camera.getName());
             }
@@ -366,6 +366,8 @@ public class CameraList extends ListActivity{
             if (camera.isOnLine()) {
             	if(getResources().getConfiguration().locale.getCountry().equals("CN"))
             		holder.iv_offline.setImageResource(R.drawable.card_online_image_blue);
+            	else
+            		holder.iv_offline.setImageResource(R.drawable.card_online_image_blue_english);
 //            	if(camera.getIntensity() >= 0 && camera.getIntensity() <= 33){
 //            		holder.tv_wifi.setText("wifi强度:弱");
 //            	}else if(camera.getIntensity() > 33 && camera.getIntensity() <= 66){
@@ -387,6 +389,8 @@ public class CameraList extends ListActivity{
 	        }else {
 	        	if(getResources().getConfiguration().locale.getCountry().equals("CN"))
 	        		holder.iv_offline.setImageResource(R.drawable.card_offline_image_gray);
+	        	else 
+	        		holder.iv_offline.setImageResource(R.drawable.card_offline_image_gray_english);
 	        	holder.iv_wifi.setImageResource(R.drawable.wifi_0);
 //	        	holder.tv_wifi.setText("");
 	        }

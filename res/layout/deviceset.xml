@@ -398,7 +398,7 @@
                 android:gravity="center_vertical"
                 android:paddingLeft="25.0dip"
                 android:layout_marginBottom="10dip"
-                android:text="分享设备"
+                android:text="@string/device_set_share_device"
                 android:textColor="#ffffff"
                 android:textSize="16.0sp" />
             
@@ -425,7 +425,7 @@
 	                        android:gravity="center"
 	                        android:textColor="#ff333333"
 	                        android:textSize="16.0sp"
-	                        android:text="分享设备" />
+	                        android:text="@string/device_set_share_device" />
                         
                         <ImageView
 					        android:layout_width="wrap_content"
@@ -446,7 +446,7 @@
                 android:gravity="center_vertical"
                 android:paddingLeft="25.0dip"
                 android:layout_marginBottom="10dip"
-                android:text="删除设备"
+                android:text="@string/device_set_remove_device"
                 android:textColor="#ffffff"
                 android:textSize="16.0sp" />
             
@@ -471,7 +471,7 @@
                         android:gravity="center"
                         android:textColor="@color/red"
                         android:textSize="16.0sp"
-                        android:text="删除设备" />
+                        android:text="@string/device_set_remove_device" />
 
                 </TableRow>
             </LinearLayout>

@@ -24,7 +24,7 @@
             android:paddingLeft="10dip"
             android:paddingRight="10dip"
             android:background="@drawable/common_button_white"
-            android:text="分享" />
+            android:text="@string/share" />
         
     </FrameLayout>
     
@@ -33,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dip"
-        android:hint="输入您要分享的用户帐号"
+        android:hint="@string/add_sharer_account_et_hint_text"
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
         android:paddingTop="10dip"

@@ -93,6 +93,27 @@
 	<string name="more">更多</string>
 	<string name="media_lib">媒体库</string>
 	
+	<string name="share">分享</string>
+	<string name="share_device_succeess">分享成功</string>
+	<string name="share_device_fail_already_succeed">分享失败，该帐号已被分享过此设备</string>
+	<string name="share_device_fail_account_not_exist">分享失败，该帐号不存在</string>
+	<string name="share_device_fail">分享失败</string>
+	<string name="add_sharer_account_et_hint_text">输入您要分享的用户帐号</string>
+	<string name="camera_list_sharer_tip">-分享</string>
+	
+	<string name="device_set_share_device">分享设备</string>
+	<string name="device_set_remove_device">删除设备</string>
+	<string name="device_set_sharer_no_property">无操作权限，您是被分享用户</string>
+	<string name="turn_over_0">图像翻转 - 0°</string>
+	<string name="turn_over_180">图像翻转 - 180°</string>
+	<string name="power_land_on">电源指示灯 - 亮</string>
+	<string name="power_land_off">电源指示灯 - 灭</string>
+	
+	<string name="device_share_to_other_add_sharer_account">添加分享帐号</string>
+	<string name="device_share_to_other_tips">已添加的分享帐号</string>
+	<string name="flash_lighting_tips">请将手机闪光灯靠近摄像机镜头</string>
+	<string name="flash_lighting_btn_tips">闪一闪</string>
+	
 	<string name="camera_list_wifi_intensity">信号强度：</string>
 	<string name="set_device_wifi_device_name">摄像机名：</string>
 	

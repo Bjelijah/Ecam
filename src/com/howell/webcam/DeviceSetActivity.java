@@ -139,7 +139,7 @@ public class DeviceSetActivity extends Activity implements
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				if(dev.getSharingFlag() == 1){
-					MessageUtiles.postToast(DeviceSetActivity.this, "无操作权限，您是被分享用户", 1000);
+					MessageUtiles.postToast(DeviceSetActivity.this, DeviceSetActivity.this.getResources().getString(R.string.device_set_sharer_no_property), 1000);
 					return ;
 				}
 				if(!dev.isHasUpdate())return;
@@ -173,9 +173,9 @@ public class DeviceSetActivity extends Activity implements
 						try{
 							pd.dismiss();
 							if(isTurnedOver){
-								mTvTurnOver.setText("图像翻转 - 180°");
+								mTvTurnOver.setText(getResources().getString(R.string.turn_over_180));
 							}else{
-								mTvTurnOver.setText("图像翻转 - 0°");
+								mTvTurnOver.setText(getResources().getString(R.string.turn_over_0));
 							}
 						}catch (Exception e) {
 							// TODO: handle exception
@@ -211,9 +211,9 @@ public class DeviceSetActivity extends Activity implements
 						try{
 							pd.dismiss();
 							if(isLighted){
-								mTvLightState.setText("电源指示灯 - 亮");
+								mTvLightState.setText(getResources().getString(R.string.power_land_on));
 							}else{
-								mTvLightState.setText("电源指示灯 - 灭");
+								mTvLightState.setText(getResources().getString(R.string.power_land_off));
 							}
 						}catch (Exception e) {
 							// TODO: handle exception
@@ -403,19 +403,19 @@ public class DeviceSetActivity extends Activity implements
 					System.out.println("re222222222222");
 					if(getAuxiliaryRes.getResult().equals("OK")){
 						if(getAuxiliaryRes.getAuxiliaryState().equals("Inactive")){
-							mTvLightState.setText("电源指示灯 - 灭");
+							mTvLightState.setText(getResources().getString(R.string.power_land_off));
 							power_led_checkbox.setChecked(false);
 						}else if(getAuxiliaryRes.getAuxiliaryState().equals("Active")){
-							mTvLightState.setText("电源指示灯 - 亮");
+							mTvLightState.setText(getResources().getString(R.string.power_land_on));
 							power_led_checkbox.setChecked(true);
 						}
 					}
 					System.out.println("re333333333333");
 					if(rotationDegree == 0){
-						mTvTurnOver.setText("图像翻转 - 0°");
+						mTvTurnOver.setText(getResources().getString(R.string.turn_over_0));
 			    		video_checkbox.setChecked(false);
 			    	}else if(rotationDegree == 180){
-			    		mTvTurnOver.setText("图像翻转 - 180°");
+			    		mTvTurnOver.setText(getResources().getString(R.string.turn_over_180));
 			    		video_checkbox.setChecked(true);
 			    	}
 					System.out.println("re4444444444444");
@@ -717,7 +717,7 @@ public class DeviceSetActivity extends Activity implements
 		case R.id.ll_deviceset_share:
 			//被分享帐号
 			if(dev.getSharingFlag() == 1){
-				MessageUtiles.postToast(this, "无操作权限，您是被分享用户", 1000);
+				MessageUtiles.postToast(this, getResources().getString(R.string.device_set_sharer_no_property), 1000);
 				return;
 			}
 			Intent intent = new Intent(DeviceSetActivity.this,DeviceShareToOther.class);

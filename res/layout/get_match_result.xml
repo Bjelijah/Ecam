@@ -31,7 +31,7 @@
             android:textColor="@color/black"
             android:textSize="18sp"
             android:layout_marginBottom="10dip"
-            android:text="正在添加摄像机..." />
+            android:text="摄像机正在配置，请稍候..." />
 
         <ProgressBar
             android:id="@+id/sb_get_match_result"

@@ -31,7 +31,7 @@
             android:layout_gravity="center|right"
             android:paddingLeft="10dip"
             android:paddingRight="10dip"
-            android:text="@string/ok"
+            android:text="下一步"
             android:background="@drawable/common_button_white"
             android:layout_marginRight="10dip"/>
         

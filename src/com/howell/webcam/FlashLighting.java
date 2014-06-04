@@ -102,7 +102,7 @@ public class FlashLighting extends Activity implements OnClickListener{
 //				tips.setVisibility(View.VISIBLE);
 				isBtnClicked = true;
 				mFlashLight.setImageDrawable(getResources().getDrawable(R.drawable.ok_btn_red_selector));
-				btnTips.setText("变红了，点这里");
+				btnTips.setText("变红了请点我");
 				btnTips.setTextColor(getResources().getColor(R.color.red));
 				mSucceedTips.setVisibility(View.VISIBLE);
 			}else{

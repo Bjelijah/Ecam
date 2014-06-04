@@ -107,8 +107,8 @@ public class SendWifi extends Activity implements OnClickListener , XQuquerListe
 	public void onSend() {
 		// TODO Auto-generated method stub
 		Log.i("", "onSend");
-		tips.setText("发送完毕,若红色指示灯变为绿色则成功，否则请重新发送");
-		btnTips.setText("重新发送");
+		tips.setText("发送完毕");
+		//btnTips.setText("重新发送");
 		//mAddCamera.setVisibility(View.VISIBLE);
 		mFinish.setVisibility(View.VISIBLE);
 		mSucceedTips.setVisibility(View.VISIBLE);

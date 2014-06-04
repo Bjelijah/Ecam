@@ -80,7 +80,7 @@ public class AddSharerAccount extends Activity implements OnClickListener{
 					super.onPostExecute(result);
 					waitDialog.dismiss();
 					if(res.getResult().equals("OK")){
-						MessageUtiles.postToast(AddSharerAccount.this, "分享成功", 1000);
+						MessageUtiles.postToast(AddSharerAccount.this, AddSharerAccount.this.getResources().getString(R.string.share_device_succeess), 1000);
 						AddSharerAccount.this.finish();
 						if(mActivities.getmActivityList().containsKey("DeviceShareToOther")){
 							mActivities.getmActivityList().get("DeviceShareToOther").finish();
@@ -89,11 +89,11 @@ public class AddSharerAccount extends Activity implements OnClickListener{
 						intent.putExtra("Device", dev);
 						startActivity(intent);
 					}else if(res.getResult().equals("AlreadySucceed") || res.getResult().equals("AlreadySucceed")){
-						MessageUtiles.postToast(AddSharerAccount.this, "分享失败，该帐号已被分享过此设备", 1000);
+						MessageUtiles.postToast(AddSharerAccount.this, AddSharerAccount.this.getResources().getString(R.string.share_device_fail_already_succeed), 1000);
 					}else if(res.getResult().equals("AccountNotExist")){
-						MessageUtiles.postToast(AddSharerAccount.this, "分享失败，该帐号不存在", 1000);
+						MessageUtiles.postToast(AddSharerAccount.this, AddSharerAccount.this.getResources().getString(R.string.share_device_fail_account_not_exist), 1000);
 					}else {
-						MessageUtiles.postToast(AddSharerAccount.this, "分享失败", 1000);
+						MessageUtiles.postToast(AddSharerAccount.this, AddSharerAccount.this.getResources().getString(R.string.share_device_fail), 1000);
 					}
 				}
 				

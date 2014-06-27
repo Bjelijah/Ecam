@@ -716,7 +716,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 			System.out.println("release audio");
 			audioRelease();
             if(client != null)
-	            client.bye(client.getAccount(),client.getLoginSession(),client.getDevID(),client.getChannelNo(),client.getStreamType(),client.getDevID());	
+	            client.bye(client.getAccount(),client.getLoginSession(),client.getDevID(),client.getChannelNo(),client.getStreamType(),client.getDialogID());	
 	        System.out.println("finish activity");
             return null;
         }
@@ -791,18 +791,23 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
             // TODO Auto-generated method stub
             System.out.println("call doInBackground");
             Log.e("start direction", direction);
+            
             PtzControlReq req = new PtzControlReq(account,loginSession,devID,channelNo,direction);
         	PtzControlRes ptzRes = mSoapManger.GetPtzControlRes(req);
-            Log.e("start Res", ptzRes.getResult());
-            try {
-            	Thread.sleep(time);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-            req = new PtzControlReq(account,loginSession,devID,channelNo,"Stop");
-            ptzRes = mSoapManger.GetPtzControlRes(req);
-            Log.e("stop Res", ptzRes.getResult());
+        	if(ptzRes != null){
+	            Log.e("start Res", ptzRes.getResult());
+	            try {
+	            	Thread.sleep(time);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	            req = new PtzControlReq(account,loginSession,devID,channelNo,"Stop");
+	            ptzRes = mSoapManger.GetPtzControlRes(req);
+	            Log.e("stop Res", ptzRes.getResult());
+        	}else{
+        		loginSession = mSoapManger.getLoginResponse().getLoginSession();
+        	}
             return null;
         }
     }

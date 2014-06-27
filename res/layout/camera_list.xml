@@ -35,6 +35,12 @@
             android:layout_gravity="left|center"
             android:visibility="gone" />
 
+        <!--  <Button
+            android:id="@+id/camera_list_test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button" />-->
+
     </FrameLayout>
 
     <com.howell.webcam.MyListView

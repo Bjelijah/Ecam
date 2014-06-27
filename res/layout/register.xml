@@ -100,6 +100,7 @@
         android:layout_marginTop="5dip"
         android:textColor="@color/black"
         android:layout_marginLeft="10dip"
+        style="@style/MyCheckBox"
         android:text="显示密码" />
 
     <TextView

@@ -19,12 +19,11 @@ import android.os.Message;
 import android.provider.Settings.Secure;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -32,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.howell.webcam.R;
+import com.howell.webcam.DeviceVersionDetect.OnDeviceVersionListener;
 import com.howell.webcam.MyListView.OnRefreshListener;
 import com.howell.webcam.player.PlayerActivity;
 
@@ -45,6 +45,7 @@ public class CameraList extends ListActivity{
     private static final int onFirstRefresh = 1;
     private static final int postUpdateMessage = 2;
     private static final int refreshCameraList = 3;
+    private static final int refreshDeviceUpdate = 4;
     
     private ImageButton mAddDevice;
     private ImageButton mBack;
@@ -55,6 +56,16 @@ public class CameraList extends ListActivity{
     
     private Activities mActivities;
     private Bitmap bm;
+    
+    private DeviceVersionDetect detect;
+    
+    //private Button test;
+    
+//    static {
+//        System.loadLibrary("ffmpeg");
+//    }
+//	
+//	public native void ffmpegtest();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +81,8 @@ public class CameraList extends ListActivity{
     			Log.e("", mSoapManager.toString());
     		}
         	
+        	detect = DeviceVersionDetect.getInstance();
+        	
         	mActivities = Activities.getInstance();
         	mActivities.addActivity("CameraList",CameraList.this);
         	
@@ -82,10 +95,22 @@ public class CameraList extends ListActivity{
 			// TODO: handle exception
 		}
         
+        detect.setOnDeviceVersionListener(new OnDeviceVersionListener() {
+			
+			@Override
+			public void onDeviceNewVersionRefresh() {
+				// TODO Auto-generated method stub
+				myHandler.sendEmptyMessage(refreshDeviceUpdate);
+			}
+		});
+        
 //        mTvAdd = (TextView)findViewById(R.id.tv_add);
 //        mIvAdd = (ImageView)findViewById(R.id.iv_add);
         mAddDevice = (ImageButton)findViewById(R.id.ib_add);
         mAddDevice.setOnClickListener(adapter.listener);
+        
+//        test = (Button)findViewById(R.id.camera_list_test);
+//        test.setOnClickListener(adapter.listener);
 //        mAddDevice.setOnTouchListener(new OnTouchListener() {
 //			
 //			@Override
@@ -123,6 +148,15 @@ public class CameraList extends ListActivity{
 							mSoapManager.getQueryDeviceRes(new QueryDeviceReq(mResponse.getAccount(), mResponse.getLoginSession()));
 							list = mSoapManager.getNodeDetails();
 					        sort(list);
+//				        	for(NodeDetails d:list){
+//				                GetDevVerReq getDevVerReq = new GetDevVerReq(mResponse.getAccount(),mResponse.getLoginSession(),d.getDevID());
+//				                GetDevVerRes res = mSoapManager.getGetDevVerRes(getDevVerReq);
+//				                Log.e("GetDevVerRes", res.toString());
+//				                if(/*d.isOnLine() && */UpdateCameraUtils.needToUpdate(res.getCurDevVer(), res.getNewDevVer())){
+//				                	System.out.println(res.getCurDevVer()+","+res.getNewDevVer());
+//				                	d.setHasUpdate(true);
+//				                }
+//				            }
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
@@ -180,7 +214,6 @@ public class CameraList extends ListActivity{
         }.start();
     }
     
-    
     private String getVersion(){
         PackageInfo pkg;
         String versionName = "";
@@ -212,6 +245,13 @@ public class CameraList extends ListActivity{
     		}
     		if(msg.what == refreshCameraList){
     			listView.onRefreshComplete();
+    			adapter.notifyDataSetChanged();
+    		}
+    		if(msg.what == refreshDeviceUpdate){
+    			System.out.println("refreshDeviceUpdate");
+    			for(NodeDetails n : list){
+    				System.out.println(n.isHasUpdate());
+    			}
     			adapter.notifyDataSetChanged();
     		}
     	}
@@ -472,6 +512,9 @@ public class CameraList extends ListActivity{
 				}else if(arg0.getId() == R.id.ib_camera_list_back){
 					finish();
 				}
+//				else if(arg0.getId() == R.id.camera_list_test){
+//					ffmpegtest();
+//				}
 			}
 		};
 

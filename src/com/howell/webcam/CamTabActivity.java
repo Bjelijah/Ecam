@@ -14,6 +14,7 @@ import android.widget.TabHost;
 
 import com.android.howell.webcam.R;
 import com.howell.updateCameraUtil.UpdateCameraUtils;
+import com.howell.webcam.MyListView.OnRefreshListener;
 
 @SuppressWarnings("deprecation")
 public class CamTabActivity extends TabActivity implements
@@ -38,6 +39,7 @@ public class CamTabActivity extends TabActivity implements
 //    private static final int TOGGLEOFF = 2;
     private static boolean hasToggled;
     
+    private DeviceVersionDetect detect;
     /*static Handler handler = new Handler(){
     	@Override
     	public void handleMessage(Message msg) {
@@ -98,9 +100,11 @@ public class CamTabActivity extends TabActivity implements
         mSoapManager = SoapManager.getInstance();
         mResponse = mSoapManager.getLoginResponse();
         
+        detect = DeviceVersionDetect.getInstance();
+        
         list = mSoapManager.getNodeDetails();
         
-        new Thread (){
+        /* new Thread (){
         	@Override
         	public void run() {
         		// TODO Auto-generated method stub
@@ -128,6 +132,8 @@ public class CamTabActivity extends TabActivity implements
 	                	}
 	                	//CameraList.adapter.notifyDataSetChanged();
 	                }
+	        		
+	        		detect.onDeviceNewVersionRefresh();
         		}catch(Exception e){
                 	System.out.println("getDevVerReq crash");
                 }
@@ -138,7 +144,7 @@ public class CamTabActivity extends TabActivity implements
 //                }
         		
         	}
-        }.start();
+        }.start();*/
     }
     
 	@Override

@@ -2,12 +2,14 @@ package com.howell.webcam;
 
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -29,13 +31,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     public ProgressDialog mLoadingDialog;
     
-    private static LoginThread thread;
+//    private static LoginThread thread;
     private static final int POSTPASSWORDERROR = 1;
     private static final int POSTNULLINFO = 2;
     private static final int POSTTOAST = 3;
     private static final int POSTLINKERROR = 4;
     private static final int POSTACCOUNTERROR = 5;
-    private static final int THREADJOIN = 6;
+    //private static final int THREADJOIN = 6;
     
     private MessageHandler handler;
     
@@ -49,6 +51,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private ResizeLayout layout;
     
     private ImageButton mBack;
+	private Dialog waitDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,44 +127,41 @@ public class MainActivity extends Activity implements View.OnClickListener {
 			finish();
 			break;
 		case R.id.ok:
-			String account = mUserName.getText().toString().trim();
-	        String password = mPassWord.getText().toString().trim();
-	        if(thread == null){
-	        	Log.e("----------->>>", "inviteThread");
-	        	thread = new LoginThread(account,password);
-		        thread.setName("LoginThread");
-		        thread.start();
+			final String account = mUserName.getText().toString().trim();
+	        final String password = mPassWord.getText().toString().trim();
+			if (TextUtils.isEmpty(account) && TextUtils.isEmpty(password)) {
+	        	//handler.sendEmptyMessage(POSTNULLINFO);
+				MessageUtiles.postNewUIDialog2(MainActivity.getContext(), MainActivity.getContext().getString(R.string.verification), MainActivity.getContext().getString(R.string.ok), 1);
+	        	return;
 	        }
-			break;
-		default:
-			break;
-		}
-	        
-    }
-    
-    private static void ThreadJoin(){
-    	System.out.println("thread join");
-    	if (thread != null) {
-    		try {
-    			thread.join();
-    		} catch(Exception e) {
-    			
-    		}
-    	}
-    	thread = null;
-    }
-    
-    private void enterToNextActivity(String account,String password){
-    	 if (TextUtils.isEmpty(account) && TextUtils.isEmpty(password)) {
-        	 handler.sendEmptyMessage(POSTNULLINFO);
-         } else {
-        	 try{
-	             String encodedPassword = DecodeUtils.getEncodedPassword(password);
-	             LoginRequest loginReq = new LoginRequest(account, "Common",
-	                     encodedPassword, "1.0.0.1");
-	             LoginResponse loginRes = mSoapManager.getUserLoginRes(loginReq);
-	             Log.e("loginRes",loginRes.getResult().toString());
-	             if (loginRes.getResult().toString().equals("OK")) {
+	        waitDialog = MessageUtiles.postNewUIDialog(MainActivity.this);
+			waitDialog.show();
+			new AsyncTask<Void, Integer, Void>() {
+				LoginResponse loginRes;
+				@Override
+				protected Void doInBackground(Void... params) {
+					// TODO Auto-generated method stub
+					try{
+						String encodedPassword = DecodeUtils.getEncodedPassword(password);
+				        LoginRequest loginReq = new LoginRequest(account, "Common",encodedPassword, "1.0.0.1");
+				        loginRes = mSoapManager.getUserLoginRes(loginReq);
+				        Log.e("loginRes",loginRes.getResult().toString());
+			         }catch (Exception e) {
+						// TODO: handle exception
+			        	handler.sendEmptyMessage(POSTLINKERROR);
+			         }
+					return null;
+				}
+				
+				@Override
+				protected void onPostExecute(Void result) {
+					// TODO Auto-generated method stub
+					super.onPostExecute(result);
+					waitDialog.dismiss();
+					if(loginRes == null){
+						return;
+					}
+					if (loginRes.getResult().toString().equals("OK")) {
 	                     SharedPreferences sharedPreferences = getSharedPreferences(
 	                             "set", Context.MODE_PRIVATE);
 	                     Editor editor = sharedPreferences.edit();
@@ -174,20 +174,83 @@ public class MainActivity extends Activity implements View.OnClickListener {
 	                     startActivity(intent);
 	                     finish();
 	                     mActivities.getmActivityList().get("RegisterOrLogin").finish();
-	                     handler.sendEmptyMessage(THREADJOIN);
-	             }else if(loginRes.getResult().toString().equals("AccountNotExist")){
-	            	 handler.sendEmptyMessage(POSTACCOUNTERROR);
-	             }else if(loginRes.getResult().toString().equals("Authencation")){
-	            	 handler.sendEmptyMessage(POSTPASSWORDERROR);
-	             }else{
-	            	 handler.sendEmptyMessage(POSTLINKERROR);
-	             }
-             }catch (Exception e) {
-				// TODO: handle exception
-            	 handler.sendEmptyMessage(POSTLINKERROR);
-			}
-         }
+	                     //handler.sendEmptyMessage(THREADJOIN);
+		            }else if(loginRes.getResult().toString().equals("AccountNotExist")){
+		            	 MessageUtiles.postNewUIDialog2(MainActivity.getContext(), MainActivity.getContext().getString(R.string.account_error), MainActivity.getContext().getString(R.string.ok), 1);
+		            	 //handler.sendEmptyMessage(POSTACCOUNTERROR);
+		            }else if(loginRes.getResult().toString().equals("Authencation")){
+		            	 //handler.sendEmptyMessage(POSTPASSWORDERROR);
+		            	 MessageUtiles.postNewUIDialog2(MainActivity.getContext(), MainActivity.getContext().getString(R.string.password_error), MainActivity.getContext().getString(R.string.ok), 1);
+		            }else{
+		            	 MessageUtiles.postNewUIDialog2(MainActivity.getContext(), MainActivity.getContext().getString(R.string.login_error), MainActivity.getContext().getString(R.string.ok), 1);
+		            	 //handler.sendEmptyMessage(POSTLINKERROR);
+		            }
+				}
+				
+			}.execute();
+			break;
+//	        if(thread == null){
+//	        	Log.e("----------->>>", "inviteThread");
+//	        	thread = new LoginThread(account,password);
+//		        thread.setName("LoginThread");
+//		        thread.start();
+//	        }
+//			break;
+		default:
+			break;
+		}
+	        
     }
+    
+//    private static void ThreadJoin(){
+//    	System.out.println("thread join");
+//    	if (thread != null) {
+//    		try {
+//    			thread.join();
+//    		} catch(Exception e) {
+//    			
+//    		}
+//    	}
+//    	thread = null;
+//    }
+    
+//    private void enterToNextActivity(String account,String password){
+//    	 if (TextUtils.isEmpty(account) && TextUtils.isEmpty(password)) {
+//        	 handler.sendEmptyMessage(POSTNULLINFO);
+//         } else {
+//        	 try{
+//	             String encodedPassword = DecodeUtils.getEncodedPassword(password);
+//	             LoginRequest loginReq = new LoginRequest(account, "Common",
+//	                     encodedPassword, "1.0.0.1");
+//	             LoginResponse loginRes = mSoapManager.getUserLoginRes(loginReq);
+//	             Log.e("loginRes",loginRes.getResult().toString());
+//	             if (loginRes.getResult().toString().equals("OK")) {
+//	                     SharedPreferences sharedPreferences = getSharedPreferences(
+//	                             "set", Context.MODE_PRIVATE);
+//	                     Editor editor = sharedPreferences.edit();
+//	                     editor.putString("account", account);
+//	                     editor.putString("password", password);
+//	                     editor.commit();
+//	                     GetNATServerRes res = mSoapManager.getGetNATServerRes(new GetNATServerReq(account, loginRes.getLoginSession()));
+//	                     Log.e("MainActivity", res.toString());
+//	                     Intent intent = new Intent(MainActivity.this,CamTabActivity.class);
+//	                     startActivity(intent);
+//	                     finish();
+//	                     mActivities.getmActivityList().get("RegisterOrLogin").finish();
+//	                     handler.sendEmptyMessage(THREADJOIN);
+//	             }else if(loginRes.getResult().toString().equals("AccountNotExist")){
+//	            	 handler.sendEmptyMessage(POSTACCOUNTERROR);
+//	             }else if(loginRes.getResult().toString().equals("Authencation")){
+//	            	 handler.sendEmptyMessage(POSTPASSWORDERROR);
+//	             }else{
+//	            	 handler.sendEmptyMessage(POSTLINKERROR);
+//	             }
+//             }catch (Exception e) {
+//				// TODO: handle exception
+//            	 handler.sendEmptyMessage(POSTLINKERROR);
+//			}
+//         }
+//    }
     
     public static class MessageHandler extends Handler{
     	
@@ -197,45 +260,45 @@ public class MainActivity extends Activity implements View.OnClickListener {
  			super.handleMessage(msg);
  			if (msg.what == POSTPASSWORDERROR) {
  				MessageUtiles.postNewUIDialog2(MainActivity.getContext(), MainActivity.getContext().getString(R.string.password_error), MainActivity.getContext().getString(R.string.ok), 1);
- 				sendEmptyMessage(THREADJOIN);
+ 				//sendEmptyMessage(THREADJOIN);
  			}
  			if (msg.what == POSTACCOUNTERROR) {
  				MessageUtiles.postNewUIDialog2(MainActivity.getContext(), MainActivity.getContext().getString(R.string.account_error), MainActivity.getContext().getString(R.string.ok), 1);
- 				sendEmptyMessage(THREADJOIN);
+ 				//sendEmptyMessage(THREADJOIN);
  			}
  			if (msg.what == POSTLINKERROR) {
  				MessageUtiles.postNewUIDialog2(MainActivity.getContext(), MainActivity.getContext().getString(R.string.login_error), MainActivity.getContext().getString(R.string.ok), 1);
- 				sendEmptyMessage(THREADJOIN);
+ 				//sendEmptyMessage(THREADJOIN);
  			}
  			if (msg.what == POSTNULLINFO) {
  				MessageUtiles.postNewUIDialog2(MainActivity.getContext(), MainActivity.getContext().getString(R.string.verification), MainActivity.getContext().getString(R.string.ok), 1);
- 				sendEmptyMessage(THREADJOIN);
+ 				//sendEmptyMessage(THREADJOIN);
  			}
  			if(msg.what == POSTTOAST){
  				MessageUtiles.postToast(MainActivity.getContext(), MainActivity.getContext().getString(R.string.loading), 1000);
  			}
- 			if(msg.what == THREADJOIN){
- 				ThreadJoin();
- 			}
+// 			if(msg.what == THREADJOIN){
+// 				ThreadJoin();
+// 			}
  		}
  	}
 
-    class LoginThread extends Thread{
-    	private String account;
-    	private String password;
-		public LoginThread(String account, String password) {
-			super();
-			this.account = account;
-			this.password = password;
-		}
-
-		@Override
-		public void run() {
-			// TODO Auto-generated method stub
-			super.run();
-			enterToNextActivity(account,password);
-		}
-    }
+//    class LoginThread extends Thread{
+//    	private String account;
+//    	private String password;
+//		public LoginThread(String account, String password) {
+//			super();
+//			this.account = account;
+//			this.password = password;
+//		}
+//
+//		@Override
+//		public void run() {
+//			// TODO Auto-generated method stub
+//			super.run();
+//			enterToNextActivity(account,password);
+//		}
+//    }
     
     @Override
     protected void onPause() {

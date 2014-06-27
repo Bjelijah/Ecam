@@ -16,11 +16,11 @@ extern "C"
  * @desc 创建ecam_stream_req对象，负责向请求设备媒体数据
  * 	选择各种方法(STREAM_REQ_METHOD)获取媒体数据，通过StreamArrive回调得到数据
  *
- * 	调用方法: 
+ * 	调用方法:
  * 	新建invite
  * 		1. stream_req_new()
  * 		2. fill the stream_req_context data structure
- * 		3. use stream_req_prepare_sdp() to make a local sdp 
+ * 		3. use stream_req_prepare_sdp() to make a local sdp
  * 		4. send "invite" soap command to the Server with local sdp
  * 		5. invoke stream_req_handle_remote_sdp() to handle the remote sdp if camera gives the right response
  * 		6. after invite, invoke stream_req_start() to request the stream via the UDP or ICE method
@@ -32,7 +32,7 @@ extern "C"
  * 		2. set stream_req_context.re_invite = 1
  * 		3. send "invite" soap command to server with last dialog_id, which MUST be "playback" session
  * 		4. 接下去跟上述5一致
- * 		
+ *
  */
 
 struct ecam_stream_req;
@@ -91,13 +91,18 @@ struct ecam_stream_req_context
 
 	/* 是否是重新invite，一般用于在playback时拖拉进度条，
 	 * 此时保持之前的连接方式,不需要重新udp认证或者ICE */
-	int re_invite;		
+	int re_invite;
 
 	uint8_t method_map;	/* 获取视频的方法 */
 
 	char udp_addr[64];
 	uint16_t udp_port;
 	struct ICEOption ice_opt;
+
+    // crypto
+    struct {
+        int enable;// 是否启用加密，0:disable 1:enable
+    } crypto;
 };
 
 /**
@@ -154,6 +159,12 @@ ICE_t * ecam_stream_req_get_ice(ecam_stream_req_t * req);
  * @desc 发送心跳信息,保持媒体数据链路
  */
 //int stream_req_keeplive(stream_req_t * req);
+
+  /**
+   * @desc 发送音频数据
+   * @param rtp_payload: g.711为0
+   */
+  int ecam_stream_send_audio(ecam_stream_req_t * req, int rtp_payload, const char * data, size_t len, uint32_t timestamp);
 
 #ifdef __cplusplus
 }

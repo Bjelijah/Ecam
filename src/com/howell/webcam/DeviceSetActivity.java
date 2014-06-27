@@ -42,7 +42,7 @@ public class DeviceSetActivity extends Activity implements
     private CheckBox vmd_checkbox_,video_checkbox,power_led_checkbox;
     private VMDParamRes vmd_res_;
     private static int backCount;
-    public static NodeDetails dev;
+    public NodeDetails dev;
     private boolean isCrashed;
     private static int[][] reso_bitrate_map_ = {{96,128,196},{128,256,384},{1024,1536,2048}};
     private static String[] VMD_DEFAULT_GRIDS = {
@@ -143,7 +143,7 @@ public class DeviceSetActivity extends Activity implements
 					return ;
 				}
 				if(!dev.isHasUpdate())return;
-				AlerDialogUtils.postDialog(DeviceSetActivity.this);
+				AlerDialogUtils.postDialog(DeviceSetActivity.this,dev);
 			}
 		});
         
@@ -437,7 +437,9 @@ public class DeviceSetActivity extends Activity implements
 		}.execute();
 		
 		}
-
+//		else{
+//			mUpdateButton.setVisibility(View.VISIBLE);
+//		}
     }
     
     Handler handler = new Handler(){
@@ -454,12 +456,12 @@ public class DeviceSetActivity extends Activity implements
     	}
     };
     
-    public static void cameraUpdate(){
-    	Log.e("", "cameraUpdate");
-    	UpgradeDevVerReq req = new UpgradeDevVerReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDevID());
-    	UpgradeDevVerRes res = mSoapManager.getUpgradeDevVerRes(req);
-    	Log.e("cameraUpdate", res.getResult());
-    }
+//    public static void cameraUpdate(){
+//    	Log.e("", "cameraUpdate");
+//    	UpgradeDevVerReq req = new UpgradeDevVerReq(mLoginResponse.getAccount(),mLoginResponse.getLoginSession(),dev.getDevID());
+//    	UpgradeDevVerRes res = mSoapManager.getUpgradeDevVerRes(req);
+//    	Log.e("cameraUpdate", res.getResult());
+//    }
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress,

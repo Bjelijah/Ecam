@@ -164,6 +164,7 @@ public class SoapManager implements Serializable {
     }
 
     public boolean reLogin(){
+    	System.out.println("relogin");
     	mLoginResponse = getUserLoginRes(mLoginRequest);
     	return mLoginResponse.getResult().equals("OK") ? true : false;
     } 
@@ -308,7 +309,7 @@ public class SoapManager implements Serializable {
 	        inviteRes.setResult(result.toString());
 	        Object dialogID = object.getProperty("DialogID");
 	        inviteRes.setDialogID(dialogID.toString());
-	
+	        System.out.println("dialogID.toString():"+dialogID.toString());
 	        Object SDPMessage = object.getProperty("SDPMessage");
 	        inviteRes.setSDPMessage(SDPMessage.toString());
         }catch (Exception e) {
@@ -827,8 +828,13 @@ public class SoapManager implements Serializable {
     	rpc.addProperty("PtzDirection", req.getPtzDirection());
     	SoapObject object = initEnvelopAndTransport(rpc,null);
     	try{
- 	       	Object result = object.getProperty("result");
+    		Object result = object.getProperty("result");
  	       	res.setResult(result.toString());
+ 	       	if(result.toString().equals("SessionExpired")){
+	        	Log.d("------------->>>>", "result = " + result.toString());
+	        	reLogin();
+	        	return null;
+	        }
     	}catch (Exception e) {
 				// TODO: handle exception
 		}

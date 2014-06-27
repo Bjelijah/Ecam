@@ -67,7 +67,7 @@ static void on_yuv_callback_ex(PLAY_HANDLE handle,
 									 unsigned long long time,
 									 long user)
 {	
-	__android_log_print(ANDROID_LOG_INFO, "jni", "start decode  time: %llu",time);
+//	__android_log_print(ANDROID_LOG_INFO, "jni", "start decode  time: %llu",time);
 	//getNowTime();
 	//sdl_display_input_data(y,u,v,width,height,time);
 	/*struct timeval now;
@@ -105,7 +105,7 @@ on_source_callback(PLAY_HANDLE handle,
 			int au_bits,//音频位宽,视频数据无效
 			long user)
 {
-  __android_log_print(ANDROID_LOG_INFO, "audio", "on_source_callback timestamp: %d type:%d",timestamp,type);
+//  __android_log_print(ANDROID_LOG_INFO, "audio", "on_source_callback timestamp: %d type:%d",timestamp,type);
   if(res[user]->is_exit == 1) return;
   if (type == 0) {
 	  //struct audio_data data;
@@ -126,7 +126,7 @@ on_audio_callback(PLAY_HANDLE handle,
 		int len,//数据长度,如果为视频则应该等于w * h * 3 / 2
 		unsigned long timestamp,//时标,单位为毫秒
 		long user){
-	__android_log_print(ANDROID_LOG_INFO, "audio", "on_audio_callback timestamp: %lu ",timestamp);
+//	__android_log_print(ANDROID_LOG_INFO, "audio", "on_audio_callback timestamp: %lu ",timestamp);
 
 	if(res[user]->is_exit == 1) return;
 	audio_play(buf,len,0,0,0);
@@ -161,7 +161,7 @@ void timer_thread(void *arg){
 		goto error;   
 	}
 	while(!res[arr_index]->is_exit){
-		__android_log_print(ANDROID_LOG_INFO, "timer_thread", "2");
+//		__android_log_print(ANDROID_LOG_INFO, "timer_thread", "2");
 		usleep(200*1000);
 	 
 		/* notify the JAVA */
@@ -243,12 +243,12 @@ static void OnStreamArrive(ecam_stream_req_t * req, ECAM_STREAM_REQ_FRAME_TYPE m
 		#endif
 	}
 
-	int buf_len;
+/*	int buf_len;
 	int ret = hwplay_get_stream_buf_remain(res[arr_index]->play_handle,&buf_len);
 	if(ret == 1)
 	{
 		__android_log_print(ANDROID_LOG_INFO, "jni", "buf_len %d",buf_len);
-	}
+	}*/
 	//__android_log_print(ANDROID_LOG_INFO, "OnStreamArrive", "OnStreamArrive exit arr_index:%d",arr_index);
 }
 
@@ -440,6 +440,8 @@ __android_log_print(ANDROID_LOG_INFO, "jni", "8");
 	(*env)->ReleaseStringUTFChars(env,judp_addr,cudp_addr);
 	(*env)->ReleaseStringUTFChars(env,jstun_addr,cstun_addr);
 		__android_log_print(ANDROID_LOG_INFO, "jni", "18");
+	c -> crypto.enable = 1;
+	__android_log_print(ANDROID_LOG_INFO, "jni", "19");
 	return c;
 }
 

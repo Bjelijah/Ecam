@@ -397,7 +397,7 @@ public class Client {
         SDPMessage = Base64.encode(local_sdp.getBytes());
         // System.out.println(account+"\n"+loginSession+"\n"+devID+"\n"+channelNo+"\n"+streamType+"\n"+dialogID+"\n"+SDPMessage);
         try{
-        	Log.e("---------->>>", "00000000000");
+        	Log.e("---------->>>", "00000000000:"+dialogID);
 	        InviteResponse inviteRes = mSoapManager.getIviteRes(new InviteRequest(account, loginSession,
 	                devID, channelNo, streamType, dialogID, SDPMessage));
 	        Log.e("---------->>>", "aaaaaaaaaaaaaa");

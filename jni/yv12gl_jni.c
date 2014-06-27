@@ -158,7 +158,7 @@ JNIEXPORT void JNICALL Java_com_howell_webcam_player_YV12Renderer_nativeOnSurfac
 JNIEXPORT void JNICALL Java_com_howell_webcam_player_YV12Renderer_nativeRenderY
 (JNIEnv *env, jobject obj)
 {
-	LOGE("nativeRenderY");
+//	LOGE("nativeRenderY");
   self.lock_ret = pthread_mutex_trylock(&self.lock);
   if(self.lock_ret != 0){
 	  return;
@@ -177,7 +177,7 @@ JNIEXPORT void JNICALL Java_com_howell_webcam_player_YV12Renderer_nativeRenderY
 JNIEXPORT void JNICALL Java_com_howell_webcam_player_YV12Renderer_nativeRenderU
 (JNIEnv *env, jobject obj)
 {
-	LOGE("nativeRenderU");
+//	LOGE("nativeRenderU");
 	if(self.lock_ret != 0){
 		  return;
 	  }
@@ -204,7 +204,7 @@ JNIEXPORT void JNICALL Java_com_howell_webcam_player_YV12Renderer_nativeRenderV
     glTexImage2D(GL_TEXTURE_2D,0,GL_LUMINANCE,self.width/2,self.height/2,0,GL_LUMINANCE,GL_UNSIGNED_BYTE,self.v);
   }
   pthread_mutex_unlock(&self.lock);
-  LOGE("nativeRenderV");
+//  LOGE("nativeRenderV");
 }
 
 JNIEXPORT void JNICALL Java_com_howell_webcam_player_YV12Renderer_nativeDeinit

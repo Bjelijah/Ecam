@@ -8,10 +8,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 //import android.view.View.OnClickListener;
+import android.util.Log;
 
 
 public class AlerDialogUtils {
-	public static void postDialog(Context context){
+	public static void postDialog(Context context,final NodeDetails dev){
 		AlertDialog.Builder builer = new Builder(context) ;   
 	    builer.setIcon(R.drawable.expander_ic_minimized);
 	    builer.setTitle(context.getResources().getString(R.string.camera_version_title));   
@@ -24,16 +25,19 @@ public class AlerDialogUtils {
 		    			// TODO Auto-generated method stub
 		    			super.run();
 		    			//CamTabActivity.updateNum -- ;
-		    			System.out.println(DeviceSetActivity.dev.toString());
-		    			DeviceSetActivity.dev.setHasUpdate(false);
-//		    			for(NodeDetails d:DeviceManageActivity.mList){
-//		    	    		if(d.getName().equals(DeviceSetActivity.dev.getName())){
-//		    	    			d.setHasUpdate(DeviceSetActivity.dev.isHasUpdate());
-//		    	    			break;
-//		    	    		}
-//		    	    	}
-		    			System.out.println(DeviceSetActivity.dev.toString());
-		    			DeviceSetActivity.cameraUpdate();
+		    			System.out.println(dev.toString());
+		    			//DeviceSetActivity.dev.setHasUpdate(false);
+		    			for(NodeDetails d:SoapManager.getInstance().getNodeDetails()){
+		    	    		if(d.getName().equals(dev.getName())){
+		    	    			d.setHasUpdate(false);
+		    	    			break;
+		    	    		}
+		    	    	}
+		    			System.out.println(dev.toString());
+		    			//DeviceSetActivity.cameraUpdate();
+		    			UpgradeDevVerReq req = new UpgradeDevVerReq(SoapManager.getInstance().getLoginResponse().getAccount(),SoapManager.getInstance().getLoginResponse().getLoginSession(),dev.getDevID());
+		    	    	UpgradeDevVerRes res = SoapManager.getInstance().getUpgradeDevVerRes(req);
+		    	    	Log.e("cameraUpdate", res.getResult());
 		    		}
 		    	}.start();
 		    }

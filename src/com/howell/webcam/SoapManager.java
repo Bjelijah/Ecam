@@ -591,8 +591,10 @@ public class SoapManager implements Serializable {
     	SoapObject object = initEnvelopAndTransport(rpc,null);
     	try{
 	        Object result = object.getProperty("result");
-	        if(result.toString().equals("SessionExpired")){
-	        	
+    	 	if(result.toString().equals("SessionExpired")){
+	        	Log.d("------------->>>>", "result = " + result.toString());
+	        	reLogin();
+	        	return ;
 	        }
 	        Log.d("-----222----->>>>", "result = " + result.toString());
     	}catch (Exception e) {
@@ -613,6 +615,12 @@ public class SoapManager implements Serializable {
         try{
 	        Object result = object.getProperty("result");
 	        res.setResult(result.toString());
+	        
+    	 	if(result.toString().equals("SessionExpired")){
+	        	Log.d("------------->>>>", "result = " + result.toString());
+	        	reLogin();
+	        	return null;
+	        }
         }catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -631,6 +639,13 @@ public class SoapManager implements Serializable {
         try{
 	        Object result = object.getProperty("result");
 	        res.setResult(result.toString());
+	        
+    	 	if(result.toString().equals("SessionExpired")){
+	        	Log.d("------------->>>>", "result = " + result.toString());
+	        	reLogin();
+	        	return null;
+	        }
+    	 	
 	        Object rotationDegree = object.getProperty("RotationDegree");
 	        Log.e("RotationDegree", rotationDegree.toString());
 	        res.setRotationDegree(Integer.valueOf(rotationDegree.toString()));
@@ -730,6 +745,12 @@ public class SoapManager implements Serializable {
     	try{
  	       	Object result = object.getProperty("result");
  	        res.setResult(result.toString());
+ 	        
+    	 	if(result.toString().equals("SessionExpired")){
+	        	Log.d("------------->>>>", "result = " + result.toString());
+	        	reLogin();
+	        	return null;
+	        }
         }catch (Exception e) {
  			// TODO: handle exception
         	Log.e("getNotifyNATResultRes", "error");
@@ -749,6 +770,13 @@ public class SoapManager implements Serializable {
     	try{
  	       	Object result = object.getProperty("result");
  	       	mGetNATServerRes.setResult(result.toString());
+ 	       	
+    	 	if(result.toString().equals("SessionExpired")){
+	        	Log.d("------------->>>>", "result = " + result.toString());
+	        	reLogin();
+	        	return null;
+	        }
+    	 	
  	        SoapObject STUNServerList = (SoapObject) object.getProperty("STUNServerList");
  	        SoapObject STUNServer = (SoapObject) STUNServerList.getProperty("STUNServer");
  	        Object STUNIPv4Address = STUNServer.getProperty("IPv4Address");
@@ -788,6 +816,11 @@ public class SoapManager implements Serializable {
     	try{
  	       	Object result = object.getProperty("result");
  	       	res.setResult(result.toString());
+    	 	if(result.toString().equals("SessionExpired")){
+	        	Log.d("------------->>>>", "result = " + result.toString());
+	        	reLogin();
+	        	return null;
+	        }
     	}catch (Exception e) {
 				// TODO: handle exception
 		}
@@ -805,6 +838,11 @@ public class SoapManager implements Serializable {
     	try{
  	       	Object result = object.getProperty("result");
  	       	res.setResult(result.toString());
+    	 	if(result.toString().equals("SessionExpired")){
+	        	Log.d("------------->>>>", "result = " + result.toString());
+	        	reLogin();
+	        	return null;
+	        }
  	       	Object UDID = object.getProperty("UDID");
 	       	res.setUDID(UDID.toString());
 	       	Object DeviceToken = object.getProperty("DeviceToken");
@@ -850,6 +888,12 @@ public class SoapManager implements Serializable {
     	try{
  	       	Object result = object.getProperty("result");
  	       	res.setResult(result.toString());
+    	 	if(result.toString().equals("SessionExpired")){
+	        	Log.d("------------->>>>", "result = " + result.toString());
+	        	reLogin();
+	        	return null;
+	        }
+    	 	
  	       	Object version = object.getProperty("Version");
 	       	res.setVersion(version.toString());
 	       	Object downloadAddress = object.getProperty("DownloadAddress");
@@ -871,6 +915,13 @@ public class SoapManager implements Serializable {
     	try{
  	       	Object result = object.getProperty("result");
  	       	res.setResult(result.toString());
+ 	       	
+    	 	if(result.toString().equals("SessionExpired")){
+	        	Log.d("------------->>>>", "result = " + result.toString());
+	        	reLogin();
+	        	return null;
+	        }
+    	 	
  	       	Object CurDevVer = object.getProperty("CurDevVer");
 	       	res.setCurDevVer(CurDevVer.toString());
 	       	Object NewDevVer = object.getProperty("NewDevVer");
@@ -892,6 +943,12 @@ public class SoapManager implements Serializable {
     	try{
  	       	Object result = object.getProperty("result");
  	       	res.setResult(result.toString());
+ 	       	
+    	 	if(result.toString().equals("SessionExpired")){
+	        	Log.d("------------->>>>", "result = " + result.toString());
+	        	reLogin();
+	        	return null;
+	        }
     	}catch (Exception e) {
 				// TODO: handle exception
 		}
@@ -910,6 +967,12 @@ public class SoapManager implements Serializable {
     	try{
  	       	Object result = object.getProperty("result");
  	       	res.setResult(result.toString());
+ 	       	
+    	 	if(result.toString().equals("SessionExpired")){
+	        	Log.d("------------->>>>", "result = " + result.toString());
+	        	reLogin();
+	        	return null;
+	        }
  	       	Object auxiliaryState = object.getProperty("AuxiliaryState");
 	       	res.setAuxiliaryState(auxiliaryState.toString());
     	}catch (Exception e) {
@@ -931,6 +994,12 @@ public class SoapManager implements Serializable {
     	try{
  	       	Object result = object.getProperty("result");
  	       	res.setResult(result.toString());
+ 	       	
+    	 	if(result.toString().equals("SessionExpired")){
+	        	Log.d("------------->>>>", "result = " + result.toString());
+	        	reLogin();
+	        	return null;
+	        }
     	}catch (Exception e) {
 				// TODO: handle exception
 		}
@@ -950,6 +1019,12 @@ public class SoapManager implements Serializable {
     	try{
  	       	Object result = object.getProperty("result");
  	       	res.setResult(result.toString());
+ 	       	
+    	 	if(result.toString().equals("SessionExpired")){
+	        	Log.d("------------->>>>", "result = " + result.toString());
+	        	reLogin();
+	        	return null;
+	        }
     	}catch (Exception e) {
 				// TODO: handle exception
 		}
@@ -967,6 +1042,12 @@ public class SoapManager implements Serializable {
     	try{
  	       	Object result = object.getProperty("result");
  	       	res.setResult(result.toString());
+ 	       	
+    	 	if(result.toString().equals("SessionExpired")){
+	        	Log.d("------------->>>>", "result = " + result.toString());
+	        	reLogin();
+	        	return null;
+	        }
  	        Object wirelessType = object.getProperty("WirelessType");
 	       	res.setWirelessType(wirelessType.toString());
 	       	Object sSID = object.getProperty("SSID");
@@ -991,6 +1072,12 @@ public class SoapManager implements Serializable {
     	try{
  	       	Object result = object.getProperty("result");
  	       	res.setResult(result.toString());
+ 	       	
+    	 	if(result.toString().equals("SessionExpired")){
+	        	Log.d("------------->>>>", "result = " + result.toString());
+	        	reLogin();
+	        	return null;
+	        }
     	}catch (Exception e) {
 				// TODO: handle exception
 		}
@@ -1009,6 +1096,12 @@ public class SoapManager implements Serializable {
     	try{
  	       	Object result = object.getProperty("result");
  	       	res.setResult(result.toString());
+ 	       	
+    	 	if(result.toString().equals("SessionExpired")){
+	        	Log.d("------------->>>>", "result = " + result.toString());
+	        	reLogin();
+	        	return null;
+	        }
     	}catch (Exception e) {
 				// TODO: handle exception
 		}
@@ -1028,6 +1121,12 @@ public class SoapManager implements Serializable {
     	try{
     		Object result = object.getProperty("result");
     	 	res.setResult(result.toString());
+    	 	
+    	 	if(result.toString().equals("SessionExpired")){
+	        	Log.d("------------->>>>", "result = " + result.toString());
+	        	reLogin();
+	        	return null;
+	        }
     	}catch (Exception e) {
     		// TODO: handle exception
     	}
@@ -1058,6 +1157,12 @@ public class SoapManager implements Serializable {
     	 	Object result = object.getProperty("result");
     	 	res.setResult(result.toString());
     	 	System.out.println("getAddDeviceRes:"+result.toString());
+    	 	
+    	 	if(result.toString().equals("SessionExpired")){
+	        	Log.d("------------->>>>", "result = " + result.toString());
+	        	reLogin();
+	        	return null;
+	        }
     	}catch (Exception e) {
     		// TODO: handle exception
     	}
@@ -1077,6 +1182,12 @@ public class SoapManager implements Serializable {
     	try{
     		Object result = object.getProperty("result");
     	 	res.setResult(result.toString());
+    	 	
+    	 	if(result.toString().equals("SessionExpired")){
+	        	Log.d("------------->>>>", "result = " + result.toString());
+	        	reLogin();
+	        	return null;
+	        }
     	}catch (Exception e) {
     		// TODO: handle exception
     	}
@@ -1094,6 +1205,12 @@ public class SoapManager implements Serializable {
     	try{
     		Object result = object.getProperty("result");
     	 	res.setResult(result.toString());
+    	 	
+    	 	if(result.toString().equals("SessionExpired")){
+	        	Log.d("------------->>>>", "result = " + result.toString());
+	        	reLogin();
+	        	return null;
+	        }
     	 	
     	 	Object matchingCode = object.getProperty("MatchingCode");
     	 	res.setMatchingCode(matchingCode.toString());
@@ -1116,6 +1233,12 @@ public class SoapManager implements Serializable {
     	try{
     		Object result = object.getProperty("result");
     	 	res.setResult(result.toString());
+    	 	
+    	 	if(result.toString().equals("SessionExpired")){
+	        	Log.d("------------->>>>", "result = " + result.toString());
+	        	reLogin();
+	        	return null;
+	        }
     	 	
     	 	Object devid = object.getProperty("DevID");
     	 	res.setDevID(devid.toString());
@@ -1140,7 +1263,11 @@ public class SoapManager implements Serializable {
     	try{
     		Object result = object.getProperty("result");
     	 	res.setResult(result.toString());
-    	 	
+    	 	if(result.toString().equals("SessionExpired")){
+	        	Log.d("------------->>>>", "result = " + result.toString());
+	        	reLogin();
+	        	return null;
+	        }
     	}catch (Exception e) {
     		// TODO: handle exception
     	}
@@ -1160,7 +1287,11 @@ public class SoapManager implements Serializable {
     	try{
     		Object result = object.getProperty("result");
     	 	res.setResult(result.toString());
-    	 	
+    	 	if(result.toString().equals("SessionExpired")){
+	        	Log.d("------------->>>>", "result = " + result.toString());
+	        	reLogin();
+	        	return null;
+	        }
     	}catch (Exception e) {
     		// TODO: handle exception
     	}
@@ -1179,7 +1310,11 @@ public class SoapManager implements Serializable {
     	try{
     		Object result = object.getProperty("result");
     	 	res.setResult(result.toString());
-    	 	
+    	 	if(result.toString().equals("SessionExpired")){
+	        	Log.d("------------->>>>", "result = " + result.toString());
+	        	reLogin();
+	        	return null;
+	        }
     	}catch (Exception e) {
     		// TODO: handle exception
     	}
@@ -1199,6 +1334,12 @@ public class SoapManager implements Serializable {
     		Object result = object.getProperty("result");
     	 	res.setResult(result.toString());
     	 	System.out.println(result);
+    	 	
+    	 	if(result.toString().equals("SessionExpired")){
+	        	Log.d("------------->>>>", "result = " + result.toString());
+	        	reLogin();
+	        	return null;
+	        }
     	 	
     	 	SoapObject sharerList = (SoapObject)object.getProperty("SharerList");
 	        System.out.println("QueryDeviceSharerRes SharerList:"+sharerList.toString());

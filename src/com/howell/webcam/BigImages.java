@@ -1,5 +1,8 @@
 package com.howell.webcam;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import com.android.howell.webcam.R;
@@ -14,14 +17,9 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
-import android.util.Log;
-import android.view.GestureDetector;
-import android.view.GestureDetector.OnGestureListener;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -73,7 +71,11 @@ public class BigImages extends Activity implements OnClickListener{
         title.setOnClickListener(this);
         
         viewPager = (HackyViewPager) findViewById(R.id.viewPager);
-        adapter = new SamplePagerAdapter();
+        try{
+        	adapter = new SamplePagerAdapter();
+        }catch(OutOfMemoryError e){
+        	System.out.println("OutOfMemory");
+        }
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(position);
 	}
@@ -82,36 +84,67 @@ public class BigImages extends Activity implements OnClickListener{
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-		for(Bitmap bm:adapter.sDrawables){
-			if((bm!=null)&&(!bm.isRecycled())){
-		    	bm.recycle();
-		    	bm = null;
-	    	}
-		}
+//		for(Bitmap bm:adapter.sDrawables){
+//			if((bm!=null)&&(!bm.isRecycled())){
+//		    	bm.recycle();
+//		    	bm = null;
+//	    	}
+//		}
     	mActivities.removeActivity("BigImages");
     	unregisterReceiver(receiver);
 	}
 	
+	private Bitmap decodeFile(File f) {  
+        try {  
+            // decode image size  
+            BitmapFactory.Options o = new BitmapFactory.Options();  
+            o.inJustDecodeBounds = true;  
+            BitmapFactory.decodeStream(new FileInputStream(f), null, o);  
+  
+            // Find the correct scale value. It should be the power of 2.  
+            final int REQUIRED_WIDTH_SIZE = PhoneConfig.getPhoneWidth(this);  
+            final int REQUIRED_HEIGHT_SIZE = REQUIRED_WIDTH_SIZE * 3 / 4;  
+            int width_tmp = o.outWidth, height_tmp = o.outHeight;  
+            int scale = 1;  
+            while (true) {  
+                if (width_tmp / 2 <   REQUIRED_WIDTH_SIZE
+                        || height_tmp / 2 < REQUIRED_HEIGHT_SIZE)  
+                    break;  
+                width_tmp /= 2;  
+                height_tmp /= 2;  
+                scale *= 2;  
+            }  
+  
+            // decode with inSampleSize  
+            BitmapFactory.Options o2 = new BitmapFactory.Options();  
+            o2.inSampleSize = scale;  
+            return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);  
+        } catch (FileNotFoundException e) {  
+        }  
+        return null;  
+    }  
+	
 	class SamplePagerAdapter extends PagerAdapter {
 
-		private Bitmap [] sDrawables = new Bitmap[mList.size()];
+		//private Bitmap [] sDrawables = new Bitmap[mList.size()];
 		
 		public SamplePagerAdapter() {
 			super();
-			for(int i = 0 ; i < mList.size() ; i++){
-				sDrawables[i] = BitmapFactory.decodeFile(mList.get(i));
-			}
+//			for(int i = 0 ; i < mList.size() ; i++){
+//				sDrawables[i] = decodeFile(new File(mList.get(i)));
+//			}
 		}
 
 		@Override
 		public int getCount() {
-			return sDrawables.length;
+			return /*sDrawables.length*/mList.size();
 		}
 
 		@Override
 		public View instantiateItem(ViewGroup container, int position) {
+			System.out.println("instatiateItem position:"+position);
 			PhotoView photoView = new PhotoView(container.getContext());
-			photoView.setImageBitmap(sDrawables[position]);
+			photoView.setImageBitmap(/*sDrawables[position]*/decodeFile(new File(mList.get(position))));
 
 			// Now just add PhotoView to ViewPager and return it
 			container.addView(photoView, LayoutParams.MATCH_PARENT,

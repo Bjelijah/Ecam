@@ -1,6 +1,8 @@
 package com.howell.webcam;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,11 +16,14 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -112,6 +117,46 @@ public class LocalFilesActivity extends Activity {
 		return mList;
 	}
 	
+	private void deleteImage(File file){
+		if (file.exists()) { // 判断文件是否存在
+			if (file.isFile()) { // 判断是否是文件
+				file.delete(); // delete()方法 你应该知道 是删除的意思;
+			}
+		} 
+	}
+	
+    // decode这个图片并且按比例缩放以减少内存消耗，虚拟机对每张图片的缓存大小也是有限制的  
+    private Bitmap decodeFile(File f) {  
+        try {  
+            // decode image size  
+            BitmapFactory.Options o = new BitmapFactory.Options();  
+            o.inJustDecodeBounds = true;  
+            BitmapFactory.decodeStream(new FileInputStream(f), null, o);  
+  
+            // Find the correct scale value. It should be the power of 2.  
+            //final int REQUIRED_SIZE = 70;  
+            int REQUIRED_WIDTH_SIZE = PhoneConfig.getPhoneWidth(this) / 3;
+            int REQUIRED_HEIGHT_SIZE = REQUIRED_WIDTH_SIZE * 3 / 4;
+            int width_tmp = o.outWidth, height_tmp = o.outHeight;  
+            int scale = 1;  
+            while (true) {  
+                if (width_tmp / 2 < REQUIRED_WIDTH_SIZE  
+                        || height_tmp / 2 < REQUIRED_HEIGHT_SIZE)  
+                    break;  
+                width_tmp /= 2;  
+                height_tmp /= 2;  
+                scale *= 2;  
+            }  
+  
+            // decode with inSampleSize  
+            BitmapFactory.Options o2 = new BitmapFactory.Options();  
+            o2.inSampleSize = scale;  
+            return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);  
+        } catch (FileNotFoundException e) {  
+        }  
+        return null;  
+    }  
+	
 	class ShowPictureHandler extends Handler{
 		private int position;
 		private ImageView iv;
@@ -125,7 +170,7 @@ public class LocalFilesActivity extends Activity {
 				 synchronized(this){
 					position = msg.arg1;
 					iv = (ImageView)msg.obj;
-					bm = BitmapFactory.decodeFile(mList.get(position));
+					bm = decodeFile(new File(mList.get(position)));
 		            iv.setImageBitmap(bm);
 		            adapter.maps.put(position, new SoftReference<Bitmap>(bm));
 		            System.out.println("position:"+position);
@@ -197,6 +242,10 @@ public class LocalFilesActivity extends Activity {
 				holder.iv1.setOnClickListener(listener);
 				holder.iv2.setOnClickListener(listener);
 				holder.iv3.setOnClickListener(listener);
+				
+//				holder.iv1.setOnLongClickListener(longClickListener);
+//				holder.iv2.setOnLongClickListener(longClickListener);
+//				holder.iv3.setOnLongClickListener(longClickListener);
 				
 				convertView.setTag(holder);
             }else{
@@ -318,5 +367,18 @@ public class LocalFilesActivity extends Activity {
 		}
 		
 	};
+	
+//	private OnLongClickListener longClickListener = new OnLongClickListener() {
+//
+//		@Override
+//		public boolean onLongClick(View view) {
+//			// TODO Auto-generated method stub
+//			System.out.println("picture:"+mList.get(Integer.valueOf(view.getTag().toString())));
+//			deleteImage(new File(mList.get(Integer.valueOf(view.getTag().toString()))));
+//			mList.remove(mList.get(Integer.valueOf(view.getTag().toString())));
+//			adapter.notifyDataSetChanged();
+//			return false;
+//		}
+//	};
 	
 }

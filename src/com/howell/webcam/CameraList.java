@@ -1,5 +1,6 @@
 package com.howell.webcam;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import org.kobjects.base64.Base64;
@@ -72,6 +73,10 @@ public class CameraList extends ListActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.camera_list);
         Log.e("CameraList", "onCreate");
+        File eCameraDir = new File("/sdcard/eCamera");
+		if (!eCameraDir.exists()) {
+			eCameraDir.mkdirs();
+		}
         try{
         	if (savedInstanceState != null) {
         		mSoapManager = (SoapManager) savedInstanceState.getSerializable("soap");

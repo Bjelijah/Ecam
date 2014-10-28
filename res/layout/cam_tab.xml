@@ -30,21 +30,23 @@
             android:layout_gravity="bottom"
             android:background="@color/white"
             android:gravity="center_vertical"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+             >
 
             <RadioButton
                 android:id="@+id/rb_camera_list"
                 style="@style/main_tab_bottom"
                 android:checked="true"  
                 android:layout_marginTop="2.0dip"
+                android:layout_marginBottom="2dip"
                 android:drawableTop="@drawable/tab_camera_selector"
-               
                 android:text="@string/camera_list"
                 android:textColor="@color/blue" />
             <RadioButton
                 android:id="@+id/rb_local_files"
                 style="@style/main_tab_bottom"
                 android:layout_marginTop="2.0dip"
+                android:layout_marginBottom="2dip"
                 android:drawableTop="@drawable/tab_files_selector"
                 android:text="@string/media_lib"
                 android:textColor="@color/light_gray" />
@@ -53,8 +55,8 @@
                 android:id="@+id/rb_settings"
                 style="@style/main_tab_bottom"
                 android:layout_marginTop="2.0dip"
+                android:layout_marginBottom="2dip"
                 android:drawableTop="@drawable/tab_set_selector"
-
                 android:text="@string/more"
                 android:textColor="@color/light_gray" />
  <!--  android:background="@drawable/tab_press"-->

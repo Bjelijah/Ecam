@@ -33,7 +33,7 @@
             android:background="@drawable/register_btn_selector"
             android:paddingBottom="15dip"
             android:paddingTop="15dip"
-            android:text="注册"
+            android:text="新用户注册"
             android:textColor="@color/test_btn_bg"
             android:textSize="18dp" />
 
@@ -46,7 +46,7 @@
             android:background="@drawable/login_btn_selsector"
             android:paddingBottom="15dip"
             android:paddingTop="15dip"
-            android:text="登录"
+            android:text="已有帐号登录"
             android:textColor="@color/white"
             android:textSize="18dp" />
 

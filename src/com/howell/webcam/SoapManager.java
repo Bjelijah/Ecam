@@ -262,6 +262,8 @@ public class SoapManager implements Serializable {
 	        		//System.out.println("node : "+i+" :"+node.toString());
 	        		if(node.getWirelessFlag() == 0){
 	        			node.setIntensity(0);
+	        		}else if(node.getWirelessFlag() == 1){
+	        			node.setIntensity(0);
 	        		}else{
 		        		SoapObject wirelessNetwork = (SoapObject)NodeDetails.getProperty("WirelessNetwork");
 		        		System.out.println(wirelessNetwork.toString());

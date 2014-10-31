@@ -1,10 +1,10 @@
 package com.howell.webcam;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,22 +12,18 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.howell.webcam.R;
 
@@ -59,7 +55,7 @@ public class LocalFilesActivity extends Activity {
 		lp = new LinearLayout.LayoutParams(imageWidth, imageHeight);
 		lp.setMargins(0, 0, 0, 10);
 		listview = (ListView)findViewById(R.id.lv_localfiles);
-		mList = new ArrayList<String>();
+		//mList = new ArrayList<String>();
 		getFileName(f);
 		if(mList.size() != 0){
 			background.setBackgroundColor(getResources().getColor(R.color.bg));
@@ -97,6 +93,8 @@ public class LocalFilesActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onRestart();
 		System.out.println("Local Files onRestart");
+		if(adapter.maps != null)
+			adapter.maps.clear();
 		getFileName(f);
 		if(mList.size() != 0){
 			background.setBackgroundColor(getResources().getColor(R.color.bg));
@@ -108,55 +106,25 @@ public class LocalFilesActivity extends Activity {
 	
 	public ArrayList<String> getFileName(File file){
 		File[] fileArray = file.listFiles();
+		mList = new ArrayList<String>();
 		for (File f : fileArray) {
 			System.out.println(f.getPath());
 			if(f.isFile() && !mList.contains(f.getPath())){
 				mList.add(f.getPath());
 			}
 		}
+		Collections.sort(mList, new SortByDate());
 		return mList;
 	}
 	
-	private void deleteImage(File file){
-		if (file.exists()) { // 判断文件是否存在
-			if (file.isFile()) { // 判断是否是文件
-				file.delete(); // delete()方法 你应该知道 是删除的意思;
-			}
-		} 
+	class SortByDate implements Comparator {
+		public int compare(Object o1, Object o2) {
+			String s1 = (String) o1;
+			String s2 = (String) o2;
+			return s2.compareTo(s1);
+		}
 	}
-	
-    // decode这个图片并且按比例缩放以减少内存消耗，虚拟机对每张图片的缓存大小也是有限制的  
-    private Bitmap decodeFile(File f) {  
-        try {  
-            // decode image size  
-            BitmapFactory.Options o = new BitmapFactory.Options();  
-            o.inJustDecodeBounds = true;  
-            BitmapFactory.decodeStream(new FileInputStream(f), null, o);  
-  
-            // Find the correct scale value. It should be the power of 2.  
-            //final int REQUIRED_SIZE = 70;  
-            int REQUIRED_WIDTH_SIZE = PhoneConfig.getPhoneWidth(this) / 3;
-            int REQUIRED_HEIGHT_SIZE = REQUIRED_WIDTH_SIZE * 3 / 4;
-            int width_tmp = o.outWidth, height_tmp = o.outHeight;  
-            int scale = 1;  
-            while (true) {  
-                if (width_tmp / 2 < REQUIRED_WIDTH_SIZE  
-                        || height_tmp / 2 < REQUIRED_HEIGHT_SIZE)  
-                    break;  
-                width_tmp /= 2;  
-                height_tmp /= 2;  
-                scale *= 2;  
-            }  
-  
-            // decode with inSampleSize  
-            BitmapFactory.Options o2 = new BitmapFactory.Options();  
-            o2.inSampleSize = scale;  
-            return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);  
-        } catch (FileNotFoundException e) {  
-        }  
-        return null;  
-    }  
-	
+
 	class ShowPictureHandler extends Handler{
 		private int position;
 		private ImageView iv;
@@ -168,9 +136,11 @@ public class LocalFilesActivity extends Activity {
 			switch (msg.what) {
 			case SHOWPICTURE:
 				 synchronized(this){
+					int requiredWidthSize = PhoneConfig.getPhoneWidth(LocalFilesActivity.this) / 3; 
 					position = msg.arg1;
 					iv = (ImageView)msg.obj;
-					bm = decodeFile(new File(mList.get(position)));
+					bm = ScaleImageUtils.decodeFile(requiredWidthSize,
+							requiredWidthSize * 3 / 4,new File(mList.get(position)));
 		            iv.setImageBitmap(bm);
 		            adapter.maps.put(position, new SoftReference<Bitmap>(bm));
 		            System.out.println("position:"+position);
@@ -234,6 +204,7 @@ public class LocalFilesActivity extends Activity {
 				holder.iv1 = (ImageView)convertView.findViewById(R.id.imageView1);
 				holder.iv2 = (ImageView)convertView.findViewById(R.id.imageView2);
 				holder.iv3 = (ImageView)convertView.findViewById(R.id.imageView3);
+//				holder.imageTtile = (TextView)convertView.findViewById(R.id.local_image_title);
 				
 				holder.iv1.setLayoutParams(lp);
 				holder.iv2.setLayoutParams(lp);
@@ -252,6 +223,12 @@ public class LocalFilesActivity extends Activity {
             	holder = (ViewHolder)convertView.getTag();
             	
             }
+            
+//            String date = mList.get(firstImagePostion);
+//            System.out.println("date:"+date);
+//            
+//            holder.imageTtile.setText(date.subSequence(16, 20)+"-"+date.substring(20, 22)+"-"+
+//            date.substring(22, 24));
             
             if(firstImagePostion == mList.size()){
             	holder.iv1.setVisibility(View.GONE);
@@ -351,6 +328,7 @@ public class LocalFilesActivity extends Activity {
 	
 	public static class ViewHolder {
 		public ImageView iv1,iv2,iv3;
+		public TextView imageTtile;
 	}
 	
 	private OnClickListener listener = new OnClickListener() {

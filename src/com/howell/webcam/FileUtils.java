@@ -1,5 +1,6 @@
 package com.howell.webcam;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -18,4 +19,13 @@ public class FileUtils {
 		String fileNameRandom = getCharacterAndNumber();
 		return fileNameRandom;
 	}
+	
+	public static void deleteImage(File file){
+		if (file.exists()) { // 判断文件是否存在
+			if (file.isFile()) { // 判断是否是文件
+				file.delete(); // delete()方法 你应该知道 是删除的意思;
+			}
+		} 
+	}
+	
 }

@@ -18,9 +18,9 @@ import cn.jpush.android.api.TagAliasCallback;
 import com.android.howell.webcam.R;
 
 public class LogoActivity extends Activity implements TagAliasCallback{
-	private static final int LOGIN = 1; 
-	private static final int NEXT = 2;
-	private static final int UNCONNECT = 3;
+//	private static final int LOGIN = 1; 
+//	private static final int NEXT = 2;
+//	private static final int UNCONNECT = 3;
 	private SoapManager mSoapManager;
 	private String account;
 	private String password;
@@ -60,7 +60,6 @@ public class LogoActivity extends Activity implements TagAliasCallback{
 		}
 	}
 	
-	
 	private void setAlias(){
 		String alias = Secure.getString(getContentResolver(), Secure.ANDROID_ID);//"112233";
 		JPushInterface.setAliasAndTags(getApplicationContext(), alias, null, this);
@@ -71,12 +70,10 @@ public class LogoActivity extends Activity implements TagAliasCallback{
 		super.onResume();
 	}
 
-
 	@Override
 	protected void onPause() {
 		super.onPause();
 	}
-
 
 	@Override
 	protected void onDestroy() {
@@ -135,6 +132,7 @@ public class LogoActivity extends Activity implements TagAliasCallback{
 					        	Intent intent = new Intent(LogoActivity.this,RegisterOrLogin.class);
 								startActivity(intent);
 					        }
+						    
 					        
 					    }catch (Exception e) {
 								// TODO: handle exception

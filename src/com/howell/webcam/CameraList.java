@@ -450,7 +450,7 @@ public class CameraList extends ListActivity{
             
             BitmapFactory.Options options = new BitmapFactory.Options();
 	        options.inSampleSize = 2;
-	        bm = BitmapFactory.decodeFile(list.get(position).getPicturePath(), options);
+	        bm = ScaleImageUtils.decodeFile(imageWidth, imageHeight, new File(list.get(position).getPicturePath()));
 	        if(bm == null){
 	        	holder.iv.setImageResource(R.drawable.card_camera_default_image);
 	        }else{

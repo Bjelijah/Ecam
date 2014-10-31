@@ -17,7 +17,7 @@
     <color name="title_blue">#408EE1</color>
     <color name="card_tab_blue">#F7FAFF</color>
     <color name="tab_bottom_bg">#CBCBCB</color>
-    <color name="bg">#D2DCE8</color>
+    <color name="bg">#eeeeee</color>
     <color name="login_btn_bg">#70C2F1</color>
     <color name="login_btn_bg_highlight">#65AED8</color>
     <color name="test_btn_bg">#33AFF6</color>

@@ -1,39 +1,40 @@
 package com.howell.webcam;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-import com.android.howell.webcam.R;
-
 import uk.co.senab.photoview.PhotoView;
-
+import uk.co.senab.photoview.PhotoViewAttacher.OnViewTapListener;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.android.howell.webcam.R;
 
 
-public class BigImages extends Activity implements OnClickListener{
-	private LinearLayout ll;
+public class BigImages extends Activity implements OnClickListener,OnPageChangeListener,OnViewTapListener{
+//	private FrameLayout ll;
 	//private GestureDetector mGestureDetector;
 	private int position;
 	private ArrayList<String> mList;
 	
-	private ImageButton mShare,mBack;
-	private FrameLayout title;
+	private ImageButton mShare,mBack,mDelete;
+	private FrameLayout title,bottom;
+	private TextView mImagePosition;
 	
 	private HackyViewPager viewPager;
 	
@@ -65,10 +66,17 @@ public class BigImages extends Activity implements OnClickListener{
         mShare = (ImageButton)findViewById(R.id.ib_share);
         mBack = (ImageButton)findViewById(R.id.ib_bigimage_back);
         title = (FrameLayout)findViewById(R.id.fl_title);
-        ll = (LinearLayout)findViewById(R.id.ll_big_image);
+        bottom = (FrameLayout)findViewById(R.id.fl_bottom);
+        mDelete = (ImageButton)findViewById(R.id.ib_delete);
+//        ll = (FrameLayout)findViewById(R.id.ll_big_image);
+//        ll.setOnClickListener(this);
         mShare.setOnClickListener(this);
         mBack.setOnClickListener(this);
         title.setOnClickListener(this);
+        mDelete.setOnClickListener(this);
+        
+        mImagePosition = (TextView)findViewById(R.id.tv_bigimage_position);
+        mImagePosition.setText((position+1) + "/" + mList.size());
         
         viewPager = (HackyViewPager) findViewById(R.id.viewPager);
         try{
@@ -78,51 +86,18 @@ public class BigImages extends Activity implements OnClickListener{
         }
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(position);
+        viewPager.setOnPageChangeListener(this);
+//        viewPager.setOnClickListener(this);
 	}
 	
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-//		for(Bitmap bm:adapter.sDrawables){
-//			if((bm!=null)&&(!bm.isRecycled())){
-//		    	bm.recycle();
-//		    	bm = null;
-//	    	}
-//		}
     	mActivities.removeActivity("BigImages");
     	unregisterReceiver(receiver);
 	}
 	
-	private Bitmap decodeFile(File f) {  
-        try {  
-            // decode image size  
-            BitmapFactory.Options o = new BitmapFactory.Options();  
-            o.inJustDecodeBounds = true;  
-            BitmapFactory.decodeStream(new FileInputStream(f), null, o);  
-  
-            // Find the correct scale value. It should be the power of 2.  
-            final int REQUIRED_WIDTH_SIZE = PhoneConfig.getPhoneWidth(this);  
-            final int REQUIRED_HEIGHT_SIZE = REQUIRED_WIDTH_SIZE * 3 / 4;  
-            int width_tmp = o.outWidth, height_tmp = o.outHeight;  
-            int scale = 1;  
-            while (true) {  
-                if (width_tmp / 2 <   REQUIRED_WIDTH_SIZE
-                        || height_tmp / 2 < REQUIRED_HEIGHT_SIZE)  
-                    break;  
-                width_tmp /= 2;  
-                height_tmp /= 2;  
-                scale *= 2;  
-            }  
-  
-            // decode with inSampleSize  
-            BitmapFactory.Options o2 = new BitmapFactory.Options();  
-            o2.inSampleSize = scale;  
-            return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);  
-        } catch (FileNotFoundException e) {  
-        }  
-        return null;  
-    }  
 	
 	class SamplePagerAdapter extends PagerAdapter {
 
@@ -134,7 +109,13 @@ public class BigImages extends Activity implements OnClickListener{
 //				sDrawables[i] = decodeFile(new File(mList.get(i)));
 //			}
 		}
-
+		
+		@Override
+		public int getItemPosition(Object object) {
+			// TODO Auto-generated method stub
+			return POSITION_NONE;
+		}
+		
 		@Override
 		public int getCount() {
 			return /*sDrawables.length*/mList.size();
@@ -144,12 +125,13 @@ public class BigImages extends Activity implements OnClickListener{
 		public View instantiateItem(ViewGroup container, int position) {
 			System.out.println("instatiateItem position:"+position);
 			PhotoView photoView = new PhotoView(container.getContext());
-			photoView.setImageBitmap(/*sDrawables[position]*/decodeFile(new File(mList.get(position))));
-
+			int requiredWidthSize = PhoneConfig.getPhoneWidth(BigImages.this);
+			photoView.setImageBitmap(/*sDrawables[position]*/ScaleImageUtils.decodeFile(requiredWidthSize,requiredWidthSize * 3 / 4,new File(mList.get(position))));
+			photoView.setOnViewTapListener(BigImages.this);
 			// Now just add PhotoView to ViewPager and return it
 			container.addView(photoView, LayoutParams.MATCH_PARENT,
 					LayoutParams.MATCH_PARENT);
-
+			photoView.setTag(position);
 			return photoView;
 		}
 
@@ -166,17 +148,11 @@ public class BigImages extends Activity implements OnClickListener{
 	}
 
 	@Override
-	protected void onRestart() {
-		// TODO Auto-generated method stub
-		super.onRestart();
-		System.out.println("onRestart");
-	}
-
-	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.ib_share:
+		{
 			Intent sharingIntent = new Intent(Intent.ACTION_SEND);
 //			Uri screenshotUri = Uri.parse("file:///sdcard/eCamera/20130902125951.jpg");
 			Uri screenshotUri = Uri.parse("file://"+mList.get(position));
@@ -184,22 +160,97 @@ public class BigImages extends Activity implements OnClickListener{
 			sharingIntent.putExtra(Intent.EXTRA_STREAM, screenshotUri);
 			startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.share_pic)));
 			break;
+		}
 		case R.id.ib_bigimage_back:
 			BigImages.this.finish();
 			break;
-		case R.id.viewPager:
-			if(isShown){
-				System.out.println("1111111");
-				title.setVisibility(View.INVISIBLE);
-				isShown = false;
-			}else{
-				System.out.println("22222222");
-				title.setVisibility(View.VISIBLE);
-				isShown = true;
-			}
+//		case R.id.viewPager:
+//		{
+//			System.out.println("test");
+//			if(isShown){
+//				System.out.println("1111111");
+//				title.setVisibility(View.INVISIBLE);
+//				bottom.setVisibility(View.INVISIBLE);
+//				isShown = false;
+//			}else{
+//				System.out.println("22222222");
+//				title.setVisibility(View.VISIBLE);
+//				bottom.setVisibility(View.VISIBLE);
+//				isShown = true;
+//			}
+//			break;
+//		}
+		case R.id.ib_delete:
+		{
+			Dialog alertDialog = new AlertDialog.Builder(BigImages.this).   
+    	            setTitle("删除").   
+    	            setMessage("删除这张照片？").   
+    	            setIcon(R.drawable.expander_ic_minimized).   
+    	            setPositiveButton("确定", new DialogInterface.OnClickListener() {   
+    	                @Override   
+    	                public void onClick(DialogInterface dialog, int which) {   
+    	                    // TODO Auto-generated method stub  
+//    	                	SharedPreferences sharedPreferences = getSharedPreferences("set", Context.MODE_PRIVATE);
+//    	                    Editor editor = sharedPreferences.edit();
+//    	                    editor.putBoolean("isServiceStart", false);
+//    	                    editor.commit();
+    	                	FileUtils.deleteImage(new File(mList.get(position)));
+    	                	mList.remove(position);
+    	                	mImagePosition.setText((position+1) + "/" + mList.size());
+    	                	adapter.notifyDataSetChanged();
+    	                	//finish();
+    	                }   
+    	            }).   
+    	            setNegativeButton("取消", new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface arg0, int arg1) {
+							// TODO Auto-generated method stub
+							
+						}
+					}).
+    	    create();   
+    		alertDialog.show();   
 			break;
+		}
 		default:
 			break;
+		}
+	}
+
+	@Override
+	public void onPageScrollStateChanged(int arg0) {
+		// TODO Auto-generated method stub
+		System.out.println("onPageScrollStateChanged:"+arg0);
+	}
+
+	@Override
+	public void onPageScrolled(int arg0, float arg1, int arg2) {
+		// TODO Auto-generated method stub
+		System.out.println("onPageScrolled:"+arg0+","+arg1+","+arg2);
+	}
+
+	@Override
+	public void onPageSelected(int position) {
+		// TODO Auto-generated method stub
+		this.position = position;
+		mImagePosition.setText((position+1) + "/" + mList.size());
+	}
+
+	@Override
+	public void onViewTap(View view, float x, float y) {
+		// TODO Auto-generated method stub
+//		System.out.println("onViewTap");
+		if(isShown){
+//			System.out.println("1111111");
+			title.setVisibility(View.INVISIBLE);
+			bottom.setVisibility(View.INVISIBLE);
+			isShown = false;
+		}else{
+//			System.out.println("22222222");
+			title.setVisibility(View.VISIBLE);
+			bottom.setVisibility(View.VISIBLE);
+			isShown = true;
 		}
 	}
 }

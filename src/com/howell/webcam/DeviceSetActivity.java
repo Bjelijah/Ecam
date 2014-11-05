@@ -41,7 +41,7 @@ public class DeviceSetActivity extends Activity implements
     private TextView reso_text_,quality_text_;
     private CheckBox vmd_checkbox_,video_checkbox,power_led_checkbox;
     private VMDParamRes vmd_res_;
-    private static int backCount;
+//    private static int backCount;
     public NodeDetails dev;
     private boolean isCrashed;
     private static int[][] reso_bitrate_map_ = {{96,128,196},{128,256,384},{1024,1536,2048}};
@@ -95,7 +95,7 @@ public class DeviceSetActivity extends Activity implements
     	receiver = new HomeKeyEventBroadCastReceiver();
 		registerReceiver(receiver, new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
 		
-        backCount = 0;
+//        backCount = 0;
         gainedReso = -1;
         gainedQuality = -1;
         mSoapManager = SoapManager.getInstance();
@@ -661,12 +661,12 @@ public class DeviceSetActivity extends Activity implements
 		LinearLayout bt_clear = (LinearLayout) view.findViewById(R.id.bt_remove);
 		LinearLayout bt_exit = (LinearLayout) view.findViewById(R.id.bt_exit);
 		
-		TextView tv_clear = (TextView) view.findViewById(R.id.tv_remove);
-		TextView tv_exit = (TextView) view.findViewById(R.id.tv_exit);
-		TextPaint tp = tv_clear.getPaint();
-        tp.setFakeBoldText(true);
-        tp = tv_exit.getPaint();
-        tp.setFakeBoldText(true);
+//		TextView tv_clear = (TextView) view.findViewById(R.id.tv_remove);
+//		TextView tv_exit = (TextView) view.findViewById(R.id.tv_exit);
+//		TextPaint tp = tv_clear.getPaint();
+//        tp.setFakeBoldText(true);
+//        tp = tv_exit.getPaint();
+//        tp.setFakeBoldText(true);
 
 		bt_clear.setOnClickListener(this);
 		bt_exit.setOnClickListener(this);

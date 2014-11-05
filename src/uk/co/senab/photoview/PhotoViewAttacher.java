@@ -31,6 +31,9 @@ import android.widget.ImageView.ScaleType;
 
 import java.lang.ref.WeakReference;
 
+import com.howell.webcam.BigImages;
+import com.howell.webcam.PhoneConfig;
+
 public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, VersionedGestureDetector.OnGestureListener,
 		GestureDetector.OnDoubleTapListener, ViewTreeObserver.OnGlobalLayoutListener {
 
@@ -680,7 +683,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, Vers
 
 		final float widthScale = viewWidth / drawableWidth;
 		final float heightScale = viewHeight / drawableHeight;
-
+		System.out.println("widthScale:"+widthScale+"\nheightScale:"+heightScale);
 		if (mScaleType == ScaleType.CENTER) {
 			mBaseMatrix.postTranslate((viewWidth - drawableWidth) / 2F, (viewHeight - drawableHeight) / 2F);
 

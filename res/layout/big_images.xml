@@ -7,8 +7,8 @@
     android:gravity="top" >
 	<com.howell.webcam.HackyViewPager
 		android:id="@+id/viewPager"  
-		android:layout_width="fill_parent"  
-		android:layout_height="wrap_content" />
+		android:layout_width="match_parent"  
+		android:layout_height="match_parent" />
 	
 	<FrameLayout
 	    android:id="@+id/fl_title"
@@ -27,13 +27,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="#00000000"
-                android:src="@drawable/picdetail_back_normal" />
+                android:src="@drawable/back_btn_selector" />
 
             <TextView
                 android:id="@+id/tv_bigimage_position"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
+                android:layout_marginLeft="5dip"
                 android:textSize="20sp"
                 android:text="TextView" />
 
@@ -53,6 +54,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="right" >
+            
+            <ImageButton
+                android:id="@+id/ib_scale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dip"
+                android:background="#00000000"
+                android:src="@drawable/icon_scale_16_9" />
 
             <ImageButton
                 android:id="@+id/ib_share"
@@ -73,5 +82,5 @@
         </LinearLayout>
 
     </FrameLayout>
-	
+
 </FrameLayout>

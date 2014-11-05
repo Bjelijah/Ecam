@@ -202,56 +202,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
 	        
     }
     
-//    private static void ThreadJoin(){
-//    	System.out.println("thread join");
-//    	if (thread != null) {
-//    		try {
-//    			thread.join();
-//    		} catch(Exception e) {
-//    			
-//    		}
-//    	}
-//    	thread = null;
-//    }
-    
-//    private void enterToNextActivity(String account,String password){
-//    	 if (TextUtils.isEmpty(account) && TextUtils.isEmpty(password)) {
-//        	 handler.sendEmptyMessage(POSTNULLINFO);
-//         } else {
-//        	 try{
-//	             String encodedPassword = DecodeUtils.getEncodedPassword(password);
-//	             LoginRequest loginReq = new LoginRequest(account, "Common",
-//	                     encodedPassword, "1.0.0.1");
-//	             LoginResponse loginRes = mSoapManager.getUserLoginRes(loginReq);
-//	             Log.e("loginRes",loginRes.getResult().toString());
-//	             if (loginRes.getResult().toString().equals("OK")) {
-//	                     SharedPreferences sharedPreferences = getSharedPreferences(
-//	                             "set", Context.MODE_PRIVATE);
-//	                     Editor editor = sharedPreferences.edit();
-//	                     editor.putString("account", account);
-//	                     editor.putString("password", password);
-//	                     editor.commit();
-//	                     GetNATServerRes res = mSoapManager.getGetNATServerRes(new GetNATServerReq(account, loginRes.getLoginSession()));
-//	                     Log.e("MainActivity", res.toString());
-//	                     Intent intent = new Intent(MainActivity.this,CamTabActivity.class);
-//	                     startActivity(intent);
-//	                     finish();
-//	                     mActivities.getmActivityList().get("RegisterOrLogin").finish();
-//	                     handler.sendEmptyMessage(THREADJOIN);
-//	             }else if(loginRes.getResult().toString().equals("AccountNotExist")){
-//	            	 handler.sendEmptyMessage(POSTACCOUNTERROR);
-//	             }else if(loginRes.getResult().toString().equals("Authencation")){
-//	            	 handler.sendEmptyMessage(POSTPASSWORDERROR);
-//	             }else{
-//	            	 handler.sendEmptyMessage(POSTLINKERROR);
-//	             }
-//             }catch (Exception e) {
-//				// TODO: handle exception
-//            	 handler.sendEmptyMessage(POSTLINKERROR);
-//			}
-//         }
-//    }
-    
     public static class MessageHandler extends Handler{
     	
  		@Override

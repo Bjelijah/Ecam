@@ -107,6 +107,7 @@ public class SetDeviceWifi extends Activity implements OnClickListener{
         }
     }
 	
+	@SuppressWarnings("unused")
 	private String removeMarks(String SSID){
 		if(SSID.startsWith("\"") && SSID.endsWith("\"")){
 			SSID = SSID.substring(1, SSID.length()-1);
@@ -126,47 +127,7 @@ public class SetDeviceWifi extends Activity implements OnClickListener{
 	public void onClick(View view) {
 		// TODO Auto-generated method stub
 		switch (view.getId()) {
-		/*case R.id.btn_send:
-			
-			send();
-			break;
-			
-		case R.id.btn_send_finish:
-			Dialog alertDialog = new AlertDialog.Builder(this).   
-            setTitle("完成").   
-            setMessage("Wifi设置已完成，您要继续添加设备吗？").   
-            setIcon(R.drawable.expander_ic_minimized).   
-            setPositiveButton("确定", new DialogInterface.OnClickListener() {   
-
-                @Override   
-                public void onClick(DialogInterface dialog, int which) {   
-                    // TODO Auto-generated method stub    
-                	Intent intent = new Intent(SetDeviceWifi.this,AddCamera.class);
-                	startActivity(intent);
-                	finish();
-                	
-                }   
-            }).   
-            setNegativeButton("取消", new DialogInterface.OnClickListener() {   
-
-                @Override   
-                public void onClick(DialogInterface dialog, int which) {   
-                    // TODO Auto-generated method stub    
-                	
-                	//Intent intent = new Intent(SetDeviceWifi.this,CameraList.class);
-                	//startActivity(intent);
-                	finish();
-                	mActivities.getmActivityList().get("SetOrResetWifi").finish();
-                	mActivities.getmActivityList().get("SetWifiOrAddDevice").finish();
-                }   
-            }).   
-            create();   
-			alertDialog.show();   
-			break;*/
 		case R.id.ib_set_device_ok:
-			//String code = SoapManager.getInstance().getmGetDeviceMatchingCodeRes().getMatchingCode();
-			//String message = "Wo:"+wifi_ssid.getSelectedItem().toString()+"|"+wifi_password.getText().toString()+"|"+code;
-			//System.out.println("message:"+message);
 			Intent intent = new Intent(SetDeviceWifi.this,FlashLighting.class);
 			intent.putExtra("wifi_ssid", wifi_ssid.getSelectedItem().toString());
 			intent.putExtra("wifi_password", wifi_password.getText().toString());

@@ -14,14 +14,14 @@
         android:layout_width="match_parent"
         android:layout_height="50dip" 
         android:orientation="vertical"
-        android:background="@drawable/list_single_item_bg"
+        android:background="@drawable/logout_btn_selector"
         android:gravity="center">
 
         <TextView
             android:id="@+id/tv_remove"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/red"
+            android:textColor="@color/white"
             android:textSize="16sp"
             android:text="删除" />
 
@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dip" 
         android:orientation="vertical"
-        android:background="@drawable/list_single_item_bg"
+        android:background="@drawable/logout_cencel_btn_selector"
         android:gravity="center">
         <TextView
             android:id="@+id/tv_exit"

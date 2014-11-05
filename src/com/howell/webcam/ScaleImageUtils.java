@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 
 public class ScaleImageUtils {
     // decode这个图片并且按比例缩放以减少内存消耗，虚拟机对每张图片的缓存大小也是有限制的  
@@ -39,5 +40,32 @@ public class ScaleImageUtils {
         }  
         return null;  
     }  
+    
+    public static Bitmap resizeImage(Bitmap bitmap, int w, int h) {
+
+        // load the origial Bitmap
+        Bitmap bitmapOrg = bitmap;
+
+        int width = bitmapOrg.getWidth();
+        int height = bitmapOrg.getHeight();
+        int newWidth = w;
+        int newHeight = h;
+       
+        // calculate the scale
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+
+        // create a matrix for the manipulation
+        Matrix matrix = new Matrix();
+        // resize the Bitmap
+        matrix.postScale(scaleWidth, scaleHeight);
+        // if you want to rotate the Bitmap
+        // recreate the new Bitmap
+        Bitmap resizedBitmap = Bitmap.createBitmap(bitmapOrg, 0, 0, width,
+                        height, matrix, true);
+
+        return resizedBitmap;
+
+    }
 
 }

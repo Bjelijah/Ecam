@@ -9,8 +9,12 @@ import java.util.TimeZone;
 import java.util.Timer;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
@@ -46,10 +50,14 @@ import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.howell.webcam.R;
 import com.howell.invite.Client;
+import com.howell.webcam.Activities;
+import com.howell.webcam.BigImages;
 import com.howell.webcam.FileUtils;
+import com.howell.webcam.HomeKeyEventBroadCastReceiver;
 import com.howell.webcam.LoginResponse;
 import com.howell.webcam.MessageUtiles;
 import com.howell.webcam.NodeDetails;
@@ -91,7 +99,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	private ImageButton mSound;
 	private ImageButton mCatchPicture;
     private static TextView mStreamLen;
-    private ImageButton mPause;
+    private ImageButton mPause,mBack;
 	
 	public static final Integer REPLAYSEEKBAR = 0x0001;
 	public static final Integer STOPPROGRESSBAR = 0x0002;
@@ -130,6 +138,9 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	
 	boolean bPause ;
 	boolean isAnimationStart;
+	private Activities mActivities;
+	private HomeKeyEventBroadCastReceiver receiver;
+	
 	public PlayerActivity() {   
         mGestureDetector = new GestureDetector(this);   
     } 
@@ -149,6 +160,12 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		
+		mActivities = Activities.getInstance();
+        mActivities.addActivity("PlayerActivity",PlayerActivity.this);
+        receiver = new HomeKeyEventBroadCastReceiver();
+        
+		registerReceiver(receiver, new IntentFilter(
+				Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
 		Log.e("main","activity on create");
 		setContentView(R.layout.glsurface);
 		mGlView = (GLSurfaceView)findViewById(R.id.glsurface_view);
@@ -219,23 +236,29 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		
 		mVedioList = (ImageButton) findViewById(R.id.vedio_list);
 		if(dev.iseStoreFlag()){
-			mVedioList.setEnabled(true);
-			mVedioList.setImageResource(R.drawable.vedio_list);
+			//.setEnabled(true);
+			mVedioList.setImageResource(R.drawable.img_record);
 		}else{
-			mVedioList.setEnabled(false);
-			mVedioList.setImageResource(R.drawable.vedio_list_enable_false);
+			//mVedioList.setEnabled(false);
+			mVedioList.setImageResource(R.drawable.img_no_record);
 		}
 	    mVedioList.setOnClickListener(new View.OnClickListener() {
 	        @Override
 	        public void onClick(View v) {
 	            // TODO Auto-generated method stub
-	        	if(null != client)
-	        		client.setQuit(true);
-	        	quitDisplay();
-	            Log.e("", "00000000");
-	            Intent intent = new Intent(PlayerActivity.this, VideoList.class);
-	            intent.putExtra("Device", dev);
-	            startActivity(intent);
+	        	if(!dev.iseStoreFlag()){
+	        		MessageUtiles.postToast(getApplicationContext()
+	        				, getResources().getString(R.string.no_sdcard),2000);
+	        	}else{
+//		        	if(null != client)
+//		        		client.setQuit(true);
+//		        	quitDisplay();
+	        		finish();
+		            Log.e("", "00000000");
+		            Intent intent = new Intent(PlayerActivity.this, VideoList.class);
+		            intent.putExtra("Device", dev);
+		            startActivity(intent);
+	        	}
 	        }
 	    });
 	        
@@ -267,7 +290,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	    if(soundMode){
 	    	System.out.println("soundMode:"+soundMode);
 	    	isAudioOpen = true;
-			mSound.setImageDrawable(getResources().getDrawable(R.drawable.sound));
+			mSound.setImageDrawable(getResources().getDrawable(R.drawable.img_sound));
 	    }
         else {
         	System.out.println("soundMode:"+soundMode);
@@ -304,14 +327,27 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 					if(bPause){
 						client.playbackPause(client.getHandle(), true);
 						bPause = false;
-						mPause.setImageDrawable(getResources().getDrawable(R.drawable.play));
+						mPause.setImageDrawable(getResources().getDrawable(R.drawable.img_play));
 					}
 					else{
 						client.playbackPause(client.getHandle(), false);
 						bPause = true;
-						mPause.setImageDrawable(getResources().getDrawable(R.drawable.pause));
+						mPause.setImageDrawable(getResources().getDrawable(R.drawable.img_pause));
 					}
 				}
+			}
+		});
+	    
+	    mBack = (ImageButton)findViewById(R.id.player_imagebutton_back);
+	    mBack.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+//				if(null != client)
+//	        		client.setQuit(true);
+//	        	quitDisplay();
+				finish();
 			}
 		});
 	    
@@ -358,7 +394,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 				mPlayerHandler.sendEmptyMessage(REPLAYSEEKBAR);
 				client.playbackPause(client.getHandle(), false);
 				bPause = true;
-				mPause.setImageDrawable(getResources().getDrawable(R.drawable.pause));
+				mPause.setImageDrawable(getResources().getDrawable(R.drawable.img_pause));
 			}
 			
 			@Override
@@ -380,6 +416,14 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 				}
 			}
 		});
+        
+        if(PhoneConfig.getPhoneHeight(this) < PhoneConfig.getPhoneWidth(this)){
+        	mBack.setVisibility(View.GONE);
+			mSurfaceIcon.setVisibility(View.GONE);
+			System.out.println("onSingleTapUp:"+mSurfaceIcon.isShown());
+			isShowSurfaceIcon = false;
+			mStreamLen.setVisibility(View.VISIBLE);
+        }
  
         mStreamLen = (TextView)findViewById(R.id.tv_stream_len);
         animationAim = (ImageView)findViewById(R.id.animation_aim);
@@ -450,13 +494,13 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	private void audioPause(){
 		audiomanage.setStreamVolume(AudioManager.STREAM_MUSIC, 0 , 0);
 		isAudioOpen = false;
-		mSound.setImageDrawable(getResources().getDrawable(R.drawable.no_sound));
+		mSound.setImageDrawable(getResources().getDrawable(R.drawable.img_no_sound));
 	}
 	
 	private void audioPlay(){
 		audiomanage.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume/2 , 0);
 		isAudioOpen = true;
-		mSound.setImageDrawable(getResources().getDrawable(R.drawable.sound));
+		mSound.setImageDrawable(getResources().getDrawable(R.drawable.img_sound));
 	}
 	
 	private void audioStop(){
@@ -593,13 +637,30 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 					mWaitProgressBar.setVisibility(View.GONE);
 				}
 			}
-			if(msg.what == TIMEOUT){
-				if(!stopSendMessage && YV12Renderer.time == 0){
-					MessageUtiles.postNewUIDialog(PlayerActivity.getContext(), PlayerActivity.getContext().getString(R.string.link_timeout), PlayerActivity.getContext().getString(R.string.ok),0);
-				}
-			}
+//			if(msg.what == TIMEOUT){
+//				if(!stopSendMessage && YV12Renderer.time == 0){
+//					MessageUtiles.postNewUIDialog(PlayerActivity.getContext(), PlayerActivity.getContext().getString(R.string.link_timeout), PlayerActivity.getContext().getString(R.string.ok),0);
+//					
+//				}
+//			}
 			if (msg.what == POSTERROR) {
-				MessageUtiles.postNewUIDialog(PlayerActivity.getContext(), PlayerActivity.getContext().getString(R.string.link_error), PlayerActivity.getContext().getString(R.string.ok), 1);
+				//MessageUtiles.postNewUIDialog(PlayerActivity.getContext(), PlayerActivity.getContext().getString(R.string.link_error), PlayerActivity.getContext().getString(R.string.ok), 1);
+				Dialog alertDialog = new AlertDialog.Builder(PlayerActivity.getContext()).   
+        	            setTitle("登录失败").   
+        	            setMessage(PlayerActivity.getContext().getString(R.string.link_error)).   
+        	            setIcon(R.drawable.expander_ic_minimized).   
+        	            setPositiveButton("确定", new DialogInterface.OnClickListener() {   
+        	                @Override   
+        	                public void onClick(DialogInterface dialog, int which) {   
+        	                    // TODO Auto-generated method stub  
+//        	                	if(null != client)
+//        	    	        		client.setQuit(true);
+//        	    	        	quitDisplay();
+        	                	
+        	                }   
+        	            }).   
+        	    create();   
+        		alertDialog.show();   
 			}
 			if (msg.what == SHOWSTREAMLEN) {
 				int msg_boj = Integer.valueOf(msg.obj.toString());
@@ -615,10 +676,10 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 					}
 				}
 			}
-			if(msg.what == SETVEDIOLISTENABLE){
-				mVedioList.setEnabled(true);
-				mVedioList.setImageResource(R.drawable.vedio_list);
-			}
+//			if(msg.what == SETVEDIOLISTENABLE){
+//				mVedioList.setEnabled(true);
+//				mVedioList.setImageResource(R.drawable.img_record);
+//			}
 			if(msg.what == DETECT_IF_NO_STREAM_ARRIVE){
 				if(stopSendMessage){
 					return;
@@ -646,12 +707,14 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		Log.e("main","config change");
 		if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
 			Log.i("info", "onConfigurationChanged landscape"); // 锟斤拷锟斤拷
+			mBack.setVisibility(View.GONE);
 			mSurfaceIcon.setVisibility(View.GONE);
 			System.out.println("onSingleTapUp:"+mSurfaceIcon.isShown());
 			isShowSurfaceIcon = false;
 			mStreamLen.setVisibility(View.VISIBLE);
 		} else if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
 			Log.i("info", "onConfigurationChanged PORTRAIT"); // 锟斤拷锟斤拷
+			mBack.setVisibility(View.VISIBLE);
 			mSurfaceIcon.setVisibility(View.VISIBLE);
 			isShowSurfaceIcon = true;
 		}
@@ -660,7 +723,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	@Override
 	protected void onPause() {
 		Log.e("PA", "onPause");
-		quitDisplay();
+		//quitDisplay();
 		mPausing = true;
 		this.mGlView.onPause();
 		super.onPause();
@@ -669,6 +732,11 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	@Override
 	protected void onDestroy() {
 		Log.e("PA", "onDestroy");
+		mActivities.removeActivity("PlayerActivity");
+    	unregisterReceiver(receiver);
+		if(null != client)
+    		client.setQuit(true);
+    	quitDisplay();
 		super.onDestroy();
 		System.runFinalization();
 	}
@@ -726,25 +794,16 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		if (backCount == 0) {
 			stopSendMessage = true;
 			if(!playback){
-				System.out.println("test catch picture");
 				File destDir = new File("/sdcard/eCamera/cache");
 				if (!destDir.exists()) {
-					System.out.println("test 1111");
 					destDir.mkdirs();
 				}
-				System.out.println("test2222");
 				String path = "/sdcard/eCamera/cache/"+dev.getDevID()+".jpg";
-				System.out.println("test: "+path);
-				System.out.println("test3333");
 				client.setCatchPictureFlag(client.getHandle(),path,path.length());
-				System.out.println("test4444");
 			}
-			System.out.println("aaaaaaaaaa");
 			while(true){
 				if(client != null){
-					System.out.println("thread set true:"+client.isQuit());
 					client.setQuit(true);
-					System.out.println("bbbbbbbb");
 					client.joinThread(client.getHandle());
 					break;
 				}
@@ -760,17 +819,17 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
         backCount++;
 	}
 	
-	@Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        super.onKeyDown(keyCode, event);
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-        	Log.e("backCount", "press back button backCount:"+backCount);
-        	if(null != client)
-        		client.setQuit(true);
-        	quitDisplay();
-        }
-        return false;
-    }
+//	@Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        super.onKeyDown(keyCode, event);
+//        if (keyCode == KeyEvent.KEYCODE_BACK) {
+//        	Log.e("backCount", "press back button backCount:"+backCount);
+//        	if(null != client)
+//        		client.setQuit(true);
+//        	quitDisplay();
+//        }
+//        return false;
+//    }
 
 	@Override
 	public boolean onDown(MotionEvent e) {

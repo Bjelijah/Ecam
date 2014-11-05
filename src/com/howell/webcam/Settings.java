@@ -142,19 +142,19 @@ public class Settings extends Activity implements OnClickListener {
 	
 	private void showPopupWindow() {
 
-		View view = (LinearLayout) LayoutInflater.from(Settings.this)
-				.inflate(R.layout.popmenu, null);
+		View view = (LinearLayout) LayoutInflater.from(Settings.this).inflate(R.layout.popmenu, null);
+				/*.inflate(R.layout.popmenu, null);*/
 
 		LinearLayout bt_clear = (LinearLayout) view.findViewById(R.id.bt_remove);
 		LinearLayout bt_exit = (LinearLayout) view.findViewById(R.id.bt_exit);
 		
 		TextView tv_clear = (TextView) view.findViewById(R.id.tv_remove);
-		TextView tv_exit = (TextView) view.findViewById(R.id.tv_exit);
+		//TextView tv_exit = (TextView) view.findViewById(R.id.tv_exit);
 		tv_clear.setText("注销");
-		TextPaint tp = tv_clear.getPaint();
-        tp.setFakeBoldText(true);
-        tp = tv_exit.getPaint();
-        tp.setFakeBoldText(true);
+//		TextPaint tp = tv_clear.getPaint();
+//        tp.setFakeBoldText(true);
+//        tp = tv_exit.getPaint();
+//        tp.setFakeBoldText(true);
 
 		bt_clear.setOnClickListener(this);
 		bt_exit.setOnClickListener(this);

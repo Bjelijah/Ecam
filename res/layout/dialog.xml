@@ -5,7 +5,7 @@
     android:background="@drawable/tenpay_select_bank_pop_back"
     android:orientation="vertical" >
 
-   <!--   <Button
+    <Button
         android:id="@+id/exit"
         android:layout_width="match_parent"
         android:layout_height="45dip"
@@ -16,7 +16,7 @@
         android:background="@drawable/list_blockbg_single_deny_selector"
         android:text="@string/exit"
         android:textColor="#FFFFFFFF"
-        android:textSize="20sp" />-->
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/cancel"

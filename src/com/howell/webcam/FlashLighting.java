@@ -78,28 +78,9 @@ public class FlashLighting extends Activity implements OnClickListener{
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
-		/*case R.id.btn_flash_light_ok:
-			if(!isBtnClicked){
-				camera.twinkle(tips);
-				tips.setVisibility(View.VISIBLE);
-				mOk.setText("完成");
-				isBtnClicked = true;
-			}else{
-				camera.stopTwinkle();
-				Intent intent = new Intent(FlashLighting.this,SetDeviceWifi.class);
-				startActivity(intent);
-				finish();
-			}
-			break;*/
-		/*case R.id.btn_flash_light_finish:
-			Intent intent = new Intent(FlashLighting.this,SetDeviceWifi.class);
-			startActivity(intent);
-			finish();
-			break;*/
 		case R.id.ib_flash_light:
 			if(!isBtnClicked){
 				c.twinkle();
-//				tips.setVisibility(View.VISIBLE);
 				isBtnClicked = true;
 				mFlashLight.setImageDrawable(getResources().getDrawable(R.drawable.ok_btn_red_selector));
 				btnTips.setText("变红了请点我");
@@ -112,7 +93,6 @@ public class FlashLighting extends Activity implements OnClickListener{
 				intent.putExtra("wifi_password", wifi_password);
 				intent.putExtra("device_name", device_name);
 				startActivity(intent);
-				//finish();
 			}
 			break;
 			
@@ -142,7 +122,8 @@ public class FlashLighting extends Activity implements OnClickListener{
 	@Override
 	protected void onStop() {
 		// TODO Auto-generated method stub
-		super.onRestart();
+		super.onStop();
+		System.out.println("onStop");
 		thread.setThreadExit(true);
     	thread = null;
 		isBtnClicked = false;

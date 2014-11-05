@@ -24,6 +24,7 @@ public class LogoActivity extends Activity implements TagAliasCallback{
 	private SoapManager mSoapManager;
 	private String account;
 	private String password;
+	private boolean isFirstLogin;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +46,8 @@ public class LogoActivity extends Activity implements TagAliasCallback{
 			mDeviceManager.clearMember();
 			
 			mSoapManager = SoapManager.getInstance();
-		    SharedPreferences sharedPreferences = getSharedPreferences("set",
-		                Context.MODE_PRIVATE);
+		    SharedPreferences sharedPreferences = getSharedPreferences("set",Context.MODE_PRIVATE);
+		    isFirstLogin = sharedPreferences.getBoolean("isFirstLogin", true);
 		    account = sharedPreferences.getString("account", "");
 		    password = sharedPreferences.getString("password", "");
 		    
@@ -111,50 +112,54 @@ public class LogoActivity extends Activity implements TagAliasCallback{
 			// TODO Auto-generated method stub
 			super.run();
 			try {
-				System.out.println("logoactivity11111111111");
 				Thread.sleep(1 * 1000);
-				System.out.println("logoactivity22222222222");
-				switch(flag){
-				case 1:try{
-						    String encodedPassword = DecodeUtils.getEncodedPassword(password);
-						    LoginRequest loginReq = new LoginRequest(account, "Common",
-						                     encodedPassword, "1.0.0.1");
-						    LoginResponse loginRes = mSoapManager.getUserLoginRes(loginReq);
-						    if(loginRes.getResult().equals("OK")){
-						    	GetNATServerRes res = mSoapManager.getGetNATServerRes(new GetNATServerReq(account, loginRes.getLoginSession()));
-						    	Log.e("LogoActivity", res.toString());
-						        Intent intent = new Intent(LogoActivity.this,CamTabActivity.class);
-						        startActivity(intent);
-					        }else if(loginRes.getResult().equals("PasswordFormat")){
-					        	Intent intent = new Intent(LogoActivity.this,RegisterOrLogin.class);
+				
+				if(isFirstLogin){
+			    	Intent intent = new Intent(LogoActivity.this, NavigationActivity.class);
+					startActivity(intent);
+				}else{
+					switch(flag){
+					case 1:try{
+							    String encodedPassword = DecodeUtils.getEncodedPassword(password);
+							    LoginRequest loginReq = new LoginRequest(account, "Common",
+							                     encodedPassword, "1.0.0.1");
+							    LoginResponse loginRes = mSoapManager.getUserLoginRes(loginReq);
+							    if(loginRes.getResult().equals("OK")){
+							    	GetNATServerRes res = mSoapManager.getGetNATServerRes(new GetNATServerReq(account, loginRes.getLoginSession()));
+							    	Log.e("LogoActivity", res.toString());
+							        Intent intent = new Intent(LogoActivity.this,CamTabActivity.class);
+							        startActivity(intent);
+						        }else if(loginRes.getResult().equals("PasswordFormat")){
+						        	Intent intent = new Intent(LogoActivity.this,RegisterOrLogin.class);
+									startActivity(intent);
+						        }else{
+						        	Intent intent = new Intent(LogoActivity.this,RegisterOrLogin.class);
+									startActivity(intent);
+						        }
+							    
+						        
+						    }catch (Exception e) {
+									// TODO: handle exception
+						    	Intent intent = new Intent(LogoActivity.this,RegisterOrLogin.class);
+								intent.putExtra("intentFlag", 2);
 								startActivity(intent);
-					        }else{
-					        	Intent intent = new Intent(LogoActivity.this,RegisterOrLogin.class);
-								startActivity(intent);
-					        }
-						    
-					        
-					    }catch (Exception e) {
-								// TODO: handle exception
-					    	Intent intent = new Intent(LogoActivity.this,RegisterOrLogin.class);
-							intent.putExtra("intentFlag", 2);
-							startActivity(intent);
-						}
-						break;
-				case 2:Intent intent = new Intent(LogoActivity.this,RegisterOrLogin.class);
-					   startActivity(intent);
-					   break;
-				case 3:Intent intent2 = new Intent(LogoActivity.this,RegisterOrLogin.class);
-					   intent2.putExtra("intentFlag", 1);
-					   startActivity(intent2);
-					   break;
-				default:break;
+							}
+							break;
+					case 2:Intent intent = new Intent(LogoActivity.this,RegisterOrLogin.class);
+						   startActivity(intent);
+						   break;
+					case 3:Intent intent2 = new Intent(LogoActivity.this,RegisterOrLogin.class);
+						   intent2.putExtra("intentFlag", 1);
+						   startActivity(intent2);
+						   break;
+					default:break;
+					}
 				}
-					
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
 		}
     }
 	@Override

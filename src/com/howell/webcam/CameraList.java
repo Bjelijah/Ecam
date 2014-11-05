@@ -50,6 +50,7 @@ public class CameraList extends ListActivity{
     
     private ImageButton mAddDevice;
     private ImageButton mBack;
+    private LinearLayout noCameraImg;
 //    private TextView mTvAdd;
 //    private ImageView mIvAdd;
     
@@ -87,6 +88,8 @@ public class CameraList extends ListActivity{
     		}
         	
         	detect = DeviceVersionDetect.getInstance();
+        	
+        	noCameraImg = (LinearLayout)findViewById(R.id.ll_no_cameralist_default);
         	
         	mActivities = Activities.getInstance();
         	mActivities.addActivity("CameraList",CameraList.this);
@@ -174,6 +177,7 @@ public class CameraList extends ListActivity{
 							adapter.notifyDataSetChanged();
 							listView.onRefreshComplete();
 							listView.setEnabled(true);
+							
 						}catch (Exception e) {
 							// TODO: handle exception
 						}
@@ -251,6 +255,14 @@ public class CameraList extends ListActivity{
     		if(msg.what == refreshCameraList){
     			listView.onRefreshComplete();
     			adapter.notifyDataSetChanged();
+    			System.out.println("list size:"+list.size());
+				if(list.size() == 0){
+					listView.setVisibility(View.GONE);
+					noCameraImg.setVisibility(View.VISIBLE);
+				}else{
+					listView.setVisibility(View.VISIBLE);
+					noCameraImg.setVisibility(View.GONE);
+				}
     		}
     		if(msg.what == refreshDeviceUpdate){
     			System.out.println("refreshDeviceUpdate");

@@ -168,19 +168,21 @@
             android:theme="@android:style/Theme.Black.NoTitleBar" >
            
         </activity>
+        
+        <activity
+            android:name="com.howell.webcam.NavigationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name="com.howell.webcam.CameraList"
-            android:label="@string/camera_list"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name="com.howell.webcam.CamTabActivity"
-            android:label="@string/camera_list"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name="com.howell.webcam.Settings"
-            android:label="@string/settings"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity

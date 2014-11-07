@@ -31,7 +31,7 @@
                 android:layout_marginTop="5dip"
                 android:layout_weight="0.18" />-->
            
-        	<com.howell.webcam.player.MySeekBar   
+        	<com.howell.ehlib.MySeekBar   
 	            android:id="@+id/replaySeekBar"   
 	            android:layout_width="match_parent"   
 	            android:layout_height="wrap_content"   

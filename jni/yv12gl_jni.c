@@ -126,7 +126,7 @@ void yv12gl_display(const unsigned char * y, const unsigned char *u, unsigned ch
   return;
 }
 
-JNIEXPORT void JNICALL Java_com_howell_webcam_player_YV12Renderer_nativeInit
+JNIEXPORT void JNICALL Java_com_howell_webcam_playerrender_YV12Renderer_nativeInit
 (JNIEnv *env, jobject obj)
 {
 	//self = malloc(sizeof(YV12glDisplay));
@@ -148,14 +148,14 @@ JNIEXPORT void JNICALL Java_com_howell_webcam_player_YV12Renderer_nativeInit
   self.time = 0;
 }
 
-JNIEXPORT void JNICALL Java_com_howell_webcam_player_YV12Renderer_nativeOnSurfaceCreated
+JNIEXPORT void JNICALL Java_com_howell_webcam_playerrender_YV12Renderer_nativeOnSurfaceCreated
 (JNIEnv *env, jobject obj)
 {
   //self.inited=1;
   self.enable=1;
 }
 
-JNIEXPORT void JNICALL Java_com_howell_webcam_player_YV12Renderer_nativeRenderY
+JNIEXPORT void JNICALL Java_com_howell_webcam_playerrender_YV12Renderer_nativeRenderY
 (JNIEnv *env, jobject obj)
 {
 //	LOGE("nativeRenderY");
@@ -174,7 +174,7 @@ JNIEXPORT void JNICALL Java_com_howell_webcam_player_YV12Renderer_nativeRenderY
 }
 
 
-JNIEXPORT void JNICALL Java_com_howell_webcam_player_YV12Renderer_nativeRenderU
+JNIEXPORT void JNICALL Java_com_howell_webcam_playerrender_YV12Renderer_nativeRenderU
 (JNIEnv *env, jobject obj)
 {
 //	LOGE("nativeRenderU");
@@ -190,7 +190,7 @@ JNIEXPORT void JNICALL Java_com_howell_webcam_player_YV12Renderer_nativeRenderU
   }
 }
 
-JNIEXPORT void JNICALL Java_com_howell_webcam_player_YV12Renderer_nativeRenderV
+JNIEXPORT void JNICALL Java_com_howell_webcam_playerrender_YV12Renderer_nativeRenderV
 (JNIEnv *env, jobject obj)
 {
 	if(self.lock_ret != 0){
@@ -207,7 +207,7 @@ JNIEXPORT void JNICALL Java_com_howell_webcam_player_YV12Renderer_nativeRenderV
 //  LOGE("nativeRenderV");
 }
 
-JNIEXPORT void JNICALL Java_com_howell_webcam_player_YV12Renderer_nativeDeinit
+JNIEXPORT void JNICALL Java_com_howell_webcam_playerrender_YV12Renderer_nativeDeinit
 (JNIEnv *env, jobject obj)
 {
   /* TODO */
@@ -222,31 +222,3 @@ JNIEXPORT void JNICALL Java_com_howell_webcam_player_YV12Renderer_nativeDeinit
   LOGE("nativeDeinit5");
 }
 
-/*void native_catch_picture(PLAY_HANDLE handle){
-	if(self.is_catch_picture == 0){
-		return;
-	}
-
-	//hwplay_save_to_bmp(handle,sdl_resource->path);
-	hwplay_save_to_jpg(handle,self.path,70);
-	self.is_catch_picture = 0;
-	__android_log_print(ANDROID_LOG_INFO, ">>>", "finish fill buf");
-}
-
-JNIEXPORT void JNICALL Java_com_howell_webcam_player_YV12Renderer_setCatchPictureFlag(JNIEnv *env, jclass cls,jstring jpath,jint jlength)
-{
-	#if 1
-	__android_log_print(ANDROID_LOG_INFO, "--->", "setflag");
-	self.is_catch_picture = 1;
-	char* temp = (*env)-> GetStringUTFChars(env,jpath,NULL);
-	//__android_log_print(ANDROID_LOG_INFO, "--->", "temp %s",temp);
-	memcpy(self.path, temp, jlength);
-	(*env)->ReleaseStringUTFChars(env,jpath,temp);
-	__android_log_print(ANDROID_LOG_INFO, "--->", "setflag over");
-	#endif
-}*/
-
-//JNIEXPORT unsigned long long JNICALL Java_com_howell_webcam_player_YV12Renderer_getDataTime(JNIEnv *env, jobject obj)
-//{
-//	return self.time;
-//}

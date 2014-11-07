@@ -9,8 +9,16 @@
 	    android:layout_width="fill_parent"
 	    android:layout_height="55dip"
 	    android:background="@color/title_blue" >
+	    <ImageButton 
+	        android:id="@+id/btn_cheng_device_name_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|right"
+	        android:layout_marginRight="10dip"
+	        android:background="@drawable/complete_btn_selector"
+	        />
         
-        <Button
+        <!--  <Button
             android:id="@+id/btn_cheng_device_name_ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -19,7 +27,7 @@
             android:paddingLeft="10dip"
             android:paddingRight="10dip"
             android:background="@drawable/common_button_white"
-            android:text="完成" />
+            android:text="完成" />-->
     </FrameLayout>
 
     <TextView

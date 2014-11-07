@@ -67,7 +67,7 @@ void audio_play(const char* buf,int len,int au_sample,int au_channel,int au_bits
       LOGE("FindClass() Error.....");   
       goto error;   
     }
-    //ÔÙ»ñµÃÀàÖÐµÄ·½·¨   
+    //ï¿½Ù»ï¿½ï¿½ï¿½ï¿½ï¿½ÐµÄ·ï¿½ï¿½ï¿½   
     self.mid = (*self.env)->GetMethodID(self.env, cls, "audioWrite", "()V");
     if (self.mid == NULL) {   
       LOGE("GetMethodID() Error.....");   
@@ -103,12 +103,12 @@ void audio_play(const char* buf,int len,int au_sample,int au_channel,int au_bits
   }   
 }
 
-JNIEXPORT void JNICALL Java_com_howell_webcam_player_PlayerActivity_nativeAudioInit
+JNIEXPORT void JNICALL Java_com_howell_webcam_activity_PlayerActivity_nativeAudioInit
 (JNIEnv *env, jobject obj)
 {
   (*env)->GetJavaVM(env,&self.jvm);   
 
-  //²»ÄÜÖ±½Ó¸³Öµ(g_obj = obj)   
+  //ï¿½ï¿½ï¿½ï¿½Ö±ï¿½Ó¸ï¿½Öµ(g_obj = obj)   
   self.obj = (*env)->NewGlobalRef(env,obj);
 
   jclass clz = (*env)->GetObjectClass(env, obj);
@@ -125,13 +125,13 @@ JNIEXPORT void JNICALL Java_com_howell_webcam_player_PlayerActivity_nativeAudioI
   self.stop = 0;
 }
 
-JNIEXPORT void JNICALL Java_com_howell_webcam_player_PlayerActivity_nativeAudioStop
+JNIEXPORT void JNICALL Java_com_howell_webcam_activity_PlayerActivity_nativeAudioStop
 (JNIEnv *env, jclass cls)
 {
   audio_stop();
 }
 
-JNIEXPORT void JNICALL Java_com_howell_webcam_player_PlayerActivity_nativeAudioDeinit
+JNIEXPORT void JNICALL Java_com_howell_webcam_activity_PlayerActivity_nativeAudioDeinit
 (JNIEnv *env, jobject obj)
 {
   /* TODO */

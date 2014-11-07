@@ -1,4 +1,4 @@
-<com.howell.webcam.ResizeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.howell.ehlib.ResizeLayout xmlns:android="http://schemas.android.com/apk/res/android"
    	android:id="@+id/layout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -111,4 +111,4 @@
 
     </LinearLayout>
 
-</com.howell.webcam.ResizeLayout>
+</com.howell.ehlib.ResizeLayout>

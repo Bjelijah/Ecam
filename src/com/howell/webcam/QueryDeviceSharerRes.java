@@ -2,6 +2,8 @@ package com.howell.webcam;
 
 import java.util.ArrayList;
 
+import com.howell.entityclass.DeviceSharer;
+
 public class QueryDeviceSharerRes {
 	private String result;
 	private ArrayList<DeviceSharer> deviceSharerList;

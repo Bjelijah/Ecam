@@ -15,7 +15,15 @@
             android:background="#00000000"
             android:src="@drawable/back_btn_selector"
             android:layout_gravity="left|center" />
-        <Button
+        
+        <ImageButton
+            android:id="@+id/ib_modify_phone_num_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/next_btn_selector"
+            android:layout_marginRight="10dip"
+            android:layout_gravity="right|center" />
+        <!--  <Button
             android:id="@+id/ib_modify_phone_num_ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,7 +32,7 @@
             android:paddingRight="10dip"
             android:text="@string/ok"
             android:background="@drawable/common_button_white"
-            android:layout_marginRight="10dip"/>
+            android:layout_marginRight="10dip"/>-->
     </FrameLayout>
 
     <EditText

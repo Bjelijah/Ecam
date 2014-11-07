@@ -3,6 +3,8 @@ package com.howell.webcam;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import com.howell.entityclass.Device;
+
 @SuppressWarnings("serial")
 public class LoginResponse implements Serializable{
 

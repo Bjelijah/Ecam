@@ -23,7 +23,7 @@ import android.widget.ImageView;
 import com.android.howell.webcam.R;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
-import com.howell.webcam.Settings;
+import com.howell.webcam.activity.Settings;
 import com.wyy.twodimcode.camera.CameraManager;
 import com.wyy.twodimcode.decoding.CaptureActivityHandler;
 import com.wyy.twodimcode.decoding.InactivityTimer;

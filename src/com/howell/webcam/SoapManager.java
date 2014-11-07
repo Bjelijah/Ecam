@@ -11,6 +11,12 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+import com.howell.entityclass.Device;
+import com.howell.entityclass.DeviceSharer;
+import com.howell.entityclass.NodeDetails;
+import com.howell.entityclass.VODRecord;
+import com.howell.utils.AnalyzingDoNetOutput;
+
 import android.util.Log;
 
 @SuppressWarnings("serial")

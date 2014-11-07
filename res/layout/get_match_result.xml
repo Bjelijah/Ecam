@@ -30,6 +30,8 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="18sp"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
             android:layout_marginBottom="10dip"
             android:text="摄像机正在配置，请稍候..." />
 

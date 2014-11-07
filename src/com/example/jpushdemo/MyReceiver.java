@@ -3,7 +3,7 @@ package com.example.jpushdemo;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.howell.webcam.LogoActivity;
+import com.howell.webcam.activity.LogoActivity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

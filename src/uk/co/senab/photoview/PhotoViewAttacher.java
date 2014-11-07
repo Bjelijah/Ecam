@@ -31,8 +31,8 @@ import android.widget.ImageView.ScaleType;
 
 import java.lang.ref.WeakReference;
 
-import com.howell.webcam.BigImages;
-import com.howell.webcam.PhoneConfig;
+import com.howell.utils.PhoneConfig;
+import com.howell.webcam.activity.BigImages;
 
 public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, VersionedGestureDetector.OnGestureListener,
 		GestureDetector.OnDoubleTapListener, ViewTreeObserver.OnGlobalLayoutListener {

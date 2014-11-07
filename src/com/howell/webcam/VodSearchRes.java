@@ -2,6 +2,8 @@ package com.howell.webcam;
 
 import java.util.ArrayList;
 
+import com.howell.entityclass.VODRecord;
+
 public class VodSearchRes {
 
     private String result;

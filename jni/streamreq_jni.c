@@ -317,7 +317,7 @@ __android_log_print(ANDROID_LOG_INFO, "fill_context", "0.1");
 	__android_log_print(ANDROID_LOG_INFO, "fill_context", "0.7");
 	jfieldID udp_portID = (*env)->GetFieldID(env,clazz, "udp_port", "I");
 	__android_log_print(ANDROID_LOG_INFO, "fill_context", "0.8");
-	jfieldID ice_optID = (*env)->GetFieldID(env,clazz, "ice_opt", "Lcom/howell/invite/StreamReqIceOpt;");
+	jfieldID ice_optID = (*env)->GetFieldID(env,clazz, "ice_opt", "Lcom/howell/entityclass/StreamReqIceOpt;");
 	__android_log_print(ANDROID_LOG_INFO, "fill_context", "0.9");
 	jint jplayback = (jint)(*env)->GetIntField(env,obj, playbackID);
 	jlong jbeg = (jlong)(*env)->GetLongField(env,obj, begID);
@@ -519,7 +519,7 @@ static void free_resource(void* handle)
 	}
 }
 
-JNIEXPORT int JNICALL Java_com_howell_invite_Client_setCatchPictureFlag(JNIEnv *env, jclass cls,jlong index,jstring jpath,jint jlength)
+JNIEXPORT int JNICALL Java_com_howell_utils_InviteUtils_setCatchPictureFlag(JNIEnv *env, jclass cls,jlong index,jstring jpath,jint jlength)
 {
 	__android_log_print(ANDROID_LOG_INFO, "--->", "setflag");
 	//self.is_catch_picture = 1;
@@ -534,7 +534,7 @@ JNIEXPORT int JNICALL Java_com_howell_invite_Client_setCatchPictureFlag(JNIEnv *
 	return ret;
 }
 
-JNIEXPORT void JNICALL Java_com_howell_invite_Client_joinThread
+JNIEXPORT void JNICALL Java_com_howell_utils_InviteUtils_joinThread
 (JNIEnv *env, jobject obj,jlong handle){
 	__android_log_print(ANDROID_LOG_INFO, "jni", "handle:%d",handle);
 	__android_log_print(ANDROID_LOG_INFO, "jni", "start join thread ");
@@ -545,13 +545,13 @@ JNIEXPORT void JNICALL Java_com_howell_invite_Client_joinThread
 	__android_log_print(ANDROID_LOG_INFO, "jni", "finish join thread ");
 }
 
-JNIEXPORT jlong JNICALL Java_com_howell_invite_Client_createHandle
+JNIEXPORT jlong JNICALL Java_com_howell_utils_InviteUtils_createHandle
 (JNIEnv *env, jobject obj, jstring str,jint is_palyback){
 	const char * account = (*env)->GetStringUTFChars(env,str,NULL);
 	return new_resource(env,obj,account,is_palyback);
 }
 
-JNIEXPORT jstring JNICALL Java_com_howell_invite_Client_prepareSDP
+JNIEXPORT jstring JNICALL Java_com_howell_utils_InviteUtils_prepareSDP
 (JNIEnv *env, jclass cls, jlong handle,jobject obj){
 	__android_log_print(ANDROID_LOG_INFO, "jni", "start prepareSDP ");
 	if(obj == NULL){
@@ -574,7 +574,7 @@ JNIEXPORT jstring JNICALL Java_com_howell_invite_Client_prepareSDP
 	return (*env)->NewStringUTF(env,local_sdp);
 }
 
-JNIEXPORT jint JNICALL Java_com_howell_invite_Client_handleRemoteSDP
+JNIEXPORT jint JNICALL Java_com_howell_utils_InviteUtils_handleRemoteSDP
 (JNIEnv *env, jclass cls, jlong handle,jobject obj, jstring dialog_id, jstring remote_sdp){
 	//ecam_stream_req_t * stream_req_ = (ecam_stream_req_t *)handle;
 	struct ecam_stream_req_context *c = fill_context(env,obj);
@@ -591,7 +591,7 @@ JNIEXPORT jint JNICALL Java_com_howell_invite_Client_handleRemoteSDP
 	return 0;//鎴愬姛
 }
 
-JNIEXPORT jint JNICALL Java_com_howell_invite_Client_start
+JNIEXPORT jint JNICALL Java_com_howell_utils_InviteUtils_start
 (JNIEnv *env, jclass cls, jlong handle,jobject obj, jint timeout_ms){
 	//ecam_stream_req_t * stream_req_ = (ecam_stream_req_t *)handle;
 	__android_log_print(ANDROID_LOG_INFO, "jni", "!!!!!!-----start start----------!!!!");
@@ -615,14 +615,14 @@ JNIEXPORT jint JNICALL Java_com_howell_invite_Client_start
 	return ret;
 }
 
-JNIEXPORT void JNICALL Java_com_howell_invite_Client_freeHandle
+JNIEXPORT void JNICALL Java_com_howell_utils_InviteUtils_freeHandle
 (JNIEnv *env, jclass cls, jlong handle){
 	__android_log_print(ANDROID_LOG_INFO, "JNI", "Start stop");
 	free_resource(handle);
 	__android_log_print(ANDROID_LOG_INFO, "JNI", "finish stop");
 }
 
-JNIEXPORT void JNICALL Java_com_howell_invite_Client_prepareReplay
+JNIEXPORT void JNICALL Java_com_howell_utils_InviteUtils_prepareReplay
 (JNIEnv *env, jclass cls, jlong handle){
 	//struct StreamResource * res = handle;
 	int arr_index = handle;
@@ -635,7 +635,7 @@ JNIEXPORT void JNICALL Java_com_howell_invite_Client_prepareReplay
 	__android_log_print(ANDROID_LOG_INFO, ">>>>>>>>>", "init_play_handle");
 }
 
-JNIEXPORT jint JNICALL Java_com_howell_invite_Client_getMethod
+JNIEXPORT jint JNICALL Java_com_howell_utils_InviteUtils_getMethod
 (JNIEnv *env, jclass cls,jlong handle){
 	int arr_index = handle;
 	int req_flag = ecam_stream_req_get_transfer_method(res[arr_index]->req);
@@ -660,7 +660,7 @@ JNIEXPORT jint JNICALL Java_com_howell_invite_Client_getMethod
 	}
 }
 
-JNIEXPORT int JNICALL Java_com_howell_invite_Client_getStreamCount
+JNIEXPORT int JNICALL Java_com_howell_utils_InviteUtils_getStreamCount
 (JNIEnv *env, jclass cls,jlong handle){
 	__android_log_print(ANDROID_LOG_INFO, "getStreamCount", "000000000 ,handle:%d",handle);
 	int arr_index = handle;
@@ -669,25 +669,25 @@ JNIEXPORT int JNICALL Java_com_howell_invite_Client_getStreamCount
 	return res[arr_index]->stream_count;
 }
 
-JNIEXPORT void JNICALL Java_com_howell_invite_Client_playbackPause
+JNIEXPORT void JNICALL Java_com_howell_utils_InviteUtils_playbackPause
 (JNIEnv *env, jclass cls,jlong handle,jboolean bPause){
 	int arr_index = handle;
 	hwplay_pause(res[arr_index]->play_handle,bPause);
 }
 
-JNIEXPORT void JNICALL Java_com_howell_invite_Client_getSdpTime
+JNIEXPORT void JNICALL Java_com_howell_utils_InviteUtils_getSdpTime
 (JNIEnv *env, jclass cls,jlong handle){
 	int arr_index = handle;
 	ecam_stream_req_get_sdp_time(res[arr_index]->req,&res[arr_index]->beg_time, &res[arr_index]->end_time);
 }
 
-JNIEXPORT long JNICALL Java_com_howell_invite_Client_getBegSdpTime
+JNIEXPORT long JNICALL Java_com_howell_utils_InviteUtils_getBegSdpTime
 (JNIEnv *env, jclass cls,jlong handle){
 	int arr_index = handle;
 	return res[arr_index]->beg_time;
 }
 
-JNIEXPORT long JNICALL Java_com_howell_invite_Client_getEndSdpTime
+JNIEXPORT long JNICALL Java_com_howell_utils_InviteUtils_getEndSdpTime
 (JNIEnv *env, jclass cls,jlong handle){
 	int arr_index = handle;
 	return res[arr_index]->end_time;

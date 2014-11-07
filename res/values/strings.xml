@@ -16,6 +16,7 @@
     <string name="not_online">offline</string>
     <string name="auto_login">automatic login</string>
     <string name="login">login</string>
+    <string name="login_fail">login fail</string>
     <string name="please_wait">Please wait</string>
     <string name="loading">loading</string>
     <string name="not_online_message">Device offline,can not open</string>
@@ -26,7 +27,7 @@
     <string name="account">My account</string>
     <string name="sys_message">System message</string>
     <string name="alarm">Alarm</string>
-    <string name="about">About eCamera V1.1.2</string>
+    <string name="about">About eCamera V1.1.3</string>
     <string name="exit">Logout</string>
     <string name="email">Email</string>
     <string name="mobiletel">Mobile</string>
@@ -78,6 +79,7 @@
 	<string name="local_files">LocalFiles</string> 
 	<string name="no_estore">No SDCard</string> 
 	<string name="set_fail">Bad Network Signal , set fail</string>
+	<string name="get_settings_fail">get settings fail</string>
 	<string name="share_pic">share picture</string>
 	<string name="more">More</string>
 	<string name="media_lib">Media</string>

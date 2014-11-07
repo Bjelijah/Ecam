@@ -10,7 +10,7 @@ import java.util.TimeZone;
 import android.view.View;
 
 import com.android.howell.webcam.R;
-import com.howell.webcam.TimeTransform;
+import com.howell.utils.TimeTransform;
 
 
 public class WheelMain {

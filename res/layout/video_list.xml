@@ -30,7 +30,7 @@
 
     </RelativeLayout>
 
-    <com.howell.webcam.MyListViewWithFoot
+    <com.howell.ehlib.MyListViewWithFoot
         android:id="@id/android:list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />

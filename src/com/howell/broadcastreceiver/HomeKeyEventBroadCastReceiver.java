@@ -1,9 +1,8 @@
 package com.howell.broadcastreceiver;
 
-import java.util.ArrayList;
 import java.util.Map;
 
-import com.howell.webcam.activity.Activities;
+import com.howell.activity.Activities;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -11,6 +10,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+/**
+* @author 霍之昊 
+*
+* 类说明:用于监听HOME键的按下
+*/
 public class HomeKeyEventBroadCastReceiver extends BroadcastReceiver {
 	private Activities mActivities;
 	static final String SYSTEM_REASON = "reason";

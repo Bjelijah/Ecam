@@ -103,7 +103,7 @@ void audio_play(const char* buf,int len,int au_sample,int au_channel,int au_bits
   }   
 }
 
-JNIEXPORT void JNICALL Java_com_howell_webcam_activity_PlayerActivity_nativeAudioInit
+JNIEXPORT void JNICALL Java_com_howell_activity_PlayerActivity_nativeAudioInit
 (JNIEnv *env, jobject obj)
 {
   (*env)->GetJavaVM(env,&self.jvm);   
@@ -125,13 +125,13 @@ JNIEXPORT void JNICALL Java_com_howell_webcam_activity_PlayerActivity_nativeAudi
   self.stop = 0;
 }
 
-JNIEXPORT void JNICALL Java_com_howell_webcam_activity_PlayerActivity_nativeAudioStop
+JNIEXPORT void JNICALL Java_com_howell_activity_PlayerActivity_nativeAudioStop
 (JNIEnv *env, jclass cls)
 {
   audio_stop();
 }
 
-JNIEXPORT void JNICALL Java_com_howell_webcam_activity_PlayerActivity_nativeAudioDeinit
+JNIEXPORT void JNICALL Java_com_howell_activity_PlayerActivity_nativeAudioDeinit
 (JNIEnv *env, jobject obj)
 {
   /* TODO */

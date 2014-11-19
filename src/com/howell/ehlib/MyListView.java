@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.android.howell.webcam.R;
 
+
 public class MyListView extends ListView implements OnScrollListener {
 
 	private static final String TAG = "listview";
@@ -82,15 +83,12 @@ public class MyListView extends ListView implements OnScrollListener {
 
 		headView = (LinearLayout) inflater.inflate(R.layout.head, null);
 
-		arrowImageView = (ImageView) headView
-				.findViewById(R.id.head_arrowImageView);
+		arrowImageView = (ImageView) headView.findViewById(R.id.head_arrowImageView);
 //		arrowImageView.setMinimumWidth(70);
 //		arrowImageView.setMinimumHeight(50);
-		progressBar = (ProgressBar) headView
-				.findViewById(R.id.head_progressBar);
+		progressBar = (ProgressBar) headView.findViewById(R.id.head_progressBar);
 		tipsTextview = (TextView) headView.findViewById(R.id.head_tipsTextView);
-		lastUpdatedTextView = (TextView) headView
-				.findViewById(R.id.head_lastUpdatedTextView);
+		lastUpdatedTextView = (TextView) headView.findViewById(R.id.head_lastUpdatedTextView);
 
 		measureView(headView);
 		headContentHeight = headView.getMeasuredHeight();

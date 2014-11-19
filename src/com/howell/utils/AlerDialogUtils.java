@@ -2,9 +2,9 @@ package com.howell.utils;
 
 import com.android.howell.webcam.R;
 import com.howell.entityclass.NodeDetails;
-import com.howell.webcam.SoapManager;
-import com.howell.webcam.UpgradeDevVerReq;
-import com.howell.webcam.UpgradeDevVerRes;
+import com.howell.protocol.SoapManager;
+import com.howell.protocol.UpgradeDevVerReq;
+import com.howell.protocol.UpgradeDevVerRes;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;

@@ -1,22 +1,10 @@
 package com.howell.utils;
 
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import com.howell.webcam.activity.GetMatchResult;
-
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 
 public class CameraUtils {
 	private Camera camera;

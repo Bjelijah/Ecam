@@ -9,7 +9,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -33,11 +32,8 @@ public class MySeekBar extends SeekBar {
 		mInflater = LayoutInflater.from(context);
 		mView = mInflater.inflate(R.layout.popwindow_layout, null);
 		mTvProgress = (TextView)mView.findViewById(R.id.tvPop);
-		mPopupWindow = new PopupWindow(mView, mView.getWidth(),
-				mView.getHeight(), true);
+		mPopupWindow = new PopupWindow(mView, mView.getWidth(),mView.getHeight(), true);
 		mPosition = new int[2];
-		
-		
 	}
 
 	public void setSeekBarText(String str){

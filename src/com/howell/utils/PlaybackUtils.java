@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import com.howell.entityclass.VODRecord;
-import com.howell.webcam.VodSearchRes;
+import com.howell.protocol.VodSearchRes;
 
 public class PlaybackUtils {
 	private int nowPageCount;

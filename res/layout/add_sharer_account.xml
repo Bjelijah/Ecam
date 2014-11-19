@@ -15,7 +15,7 @@
             android:background="#00000000"
             android:src="@drawable/back_btn_selector"
             android:layout_gravity="left|center" />
-        <Button
+        <!-- <Button
             android:id="@+id/btn_add_sharer_account_ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,7 +24,14 @@
             android:paddingLeft="10dip"
             android:paddingRight="10dip"
             android:background="@drawable/common_button_white"
-            android:text="@string/share" />
+            android:text="@string/share" /> -->
+		<ImageButton
+            android:id="@+id/btn_add_sharer_account_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dip"
+            android:background="@drawable/complete_btn_selector"
+            android:layout_gravity="right|center" /> 
         
     </FrameLayout>
     

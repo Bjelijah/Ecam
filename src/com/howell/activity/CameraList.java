@@ -32,15 +32,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.howell.webcam.R;
+import com.howell.ecamera.cameraupdatedetective.DeviceVersionDetective;
+import com.howell.ecamera.cameraupdatedetective.Observer;
 import com.howell.ehlib.MyListView;
 import com.howell.ehlib.MyListView.OnRefreshListener;
 import com.howell.entityclass.NodeDetails;
 import com.howell.utils.ClientUpdateUtils;
-import com.howell.utils.DeviceVersionDetect;
 import com.howell.utils.MessageUtiles;
 import com.howell.utils.PhoneConfig;
 import com.howell.utils.ScaleImageUtils;
-import com.howell.utils.DeviceVersionDetect.OnDeviceVersionListener;
+import com.howell.protocol.GetDevVerReq;
+import com.howell.protocol.GetDevVerRes;
 import com.howell.protocol.LoginResponse;
 import com.howell.protocol.QueryClientVersionReq;
 import com.howell.protocol.QueryClientVersionRes;
@@ -49,7 +51,7 @@ import com.howell.protocol.SoapManager;
 import com.howell.protocol.UpdateAndroidTokenReq;
 import com.howell.protocol.UpdateAndroidTokenRes;
 
-public class CameraList extends ListActivity{
+public class CameraList extends ListActivity implements Observer{
 
     private SoapManager mSoapManager;
     private LoginResponse mResponse;
@@ -72,7 +74,7 @@ public class CameraList extends ListActivity{
     private Activities mActivities;
     private Bitmap bm;
     
-    private DeviceVersionDetect detect;
+    private DeviceVersionDetective detective;
     
     //private Button test;
     
@@ -100,7 +102,8 @@ public class CameraList extends ListActivity{
     			Log.e("", mSoapManager.toString());
     		}
         	
-        	detect = DeviceVersionDetect.getInstance();
+        	detective = DeviceVersionDetective.getInstance();
+        	detective.attachObserver("CameraList", CameraList.this);
         	
         	noCameraImg = (LinearLayout)findViewById(R.id.ll_no_cameralist_default);
         	
@@ -115,15 +118,6 @@ public class CameraList extends ListActivity{
         }catch (Exception e) {
 			// TODO: handle exception
 		}
-        
-        detect.setOnDeviceVersionListener(new OnDeviceVersionListener() {
-			
-			@Override
-			public void onDeviceNewVersionRefresh() {
-				// TODO Auto-generated method stub
-				myHandler.sendEmptyMessage(refreshDeviceUpdate);
-			}
-		});
         
 //        mTvAdd = (TextView)findViewById(R.id.tv_add);
 //        mIvAdd = (ImageView)findViewById(R.id.iv_add);
@@ -181,6 +175,21 @@ public class CameraList extends ListActivity{
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
+						
+						for(NodeDetails d:list){
+		                	System.out.println("aaaaaa");
+		                	GetDevVerReq getDevVerReq = new GetDevVerReq(mResponse.getAccount(),mResponse.getLoginSession(),d.getDevID());
+		                	GetDevVerRes getDevVerRes = mSoapManager.getGetDevVerRes(getDevVerReq);
+		                	Log.e("GetDevVerRes", getDevVerRes.toString());
+		                	//if(/*d.isOnLine() && */UpdateCameraUtils.needToUpdate(res.getCurDevVer(), res.getNewDevVer())){
+		                	if(!getDevVerRes.getCurDevVer().equals(getDevVerRes.getNewDevVer())){	
+		                		System.out.println(getDevVerRes.getCurDevVer()+","+getDevVerRes.getNewDevVer());
+		                		d.setHasUpdate(true);
+		                	}
+		                	System.out.println(d.getDevID()+":"+d.isHasUpdate());
+		                	System.out.println("cur ver:"+getDevVerRes.getCurDevVer()+" new ver:"+getDevVerRes.getNewDevVer());
+		                }
+//					    myHandler.sendEmptyMessage(refreshDeviceUpdate);
 						return null;
 					}
 
@@ -206,8 +215,9 @@ public class CameraList extends ListActivity{
 				mSoapManager.getQueryDeviceRes(new QueryDeviceReq(mResponse.getAccount(), mResponse.getLoginSession()));
 				list = mSoapManager.getNodeDetails();
 		        sort(list);
-		        CamTabActivity.cameraVerThread = true;
-				myHandler.sendEmptyMessage(refreshCameraList);
+		        myHandler.sendEmptyMessage(refreshCameraList);
+//		        CamTabActivity.cameraVerThread = true;
+				
 			}
 		});
 		
@@ -232,6 +242,21 @@ public class CameraList extends ListActivity{
 			    System.out.println(updateAndroidTokenReq.toString());
 			    UpdateAndroidTokenRes res = mSoapManager.GetUpdateAndroidTokenRes(updateAndroidTokenReq);
 			    Log.e("savePushParam", res.getResult());
+			    
+			    for(NodeDetails d:list){
+                	System.out.println("aaaaaa");
+                	GetDevVerReq getDevVerReq = new GetDevVerReq(mResponse.getAccount(),mResponse.getLoginSession(),d.getDevID());
+                	GetDevVerRes getDevVerRes = mSoapManager.getGetDevVerRes(getDevVerReq);
+                	Log.e("GetDevVerRes", getDevVerRes.toString());
+                	//if(/*d.isOnLine() && */UpdateCameraUtils.needToUpdate(res.getCurDevVer(), res.getNewDevVer())){
+                	if(!getDevVerRes.getCurDevVer().equals(getDevVerRes.getNewDevVer())){	
+                		System.out.println(getDevVerRes.getCurDevVer()+","+getDevVerRes.getNewDevVer());
+                		d.setHasUpdate(true);
+                	}
+                	System.out.println(d.getDevID()+":"+d.isHasUpdate());
+                	System.out.println("cur ver:"+getDevVerRes.getCurDevVer()+" new ver:"+getDevVerRes.getNewDevVer());
+                }
+			    myHandler.sendEmptyMessage(refreshDeviceUpdate);
         	}
         }.start();
     }
@@ -248,7 +273,7 @@ public class CameraList extends ListActivity{
             e.printStackTrace();
         } 
         return versionName;
-     }
+    }
     
     private Handler myHandler = new Handler(){
     	@Override
@@ -279,10 +304,8 @@ public class CameraList extends ListActivity{
     		}
     		if(msg.what == refreshDeviceUpdate){
     			System.out.println("refreshDeviceUpdate");
-    			for(NodeDetails n : list){
-    				System.out.println(n.isHasUpdate());
-    			}
     			adapter.notifyDataSetChanged();
+    			System.out.println("222");
     		}
     	}
     };
@@ -465,6 +488,7 @@ public class CameraList extends ListActivity{
 //	        	holder.tv_wifi.setText("");
 	        }
             
+            System.out.println(camera.getDevID()+": "+camera.isHasUpdate());
             if(camera.isHasUpdate()){
             	holder.iv_badge.setVisibility(View.VISIBLE);
             }else{
@@ -555,6 +579,16 @@ public class CameraList extends ListActivity{
 	    public ImageButton about,set,playback;
 	    public TextView tv;
 	    public LinearLayout mPlay;
+	}
+
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+		System.out.println("test update!!");
+		for(NodeDetails d: list){
+			System.out.println("update "+d.getDevID()+":"+d.isHasUpdate());
+		}
+		myHandler.sendEmptyMessage(refreshDeviceUpdate);
 	}
 
 }

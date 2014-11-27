@@ -61,6 +61,7 @@ import com.howell.utils.InviteUtils;
 import com.howell.utils.FileUtils;
 import com.howell.utils.MessageUtiles;
 import com.howell.utils.PhoneConfig;
+import com.howell.utils.TakePhotoUtil;
 import com.howell.protocol.LoginResponse;
 import com.howell.protocol.PtzControlReq;
 import com.howell.protocol.PtzControlRes;
@@ -253,6 +254,9 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 //		        		client.setQuit(true);
 //		        	quitDisplay();
 	        		audioStop();
+	        		if(!playback){
+	            		TakePhotoUtil.takePhoto("/sdcard/eCamera/cache", dev, client);
+	    			}
 	        		finish();
 		            Log.e("", "00000000");
 		            Intent intent = new Intent(PlayerActivity.this, VideoList.class);
@@ -348,6 +352,9 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 //	        		client.setQuit(true);
 //	        	quitDisplay();
 				audioStop();
+				if(!playback){
+					TakePhotoUtil.takePhoto("/sdcard/eCamera/cache", dev, client);
+				}
 				finish();
 			}
 		});
@@ -793,18 +800,15 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
         }
     }
 	
+	private void takePhoto(){
+		
+	}
+	
 	private void quitDisplay(){
 		if (backCount == 0) {
 			audioStop();
 			stopSendMessage = true;
-			if(!playback){
-				File destDir = new File("/sdcard/eCamera/cache");
-				if (!destDir.exists()) {
-					destDir.mkdirs();
-				}
-				String path = "/sdcard/eCamera/cache/"+dev.getDevID()+".jpg";
-				client.setCatchPictureFlag(client.getHandle(),path,path.length());
-			}
+			
 			while(true){
 				if(client != null){
 					client.setQuit(true);
@@ -829,6 +833,9 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
         if (keyCode == KeyEvent.KEYCODE_BACK) {
         	Log.e("backCount", "press back button backCount:"+backCount);
         	audioStop();
+        	if(!playback){
+        		TakePhotoUtil.takePhoto("/sdcard/eCamera/cache", dev, client);
+			}
         	finish();
         }
         return false;

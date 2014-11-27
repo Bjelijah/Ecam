@@ -1,7 +1,5 @@
 package com.howell.activity;
 
-import java.util.ArrayList;
-
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -15,10 +13,9 @@ import android.widget.TabHost;
 import com.android.howell.webcam.R;
 import com.howell.broadcastreceiver.HomeKeyEventBroadCastReceiver;
 //import com.howell.ehlib.MyListView.OnRefreshListener;
-import com.howell.entityclass.NodeDetails;
+//import com.howell.entityclass.NodeDetails;
 //import com.howell.utils.UpdateCameraUtils;
-import com.howell.protocol.LoginResponse;
-import com.howell.protocol.SoapManager;
+//import com.howell.protocol.LoginResponse;
 
 @SuppressWarnings("deprecation")
 public class CamTabActivity extends TabActivity implements
@@ -31,19 +28,19 @@ public class CamTabActivity extends TabActivity implements
     private Activities mActivities;
     private HomeKeyEventBroadCastReceiver receiver;
     
-    private SoapManager mSoapManager;
+//    private SoapManager mSoapManager;
     //static int updateNum;
     
-    static boolean cameraVerThread;
+//    static boolean cameraVerThread;
     
     //private static BadgeView badge;
-    ArrayList<NodeDetails> list;
-    LoginResponse mResponse;
+//    ArrayList<NodeDetails> list;
+//    LoginResponse mResponse;
 //    private static final int TOGGLEON = 1;
 //    private static final int TOGGLEOFF = 2;
-    private static boolean hasToggled;
+//    private static boolean hasToggled;
     
-//    private DeviceVersionDetect detect;
+//    private DeviceVersionDetective detective;
     /*static Handler handler = new Handler(){
     	@Override
     	public void handleMessage(Message msg) {
@@ -65,15 +62,15 @@ public class CamTabActivity extends TabActivity implements
         setContentView(R.layout.cam_tab);
         Log.e("CamTabActivity", "onCreate");
         //updateNum = 0;
-        hasToggled = false;
-        cameraVerThread = false;
+//        hasToggled = false;
+//        cameraVerThread = false;
         mActivities = Activities.getInstance();
         mActivities.addActivity("CamTabActivity",CamTabActivity.this);
         
         receiver = new HomeKeyEventBroadCastReceiver();
-		registerReceiver(receiver, new IntentFilter(
-				Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+		registerReceiver(receiver, new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
 
+//		detective = DeviceVersionDetective.getInstance();
         mGroup = (RadioGroup) findViewById(R.id.radio_group);
         mGroup.setOnCheckedChangeListener(this);
         mCameraList = (RadioButton)findViewById(R.id.rb_camera_list);
@@ -101,54 +98,42 @@ public class CamTabActivity extends TabActivity implements
         
        /* badge = new BadgeView(this, mGroup);*/
         
-        mSoapManager = SoapManager.getInstance();
-        mResponse = mSoapManager.getLoginResponse();
+//        mSoapManager = SoapManager.getInstance();
+//        mResponse = mSoapManager.getLoginResponse();
         
-//        detect = DeviceVersionDetect.getInstance();
+//        list = mSoapManager.getNodeDetails();
         
-        list = mSoapManager.getNodeDetails();
-        
-        /* new Thread (){
-        	@Override
-        	public void run() {
-        		// TODO Auto-generated method stub
-        		super.run();
-        		while(true){
-        			if(cameraVerThread == true){
-        				break;
-        			}
-        		}
-        		try{
-	        		for(NodeDetails d:list){
-	                	System.out.println("aaaaaa");
-	                	GetDevVerReq getDevVerReq = new GetDevVerReq(mResponse.getAccount(),mResponse.getLoginSession(),d.getDevID());
-	                	GetDevVerRes res = mSoapManager.getGetDevVerRes(getDevVerReq);
-	                	Log.e("GetDevVerRes", res.toString());
-	                	if(d.isOnLine() && UpdateCameraUtils.needToUpdate(res.getCurDevVer(), res.getNewDevVer())){
-	                		System.out.println(res.getCurDevVer()+","+res.getNewDevVer());
-	                		//updateNum++;
-	                		d.setHasUpdate(true);
-//	                		if(updateNum == 1){
-//	                        	//badge.setText(String.valueOf(updateNum));
-//	                    		handler.sendEmptyMessage(TOGGLEON);
-//	                        }
-	                		//return;
-	                	}
-	                	//CameraList.adapter.notifyDataSetChanged();
-	                }
-	        		
-	        		detect.onDeviceNewVersionRefresh();
-        		}catch(Exception e){
-                	System.out.println("getDevVerReq crash");
-                }
-        		//Log.e("updateNum", updateNum+"");
-//                if(updateNum > 0){
-//                	//badge.setText(String.valueOf(updateNum));
-//            		handler.sendEmptyMessage(TOGGLEON);
+//        new Thread (){
+//        	@Override
+//        	public void run() {
+//        		// TODO Auto-generated method stub
+//        		super.run();
+//        		while(true){
+//        			if(cameraVerThread == true){
+//        				break;
+//        			}
+//        		}
+//        		try{
+//	        		for(NodeDetails d:list){
+//	                	System.out.println("aaaaaa");
+//	                	GetDevVerReq getDevVerReq = new GetDevVerReq(mResponse.getAccount(),mResponse.getLoginSession(),d.getDevID());
+//	                	GetDevVerRes res = mSoapManager.getGetDevVerRes(getDevVerReq);
+//	                	Log.e("GetDevVerRes", res.toString());
+//	                	//if(/*d.isOnLine() && */UpdateCameraUtils.needToUpdate(res.getCurDevVer(), res.getNewDevVer())){
+//	                	if(!res.getCurDevVer().equals(res.getNewDevVer())){	
+//	                		System.out.println(res.getCurDevVer()+","+res.getNewDevVer());
+//	                		d.setHasUpdate(true);
+//	                	}
+//	                	System.out.println(d.getDevID()+":"+d.isHasUpdate());
+//	                	System.out.println("cur ver:"+res.getCurDevVer()+" new ver:"+res.getNewDevVer());
+//	                }
+//	        		System.out.println("start notify");
+//	        		detective.notifyObserver("CameraList");
+//        		}catch(Exception e){
+//                	System.out.println("getDevVerReq crash");
 //                }
-        		
-        	}
-        }.start();*/
+//        	}
+//        }.start();
         
     }
     
@@ -194,7 +179,7 @@ public class CamTabActivity extends TabActivity implements
     protected void onRestart() {
     	// TODO Auto-generated method stub
     	super.onRestart();
-    	Log.e("CamTab","onRestart:"+hasToggled);
+//    	Log.e("CamTab","onRestart:"+hasToggled);
     	/*if(updateNum == 0){
     		if(!hasToggled){
     			System.out.println("toggle");

@@ -146,8 +146,6 @@
                         android:layout_gravity="center"
                         android:src="@drawable/card_setting_selector" />
 
-                    
-
                     <ImageView
                         android:id="@+id/iv_badge"
                         android:layout_width="wrap_content"

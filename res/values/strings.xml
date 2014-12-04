@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">eCamera</string>
+    <string name="app_name">eCam</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="username">Account:</string>
@@ -9,9 +9,9 @@
     <string name="remember_password">Remember password</string>
     <string name="message">Please link network first</string>
     <string name="ok">OK</string>
-    <string name="verification">The account and password cannot be empty</string>
+    <string name="verification">Account and password cannot be empty</string>
     <string name="password_error">Password error</string>
-    <string name="account_error">The account does not exist</string>
+    <string name="account_error">Account does not exist</string>
     <string name="online">online</string>
     <string name="not_online">offline</string>
     <string name="auto_login">automatic login</string>
@@ -30,22 +30,25 @@
     <string name="about">About eCamera V1.1.4</string>
     <string name="exit">Logout</string>
     <string name="email">Email</string>
-    <string name="mobiletel">Mobile</string>
+    <string name="mobiletel">Mobile phone number</string>
     <string name="account_name">Account</string>
+    <string name="password_change">Modify password</string>
+    <string name="phone_change">Modify cell phone number</string>
     <string name="name">UserName</string>
     <string name="cancel">Cancel</string>
     <string name="device_manager_title">Select Camera</string>
     <string name="device_name">Device name</string>
+    <string name="device_id">device id</string>
     <string name="vedio_arg">Video image parameters</string>
     <string name="resolution">Resolution ratio</string>
     <string name="picture">Image quality</string>
-    <string name="alarm_messages">Motion Detection settings</string>
+    <string name="alarm_messages">Motion Detect settings</string>
     <string name="move_detect">Video motion detection</string>
     <string name="push_set">Alarm Notify Setting</string>
     <string name="push_push">Alarm Notify</string>
 	<string name="video_list">Video List</string>
 	<string name="update">Update</string>
-	<string name="save_picture">Saving image</string>
+	<string name="save_picture">has saved to/eCamera</string>
 	<string name="link_timeout">Connection timeout, please reconnect the video</string>
 	<string name="link_error">Connection error, please reconnect the video</string>
 	<string name="login_error">Connection error,please log in again</string>
@@ -69,28 +72,93 @@
 	<string name="auxiliary_set">Auxiliary Settings</string>
 	<string name="power_land">Power LED</string>
 	<string name="vmd_info">If something moving in the video,it will trigger the alarm,send alarm push and record it(if has SDcard)</string>
-	<string name="gain_set">Gaining Settings</string>
+	<string name="gain_set">Getting Settings</string>
 	<string name="update_dialog_title">Client Update</string>
-	<string name="update_dialog_message">New version, please update in time！</string>
+	<string name="update_dialog_message">New version, please update in time</string>
 	<string name="download_dialog_message">Downloading</string>
 	<string name="download_dialog_fail">Download fail</string>
 	<string name="load_more">More</string>
 	<string name="no_sdcard">Please insert the SD card</string>
 	<string name="local_files">LocalFiles</string> 
-	<string name="no_estore">No SDCard</string> 
-	<string name="set_fail">Bad Network Signal , set fail</string>
-	<string name="get_settings_fail">get settings fail</string>
-	<string name="share_pic">share picture</string>
+	<string name="no_estore">No SDCard</string>
+	<string name="share_pic">Share picture</string>
+	<string name="set_fail">Bad Network Signal, set fail</string>
+	<string name="get_settings_fail">Get settings fail</string>
+	<string name="modify_phone_num_hint">Bind new phone number</string>
+	<string name="original_password">original password</string>
+	<string name="new_password">new password</string>
+	<string name="confirm_password">confirm password</string>
+	<string name="modify_password_tips"></string>
+	<string name="wifi_intensity">Device wifi intensity</string>
+	<string name="set_new_password">Setting new password now</string>
+	<string name="set_new_phone_num">Setting new cell phone number now</string>
 	<string name="more">More</string>
 	<string name="media_lib">Media</string>
-	<string name="phone_change">Modify phone number</string>
-	<string name="password_change">Modify password</string>
-	<string name="device_id">device id</string>
-	<string name="wifi_intensity">device wifi intensity</string>
 	
-	<string name="camera_list_wifi_intensity">wifi intensity:</string>
+	<string name="share">Share</string>
+	<string name="share_device_succeess">Succeess</string>
+	<string name="share_device_fail_already_succeed">Fail,this account has been shared before</string>
+	<string name="share_device_fail_account_not_exist">Fail,account not exist</string>
+	<string name="share_device_fail">fail</string>
+	<string name="add_sharer_account_et_hint_text">Input the account you want to share</string>
+	<string name="camera_list_sharer_tip">-share</string>
 	
+	<string name="device_set_share_device">To share device</string>
+	<string name="device_set_remove_device">To remove device</string>
+	<string name="device_set_sharer_no_property">No operation permissions</string>
+	<string name="turn_over_0">Image flip - 0°</string>
+	<string name="turn_over_180">Image flip - 180°</string>
+	<string name="power_land_on">Power light - on</string>
+	<string name="power_land_off">Power light - off</string>
+	
+	<string name="device_share_to_other_add_sharer_account">Add account</string>
+	<string name="device_share_to_other_tips">Added account</string>
+	<string name="flash_lighting_tips">Please send mobile phone flash near the camera</string>
+	<string name="flash_lighting_btn_tips">Flash</string>
+	
+	<string name="camera_list_wifi_intensity">Wifi intensity:</string>
+	<string name="set_device_wifi_device_name">Camera name:</string>
+	
+	<string name="login_or_register_activity_slogan">I feel safe with you</string>
+	<string name="login_or_register_activity_register">Register</string>
+	<string name="login_or_register_activity_login">Sign in</string>
+	<string name="login_or_register_activity_try">try eCam</string>
+	
+	<string name="big_image_activity_dialog_title_remove">Delete</string>
+	<string name="big_image_activity_dialog_message">Delete this image?</string>
+	<string name="big_image_activity_dialog_yes_button_name">Yes</string>
+	<string name="big_image_activity_dialog_no_button_name">No</string>
+	
+	<string name="modify_password_activity_fail_toast">Entered passwords differ,please input again</string>
+	<string name="modify_password_activity_success_toast">Success</string>
+	<string name="modify_password_activity_passwordformat_fail">Password error ,please input again</string>
+	<string name="modify_password_activity_authencation_fail">Password error ,please input again</string>
+	
+	<string name="modify_cellphonenum_activity_fail_toast">Set fail</string>
+	<string name="modify_cellphonenum_activity_success_toast">Sussess</string>
+	
+	<string name="change_devicename_activity_add_success_tip">Success! A name for camera</string>
+	<string name="change_devicename_activity_success">Succeess</string>
+	<string name="change_devicename_activity_fail">Fail</string>
+	
+	<string name="remove_device_popmenu_yes">Yes</string>
+	<string name="remove_device_popmenu_no">No</string>
+	<string name="remove_device_popmenu_logout">Yes</string>
+	
+	<string name="device_sharer_item_remove">Delete</string>
+	
+	<string name="flash_activity_turn_red_btn_name">click when the light turn red </string>
+	
+	<string name="send_wifi_config_activity_tip">Put the speaker close to the camera microphone</string>
+	<string name="send_wifi_config_activity_dialog_title">Network unstable</string>
+	<string name="send_wifi_config_activity_dialog_message">Please try again later</string>
+	<string name="send_wifi_config_activity_dialog_yes_btn">Sure</string>
+	<string name="send_wifi_config_activity_tip_2">sending command...</string>
+	
+	<string name="QR_code">QR code</string>
+	<string name="msg_default_status">put the qr code in the box, can automatically scan</string>
 	<style name="MyCheckBox" parent="@android:style/Widget.CompoundButton.CheckBox">
 		<item name="android:button">@drawable/cb_select</item>
 	</style>
+	
 </resources>

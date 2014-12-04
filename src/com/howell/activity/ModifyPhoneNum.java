@@ -86,10 +86,10 @@ public class ModifyPhoneNum extends Activity implements OnClickListener{
 					try{
 						pd.dismiss();
 						if(res.getResult().equals("OK")){
-							MessageUtiles.postToast(ModifyPhoneNum.this.getApplicationContext(), "手机号设置成功", 1000);
+							MessageUtiles.postToast(ModifyPhoneNum.this.getApplicationContext(), getResources().getString(R.string.modify_cellphonenum_activity_success_toast), 1000);
 							ModifyPhoneNum.this.finish();
 						}else {
-							MessageUtiles.postToast(ModifyPhoneNum.this.getApplicationContext(), "设置失败", 1000);
+							MessageUtiles.postToast(ModifyPhoneNum.this.getApplicationContext(), getResources().getString(R.string.modify_cellphonenum_activity_fail_toast), 1000);
 						}
 					}catch (Exception e) {
 						// TODO: handle exception

@@ -143,7 +143,7 @@ public class Settings extends Activity implements OnClickListener {
 		
 		TextView tv_clear = (TextView) view.findViewById(R.id.tv_remove);
 		//TextView tv_exit = (TextView) view.findViewById(R.id.tv_exit);
-		tv_clear.setText("注销");
+		tv_clear.setText(getResources().getString(R.string.remove_device_popmenu_logout));
 //		TextPaint tp = tv_clear.getPaint();
 //        tp.setFakeBoldText(true);
 //        tp = tv_exit.getPaint();

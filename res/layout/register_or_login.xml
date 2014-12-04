@@ -16,7 +16,7 @@
         android:layout_marginTop="130dip"
         android:layout_weight="1"
         android:textColor="@color/white"
-        android:text="有它，我会更安心" />
+        android:text="@string/login_or_register_activity_slogan" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
             android:background="@drawable/register_btn_selector"
             android:paddingBottom="15dip"
             android:paddingTop="15dip"
-            android:text="新用户注册"
+            android:text="@string/login_or_register_activity_register"
             android:textColor="@color/test_btn_bg"
             android:textSize="18dp" />
 
@@ -46,7 +46,7 @@
             android:background="@drawable/login_btn_selsector"
             android:paddingBottom="15dip"
             android:paddingTop="15dip"
-            android:text="已有帐号登录"
+            android:text="@string/login_or_register_activity_login"
             android:textColor="@color/white"
             android:textSize="18dp" />
 
@@ -61,7 +61,7 @@
             android:paddingBottom="15dip"
             android:paddingTop="15dip"
             android:textSize="18dp"
-            android:text="演示"
+            android:text="@string/login_or_register_activity_try"
             android:textColor="@color/white" />
 
     </LinearLayout>

@@ -73,7 +73,7 @@ public class ModifyPassword extends Activity implements OnClickListener{
     		super.handleMessage(msg);
     		switch (msg.what) {
 			case PASSWORD_DIF:
-				MessageUtiles.postToast(getApplicationContext(), "密码不一致，请重新输入", 1000);
+				MessageUtiles.postToast(getApplicationContext(), getResources().getString(R.string.modify_password_activity_fail_toast), 1000);
 				mOriginalPassword.setText("");
 				mNewPassword.setText("");
 				mConfirmPassword.setText("");
@@ -125,12 +125,12 @@ public class ModifyPassword extends Activity implements OnClickListener{
 					try{
 						pd.dismiss();
 						if(res.getResult().equals("OK")){
-							MessageUtiles.postToast(ModifyPassword.this.getApplicationContext(), "密码设置成功", 1000);
+							MessageUtiles.postToast(ModifyPassword.this.getApplicationContext(), getResources().getString(R.string.modify_password_activity_success_toast), 1000);
 							ModifyPassword.this.finish();
 						}else if(res.getResult().equals("PasswordFormat")){
-							MessageUtiles.postToast(ModifyPassword.this.getApplicationContext(), "密码格式不正确，请重新输入", 1000);
+							MessageUtiles.postToast(ModifyPassword.this.getApplicationContext(), getResources().getString(R.string.modify_password_activity_passwordformat_fail), 1000);
 						}else if( res.getResult().equals("Authencation")){
-							MessageUtiles.postToast(ModifyPassword.this.getApplicationContext(), "密码不正确，请重新输入", 1000);
+							MessageUtiles.postToast(ModifyPassword.this.getApplicationContext(), getResources().getString(R.string.modify_password_activity_authencation_fail), 1000);
 						}
 					}catch (Exception e) {
 						// TODO: handle exception

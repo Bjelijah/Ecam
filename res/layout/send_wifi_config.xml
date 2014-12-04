@@ -27,7 +27,7 @@
         android:gravity="center"
         android:textSize="18sp"
         android:textColor="@color/black"
-        android:text="将手机扬声器靠近摄像机麦克风" />
+        android:text="@string/send_wifi_config_activity_tip" />
 
     <FrameLayout
         android:layout_width="match_parent"

@@ -122,10 +122,10 @@ public class SendWifi extends Activity implements OnClickListener , XQuquerListe
 		case R.id.ib_send_wifi:
 			if(SoapManager.getInstance().getmGetDeviceMatchingCodeRes() == null){
 				Dialog alertDialog = new AlertDialog.Builder(SendWifi.this).   
-			            setTitle("网络不稳定").   
-			            setMessage("请检查wifi连接后重试").   
+			            setTitle(getResources().getString(R.string.send_wifi_config_activity_dialog_title)).   
+			            setMessage(getResources().getString(R.string.send_wifi_config_activity_dialog_message)).   
 			            setIcon(R.drawable.expander_ic_minimized).   
-			            setPositiveButton("确定", new DialogInterface.OnClickListener() {   
+			            setPositiveButton(getResources().getString(R.string.send_wifi_config_activity_dialog_yes_btn), new DialogInterface.OnClickListener() {   
 
 			                @Override   
 			                public void onClick(DialogInterface dialog, int which) {   
@@ -144,7 +144,7 @@ public class SendWifi extends Activity implements OnClickListener , XQuquerListe
 				return;
 			}
 			send();
-			tips.setText("正在发送指令...");
+			tips.setText(getResources().getString(R.string.send_wifi_config_activity_tip_2));
 			break;
 		case R.id.ib_send_wifi_back:
 			finish();

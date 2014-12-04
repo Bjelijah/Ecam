@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:textSize="16sp"
-            android:text="删除" />
+            android:text="@string/remove_device_popmenu_yes" />
 
     </LinearLayout>
     
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="16sp"
-            android:text="取消" />
+            android:text="@string/remove_device_popmenu_no" />
     </LinearLayout>
 
 

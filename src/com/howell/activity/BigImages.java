@@ -206,10 +206,10 @@ public class BigImages extends Activity implements OnClickListener,OnPageChangeL
 		case R.id.ib_delete:
 		{
 			Dialog alertDialog = new AlertDialog.Builder(BigImages.this).   
-    	            setTitle("删除").   
-    	            setMessage("删除这张照片？").   
+    	            setTitle(getResources().getString(R.string.big_image_activity_dialog_title_remove)).   
+    	            setMessage(getResources().getString(R.string.big_image_activity_dialog_message)).   
     	            setIcon(R.drawable.expander_ic_minimized).   
-    	            setPositiveButton("确定", new DialogInterface.OnClickListener() {   
+    	            setPositiveButton(getResources().getString(R.string.big_image_activity_dialog_yes_button_name), new DialogInterface.OnClickListener() {   
     	                @Override   
     	                public void onClick(DialogInterface dialog, int which) {   
     	                    // TODO Auto-generated method stub  
@@ -219,7 +219,7 @@ public class BigImages extends Activity implements OnClickListener,OnPageChangeL
     	                	adapter.notifyDataSetChanged();
     	                }   
     	            }).   
-    	            setNegativeButton("取消", new DialogInterface.OnClickListener() {
+    	            setNegativeButton(getResources().getString(R.string.big_image_activity_dialog_no_button_name), new DialogInterface.OnClickListener() {
 						
 						@Override
 						public void onClick(DialogInterface arg0, int arg1) {

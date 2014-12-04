@@ -119,9 +119,46 @@
 	<string name="camera_list_wifi_intensity">信号强度：</string>
 	<string name="set_device_wifi_device_name">摄像机名：</string>
 	
+	<string name="login_or_register_activity_slogan">有它，我会更安心</string>
+	<string name="login_or_register_activity_register">新用户注册</string>
+	<string name="login_or_register_activity_login">已有帐号登录</string>
+	<string name="login_or_register_activity_try">试用e看</string>
+	
+	<string name="big_image_activity_dialog_title_remove">删除</string>
+	<string name="big_image_activity_dialog_message">删除这张照片？</string>
+	<string name="big_image_activity_dialog_yes_button_name">确定</string>
+	<string name="big_image_activity_dialog_no_button_name">取消</string>
+	
+	<string name="modify_password_activity_fail_toast">密码不一致，请重新输入</string>
+	<string name="modify_password_activity_success_toast">密码设置成功</string>
+	<string name="modify_password_activity_passwordformat_fail">密码格式不正确，请重新输入</string>
+	<string name="modify_password_activity_authencation_fail">密码不正确，请重新输入</string>
+	
+	<string name="modify_cellphonenum_activity_fail_toast">设置失败</string>
+	<string name="modify_cellphonenum_activity_success_toast">手机号设置成功</string>
+	
+	<string name="change_devicename_activity_add_success_tip">添加成功啦！为您的摄像机起个名字吧</string>
+	<string name="change_devicename_activity_success">设置成功</string>
+	<string name="change_devicename_activity_fail">设置失败，请重新设置</string>
+	
+	<string name="remove_device_popmenu_yes">删除</string>
+	<string name="remove_device_popmenu_no">取消</string>
+	<string name="remove_device_popmenu_logout">注销</string>
+	
+	<string name="device_sharer_item_remove">删除</string>
+	
+	<string name="flash_activity_turn_red_btn_name">变红了请点我</string>
+	
+	<string name="send_wifi_config_activity_tip">将手机扬声器靠近摄像机麦克风</string>
+	<string name="send_wifi_config_activity_dialog_title">网络不稳定</string>
+	<string name="send_wifi_config_activity_dialog_message">请检查wifi连接后重试</string>
+	<string name="send_wifi_config_activity_dialog_yes_btn">确定</string>
+	<string name="send_wifi_config_activity_tip_2">正在发送指令...</string>
+	
 	<string name="QR_code">二维码</string>
 	<string name="msg_default_status">将二维码放入框内，即可自动扫描</string>
 	<style name="MyCheckBox" parent="@android:style/Widget.CompoundButton.CheckBox">
 		<item name="android:button">@drawable/cb_select</item>
 	</style>
+	
 </resources>

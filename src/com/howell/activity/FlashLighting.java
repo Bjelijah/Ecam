@@ -84,7 +84,7 @@ public class FlashLighting extends Activity implements OnClickListener{
 				c.twinkle();
 				isBtnClicked = true;
 				mFlashLight.setImageDrawable(getResources().getDrawable(R.drawable.ok_btn_red_selector));
-				btnTips.setText("变红了请点我");
+				btnTips.setText(getResources().getString(R.string.flash_activity_turn_red_btn_name));
 				btnTips.setTextColor(getResources().getColor(R.color.red));
 				mSucceedTips.setVisibility(View.VISIBLE);
 			}else{
@@ -129,7 +129,7 @@ public class FlashLighting extends Activity implements OnClickListener{
     	thread = null;
 		isBtnClicked = false;
 		mFlashLight.setImageDrawable(getResources().getDrawable(R.drawable.flash_light_btn_selecor));
-		btnTips.setText("闪一闪");
+		btnTips.setText(getResources().getString(R.string.flash_lighting_btn_tips));
 		btnTips.setTextColor(getResources().getColor(R.color.btn_blue_color));
 		mSucceedTips.setVisibility(View.GONE);
 	}

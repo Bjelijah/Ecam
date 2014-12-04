@@ -37,7 +37,7 @@
         android:layout_marginTop="20dip"
         android:textSize="18sp"
         android:textColor="@color/black"
-        android:text="添加成功啦！为您的摄像机起个名字吧" />
+        android:text="@string/change_devicename_activity_add_success_tip" />
 
     <EditText
         android:id="@+id/et_change_device_name"

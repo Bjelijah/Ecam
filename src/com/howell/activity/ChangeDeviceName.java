@@ -83,7 +83,7 @@ public class ChangeDeviceName extends Activity implements OnClickListener{
 					super.onPostExecute(result);
 					waitDialog.dismiss();
 					if(res != null && res.getResult().equals("OK")){
-						MessageUtiles.postToast(ChangeDeviceName.this, "设置成功", 1000);
+						MessageUtiles.postToast(ChangeDeviceName.this, getResources().getString(R.string.change_devicename_activity_success), 1000);
 						finish();
 						if(mActivities.getmActivityList().containsKey("GetMatchResult")){
 							mActivities.getmActivityList().get("GetMatchResult").finish();
@@ -101,7 +101,7 @@ public class ChangeDeviceName extends Activity implements OnClickListener{
 						Intent intent = new Intent(ChangeDeviceName.this,CamTabActivity.class);
 						startActivity(intent);
 					}else{
-						MessageUtiles.postToast(ChangeDeviceName.this, "设置失败，请重新设置", 1000);
+						MessageUtiles.postToast(ChangeDeviceName.this, getResources().getString(R.string.change_devicename_activity_fail), 1000);
 					}
 				}
 				

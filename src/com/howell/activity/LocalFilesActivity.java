@@ -31,7 +31,7 @@ import com.howell.utils.ScaleImageUtils;
 
 public class LocalFilesActivity extends Activity {
 	private ListView listview;
-	private LinearLayout background;
+	private LinearLayout noImageBg;
 	private ArrayList<String> mList ;
 	private int imageWidth;
 	private int imageHeight;
@@ -50,7 +50,7 @@ public class LocalFilesActivity extends Activity {
 		setContentView(R.layout.local_files);
     	mActivities = Activities.getInstance();
     	mActivities.addActivity("LocalFilesActivity",LocalFilesActivity.this);
-		background = (LinearLayout)findViewById(R.id.lf_local_file);
+    	noImageBg = (LinearLayout)findViewById(R.id.ll_loacl_file_no_image);
 		imageWidth = PhoneConfig.getPhoneWidth(getApplicationContext())/3;
 		imageHeight = imageWidth * 3 / 4;
 		f = new File("/sdcard/eCamera");
@@ -60,9 +60,9 @@ public class LocalFilesActivity extends Activity {
 		//mList = new ArrayList<String>();
 		getFileName(f);
 		if(mList.size() != 0){
-			background.setBackgroundColor(getResources().getColor(R.color.bg));
+			noImageBg.setVisibility(View.GONE);
 		}else{
-			background.setBackgroundResource(R.drawable.local_file_bg);
+			noImageBg.setVisibility(View.VISIBLE);
 		}
 		handler = new ShowPictureHandler();
 		adapter = new MyAdapter(this);
@@ -99,9 +99,9 @@ public class LocalFilesActivity extends Activity {
 			adapter.maps.clear();
 		getFileName(f);
 		if(mList.size() != 0){
-			background.setBackgroundColor(getResources().getColor(R.color.bg));
+			noImageBg.setVisibility(View.GONE);
 		}else{
-			background.setBackgroundResource(R.drawable.local_file_bg);
+			noImageBg.setVisibility(View.VISIBLE);
 		}
 		adapter.notifyDataSetChanged();
 	}

@@ -41,6 +41,7 @@ import com.howell.utils.ClientUpdateUtils;
 import com.howell.utils.MessageUtiles;
 import com.howell.utils.PhoneConfig;
 import com.howell.utils.ScaleImageUtils;
+import com.howell.utils.UpdateCameraUtils;
 import com.howell.protocol.GetDevVerReq;
 import com.howell.protocol.GetDevVerRes;
 import com.howell.protocol.LoginResponse;
@@ -66,6 +67,7 @@ public class CameraList extends ListActivity implements Observer{
     private ImageButton mAddDevice;
     private ImageButton mBack;
     private LinearLayout noCameraImg;
+    private ImageView ivNoCameraImg;
 //    private TextView mTvAdd;
 //    private ImageView mIvAdd;
     
@@ -75,6 +77,8 @@ public class CameraList extends ListActivity implements Observer{
     private Bitmap bm;
     
     private DeviceVersionDetective detective;
+    
+    private int country;//中国 0 ，别的国家 1
     
     //private Button test;
     
@@ -105,8 +109,18 @@ public class CameraList extends ListActivity implements Observer{
         	detective = DeviceVersionDetective.getInstance();
         	detective.attachObserver("CameraList", CameraList.this);
         	
-        	noCameraImg = (LinearLayout)findViewById(R.id.ll_no_cameralist_default);
+        	if(getResources().getConfiguration().locale.getCountry().equals("CN")){
+        		country = 0;
+        	}else{
+        		country = 1;
+        	}
         	
+        	noCameraImg = (LinearLayout)findViewById(R.id.ll_no_cameralist_default);
+        	ivNoCameraImg = (ImageView)findViewById(R.id.iv_no_cameralist_default);
+        	if(country == 0)
+        		ivNoCameraImg.setImageResource(R.drawable.img_no_device);
+        	else
+        		ivNoCameraImg.setImageResource(R.drawable.img_no_device_eng);
         	mActivities = Activities.getInstance();
         	mActivities.addActivity("CameraList",CameraList.this);
         	
@@ -148,10 +162,12 @@ public class CameraList extends ListActivity implements Observer{
 //		});
         mBack = (ImageButton)findViewById(R.id.ib_camera_list_back);
         mBack.setOnClickListener(adapter.listener);
-        if(mResponse.getAccount().equals("100868")){
+        
+        //-----如果是演示帐号则去掉添加按钮，加上返回按钮
+        /*if(mResponse.getAccount().equals("100868")){
         	mAddDevice.setVisibility(View.GONE);
         	mBack.setVisibility(View.VISIBLE);
-        }
+        }*/
         
         listView = (MyListView)findViewById(android.R.id.list);
         listView.setonRefreshListener(new OnRefreshListener() {
@@ -181,8 +197,8 @@ public class CameraList extends ListActivity implements Observer{
 		                	GetDevVerReq getDevVerReq = new GetDevVerReq(mResponse.getAccount(),mResponse.getLoginSession(),d.getDevID());
 		                	GetDevVerRes getDevVerRes = mSoapManager.getGetDevVerRes(getDevVerReq);
 		                	Log.e("GetDevVerRes", getDevVerRes.toString());
-		                	//if(/*d.isOnLine() && */UpdateCameraUtils.needToUpdate(res.getCurDevVer(), res.getNewDevVer())){
-		                	if(!getDevVerRes.getCurDevVer().equals(getDevVerRes.getNewDevVer())){	
+		                	if(d.isOnLine() && UpdateCameraUtils.needToUpdate(getDevVerRes.getCurDevVer(), getDevVerRes.getNewDevVer())){
+		                	//if(!getDevVerRes.getCurDevVer().equals(getDevVerRes.getNewDevVer())){	
 		                		System.out.println(getDevVerRes.getCurDevVer()+","+getDevVerRes.getNewDevVer());
 		                		d.setHasUpdate(true);
 		                	}
@@ -196,10 +212,10 @@ public class CameraList extends ListActivity implements Observer{
 					@Override
 					protected void onPostExecute(Void result) {
 						try{
-							adapter.notifyDataSetChanged();
-							listView.onRefreshComplete();
+//							adapter.notifyDataSetChanged();
+//							listView.onRefreshComplete();
 							listView.setEnabled(true);
-							
+							myHandler.sendEmptyMessage(refreshCameraList);
 						}catch (Exception e) {
 							// TODO: handle exception
 						}
@@ -243,13 +259,22 @@ public class CameraList extends ListActivity implements Observer{
 			    UpdateAndroidTokenRes res = mSoapManager.GetUpdateAndroidTokenRes(updateAndroidTokenReq);
 			    Log.e("savePushParam", res.getResult());
 			    
+			    while(list == null){
+			    	try {
+						sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			    	System.out.println("test");
+			    }
 			    for(NodeDetails d:list){
                 	System.out.println("aaaaaa");
                 	GetDevVerReq getDevVerReq = new GetDevVerReq(mResponse.getAccount(),mResponse.getLoginSession(),d.getDevID());
                 	GetDevVerRes getDevVerRes = mSoapManager.getGetDevVerRes(getDevVerReq);
                 	Log.e("GetDevVerRes", getDevVerRes.toString());
-                	//if(/*d.isOnLine() && */UpdateCameraUtils.needToUpdate(res.getCurDevVer(), res.getNewDevVer())){
-                	if(!getDevVerRes.getCurDevVer().equals(getDevVerRes.getNewDevVer())){	
+                	if(d.isOnLine() && UpdateCameraUtils.needToUpdate(getDevVerRes.getCurDevVer(), getDevVerRes.getNewDevVer())){
+                	//if(!getDevVerRes.getCurDevVer().equals(getDevVerRes.getNewDevVer())){	
                 		System.out.println(getDevVerRes.getCurDevVer()+","+getDevVerRes.getNewDevVer());
                 		d.setHasUpdate(true);
                 	}
@@ -295,10 +320,10 @@ public class CameraList extends ListActivity implements Observer{
     			adapter.notifyDataSetChanged();
     			System.out.println("list size:"+list.size());
 				if(list.size() == 0){
-					listView.setVisibility(View.GONE);
+					//listView.setVisibility(View.GONE);
 					noCameraImg.setVisibility(View.VISIBLE);
 				}else{
-					listView.setVisibility(View.VISIBLE);
+					//listView.setVisibility(View.VISIBLE);
 					noCameraImg.setVisibility(View.GONE);
 				}
     		}
@@ -444,10 +469,25 @@ public class CameraList extends ListActivity implements Observer{
             
             NodeDetails camera = list.get(position);
             
-            if(!camera.iseStoreFlag()){
-            	holder.playback.setImageResource(R.drawable.card_tab_playback_no_sdcard);
+            if(country == 0){
+        		holder.playback.setImageResource(R.drawable.card_playback_selector);
+        		holder.about.setImageResource(R.drawable.card_property_selector);
+        		holder.set.setImageResource(R.drawable.card_setting_selector);
             }else{
-            	holder.playback.setImageResource(R.drawable.card_tab_playback);
+        		holder.playback.setImageResource(R.drawable.card_playback_eng_selector);
+        		holder.about.setImageResource(R.drawable.card_property_eng_selector);
+        		holder.set.setImageResource(R.drawable.card_setting_eng_selector);
+            }
+            if(!camera.iseStoreFlag()){
+            	if(country == 0)
+            		holder.playback.setImageResource(R.drawable.card_tab_playback_no_sdcard);
+            	else
+            		holder.playback.setImageResource(R.drawable.card_tab_playback_no_sdcard_eng);
+            }else{
+            	if(country == 0)
+            		holder.playback.setImageResource(R.drawable.card_tab_playback);
+            	else
+            		holder.playback.setImageResource(R.drawable.card_tab_playback_eng);
             }
             
             if(camera.getSharingFlag() == 1){
@@ -457,7 +497,7 @@ public class CameraList extends ListActivity implements Observer{
             }
             
             if (camera.isOnLine()) {
-            	if(getResources().getConfiguration().locale.getCountry().equals("CN"))
+            	if(country == 0)
             		holder.iv_offline.setImageResource(R.drawable.card_online_image_blue);
             	else
             		holder.iv_offline.setImageResource(R.drawable.card_online_image_blue_english);
@@ -480,7 +520,7 @@ public class CameraList extends ListActivity implements Observer{
                 	holder.iv_wifi.setImageResource(R.drawable.wifi_4);
                 }
 	        }else {
-	        	if(getResources().getConfiguration().locale.getCountry().equals("CN"))
+	        	if(country == 0)
 	        		holder.iv_offline.setImageResource(R.drawable.card_offline_image_gray);
 	        	else 
 	        		holder.iv_offline.setImageResource(R.drawable.card_offline_image_gray_english);

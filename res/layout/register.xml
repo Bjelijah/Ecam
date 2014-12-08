@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dip"
-        android:hint="用户名:6-32个字符"
+        android:hint="@string/register_activity_username"
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
         android:paddingTop="10dip"
@@ -58,7 +58,7 @@
         android:id="@+id/et_register_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="您的邮箱，用于密码找回"
+        android:hint="@string/register_activity_email"
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
         android:paddingTop="10dip"
@@ -73,7 +73,7 @@
         android:id="@+id/et_register_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="密码:6-20个字母或数字，区分大小写"
+        android:hint="@string/register_activity_password"
         android:password="true"
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
@@ -89,7 +89,7 @@
         android:id="@+id/et_register_password_confirm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="确认密码"
+        android:hint="@string/register_activity_password_confirm"
         android:password="true"
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
@@ -108,14 +108,16 @@
         android:textColor="@color/black"
         android:layout_marginLeft="15dip"
         style="@style/MyCheckBox"
-        android:text="显示密码" />
+        android:text="@string/register_activity_show_password" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
         android:layout_marginTop="100dip"
         android:textColor="@color/black"
-        android:text="点击注册，即同意我们的注册条款" />
+        android:text="@string/register_activity_tips" />
 
 </LinearLayout>

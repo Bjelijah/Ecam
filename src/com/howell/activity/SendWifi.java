@@ -109,7 +109,7 @@ public class SendWifi extends Activity implements OnClickListener , XQuquerListe
 	public void onSend() {
 		// TODO Auto-generated method stub
 		Log.i("", "onSend");
-		tips.setText("发送完毕");
+		tips.setText(getResources().getString(R.string.send_wifi_config_activity_tip_finish));
 		//btnTips.setText("重新发送");
 		//mAddCamera.setVisibility(View.VISIBLE);
 		mFinish.setVisibility(View.VISIBLE);
@@ -144,7 +144,7 @@ public class SendWifi extends Activity implements OnClickListener , XQuquerListe
 				return;
 			}
 			send();
-			tips.setText(getResources().getString(R.string.send_wifi_config_activity_tip_2));
+			tips.setText(getResources().getString(R.string.send_wifi_config_activity_tip_sending));
 			break;
 		case R.id.ib_send_wifi_back:
 			finish();

@@ -33,7 +33,7 @@
             android:layout_marginLeft="15dip"
             android:layout_marginRight="15dip"
             android:layout_marginBottom="10dip"
-            android:text="摄像机正在配置，请稍候..." />
+            android:text="@string/match_activity_tips" />
 
         <ProgressBar
             android:id="@+id/sb_get_match_result"

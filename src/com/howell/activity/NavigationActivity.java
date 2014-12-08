@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 /** What's new 的导航界面 */
 public class NavigationActivity extends Activity {
@@ -43,11 +44,34 @@ public class NavigationActivity extends Activity {
     	mActivities = Activities.getInstance();
     	mActivities.addActivity("NavigationActivity",NavigationActivity.this);
 		LayoutInflater inflater = getLayoutInflater();
+		
+		View firstView = inflater.inflate(R.layout.viewpager01, null);
+		View secondView = inflater.inflate(R.layout.viewpager02, null);
+		View thirdView = inflater.inflate(R.layout.viewpager03, null);
+		View fourthView = inflater.inflate(R.layout.viewpager04, null);
+		
 		pageViews = new ArrayList<View>();
-		pageViews.add(inflater.inflate(R.layout.viewpager01, null));
-		pageViews.add(inflater.inflate(R.layout.viewpager02, null));
-		pageViews.add(inflater.inflate(R.layout.viewpager03, null));
-		pageViews.add(inflater.inflate(R.layout.viewpager04, null));
+		pageViews.add(firstView);
+		pageViews.add(secondView);
+		pageViews.add(thirdView);
+		pageViews.add(fourthView);
+		
+		LinearLayout first = (LinearLayout)firstView.findViewById(R.id.first_viewpager);
+		LinearLayout second = (LinearLayout)secondView.findViewById(R.id.second_viewpager);
+		LinearLayout third = (LinearLayout)thirdView.findViewById(R.id.third_viewpager);
+		LinearLayout fourth = (LinearLayout)fourthView.findViewById(R.id.fourth_viewpager);
+		
+		if(getResources().getConfiguration().locale.getCountry().equals("CN")){
+			first.setBackgroundResource(R.drawable.b1);
+			second.setBackgroundResource(R.drawable.b2);
+			third.setBackgroundResource(R.drawable.b3);
+			fourth.setBackgroundResource(R.drawable.b4);
+		}else{
+			first.setBackgroundResource(R.drawable.b1_eng);
+			second.setBackgroundResource(R.drawable.b2_eng);
+			third.setBackgroundResource(R.drawable.b3_eng);
+			fourth.setBackgroundResource(R.drawable.b4_eng);
+		}
 
 		// 小圆点数组，大小是图片的个数
 		imageViews = new ImageView[pageViews.size()];

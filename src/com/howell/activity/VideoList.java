@@ -75,6 +75,10 @@ public class VideoList extends ListActivity implements OnItemClickListener {
     	
     	utils = new PlaybackUtils();
     	noVideos = (ImageView)findViewById(R.id.iv_no_replay);
+    	if(getResources().getConfiguration().locale.getCountry().equals("CN"))
+    		noVideos.setImageResource(R.drawable.no_videos);
+    	else
+    		noVideos.setImageResource(R.drawable.no_videos_eng);
         mSearch = (ImageButton)findViewById(R.id.ib_search);
         mSearch.setEnabled(false);
         mSearch.setOnClickListener(new OnClickListener() {

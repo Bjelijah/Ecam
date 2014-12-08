@@ -147,13 +147,51 @@
 	
 	<string name="device_sharer_item_remove">删除</string>
 	
+	<string name="loacl_file_activity_no_iamge_bg">暂无文件</string>
+	
+	<string name="register_activity_username">用户名:6&#8211;32个字符</string>
+	<string name="register_activity_email">您的邮箱，用于密码找回</string>
+	<string name="register_activity_password">密码:66&#8211;20个字母或数字，区分大小写</string>
+	<string name="register_activity_password_confirm">确认密码</string>
+	<string name="register_activity_show_password">显示密码</string>
+	<string name="register_activity_tips">点击注册，即同意我们的注册条款</string>
+	<string name="register_activity_success">注册成功</string>
+	<string name="register_activity_fail_account_exist">注册失败，账户已存在</string>
+	<string name="register_activity_fail_email_exist">注册失败，邮箱已注册</string>
+	<string name="register_activity_fail">注册失败</string>
+	<string name="register_activity_account_password_empty">帐号，密码不能为空</string>
+	<string name="register_activity_password_differ">两次密码不一致</string>
+	<string name="register_activity_fail_account_format">注册失败，用户名不能包含非法字符</string>
+	
 	<string name="flash_activity_turn_red_btn_name">变红了请点我</string>
+	<string name="flash_activity_turn_red_tip">指示灯变成红色了吗？</string>
 	
 	<string name="send_wifi_config_activity_tip">将手机扬声器靠近摄像机麦克风</string>
 	<string name="send_wifi_config_activity_dialog_title">网络不稳定</string>
 	<string name="send_wifi_config_activity_dialog_message">请检查wifi连接后重试</string>
 	<string name="send_wifi_config_activity_dialog_yes_btn">确定</string>
-	<string name="send_wifi_config_activity_tip_2">正在发送指令...</string>
+	<string name="send_wifi_config_activity_tip_sending">正在发送指令&#8230;</string>
+	<string name="send_wifi_config_activity_tip_finish">发送完毕</string>
+	<string name="send_wifi_config_activity_btn_send">发送</string>
+	<string name="send_wifi_config_activity_btn_send_finish">变绿了请点我</string>
+	<string name="send_wifi_config_activity_final_tips">指示灯变成绿色就成功啦！否则请重新发送</string>
+	
+	<string name="set_wifi_activity_device_name">摄像机名:</string>
+	<string name="set_wifi_activity_input_device_name">输入摄像机名称</string>
+	<string name="set_wifi_activity_wifi_name">无线局域网:</string>
+	<string name="set_wifi_activity_wifi_password">密码:</string>
+	<string name="set_wifi_activity_input_wifi_password">输入wifi密码</string>
+	
+	<string name="match_activity_tips">摄像机正在配置，请稍候 &#8230;</string>
+	<string name="match_activity_fail_tips">添加失败，网络不稳定，检查网络后请重新添加</string>
+	<string name="match_activity_fail_dialog_title">添加失败</string>
+	<string name="match_activity_fail_dialog_message">网络不稳定，检查网络后请重新添加</string>
+	<string name="match_activity_fail_dialog_yes_btn">确定</string>
+	<string name="match_activity_success_dialog_title">添加成功</string>
+	<string name="match_activity_success_dialog_message">摄像机添加成功</string>
+	<string name="match_activity_success_dialog_yes_btn">确定</string>
+	
+	<string name="navigation_activity_btn">进入e看</string>
 	
 	<string name="QR_code">二维码</string>
 	<string name="msg_default_status">将二维码放入框内，即可自动扫描</string>

@@ -52,7 +52,7 @@
             android:layout_width="80dip"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="指示灯变成红色了吗？"
+            android:text="@string/flash_activity_turn_red_tip"
             android:textColor="@color/red"
             android:textSize="18sp" />
 

@@ -50,7 +50,7 @@
 	        android:layout_width="100dip"
 	        android:layout_height="wrap_content"
 	        android:textSize="18sp"
-	        android:text="摄像机名:"
+	        android:text="@string/set_wifi_activity_device_name"
 	        android:textColor="@color/black" />
         <EditText
             android:id="@+id/et_device_name"
@@ -58,7 +58,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_marginLeft="5dip"
-            android:hint="输入摄像机名称"
+            android:hint="@string/set_wifi_activity_input_device_name"
             android:textColorHint="@color/light_gray"
             android:background="@null" >
             <requestFocus />
@@ -78,7 +78,7 @@
 	        android:layout_width="100dip"
 	        android:layout_height="wrap_content"
 	        android:textSize="18sp"
-	        android:text="无线局域网:"
+	        android:text="@string/set_wifi_activity_wifi_name"
 	        android:textColor="@color/black" />
 
         <!--  <EditText
@@ -112,7 +112,7 @@
 	        android:layout_width="100dip"
 	        android:layout_height="wrap_content"
 	        android:textSize="18sp"
-	        android:text="密码:"
+	        android:text="@string/set_wifi_activity_wifi_password"
 	        android:textColor="@color/black" />
         <EditText
             android:id="@+id/et_wifi_password"
@@ -120,7 +120,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_marginLeft="5dip"
-            android:hint="输入wifi密码"
+            android:hint="@string/set_wifi_activity_input_wifi_password"
             android:textColorHint="@color/light_gray"
             android:background="@null" >
             

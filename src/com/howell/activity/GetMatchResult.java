@@ -113,12 +113,12 @@ public class GetMatchResult extends Activity implements OnClickListener{
         	if(getResultTask != null)
         		getResultTask.cancel(true);
         	mSeekBar.setVisibility(View.GONE);
-        	mTips.setText("添加失败，网络不稳定，检查网络后请重新添加");
+        	mTips.setText(getResources().getString(R.string.match_activity_fail_tips));
         	Dialog alertDialog = new AlertDialog.Builder(GetMatchResult.this).   
-		            setTitle("添加失败").   
-		            setMessage("网络不稳定，检查网络后请重新添加").   
+		            setTitle(getResources().getString(R.string.match_activity_fail_dialog_title)).   
+		            setMessage(getResources().getString(R.string.match_activity_fail_dialog_message)).   
 		            setIcon(R.drawable.expander_ic_minimized).   
-		            setPositiveButton("确定", new DialogInterface.OnClickListener() {   
+		            setPositiveButton(getResources().getString(R.string.match_activity_fail_dialog_yes_btn), new DialogInterface.OnClickListener() {   
 
 		                @Override   
 		                public void onClick(DialogInterface dialog, int which) {   
@@ -200,10 +200,10 @@ public class GetMatchResult extends Activity implements OnClickListener{
         		task.cancel(true);
         	mSeekBar.setProgress(progress);
         	Dialog alertDialog = new AlertDialog.Builder(GetMatchResult.this).   
-		            setTitle("成功").   
-		            setMessage("摄像机添加成功").   
+		            setTitle(getResources().getString(R.string.match_activity_success_dialog_title)).   
+		            setMessage(getResources().getString(R.string.match_activity_success_dialog_message)).   
 		            setIcon(R.drawable.expander_ic_minimized).   
-		            setPositiveButton("确定", new DialogInterface.OnClickListener() {   
+		            setPositiveButton(getResources().getString(R.string.match_activity_success_dialog_yes_btn), new DialogInterface.OnClickListener() {   
 
 		                @Override   
 		                public void onClick(DialogInterface dialog, int which) {   

@@ -67,7 +67,7 @@
             android:layout_width="80dip"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="指示灯变成绿色就成功啦！否则请重新发送"
+            android:text="@string/send_wifi_config_activity_final_tips"
             android:textColor="@color/btn_green_color"
             android:textSize="18sp" />
         <FrameLayout
@@ -119,7 +119,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/red"
-                android:text="发送" />
+                android:text="@string/send_wifi_config_activity_btn_send" />
 
         </LinearLayout>
 
@@ -144,7 +144,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/btn_green_color"
-                android:text="变绿了请点我" />
+                android:text="@string/send_wifi_config_activity_btn_send_finish" />
 
         </LinearLayout>
 

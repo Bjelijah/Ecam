@@ -75,11 +75,11 @@ public class Register extends Activity implements OnClickListener{
 			final String passwordAgain = mPasswordAgain.getText().toString();
 			if(mUserName.getText().toString().equals("") || mPassword.getText().toString().equals("")
 					|| mPasswordAgain.getText().toString().equals("")){
-				MessageUtiles.postToast(Register.this, "帐号，密码不能为空", 1000);
+				MessageUtiles.postToast(Register.this, getResources().getString(R.string.register_activity_account_password_empty), 1000);
 				return;
 			}
 			if(!password.equals(passwordAgain)){
-				MessageUtiles.postToast(Register.this, "两次密码不一致", 1000);
+				MessageUtiles.postToast(Register.this, getResources().getString(R.string.register_activity_password_differ), 1000);
 				return ;
 			}
 			waitDialog = MessageUtiles.postWaitingDialog(Register.this);
@@ -105,16 +105,20 @@ public class Register extends Activity implements OnClickListener{
 					waitDialog.dismiss();
 					if(res != null && res.getResult().equals("OK")){
 						System.out.println("注册成功！");
-						MessageUtiles.postToast(Register.this, "注册成功", 1000);
+						MessageUtiles.postToast(Register.this, getResources().getString(R.string.register_activity_success), 1000);
+						finish();
 					}else if(res != null && res.getResult().equals("AccountExist")){
-						System.out.println("注册失败！");
-						MessageUtiles.postToast(Register.this, "注册失败，账户已存在", 1000);
+						System.out.println("注册失败！AccountExist");
+						MessageUtiles.postToast(Register.this, getResources().getString(R.string.register_activity_fail_account_exist), 1000);
 					}else if(res != null && res.getResult().equals("EmailExist")){
-						System.out.println("注册失败！");
-						MessageUtiles.postToast(Register.this, "注册失败，邮箱已注册", 1000);
+						System.out.println("注册失败！EmailExist");
+						MessageUtiles.postToast(Register.this, getResources().getString(R.string.register_activity_fail_email_exist), 1000);
+					}else if(res != null && res.getResult().equals("AccountFormat")){
+						System.out.println("注册失败！AccountFormat");
+						MessageUtiles.postToast(Register.this, getResources().getString(R.string.register_activity_fail_account_format), 1000);
 					}else {
 						System.out.println("注册失败！");
-						MessageUtiles.postToast(Register.this, "注册失败", 1000);
+						MessageUtiles.postToast(Register.this, getResources().getString(R.string.register_activity_fail), 1000);
 					}
 				}
 				

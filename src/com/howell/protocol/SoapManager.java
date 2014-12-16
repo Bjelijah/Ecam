@@ -24,7 +24,7 @@ public class SoapManager implements Serializable {
 
     private static String sNameSpace = "http://www.haoweis.com/HomeServices/MCU/";
 
-    private static String sEndPoint = "http://5.196.6.27:8800/HomeService/HomeMCUService.svc?xsd=xsd0";
+    private static String sEndPoint = "http://www.haoweis.com:8800/HomeService/HomeMCUService.svc?xsd=xsd0";
 
     //private static String sSoapAction = null;
 

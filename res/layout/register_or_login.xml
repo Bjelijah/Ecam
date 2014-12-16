@@ -50,7 +50,7 @@
             android:textColor="@color/white"
             android:textSize="18dp" />
 
-        <!--  <TextView
+        <TextView
             android:id="@+id/btn_test"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
             android:paddingTop="15dip"
             android:textSize="18dp"
             android:text="@string/login_or_register_activity_try"
-            android:textColor="@color/white" />-->
+            android:textColor="@color/white" />
 
     </LinearLayout>
 

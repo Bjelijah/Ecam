@@ -23,7 +23,7 @@ import com.howell.protocol.LoginResponse;
 import com.howell.protocol.SoapManager;
 
 public class RegisterOrLogin extends Activity implements OnClickListener{
-	private TextView mRegister,mLogin/*,mTest*/;
+	private TextView mRegister,mLogin,mTest;
     private SoapManager mSoapManager;
     private Activities mActivities;
     private HomeKeyEventBroadCastReceiver receiver;
@@ -43,7 +43,7 @@ public class RegisterOrLogin extends Activity implements OnClickListener{
 		
 		mRegister = (TextView)findViewById(R.id.btn_register);
 		mLogin = (TextView)findViewById(R.id.btn_login);
-		//mTest = (TextView)findViewById(R.id.btn_test);
+		mTest = (TextView)findViewById(R.id.btn_test);
 		
 		TextPaint tp = mRegister.getPaint();
         tp.setFakeBoldText(true);
@@ -51,12 +51,12 @@ public class RegisterOrLogin extends Activity implements OnClickListener{
         tp = mLogin.getPaint();
         tp.setFakeBoldText(true);
         
-//        tp = mTest.getPaint();
-//        tp.setFakeBoldText(true);
+        tp = mTest.getPaint();
+        tp.setFakeBoldText(true);
 		
 		mRegister.setOnClickListener(this);
 		mLogin.setOnClickListener(this);
-//		mTest.setOnClickListener(this);
+		mTest.setOnClickListener(this);
 	}
 	@Override
 	public void onClick(View view) {
@@ -72,7 +72,7 @@ public class RegisterOrLogin extends Activity implements OnClickListener{
 			startActivity(intent);
 			break;
 			
-		/*case R.id.btn_test:
+		case R.id.btn_test:
 			waitDialog = MessageUtiles.postWaitingDialog(RegisterOrLogin.this);
 			waitDialog.show();
 			new AsyncTask<Void, Integer, Void>() {
@@ -100,7 +100,7 @@ public class RegisterOrLogin extends Activity implements OnClickListener{
 				}
 				
 			}.execute();
-			break;*/
+			break;
 			
 		default:
 			break;

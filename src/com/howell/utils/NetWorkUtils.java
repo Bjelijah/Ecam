@@ -100,6 +100,7 @@ public class NetWorkUtils {
 	public void scan() {
 		mWifiManager.startScan();
 		listResult = mWifiManager.getScanResults();
+		System.out.println("listResult size:"+listResult.size());
 		if (listResult != null) {
 			Log.i(TAG, "当前区域存在无线网络，请查看扫描结果");
 		} else {
@@ -117,7 +118,7 @@ public class NetWorkUtils {
 		}
 		// 开始扫描网络
 		scan();
-		listResult = mWifiManager.getScanResults();
+		//listResult = mWifiManager.getScanResults();
 		if (listResult != null) {
 			for (int i = 0; i < listResult.size(); i++) {
 				mScanResult = listResult.get(i);
@@ -137,7 +138,8 @@ public class NetWorkUtils {
 	public ArrayList<String> getSSIDResultList() {
 		ArrayList<String> SSIDList = new ArrayList<String>();
 		scan();
-		listResult = mWifiManager.getScanResults();
+		//listResult = mWifiManager.getScanResults();
+		//System.out.println("listResult size:"+listResult.size());
 		if (listResult != null) {
 			for (int i = 0; i < listResult.size(); i++) {
 				mScanResult = listResult.get(i);

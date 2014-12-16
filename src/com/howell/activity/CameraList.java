@@ -164,10 +164,10 @@ public class CameraList extends ListActivity implements Observer{
         mBack.setOnClickListener(adapter.listener);
         
         //-----如果是演示帐号则去掉添加按钮，加上返回按钮
-        /*if(mResponse.getAccount().equals("100868")){
+        if(mResponse.getAccount().equals("100868")){
         	mAddDevice.setVisibility(View.GONE);
         	mBack.setVisibility(View.VISIBLE);
-        }*/
+        }
         
         listView = (MyListView)findViewById(android.R.id.list);
         listView.setonRefreshListener(new OnRefreshListener() {

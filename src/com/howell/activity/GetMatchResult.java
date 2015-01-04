@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -89,11 +90,14 @@ public class GetMatchResult extends Activity implements OnClickListener{
         @Override
         protected Void doInBackground(Void... params) {
             // TODO Auto-generated method stub
+        	System.out.println("TimerTask doInBackground");
             while(nowProgress <= progress){
             	if (isCancelled()) break;
 
             	try {
+            		System.out.println("TimerTask progress:"+progress);
             		mSeekBar.setProgress(nowProgress);
+            		
 					Thread.sleep(1000);
 					nowProgress ++;
 				} catch (InterruptedException e) {
@@ -109,6 +113,7 @@ public class GetMatchResult extends Activity implements OnClickListener{
         protected void onPostExecute(Void result) {
         	// TODO Auto-generated method stub
         	super.onPostExecute(result);
+        	System.out.println("TimerTask onPostExecute");
         	System.out.println("OVER :"+task.getStatus());
         	if(getResultTask != null)
         		getResultTask.cancel(true);
@@ -166,6 +171,7 @@ public class GetMatchResult extends Activity implements OnClickListener{
         @Override
         protected Void doInBackground(Void... params) {
             // TODO Auto-generated method stub
+        	System.out.println("GetResultTask doinbackground");
         	queryResult();
         	while(!getDeviceMatchingResultRes.getResult().equals("OK")){
         		if (isCancelled()) break;
@@ -195,9 +201,11 @@ public class GetMatchResult extends Activity implements OnClickListener{
         protected void onPostExecute(Void result) {
         	// TODO Auto-generated method stub
         	super.onPostExecute(result);
+        	System.out.println("GetResultTask onPostExecute");
         	System.out.println(getDeviceMatchingResultRes.getResult());
         	if(task != null)
         		task.cancel(true);
+        	System.out.println("GetResultTask progress:"+progress);
         	mSeekBar.setProgress(progress);
         	Dialog alertDialog = new AlertDialog.Builder(GetMatchResult.this).   
 		            setTitle(getResources().getString(R.string.match_activity_success_dialog_title)).   
@@ -235,6 +243,21 @@ public class GetMatchResult extends Activity implements OnClickListener{
         }
     }
 
+	@Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        super.onKeyDown(keyCode, event);
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        	if(getResultTask != null && !getResultTask.getStatus().equals("FINISHED")){
+				getResultTask.cancel(true);
+			}
+			if(task != null && !task.getStatus().equals("FINISHED")){
+				task.cancel(true);
+			}
+			finish();
+        }
+        return false;
+    }
+	
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub

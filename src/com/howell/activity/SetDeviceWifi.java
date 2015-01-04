@@ -25,7 +25,7 @@ import com.howell.protocol.SoapManager;
 public class SetDeviceWifi extends Activity implements OnClickListener{
 	private NetWorkUtils mWifiAdmin;
 	
-	private EditText wifi_password,device_name;
+	private EditText wifi_password,device_name /*,wifi_ssid*/;
 	//private Button btnSend,btnSendFinish;
 	private ImageButton mOk;
 	private ImageButton mBack;
@@ -63,6 +63,7 @@ public class SetDeviceWifi extends Activity implements OnClickListener{
 		ArrayList<String> list = mWifiAdmin.getSSIDResultList();
 		Member = new String[list.size()];
 		list.toArray(Member);
+//		wifi_ssid = (EditText)findViewById(R.id.et_wifi);
 		wifi_ssid = (Spinner)findViewById(R.id.spinner_wifi);  
         myAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,Member);  
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);  

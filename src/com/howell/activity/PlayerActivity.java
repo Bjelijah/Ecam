@@ -4,7 +4,6 @@ package com.howell.activity;
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.TimeZone;
 import java.util.Timer;
 
@@ -28,7 +27,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.StatFs;
-import android.util.FloatMath;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
@@ -50,7 +48,6 @@ import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.howell.webcam.R;
 import com.howell.broadcastreceiver.HomeKeyEventBroadCastReceiver;
@@ -521,6 +518,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	private void audioRelease(){
 		System.out.println(mAudioTrack.toString());
 		mAudioTrack.release();
+		mAudioTrack = null;
 	}
 	
 	class InviteThread extends Thread{

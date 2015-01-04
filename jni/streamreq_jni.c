@@ -302,7 +302,7 @@ static struct ecam_stream_req_context * fill_context(JNIEnv *env,jobject obj){
 		__android_log_print(ANDROID_LOG_INFO, "fill_context", "obj == null");
 	}
 	jclass clazz = (*env)->GetObjectClass(env, obj);	
-__android_log_print(ANDROID_LOG_INFO, "fill_context", "0.1");
+	__android_log_print(ANDROID_LOG_INFO, "fill_context", "0.1");
 	jfieldID playbackID = (*env)->GetFieldID(env,clazz, "playback", "I");
 	__android_log_print(ANDROID_LOG_INFO, "fill_context", "0.2");
 	jfieldID begID = (*env)->GetFieldID(env,clazz,"beg", "J");

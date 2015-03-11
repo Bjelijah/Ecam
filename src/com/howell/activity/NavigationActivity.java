@@ -89,12 +89,13 @@ public class NavigationActivity extends Activity {
 			// 吧小圆点放进数组中
 			imageViews[i] = imageView;
 			// 默认选中的是第一张图片，此时第一个小圆点是选中状态，其他不是
-			if (i == 0)
+			if (i == 0){
 				imageViews[i].setImageDrawable(getResources().getDrawable(
 						R.drawable.page_indicator_focused));
-			else
+			}else{
 				imageViews[i].setImageDrawable(getResources().getDrawable(
 						R.drawable.page_indicator_unfocused));
+			}
 			// 将imageviews添加到小圆点视图组
 			viewPoints.addView(imageViews[i]);
 		}

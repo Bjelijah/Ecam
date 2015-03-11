@@ -398,6 +398,7 @@ public class InviteUtils {
         Log.e("1", streamReqContext.toString());
         local_sdp = prepareSDP(handle, streamReqContext);
         SDPMessage = Base64.encode(local_sdp.getBytes());
+        System.out.println("SDPMessage:"+SDPMessage);
         // System.out.println(account+"\n"+loginSession+"\n"+devID+"\n"+channelNo+"\n"+streamType+"\n"+dialogID+"\n"+SDPMessage);
         try{
         	Log.e("---------->>>", "00000000000:"+dialogID);

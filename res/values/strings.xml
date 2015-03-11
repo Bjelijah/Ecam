@@ -27,8 +27,8 @@
     <string name="account">My account</string>
     <string name="sys_message">System message</string>
     <string name="alarm">Alarm</string>
-    <string name="about">About eCamera V1.1.4</string>
-    <string name="exit">Sign Out</string>
+    <string name="about">About eCamera V1.1.6</string>
+    <string name="exit">Log Out</string>
     <string name="email">Email</string>
     <string name="mobiletel">Mobile phone number</string>
     <string name="account_name">Account</string>
@@ -121,7 +121,7 @@
 	
 	<string name="login_or_register_activity_slogan">I feel safe with you</string>
 	<string name="login_or_register_activity_register">Register</string>
-	<string name="login_or_register_activity_login">Sign In</string>
+	<string name="login_or_register_activity_login">Log In</string>
 	<string name="login_or_register_activity_try">Try eCam</string>
 	
 	<string name="big_image_activity_dialog_title_remove">Delete</string>

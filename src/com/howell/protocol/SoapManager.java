@@ -26,7 +26,7 @@ public class SoapManager implements Serializable {
 
     //https://www.haoweis.com:8807/HomeService/HomeMCUService.svc 
     //http://www.haoweis.com:8800/HomeService/HomeMCUService.svc?xsd=xsd0
-    private static String sEndPoint = "https://www.haoweis.com:8807/HomeService/HomeMCUService.svc";
+    private static String sEndPoint = "http://www.haoweis.com:8800/HomeService/HomeMCUService.svc?xsd=xsd0";
 
     //private static String sSoapAction = null;
 

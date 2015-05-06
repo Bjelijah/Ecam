@@ -44,11 +44,11 @@ LOCAL_SRC_FILES := libhwplay.so
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/include
 include $(PREBUILT_SHARED_LIBRARY)
 
-include $(CLEAR_VARS)
-LOCAL_MODULE := jpush
-LOCAL_SRC_FILES := libjpush.so
-LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/include
-include $(PREBUILT_SHARED_LIBRARY)
+#include $(CLEAR_VARS)
+#LOCAL_MODULE := jpush
+#LOCAL_SRC_FILES := libjpush.so
+#LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/include
+#include $(PREBUILT_SHARED_LIBRARY)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := avdevice
@@ -106,16 +106,16 @@ include $(PREBUILT_STATIC_LIBRARY)
 #LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/include
 #include $(PREBUILT_SHARED_LIBRARY)
 
-include $(CLEAR_VARS)
-LOCAL_MODULE := ffmpeg
+#include $(CLEAR_VARS)
+#LOCAL_MODULE := ffmpeg
 # Add your application source files here...
-LOCAL_SRC_FILES := ffmpeg.c
+#LOCAL_SRC_FILES := ffmpeg.c
 #LOCAL_SHARED_LIBRARIES := libhwplay
-LOCAL_STATIC_LIBRARIES := swscale swresample postproc avutil avformat avfilter avdevice avcodec
-LOCAL_LDFLAGS := -LF:/Android/android-ndk-r8e/sources/cxx-stl/gnu-libstdc++/4.6/libs/armeabi-v7a
-LOCAL_LDLIBS := -llog -lgnustl_static -lGLESv2 -lz -ldl -lgcc
+#LOCAL_STATIC_LIBRARIES := swscale swresample postproc avutil avformat avfilter avdevice avcodec
+#LOCAL_LDFLAGS := -LF:/Android/android-ndk-r8e/sources/cxx-stl/gnu-libstdc++/4.6/libs/armeabi-v7a
+#LOCAL_LDLIBS := -llog -lgnustl_static -lGLESv2 -lz -ldl -lgcc
 #	-L$(NDK_PLATFORMS_ROOT)/$(TARGET_PLATFORM)/arch-arm/usr/lib -L$(LOCAL_PATH) -lz -ldl -lgcc 
-include $(BUILD_SHARED_LIBRARY)
+#include $(BUILD_SHARED_LIBRARY)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := player_jni

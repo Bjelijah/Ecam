@@ -1397,6 +1397,123 @@ public class SoapManager implements Serializable {
     	   	return res;
     }
     
+    // 获取系统通知列表
+    public QueryNoticesRes getQueryNoticesRes(QueryNoticesReq req){
+    	System.out.println("QueryNotices");
+    	QueryNoticesRes res = new QueryNoticesRes();
+    	SoapObject rpc = new SoapObject(sNameSpace, "queryNoticesReq");
+    	rpc.addProperty("Account", req.getAccount());
+    	rpc.addProperty("LoginSession", req.getLoginSession());
+    	SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/queryNotices");
+    	try{
+    		Object result = object.getProperty("result");
+    	 	res.setResult(result.toString());
+    	 	System.out.println(result);
+    	 	
+    	 	SoapObject noticeList = (SoapObject)object.getProperty("Notice");
+//	        System.out.println("QueryNoticesRes nodeList:"+noticeList.toString());
+	        ArrayList<NoticeList> list = new ArrayList<NoticeList>();
+	        for(int i = 0 ;i<noticeList.getPropertyCount();i++){
+	        	NoticeList n = new NoticeList();
+	        	
+		        SoapObject notice = (SoapObject)noticeList.getProperty(i);
+//		        System.out.println("NoticeList:"+notice.toString());
+		        
+		        Object id = notice.getProperty("ID");
+		        n.setiD(id.toString());
+		        System.out.println("id:"+id);
+		        Object message = notice.getProperty("Message");
+		        n.setMessage(message.toString());
+		        System.out.println("message:"+message);
+		        Object classification = notice.getProperty("Classification");
+		        n.setClassification(classification.toString());
+		        System.out.println("classification:"+classification);
+		        Object time = notice.getProperty("Time");
+		        n.setTime(time.toString());
+		        System.out.println("time:"+time);
+		        Object status = notice.getProperty("Status");
+		        n.setStatus(status.toString());
+		        System.out.println("status:"+status);
+		        Object devID = notice.getProperty("DevID");
+		        n.setDevID(devID.toString());
+		        System.out.println("devID:"+devID);
+		        Object channelNo = notice.getProperty("ChannelNo");
+		        n.setChannelNo(Integer.valueOf(channelNo.toString()));
+		        System.out.println("channelNo:"+channelNo);
+		        Object name = notice.getProperty("Name");
+		        n.setName(name.toString());
+		        System.out.println("name:"+name);
+		        try{
+		        	SoapObject pictureIDList = (SoapObject)notice.getProperty("PictureID");
+		        	System.out.println("pictureIDList:"+pictureIDList);
+		        	ArrayList<String> pictureIdList = new ArrayList<String>();
+		        	for(int j = 0 ; j < pictureIDList.getPropertyCount() ; j++){
+		        		Object pictureID = pictureIDList.getProperty(j);
+		        		System.out.println("pictureID:"+pictureID);
+		        		pictureIdList.add(pictureID.toString());
+		        	}
+			        n.setPictureID(pictureIdList);
+			        
+		        }catch(Exception e){
+		        	System.out.println("pictureID is null");
+		        }
+		        list.add(n);
+	        }
+    	 	res.setNoticeList(list);
+    	}catch (Exception e) {
+    		// TODO: handle exception
+    		System.out.println("QueryNoticesRes crash");
+    	}
+    	return res;
+    }
+    
+    // 标记通知状态
+    public FlaggedNoticeStatusRes getFlaggedNoticeStatusRes(FlaggedNoticeStatusReq req){
+    	FlaggedNoticeStatusRes res = new FlaggedNoticeStatusRes();
+    	SoapObject rpc = new SoapObject(sNameSpace, "FlaggedNoticeStatusReq");
+    	rpc.addProperty("Account", req.getAccount());
+    	rpc.addProperty("LoginSession", req.getLoginSession());
+    	rpc.addProperty("Status", req.getStatus());
+    	rpc.addProperty("NoticeID", req.getNoticeID());
+    	SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/flaggedNoticeStatus");
+    	try{
+    		Object result = object.getProperty("result");
+    	 	res.setResult(result.toString());
+    	 	System.out.println(result);
+    	}catch (Exception e) {
+    		// TODO: handle exception
+    	}
+    	return res;
+    }
+    
+    // 获取图片信息
+    public GetPictureRes getGetPictureRes(GetPictureReq req){
+    	System.out.println("GetPictureRes");
+    	GetPictureRes res = new GetPictureRes();
+    	SoapObject rpc = new SoapObject(sNameSpace, "getPictureReq");
+    	rpc.addProperty("Account", req.getAccount());
+    	rpc.addProperty("LoginSession", req.getLoginSession());
+    	rpc.addProperty("PictureID", req.getPictureID());
+    	SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/getPicture");
+    	try{
+    		Object result = object.getProperty("result");
+    	 	res.setResult(result.toString());
+    	 	System.out.println(result);
+    	 	
+    	 	Object pictureID = object.getProperty("PictureID");
+    	 	res.setPictureID(pictureID.toString());
+    	 	System.out.println(pictureID);
+    	 	
+    	 	Object picture = object.getProperty("Picture");
+    	 	res.setPicture(picture.toString());
+    	 	System.out.println(picture);
+    	}catch (Exception e) {
+    		// TODO: handle exception
+    		System.out.println("GetPictureRes crash");
+    	}
+    	return res;
+    }
+    
     
 	@Override
 	public String toString() {

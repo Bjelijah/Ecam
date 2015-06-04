@@ -216,6 +216,10 @@
             android:name="com.howell.activity.PushAlarmActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name="com.howell.activity.NoticeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
         
         <activity
             android:name="com.howell.activity.LogoActivity"

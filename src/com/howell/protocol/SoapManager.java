@@ -26,7 +26,7 @@ public class SoapManager implements Serializable {
 
     //https://www.haoweis.com:8807/HomeService/HomeMCUService.svc 
     //http://www.haoweis.com:8800/HomeService/HomeMCUService.svc?xsd=xsd0
-    private static String sEndPoint = "http://www.haoweis.com:8800/HomeService/HomeMCUService.svc?xsd=xsd0";
+    private static String sEndPoint = "http://www.haoweis.com:8800/HomeService/HomeMCUService.svc?wsdl";
 
     //private static String sSoapAction = null;
 
@@ -173,12 +173,12 @@ public class SoapManager implements Serializable {
         return mLoginResponse;
     }
 
-    public boolean reLogin(){
-    	System.out.println("relogin");
-    	System.out.println(mLoginRequest.toString());
-    	getUserLoginRes(mLoginRequest);
-    	return mLoginResponse.getResult().equals("OK") ? true : false;
-    } 
+//    public boolean reLogin(){
+//    	System.out.println("relogin");
+//    	System.out.println(mLoginRequest.toString());
+//    	getUserLoginRes(mLoginRequest);
+//    	return mLoginResponse.getResult().equals("OK") ? true : false;
+//    } 
     
     
     // 设备状态查询
@@ -194,10 +194,11 @@ public class SoapManager implements Serializable {
 	        Object result = object.getProperty("result");
 	        
 	        if(result.toString().equals("SessionExpired")){
-	        	Log.d("------------->>>>", "result = " + result.toString());
-	        	reLogin();
-	        	return queryDeviceRes;
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLoginSession(mLoginResponse.getLoginSession());
+	        	return getQueryDeviceRes(req);
 	        }
+	        
 	        queryDeviceRes.setResult(result.toString());
 	        //System.out.println("queryDeviceRes:"+queryDeviceRes.getResult());
 	        SoapObject NodeList = (SoapObject)object.getProperty("NodeList");
@@ -315,9 +316,9 @@ public class SoapManager implements Serializable {
         try{
 	        Object result = object.getProperty("result");
 	        if(result.toString().equals("SessionExpired")){
-	        	Log.d("------------->>>>", "result = " + result.toString());
-	        	reLogin();
-	        	return inviteRes;
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLoginSession(mLoginResponse.getLoginSession());
+	        	return getIviteRes(req);
 	        }
 	        inviteRes.setResult(result.toString());
 	        Object dialogID = object.getProperty("DialogID");
@@ -346,9 +347,9 @@ public class SoapManager implements Serializable {
         try{
 	        Object result = object.getProperty("result");
 	        if(result.toString().equals("SessionExpired")){
-	        	Log.d("------------->>>>", "result = " + result.toString());
-	        	reLogin();
-	        	return byeRes;
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLoginSession(mLoginResponse.getLoginSession());
+	        	return getByeRes(req);
 	        }
 	        byeRes.setResult(result.toString());
         }catch (Exception e) {
@@ -371,9 +372,9 @@ public class SoapManager implements Serializable {
 	        
 	        Object result = object.getProperty("result");
 	        if(result.toString().equals("SessionExpired")){
-	        	Log.d("------------->>>>", "result = " + result.toString());
-	        	reLogin();
-	        	return accountRes;
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLoginSession(mLoginResponse.getLoginSession());
+	        	return getAccountRes(req);
 	        }
 	        accountRes.setResult(result.toString());
         }catch (Exception e) {
@@ -432,9 +433,9 @@ public class SoapManager implements Serializable {
         try{
 	        Object result = object.getProperty("result");
 	        if(result.toString().equals("SessionExpired")){
-	        	Log.d("------------->>>>", "result = " + result.toString());
-	        	reLogin();
-	        	return res;
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLoginSession(mLoginResponse.getLoginSession());
+	        	return getCodingParamRes(req);
 	        }
 	        res.setResult(result.toString());
 	        System.out.println("getCodingParamRes:"+result.toString());
@@ -517,9 +518,9 @@ public class SoapManager implements Serializable {
         SoapObject object = initEnvelopAndTransport(rpc,null);
         try{
 	        Object result = object.getProperty("result");
-	        if(result.toString().equals("SessionExpired")){
-	        	reLogin();
-	        }
+//	        if(result.toString().equals("SessionExpired")){
+//	        	reLogin();
+//	        }
 	        Log.e("-----111----->>>>", "result = " + result.toString());
         }catch (Exception e) {
 			// TODO: handle exception
@@ -546,8 +547,9 @@ public class SoapManager implements Serializable {
         	Log.v("sopa","object: "+object);
 	        Object result = object.getProperty("result");
 	        if(result.toString().equals("SessionExpired")){
-	        	reLogin();
-	        	return res;
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLogin_session_(mLoginResponse.getLoginSession());
+	        	return getVMDParam(req);
 	        }
 	        res.setResult(result.toString());
 	
@@ -604,10 +606,10 @@ public class SoapManager implements Serializable {
     	SoapObject object = initEnvelopAndTransport(rpc,null);
     	try{
 	        Object result = object.getProperty("result");
-    	 	if(result.toString().equals("SessionExpired")){
-	        	Log.d("------------->>>>", "result = " + result.toString());
-	        	reLogin();
-	        }
+//    	 	if(result.toString().equals("SessionExpired")){
+//	        	Log.d("------------->>>>", "result = " + result.toString());
+//	        	reLogin();
+//	        }
 	        Log.d("-----222----->>>>", "result = " + result.toString());
     	}catch (Exception e) {
 			// TODO: handle exception
@@ -628,10 +630,10 @@ public class SoapManager implements Serializable {
 	        Object result = object.getProperty("result");
 	        res.setResult(result.toString());
 	        
-    	 	if(result.toString().equals("SessionExpired")){
-	        	Log.d("------------->>>>", "result = " + result.toString());
-	        	reLogin();
-	        	return res;
+	        if(result.toString().equals("SessionExpired")){
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLoginSession(mLoginResponse.getLoginSession());
+	        	return getSetVideoParamRes(req);
 	        }
         }catch (Exception e) {
 			// TODO: handle exception
@@ -652,10 +654,10 @@ public class SoapManager implements Serializable {
 	        Object result = object.getProperty("result");
 	        res.setResult(result.toString());
 	        
-    	 	if(result.toString().equals("SessionExpired")){
-	        	Log.d("------------->>>>", "result = " + result.toString());
-	        	reLogin();
-	        	return res;
+	        if(result.toString().equals("SessionExpired")){
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLoginSession(mLoginResponse.getLoginSession());
+	        	return getGetVideoParamRes(req);
 	        }
     	 	
 	        Object rotationDegree = object.getProperty("RotationDegree");
@@ -669,7 +671,7 @@ public class SoapManager implements Serializable {
     
 //    查询视频存储记录
     public VodSearchRes getVodSearchReq(String account, String loginSession,
-            String devID, int channelNo, String streamType,int pageNo,String startTime,String endTime) {
+            String devID, int channelNo, String streamType,int pageNo,String startTime,String endTime,int pageSize) {
         SoapObject rpc = new SoapObject(sNameSpace, "vodSearchReq");
         rpc.addProperty("Account", account);
         rpc.addProperty("LoginSession", loginSession);
@@ -678,16 +680,13 @@ public class SoapManager implements Serializable {
         rpc.addProperty("StreamType", streamType);
         try {
             SimpleDateFormat foo = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            Log.e("", "11111");
             if(endTime.equals("") || startTime.equals("")){
-            	Log.e("", "22222");
             	Date endDate = new Date();
                 Date startDate = new Date(System.currentTimeMillis() - REPLAYTIME);
                 endTime = foo.format(endDate);
                 startTime = foo.format(startDate);
             }
             Log.e("", startTime+","+endTime);
-            Log.e("", "33333");
             rpc.addProperty("StartTime", startTime);
             rpc.addProperty("EndTime", endTime);
         } catch (Exception e) {
@@ -697,18 +696,20 @@ public class SoapManager implements Serializable {
         }
 
         rpc.addProperty("PageNo", pageNo);
-//        rpc.addProperty("SearchID", 0);
-//        rpc.addProperty("PageSize", 100);
+//        rpc.addProperty("SearchID", "");
+        if(pageSize != 0){
+        	rpc.addProperty("PageSize", pageSize);
+        }
 
         VodSearchRes res = new VodSearchRes();
-        SoapObject object = initEnvelopAndTransport(rpc,null);
+        SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/vodSearch");
         try{
 	        Object result = object.getProperty("result");
 	        System.out.println("result:"+result.toString());
 	        if(result.toString().equals("SessionExpired")){
-	        	Log.d("------------->>>>", "result = " + result.toString());
-	        	reLogin();
-	        	return res;
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	return getVodSearchReq(account,mLoginResponse.getLoginSession(),
+	                    devID, channelNo, streamType,pageNo, startTime, endTime, pageSize);
 	        }
 	        res.setResult(result.toString());
         }catch (Exception e) {
@@ -734,7 +735,7 @@ public class SoapManager implements Serializable {
 	          AnalyzingDoNetOutput.analyzingVODRecord(o.toString(), list);
 	        }
 	        res.setRecord(list);
-	        System.out.println("list����"+list.size());
+	        System.out.println("list:"+list.size());
         }catch (Exception e) {
 			// TODO: handle exception
         	ArrayList<VODRecord> list = new ArrayList<VODRecord>();
@@ -758,10 +759,10 @@ public class SoapManager implements Serializable {
  	       	Object result = object.getProperty("result");
  	        res.setResult(result.toString());
  	        
-    	 	if(result.toString().equals("SessionExpired")){
-	        	Log.d("------------->>>>", "result = " + result.toString());
-	        	reLogin();
-	        	return res;
+ 	       if(result.toString().equals("SessionExpired")){
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLoginSession(mLoginResponse.getLoginSession());
+	        	return getNotifyNATResultRes(req);
 	        }
         }catch (Exception e) {
  			// TODO: handle exception
@@ -783,10 +784,10 @@ public class SoapManager implements Serializable {
  	       	Object result = object.getProperty("result");
  	       	mGetNATServerRes.setResult(result.toString());
  	       	
-    	 	if(result.toString().equals("SessionExpired")){
-	        	Log.d("------------->>>>", "result = " + result.toString());
-	        	reLogin();
-	        	return mGetNATServerRes;
+ 	       if(result.toString().equals("SessionExpired")){
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLoginSession(mLoginResponse.getLoginSession());
+	        	return getGetNATServerRes(req);
 	        }
     	 	
  	        SoapObject STUNServerList = (SoapObject) object.getProperty("STUNServerList");
@@ -828,10 +829,10 @@ public class SoapManager implements Serializable {
     	try{
  	       	Object result = object.getProperty("result");
  	       	res.setResult(result.toString());
-    	 	if(result.toString().equals("SessionExpired")){
-	        	Log.d("------------->>>>", "result = " + result.toString());
-	        	reLogin();
-	        	return res;
+ 	       	if(result.toString().equals("SessionExpired")){
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLoginSession(mLoginResponse.getLoginSession());
+	        	return GetUpdateAndroidTokenRes(req);
 	        }
     	}catch (Exception e) {
 				// TODO: handle exception
@@ -850,10 +851,10 @@ public class SoapManager implements Serializable {
     	try{
  	       	Object result = object.getProperty("result");
  	       	res.setResult(result.toString());
-    	 	if(result.toString().equals("SessionExpired")){
-	        	Log.d("------------->>>>", "result = " + result.toString());
-	        	reLogin();
-	        	return res;
+ 	       	if(result.toString().equals("SessionExpired")){
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLoginSession(mLoginResponse.getLoginSession());
+	        	return GetQueryAndroidTokenRes(req);
 	        }
  	       	Object UDID = object.getProperty("UDID");
 	       	res.setUDID(UDID.toString());
@@ -881,9 +882,9 @@ public class SoapManager implements Serializable {
     		Object result = object.getProperty("result");
  	       	res.setResult(result.toString());
  	       	if(result.toString().equals("SessionExpired")){
-	        	Log.d("------------->>>>", "result = " + result.toString());
-	        	reLogin();
-	        	return res;
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLoginSession(mLoginResponse.getLoginSession());
+	        	return GetPtzControlRes(req);
 	        }
     	}catch (Exception e) {
 				// TODO: handle exception
@@ -900,11 +901,10 @@ public class SoapManager implements Serializable {
     	
  	    Object result = object.getProperty("result");
  	    res.setResult(result.toString());
-    	if(result.toString().equals("SessionExpired")){
-	        Log.d("------------->>>>", "result = " + result.toString());
-	        reLogin();
-	        return res;
-	    }
+ 	    if(result.toString().equals("SessionExpired")){
+ 	    	mLoginResponse = getUserLoginRes(mLoginRequest);
+ 	    	return getQueryClientVersionRes(req);
+ 	    }
     	 	
     	try{
  	       	Object version = object.getProperty("Version");
@@ -947,14 +947,15 @@ public class SoapManager implements Serializable {
  	       	Object result = object.getProperty("result");
  	       	res.setResult(result.toString());
  	       	
-    	 	if(result.toString().equals("SessionExpired")){
-	        	Log.d("------------->>>>", "result = " + result.toString());
-	        	reLogin();
-	        	return res;
+ 	       	if(result.toString().equals("SessionExpired")){
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLoginSession(mLoginResponse.getLoginSession());
+	        	return getGetDevVerRes(req);
 	        }
     	 	
  	       	Object CurDevVer = object.getProperty("CurDevVer");
 	       	res.setCurDevVer(CurDevVer.toString());
+	       	Log.e("getGetDevVerRes", "CurDevVer = " + CurDevVer.toString());
 	       	Object NewDevVer = object.getProperty("NewDevVer");
  	       	res.setNewDevVer(NewDevVer.toString());
     	}catch (Exception e) {
@@ -975,10 +976,10 @@ public class SoapManager implements Serializable {
  	       	Object result = object.getProperty("result");
  	       	res.setResult(result.toString());
  	       	
-    	 	if(result.toString().equals("SessionExpired")){
-	        	Log.d("------------->>>>", "result = " + result.toString());
-	        	reLogin();
-	        	return res;
+ 	       	if(result.toString().equals("SessionExpired")){
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLoginSession(mLoginResponse.getLoginSession());
+	        	return getUpgradeDevVerRes(req);
 	        }
     	}catch (Exception e) {
 				// TODO: handle exception
@@ -999,10 +1000,10 @@ public class SoapManager implements Serializable {
  	       	Object result = object.getProperty("result");
  	       	res.setResult(result.toString());
  	       	
-    	 	if(result.toString().equals("SessionExpired")){
-	        	Log.d("------------->>>>", "result = " + result.toString());
-	        	reLogin();
-	        	return res;
+ 	       	if(result.toString().equals("SessionExpired")){
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLoginSession(mLoginResponse.getLoginSession());
+	        	return getGetAuxiliaryRes(req);
 	        }
  	       	Object auxiliaryState = object.getProperty("AuxiliaryState");
 	       	res.setAuxiliaryState(auxiliaryState.toString());
@@ -1026,10 +1027,10 @@ public class SoapManager implements Serializable {
  	       	Object result = object.getProperty("result");
  	       	res.setResult(result.toString());
  	       	
-    	 	if(result.toString().equals("SessionExpired")){
-	        	Log.d("------------->>>>", "result = " + result.toString());
-	        	reLogin();
-	        	return res;
+ 	       	if(result.toString().equals("SessionExpired")){
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLoginSession(mLoginResponse.getLoginSession());
+	        	return getSetAuxiliaryRes(req);
 	        }
     	}catch (Exception e) {
 				// TODO: handle exception
@@ -1052,9 +1053,9 @@ public class SoapManager implements Serializable {
  	       	res.setResult(result.toString());
  	       	
     	 	if(result.toString().equals("SessionExpired")){
-	        	Log.d("------------->>>>", "result = " + result.toString());
-	        	reLogin();
-	        	return res;
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLoginSession(mLoginResponse.getLoginSession());
+	        	return getSubscribeAndroidPushRes(req);
 	        }
     	}catch (Exception e) {
 				// TODO: handle exception
@@ -1074,10 +1075,10 @@ public class SoapManager implements Serializable {
  	       	Object result = object.getProperty("result");
  	       	res.setResult(result.toString());
  	       	
-    	 	if(result.toString().equals("SessionExpired")){
-	        	Log.d("------------->>>>", "result = " + result.toString());
-	        	reLogin();
-	        	return res;
+ 	       	if(result.toString().equals("SessionExpired")){
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLoginSession(mLoginResponse.getLoginSession());
+	        	return getGetWirelessNetworkRes(req);
 	        }
  	        Object wirelessType = object.getProperty("WirelessType");
 	       	res.setWirelessType(wirelessType.toString());
@@ -1104,10 +1105,10 @@ public class SoapManager implements Serializable {
  	       	Object result = object.getProperty("result");
  	       	res.setResult(result.toString());
  	       	
-    	 	if(result.toString().equals("SessionExpired")){
-	        	Log.d("------------->>>>", "result = " + result.toString());
-	        	reLogin();
-	        	return res;
+ 	       	if(result.toString().equals("SessionExpired")){
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLoginSession(mLoginResponse.getLoginSession());
+	        	return getUpdatePasswordRes(req);
 	        }
     	}catch (Exception e) {
 				// TODO: handle exception
@@ -1128,10 +1129,10 @@ public class SoapManager implements Serializable {
  	       	Object result = object.getProperty("result");
  	       	res.setResult(result.toString());
  	       	
-    	 	if(result.toString().equals("SessionExpired")){
-	        	Log.d("------------->>>>", "result = " + result.toString());
-	        	reLogin();
-	        	return res;
+ 	       	if(result.toString().equals("SessionExpired")){
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLoginSession(mLoginResponse.getLoginSession());
+	        	return getUpdateAccountRes(req);
 	        }
     	}catch (Exception e) {
 				// TODO: handle exception
@@ -1153,11 +1154,6 @@ public class SoapManager implements Serializable {
     		Object result = object.getProperty("result");
     	 	res.setResult(result.toString());
     	 	
-    	 	if(result.toString().equals("SessionExpired")){
-	        	Log.d("------------->>>>", "result = " + result.toString());
-	        	reLogin();
-	        	return res;
-	        }
     	}catch (Exception e) {
     		// TODO: handle exception
     	}
@@ -1190,9 +1186,9 @@ public class SoapManager implements Serializable {
     	 	System.out.println("getAddDeviceRes:"+result.toString());
     	 	
     	 	if(result.toString().equals("SessionExpired")){
-	        	Log.d("------------->>>>", "result = " + result.toString());
-	        	reLogin();
-	        	return res;
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLoginSession(mLoginResponse.getLoginSession());
+	        	return getAddDeviceRes(req);
 	        }
     	}catch (Exception e) {
     		// TODO: handle exception
@@ -1215,9 +1211,9 @@ public class SoapManager implements Serializable {
     	 	res.setResult(result.toString());
     	 	
     	 	if(result.toString().equals("SessionExpired")){
-	        	Log.d("------------->>>>", "result = " + result.toString());
-	        	reLogin();
-	        	return res;
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLoginSession(mLoginResponse.getLoginSession());
+	        	return getUpdateChannelNameRes(req);
 	        }
     	}catch (Exception e) {
     		// TODO: handle exception
@@ -1238,9 +1234,9 @@ public class SoapManager implements Serializable {
     	 	res.setResult(result.toString());
     	 	
     	 	if(result.toString().equals("SessionExpired")){
-	        	Log.d("------------->>>>", "result = " + result.toString());
-	        	reLogin();
-	        	return res;
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLoginSession(mLoginResponse.getLoginSession());
+	        	return getGetDeviceMatchingCodeRes(req);
 	        }
     	 	
     	 	Object matchingCode = object.getProperty("MatchingCode");
@@ -1266,9 +1262,9 @@ public class SoapManager implements Serializable {
     	 	res.setResult(result.toString());
     	 	
     	 	if(result.toString().equals("SessionExpired")){
-	        	Log.d("------------->>>>", "result = " + result.toString());
-	        	reLogin();
-	        	return res;
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLoginSession(mLoginResponse.getLoginSession());
+	        	return getGetDeviceMatchingResultRes(req);
 	        }
     	 	
     	 	Object devid = object.getProperty("DevID");
@@ -1295,9 +1291,9 @@ public class SoapManager implements Serializable {
     		Object result = object.getProperty("result");
     	 	res.setResult(result.toString());
     	 	if(result.toString().equals("SessionExpired")){
-	        	Log.d("------------->>>>", "result = " + result.toString());
-	        	reLogin();
-	        	return res;
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLoginSession(mLoginResponse.getLoginSession());
+	        	return getAddDeviceSharerRes(req);
 	        }
     	}catch (Exception e) {
     		// TODO: handle exception
@@ -1319,9 +1315,9 @@ public class SoapManager implements Serializable {
     		Object result = object.getProperty("result");
     	 	res.setResult(result.toString());
     	 	if(result.toString().equals("SessionExpired")){
-	        	Log.d("------------->>>>", "result = " + result.toString());
-	        	reLogin();
-	        	return res;
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLoginSession(mLoginResponse.getLoginSession());
+	        	return getNullifyDeviceSharerRes(req);
 	        }
     	}catch (Exception e) {
     		// TODO: handle exception
@@ -1342,9 +1338,9 @@ public class SoapManager implements Serializable {
     		Object result = object.getProperty("result");
     	 	res.setResult(result.toString());
     	 	if(result.toString().equals("SessionExpired")){
-	        	Log.d("------------->>>>", "result = " + result.toString());
-	        	reLogin();
-	        	return res;
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLoginSession(mLoginResponse.getLoginSession());
+	        	return getNullifyDeviceRes(req);
 	        }
     	}catch (Exception e) {
     		// TODO: handle exception
@@ -1367,9 +1363,9 @@ public class SoapManager implements Serializable {
     	 	System.out.println(result);
     	 	
     	 	if(result.toString().equals("SessionExpired")){
-	        	Log.d("------------->>>>", "result = " + result.toString());
-	        	reLogin();
-	        	return res;
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLoginSession(mLoginResponse.getLoginSession());
+	        	return getQueryDeviceSharerRes(req);
 	        }
     	 	
     	 	SoapObject sharerList = (SoapObject)object.getProperty("SharerList");
@@ -1404,11 +1400,29 @@ public class SoapManager implements Serializable {
     	SoapObject rpc = new SoapObject(sNameSpace, "queryNoticesReq");
     	rpc.addProperty("Account", req.getAccount());
     	rpc.addProperty("LoginSession", req.getLoginSession());
+    	if(req.getPageNo() != 0)
+    		rpc.addProperty("PageNo", req.getPageNo());
+    	if(req.getPageSize() != 0)
+    		rpc.addProperty("PageSize", req.getPageSize());
     	SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/queryNotices");
     	try{
     		Object result = object.getProperty("result");
+    		if(result.toString().equals("SessionExpired")){
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLoginSession(mLoginResponse.getLoginSession());
+	        	return getQueryNoticesRes(req);
+	        }
     	 	res.setResult(result.toString());
     	 	System.out.println(result);
+    	 	
+    	 	Object pageNo = object.getProperty("PageNo");
+    	 	res.setPageNo(Integer.valueOf(pageNo.toString()));
+    	 	
+    	 	Object pageCount = object.getProperty("PageCount");
+    	 	res.setPageCount(Integer.valueOf(pageCount.toString()));
+    	 	
+    	 	Object recordCount = object.getProperty("RecordCount");
+    	 	res.setRecordCount(Integer.valueOf(recordCount.toString()));
     	 	
     	 	SoapObject noticeList = (SoapObject)object.getProperty("Notice");
 //	        System.out.println("QueryNoticesRes nodeList:"+noticeList.toString());
@@ -1421,41 +1435,47 @@ public class SoapManager implements Serializable {
 		        
 		        Object id = notice.getProperty("ID");
 		        n.setiD(id.toString());
-		        System.out.println("id:"+id);
+		        //System.out.println("id:"+id);
 		        Object message = notice.getProperty("Message");
 		        n.setMessage(message.toString());
-		        System.out.println("message:"+message);
+		       // System.out.println("message:"+message);
 		        Object classification = notice.getProperty("Classification");
 		        n.setClassification(classification.toString());
-		        System.out.println("classification:"+classification);
+		        //System.out.println("classification:"+classification);
 		        Object time = notice.getProperty("Time");
 		        n.setTime(time.toString());
-		        System.out.println("time:"+time);
+		        //System.out.println("time:"+time);
 		        Object status = notice.getProperty("Status");
 		        n.setStatus(status.toString());
-		        System.out.println("status:"+status);
+		       // System.out.println("status:"+status);
 		        Object devID = notice.getProperty("DevID");
 		        n.setDevID(devID.toString());
-		        System.out.println("devID:"+devID);
+		       // System.out.println("devID:"+devID);
 		        Object channelNo = notice.getProperty("ChannelNo");
 		        n.setChannelNo(Integer.valueOf(channelNo.toString()));
-		        System.out.println("channelNo:"+channelNo);
-		        Object name = notice.getProperty("Name");
-		        n.setName(name.toString());
-		        System.out.println("name:"+name);
+		       // System.out.println("channelNo:"+channelNo);
+		        try{
+			        Object name = notice.getProperty("Name");
+			        n.setName(name.toString());
+			        //System.out.println("name:"+name);
+		        }catch(Exception e){
+		        	System.out.println("name is null");
+		        	n.setName("");
+		        }
 		        try{
 		        	SoapObject pictureIDList = (SoapObject)notice.getProperty("PictureID");
-		        	System.out.println("pictureIDList:"+pictureIDList);
+		        	//System.out.println("pictureIDList:"+pictureIDList);
 		        	ArrayList<String> pictureIdList = new ArrayList<String>();
 		        	for(int j = 0 ; j < pictureIDList.getPropertyCount() ; j++){
 		        		Object pictureID = pictureIDList.getProperty(j);
-		        		System.out.println("pictureID:"+pictureID);
+		        		//System.out.println("pictureID:"+pictureID);
 		        		pictureIdList.add(pictureID.toString());
 		        	}
 			        n.setPictureID(pictureIdList);
 			        
 		        }catch(Exception e){
-		        	System.out.println("pictureID is null");
+		        	//System.out.println("pictureID is null");
+		        	n.setPictureID(new ArrayList<String>());
 		        }
 		        list.add(n);
 	        }
@@ -1478,6 +1498,11 @@ public class SoapManager implements Serializable {
     	SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/flaggedNoticeStatus");
     	try{
     		Object result = object.getProperty("result");
+    		if(result.toString().equals("SessionExpired")){
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLoginSession(mLoginResponse.getLoginSession());
+	        	return getFlaggedNoticeStatusRes(req);
+	        }
     	 	res.setResult(result.toString());
     	 	System.out.println(result);
     	}catch (Exception e) {
@@ -1497,23 +1522,26 @@ public class SoapManager implements Serializable {
     	SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/getPicture");
     	try{
     		Object result = object.getProperty("result");
+    		if(result.toString().equals("SessionExpired")){
+	        	mLoginResponse = getUserLoginRes(mLoginRequest);
+	        	req.setLoginSession(mLoginResponse.getLoginSession());
+	        	return getGetPictureRes(req);
+	        }
     	 	res.setResult(result.toString());
-    	 	System.out.println(result);
+    	 	System.out.println("GetPictureRes result"+result);
     	 	
     	 	Object pictureID = object.getProperty("PictureID");
     	 	res.setPictureID(pictureID.toString());
-    	 	System.out.println(pictureID);
+    	 	System.out.println("pictureID:"+pictureID);
     	 	
     	 	Object picture = object.getProperty("Picture");
     	 	res.setPicture(picture.toString());
-    	 	System.out.println(picture);
     	}catch (Exception e) {
     		// TODO: handle exception
     		System.out.println("GetPictureRes crash");
     	}
     	return res;
     }
-    
     
 	@Override
 	public String toString() {

@@ -124,9 +124,9 @@ public class InviteUtils {
 //		return queryDeviceRes;
 //	}
 
-	public VodSearchRes getVodSearchReq(int pageNo,String startTime,String endTime) {
+	public VodSearchRes getVodSearchReq(int pageNo,String startTime,String endTime,int pageSize) {
         return mSoapManager.getVodSearchReq(account, loginSession, devID,
-                channelNo, streamType , pageNo,startTime,endTime);
+                channelNo, streamType , pageNo,startTime,endTime,pageSize);
     }
 
     // srteam = 0 :main ,stream =1 :sub

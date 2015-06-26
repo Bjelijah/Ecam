@@ -26,6 +26,17 @@ public class QueryNoticesReq {
 		this.time = time;
 		this.sender = sender;
 	}
+	
+	public QueryNoticesReq(String account, String loginSession, int pageNo,
+			int pageSize) {
+		super();
+		this.account = account;
+		this.loginSession = loginSession;
+		this.pageNo = pageNo;
+		this.pageSize = pageSize;
+	}
+
+
 	public QueryNoticesReq() {
 		super();
 	}

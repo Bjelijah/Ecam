@@ -137,7 +137,7 @@
 	<string name="modify_cellphonenum_activity_fail_toast">设置失败</string>
 	<string name="modify_cellphonenum_activity_success_toast">手机号设置成功</string>
 	
-	<string name="change_devicename_activity_add_success_tip">添加成功啦！为您的摄像机起个名字吧</string>
+	<string name="change_devicename_activity_add_success_tip">为您的摄像机起个名字吧</string>
 	<string name="change_devicename_activity_success">设置成功</string>
 	<string name="change_devicename_activity_fail">设置失败，请重新设置</string>
 	

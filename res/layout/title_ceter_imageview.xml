@@ -8,15 +8,6 @@
 		android:textSize="23sp"
 		></TextView>
 	
-	<ImageView android:id="@+id/iv_right"
-		android:layout_gravity="right|center_vertical"
-		android:layout_height="25dip"
-		 android:layout_width="20dip"
-		  android:paddingLeft="20dip"
-		android:paddingRight="20dip"
-		 android:layout_marginRight="10dip"
-		
-		></ImageView>
 	<ImageView android:id="@+id/iv_left" 
 	    android:src="@drawable/back_btn_selector"
 		android:layout_height="wrap_content" 

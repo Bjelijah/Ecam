@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center|right"
 	        android:layout_marginRight="10dip"
-	        android:background="@drawable/complete_btn_selector"
+	        android:background="@drawable/next_btn_selector"
 	        />
         
         <!--  <Button

@@ -219,7 +219,7 @@
         <activity
             android:name="com.howell.activity.NoticeActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar" />
+            android:theme="@android:style/Theme.Light.NoTitleBar" />
         
         <activity
             android:name="com.howell.activity.LogoActivity"
@@ -234,6 +234,11 @@
         <activity
             android:name="com.howell.activity.VideoList"
             android:label="@string/video_list"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        
+        <activity
+            android:name="com.wyy.twodimcode.CaptureActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         

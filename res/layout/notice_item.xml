@@ -8,7 +8,9 @@
         android:id="@+id/notice_item_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:layout_marginTop="5dip"
+        android:layout_marginLeft="5dip"
+        android:textSize="18sp"
         android:text="TextView" />
 
     <TextView
@@ -17,59 +19,70 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dip"
         android:layout_marginBottom="5dip"
-        android:textSize="18sp"
+        android:layout_marginLeft="5dip"
+        android:textSize="15sp"
         android:text="TextView" />
 
-    <TableLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
 
-        <TableRow
-            android:id="@+id/notice_item_tableRow1"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content" >
-
             <ImageView
                 android:id="@+id/notice_item_imageView1"
-                android:layout_weight="1.0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="5dip"
-                android:paddingRight="5dip"
-                android:src="@drawable/card_camera_default_image" />
+                android:paddingTop="5dip"
+                android:paddingBottom="5dip"
+                android:scaleType="fitXY"
+                android:src="@drawable/empty_photo" />
             <ImageView
                 android:id="@+id/notice_item_imageView2"
-                android:layout_weight="1.0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="5dip"
-                android:paddingRight="5dip"
-                android:src="@drawable/card_camera_default_image" />
+                android:paddingTop="5dip"
+                android:paddingBottom="5dip"
+                android:scaleType="fitXY"
+                android:src="@drawable/empty_photo" />
+            
+        </LinearLayout>
 
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/notice_item_tableRow2"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content" >
             <ImageView
                 android:id="@+id/notice_item_imageView3"
-                android:layout_weight="1.0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="5dip"
-                android:paddingRight="5dip"
-                android:src="@drawable/card_camera_default_image" />
+                android:paddingBottom="5dip"
+                android:scaleType="fitXY"
+                android:src="@drawable/empty_photo" />
             <ImageView
                 android:id="@+id/notice_item_imageView4"
-                android:layout_weight="1.0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="5dip"
-                android:paddingRight="5dip"
-                android:src="@drawable/card_camera_default_image" />
-        </TableRow>
+                android:paddingBottom="5dip"
+                android:scaleType="fitXY"
+                android:src="@drawable/empty_photo" />
 
-    </TableLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/notice_item_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:textColor="@color/gray"
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp" />
 
 </LinearLayout>

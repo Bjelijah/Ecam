@@ -26,4 +26,22 @@ public class VMDParamReq {
 	public int getChannelNo() {
 		return channel_no_;
 	}
+
+	public void setAccount_(String account_) {
+		this.account_ = account_;
+	}
+
+	public void setLogin_session_(String login_session_) {
+		this.login_session_ = login_session_;
+	}
+
+	public void setDev_id_(String dev_id_) {
+		this.dev_id_ = dev_id_;
+	}
+
+	public void setChannel_no_(int channel_no_) {
+		this.channel_no_ = channel_no_;
+	}
+	
+	
 }

@@ -1,6 +1,8 @@
 package com.howell.activity;
 
 import java.io.File;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import uk.co.senab.photoview.PhotoView;
@@ -109,6 +111,7 @@ public class BigImages extends Activity implements OnClickListener,OnPageChangeL
     	mActivities.removeActivity("BigImages");
     	//注销广播
     	unregisterReceiver(receiver);
+    	mList = null;
 	}
 	
 	class SamplePagerAdapter extends PagerAdapter {
@@ -144,6 +147,10 @@ public class BigImages extends Activity implements OnClickListener,OnPageChangeL
 			//获取手机屏幕宽度
 			int requiredWidthSize = PhoneConfig.getPhoneWidth(BigImages.this);
 			PhotoView photoView = new PhotoView(container.getContext());
+			Date d = new Date(new File(mList.get(position)).lastModified());
+			SimpleDateFormat foo = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			System.out.println("最后修改时间："+foo.format(d));
+			System.out.println("最后修改时间："+new File(mList.get(position)).lastModified());
 			if(scale){
 				photoView.setImageBitmap(/*sDrawables[position]*/ScaleImageUtils.resizeImage(ScaleImageUtils.decodeFile(requiredWidthSize,requiredWidthSize * 9 / 16
 						,new File(mList.get(position))),requiredWidthSize , requiredWidthSize * 9 / 16));

@@ -80,6 +80,8 @@ public class Settings extends Activity implements OnClickListener {
             startActivity(intent);
             break;
         case R.id.sys_message:
+        	intent = new Intent(this, NoticeActivity.class);
+            startActivity(intent);
             break;
         case R.id.exit:
         	showPopupWindow();

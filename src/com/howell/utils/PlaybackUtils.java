@@ -4,21 +4,28 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import android.util.Log;
+
 import com.howell.entityclass.VODRecord;
 import com.howell.protocol.VodSearchRes;
 
 public class PlaybackUtils {
 	private int nowPageCount;
 	
+	private int totalPageForNewVer;//一共有多少页
+	private int nowPageCountForNewVer;//当前是多少页
+	
 	public PlaybackUtils(){
 		nowPageCount = 0;
+		totalPageForNewVer = 1;
+		nowPageCountForNewVer = 1;
 	}
 	
 	public ArrayList<VODRecord> getMoreVideoList(InviteUtils client,String startTime,String endTime){
 		ArrayList<VODRecord> mList = new ArrayList<VODRecord>();
 		System.out.println("nowPage:"+nowPageCount);
 		if(nowPageCount > 0){
-			VodSearchRes vodSearchRes = client.getVodSearchReq(nowPageCount,startTime,endTime);
+			VodSearchRes vodSearchRes = client.getVodSearchReq(nowPageCount,startTime,endTime,0);
 			nowPageCount = nowPageCount - 1;
 			mList = vodSearchRes.getRecord();
 			sort(mList);
@@ -29,19 +36,19 @@ public class PlaybackUtils {
 	
 	public ArrayList<VODRecord> getVideoList(InviteUtils client,String startTime,String endTime){
 		ArrayList<VODRecord> mList = new ArrayList<VODRecord>();
-    	VodSearchRes vodSearchRes = client.getVodSearchReq(1,startTime,endTime);
+    	VodSearchRes vodSearchRes = client.getVodSearchReq(1,startTime,endTime,0);
     	int pageCount = vodSearchRes.getPageCount();
     	nowPageCount = pageCount;
     	if(pageCount == 0){
     		return mList;
     	}
     	//int recordCount = vodSearchRes.getRecordCount();
-        mList = client.getVodSearchReq(pageCount, startTime, endTime).getRecord();
+        mList = client.getVodSearchReq(pageCount, startTime, endTime,0).getRecord();
         if(pageCount <= 1){
         	nowPageCount = 0;
         }else if(pageCount > 1){
         	if(mList.size() < 12){
-        		mList.addAll(client.getVodSearchReq(pageCount - 1, startTime, endTime).getRecord());
+        		mList.addAll(client.getVodSearchReq(pageCount - 1, startTime, endTime,0).getRecord());
         		nowPageCount = nowPageCount - 2;
         	}else{
         		nowPageCount = nowPageCount - 1;
@@ -51,6 +58,24 @@ public class PlaybackUtils {
         addTitleFlag(mList);
         return mList;
     }
+	
+	public ArrayList<VODRecord> getNewVerVideoList(InviteUtils client,String startTime,String endTime){
+		ArrayList<VODRecord> mList = new ArrayList<VODRecord>();
+		if(nowPageCountForNewVer <= totalPageForNewVer){
+			VodSearchRes vodSearchRes = client.getVodSearchReq(nowPageCountForNewVer,startTime,endTime,20);
+			int pageCount = vodSearchRes.getPageCount();
+	    	totalPageForNewVer = pageCount;
+	    	mList.addAll(vodSearchRes.getRecord());
+	    	nowPageCountForNewVer++;
+		}
+		addTitleFlag(mList);
+		return mList;
+	}
+	
+	public void clearResource(){
+		nowPageCountForNewVer = 1;
+		totalPageForNewVer = 1;
+	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void sort(ArrayList<VODRecord> arrayList){

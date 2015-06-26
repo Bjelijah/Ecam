@@ -44,11 +44,11 @@ LOCAL_SRC_FILES := libhwplay.so
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/include
 include $(PREBUILT_SHARED_LIBRARY)
 
-#include $(CLEAR_VARS)
-#LOCAL_MODULE := jpush
-#LOCAL_SRC_FILES := libjpush.so
-#LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/include
-#include $(PREBUILT_SHARED_LIBRARY)
+include $(CLEAR_VARS)
+LOCAL_MODULE := jpush
+LOCAL_SRC_FILES := libjpush.so
+LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/include
+include $(PREBUILT_SHARED_LIBRARY)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := avdevice
@@ -100,11 +100,11 @@ LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/include
 LOCAL_STATIC_LIBRARIES:=swscale swresample postproc avutil avfilter avdevice
 include $(PREBUILT_STATIC_LIBRARY)
 
-#include $(CLEAR_VARS)
-#LOCAL_MODULE := XQuquerOfflineSDK
-#LOCAL_SRC_FILES := libXQuquerOfflineSDK.so
-#LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/include
-#include $(PREBUILT_SHARED_LIBRARY)
+include $(CLEAR_VARS)
+LOCAL_MODULE := XQuquerOfflineSDK
+LOCAL_SRC_FILES := libXQuquerOfflineSDK.so
+LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/include
+include $(PREBUILT_SHARED_LIBRARY)
 
 #include $(CLEAR_VARS)
 #LOCAL_MODULE := ffmpeg

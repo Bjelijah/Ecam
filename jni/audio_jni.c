@@ -82,10 +82,13 @@ void audio_play(const char* buf,int len,int au_sample,int au_channel,int au_bits
   /* update data */
 
   if (len<=self.data_array_len) {
+	  LOGI("audio_play");
+
     (*self.env)->SetByteArrayRegion(self.env,self.data_array,0,len,buf);
 
     /* notify the JAVA */
     (*self.env)->CallVoidMethod(self.env, self.obj, self.mid, NULL);
+
 
   }
 
@@ -110,12 +113,14 @@ JNIEXPORT void JNICALL Java_com_howell_activity_PlayerActivity_nativeAudioInit
 
   //����ֱ�Ӹ�ֵ(g_obj = obj)   
   self.obj = (*env)->NewGlobalRef(env,obj);
-
   jclass clz = (*env)->GetObjectClass(env, obj);
   self.data_length_id = (*env)->GetFieldID(env,clz, "mAudioDataLength", "I");
 
   jfieldID id = (*env)->GetFieldID(env,clz,"mAudioData","[B");
-  self.data_array = (*env)->GetObjectField(env,obj,id);
+
+  jbyteArray data = (*env)->GetObjectField(env,obj,id);
+  self.data_array = (*env)->NewGlobalRef(env,data);
+  (*env)->DeleteLocalRef(env, data);
   self.data_array_len =(*env)->GetArrayLength(env,self.data_array);
 
   sem_init(&self.over_audio_sem,0,0);

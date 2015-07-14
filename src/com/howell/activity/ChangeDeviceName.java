@@ -1,9 +1,6 @@
 package com.howell.activity;
 
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -17,6 +14,7 @@ import android.widget.ImageButton;
 
 import com.android.howell.webcam.R;
 import com.howell.broadcastreceiver.HomeKeyEventBroadCastReceiver;
+import com.howell.protocol.AddDeviceJsonString;
 import com.howell.protocol.AddDeviceReq;
 import com.howell.protocol.AddDeviceRes;
 import com.howell.protocol.SoapManager;
@@ -29,7 +27,7 @@ public class ChangeDeviceName extends Activity implements OnClickListener{
 	private EditText mName;
 	private Dialog waitDialog;
 	private SoapManager mSoapManager;
-	private String result;
+	private AddDeviceJsonString result;
 	private String devId,devKey;
 	
 	private Activities mActivities;
@@ -42,13 +40,11 @@ public class ChangeDeviceName extends Activity implements OnClickListener{
 		setContentView(R.layout.change_device_name);
 		mSoapManager = SoapManager.getInstance();
 		Intent intent = getIntent();
-		result = intent.getStringExtra("result");
-		try {
-			parseJsonString(new JSONObject(result));
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		result = (AddDeviceJsonString) intent.getSerializableExtra("addDevice");
+		
+		System.out.println("reslut:"+result.toString());
+		devId = result.getId();
+		devKey = result.getKey();
 		
 		mActivities = Activities.getInstance();
         mActivities.addActivity("ChangeDeviceName",ChangeDeviceName.this);
@@ -62,14 +58,6 @@ public class ChangeDeviceName extends Activity implements OnClickListener{
 		
 	}
 	
-	private void parseJsonString(JSONObject obj) throws JSONException{
-//		devId = obj.getString("id");
-//		devKey = obj.getString("key");
-		//-------------test--------------
-		devId = "123124314151";
-		devKey = "123124314151";
-	}
-
     @Override
     protected void onDestroy() {
     	// TODO Auto-generated method stub

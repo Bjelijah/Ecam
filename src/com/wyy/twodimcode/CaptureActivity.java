@@ -3,6 +3,9 @@ package com.wyy.twodimcode;
 import java.io.IOException;
 import java.util.Vector;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
@@ -21,12 +24,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.SurfaceView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.howell.webcam.R;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 import com.howell.activity.CameraList;
 import com.howell.activity.ChangeDeviceName;
+import com.howell.protocol.AddDeviceJsonString;
+import com.howell.utils.MessageUtiles;
 import com.wyy.twodimcode.camera.CameraManager;
 import com.wyy.twodimcode.decoding.CaptureActivityHandler;
 import com.wyy.twodimcode.decoding.InactivityTimer;
@@ -187,18 +193,39 @@ public class CaptureActivity extends Activity implements Callback,OnClickListene
 
 	//ɨ�������
 	public void handleDecode(Result obj, Bitmap barcode) {
+		AddDeviceJsonString add = null;
 		inactivityTimer.onActivity();
 		viewfinderView.drawResultBitmap(barcode);//�����ͼƬ
 		 playBeepSoundAndVibrate();//��������Ч��
 		
 		String str = obj.getText();
 		System.out.println("res:"+str);
+		try {
+			add = parseJsonString(str);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+			MessageUtiles.postToast(CaptureActivity.this, "添加失败", 1000);
+			finish();
+			return;
+		}
 		Intent intent = new Intent(CaptureActivity.this,ChangeDeviceName.class);
-		intent.putExtra("result", str);
+		intent.putExtra("addDevice", add);
 		startActivity(intent);
 //		setResult(1, it);
 		finish();
 		
+	}
+	
+	private AddDeviceJsonString parseJsonString(String str) throws JSONException{
+		// {"id":"N0108AX3590000000000","key":"5a89207ffd46","serial_no":"N0108AX359","company":"howell"}
+		JSONObject param = new JSONObject(str);
+		String id = param.getString("id");
+		String key = param.getString("key");
+		String serial_no = param.getString("serial_no");
+		String company = param.getString("company");
+		
+		return new AddDeviceJsonString(id, key, serial_no, company);
 	}
 	
 	

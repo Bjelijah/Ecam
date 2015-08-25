@@ -27,7 +27,7 @@
     <string name="account">账户管理</string>
     <string name="sys_message">系统消息</string>
     <string name="alarm">录像报警</string>
-    <string name="about">关于e看 V1.1.6</string>
+    <string name="about">关于e看 V1.1.8</string>
     <string name="exit">注销帐号</string>
     <string name="email">邮箱地址</string>
     <string name="mobiletel">手机号码</string>
@@ -94,6 +94,7 @@
 	<string name="set_new_phone_num">正在设置新手机号</string>
 	<string name="more">更多</string>
 	<string name="media_lib">媒体库</string>
+	<string name="notice">通知</string>
 	
 	<string name="share">分享</string>
 	<string name="share_device_succeess">分享成功</string>
@@ -195,6 +196,13 @@
 	
 	<string name="QR_code">二维码</string>
 	<string name="msg_default_status">将二维码放入框内，即可自动扫描</string>
+	<string name="title_popup_listen">听一听</string>
+	<string name="title_popup_scan">扫一扫</string>
+	<string name="popup_window_hd">高清</string>
+	<string name="popup_window_sd">标清</string>
+	
+	<string name="invalid_code">非法二维码</string>
+	
 	<style name="MyCheckBox" parent="@android:style/Widget.CompoundButton.CheckBox">
 		<item name="android:button">@drawable/cb_select</item>
 	</style>

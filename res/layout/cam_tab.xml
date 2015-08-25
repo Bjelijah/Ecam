@@ -51,14 +51,14 @@
                 android:text="@string/media_lib"
                 android:textColor="@color/light_gray" />
             
-            <!-- <RadioButton
+            <RadioButton
                 android:id="@+id/rb_notices"
                 style="@style/main_tab_bottom"
                 android:layout_marginTop="2.0dip"
                 android:layout_marginBottom="2dip"
-                android:drawableTop="@drawable/tab_files_selector"
-                android:text="@string/media_lib"
-                android:textColor="@color/light_gray" /> -->
+                android:drawableTop="@drawable/tab_notice_selector"
+                android:text="@string/notice"
+                android:textColor="@color/light_gray" />
             
  <!--  android:background="@drawable/tab_press"-->
             <RadioButton

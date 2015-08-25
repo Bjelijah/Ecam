@@ -45,7 +45,7 @@ import com.howell.protocol.SoapManager;
 import com.howell.utils.InviteUtils;
 import com.howell.utils.PlaybackUtils;
 import com.howell.utils.TimeTransform;
-import com.howell.utils.UpdateCameraUtils;
+import com.howell.utils.DeviceVersionUtils;
 
 @SuppressWarnings("deprecation")
 public class VideoList extends ListActivity implements OnItemClickListener {
@@ -71,7 +71,7 @@ public class VideoList extends ListActivity implements OnItemClickListener {
     private Activities mActivities;
     private PlaybackUtils utils;
     
-    private boolean isNewVer;//>2.0.0为true:获取的录像列表为倒叙排列，<2.0.0为false:获取的录像列表为升序排列
+    private boolean isNewVer;//>3.0.0为true:获取的录像列表为倒叙排列，<3.0.0为false:获取的录像列表为升序排列
     
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -272,8 +272,9 @@ public class VideoList extends ListActivity implements OnItemClickListener {
 				Intent intent = getIntent();
 		        dev = (NodeDetails) intent.getSerializableExtra("Device");
 		        client = new InviteUtils(dev);
-				//判断设备版本号是否大于2.0.0
+				//判断设备版本号是否大于3.0.0
 				isNewVer = checkDevVer();
+				Log.e("isNewVer", "isNewVer:"+isNewVer);
 				mList = new ArrayList<VODRecord>();
 				if(!isNewVer){
 					int round = 6;
@@ -384,7 +385,8 @@ public class VideoList extends ListActivity implements OnItemClickListener {
 	private boolean checkDevVer(){
 		GetDevVerReq getDevVerReq = new GetDevVerReq(SoapManager.getInstance().getLoginResponse().getAccount(),SoapManager.getInstance().getLoginResponse().getLoginSession(),dev.getDevID());
 		GetDevVerRes res = SoapManager.getInstance().getGetDevVerRes(getDevVerReq);
-		return !UpdateCameraUtils.needToUpdate(res.getCurDevVer(), "2.0.0");
+		Log.e("", "CurDevVer:"+res.getCurDevVer());
+		return DeviceVersionUtils.isNewVersionDevice(res.getCurDevVer());
 	}
 	
     private Handler myHandler = new Handler(){

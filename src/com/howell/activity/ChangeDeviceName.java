@@ -82,14 +82,13 @@ public class ChangeDeviceName extends Activity implements OnClickListener{
 					String name = mName.getText().toString();
 					String account = mSoapManager.getLoginResponse().getAccount();
 					String session = mSoapManager.getLoginResponse().getLoginSession();
-					UpdateChannelNameReq updateChannelNameReq = new UpdateChannelNameReq(account,session,devId,0,name);
-					updateChannelNameRes = mSoapManager.getUpdateChannelNameRes(updateChannelNameReq);
-					System.out.println(updateChannelNameRes.getResult());
-					
-					if(updateChannelNameRes != null && updateChannelNameRes.getResult().equals("OK")){
-						AddDeviceReq addDeviceReq = new AddDeviceReq(account, session, devId, devKey, name, true);
-						addDeviceRes = mSoapManager.getAddDeviceRes(addDeviceReq);
-						System.out.println(addDeviceRes.getResult());
+					AddDeviceReq addDeviceReq = new AddDeviceReq(account, session, devId, devKey, name, false);
+					addDeviceRes = mSoapManager.getAddDeviceRes(addDeviceReq);
+					System.out.println(addDeviceRes.getResult());
+					if(addDeviceRes != null && addDeviceRes.getResult().equals("OK")){
+						UpdateChannelNameReq updateChannelNameReq = new UpdateChannelNameReq(account,session,devId,0,name);
+						updateChannelNameRes = mSoapManager.getUpdateChannelNameRes(updateChannelNameReq);
+						System.out.println(updateChannelNameRes.getResult());
 					}
 					return null;
 				}

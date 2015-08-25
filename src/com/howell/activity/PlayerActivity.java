@@ -17,6 +17,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
+import android.graphics.drawable.ColorDrawable;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
@@ -31,6 +32,7 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
@@ -41,9 +43,11 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.TranslateAnimation;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -54,18 +58,21 @@ import com.howell.broadcastreceiver.HomeKeyEventBroadCastReceiver;
 import com.howell.ehlib.MySeekBar;
 import com.howell.entityclass.NodeDetails;
 import com.howell.entityclass.VODRecord;
-import com.howell.utils.InviteUtils;
-import com.howell.utils.FileUtils;
-import com.howell.utils.MessageUtiles;
-import com.howell.utils.PhoneConfig;
-import com.howell.utils.TakePhotoUtil;
+import com.howell.playerrender.YV12Renderer;
+import com.howell.protocol.GetDevVerReq;
+import com.howell.protocol.GetDevVerRes;
 import com.howell.protocol.LoginResponse;
 import com.howell.protocol.PtzControlReq;
 import com.howell.protocol.PtzControlRes;
 import com.howell.protocol.SoapManager;
-import com.howell.playerrender.YV12Renderer;
+import com.howell.utils.DeviceVersionUtils;
+import com.howell.utils.FileUtils;
+import com.howell.utils.InviteUtils;
+import com.howell.utils.MessageUtiles;
+import com.howell.utils.PhoneConfig;
+import com.howell.utils.TakePhotoUtil;
 
-public class PlayerActivity extends Activity implements Callback, OnTouchListener, OnGestureListener {
+public class PlayerActivity extends Activity implements Callback, OnTouchListener, OnGestureListener,OnClickListener {
 	
 	public static InviteUtils client;
 	private static PlayerActivity mPlayer;
@@ -93,10 +100,11 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
     private static ProgressBar mWaitProgressBar;
     private static PlayerHandler mPlayerHandler;
     private static ImageButton mVedioList;
-	private ImageButton mSound;
-	private ImageButton mCatchPicture;
+	private ImageButton mSound,mCatchPicture/*,mStreamChange*/;
+	private TextView mStreamChange;
     private static TextView mStreamLen;
     private ImageButton mPause,mBack;
+    private FrameLayout mTitle;
 	
 	public static final Integer REPLAYSEEKBAR = 0x0001;
 	public static final Integer STOPPROGRESSBAR = 0x0002;
@@ -123,6 +131,8 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	private static int nowFrames;
 	private static int lastSecondFrames;
 	
+//	private TitlePopup titlePopup;
+	
 	private static Timer mTimer;
 	private static boolean progressHasStop;
 	
@@ -137,6 +147,10 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	boolean isAnimationStart;
 	private Activities mActivities;
 	private HomeKeyEventBroadCastReceiver receiver;
+	
+	private int stream;//主次码流
+	private PopupWindow mPopupWindow;  
+	private LinearLayout hd,sd;
 	
 	public PlayerActivity() {   
         mGestureDetector = new GestureDetector(this);   
@@ -213,6 +227,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		correctedStartTime = -1;
 		correctedEndTime = -1;
 		stopTrackingTouchProgress = 0;
+		stream = 1;//默认次码流
 		
 		SharedPreferences sharedPreferences = getSharedPreferences("set",
                 Context.MODE_PRIVATE);
@@ -247,9 +262,9 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	        		MessageUtiles.postToast(getApplicationContext()
 	        				, getResources().getString(R.string.no_sdcard),2000);
 	        	}else{
-//		        	if(null != client)
-//		        		client.setQuit(true);
-//		        	quitDisplay();
+		        	if(null != client)
+		        		client.setQuit(true);
+		        	quitDisplay();
 	        		audioStop();
 	        		if(!playback){
 	            		TakePhotoUtil.takePhoto("/sdcard/eCamera/cache", dev, client);
@@ -318,6 +333,68 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 			}
 	    });
 	    
+	    mTitle = (FrameLayout)findViewById(R.id.player_title_bar);
+	    
+	    mStreamChange = (TextView)findViewById(R.id.player_change_stream);
+	    mStreamChange.setVisibility(View.GONE);
+//	    LayoutConfig config = mesureViewWidth(mStreamChange);
+	    mStreamChange.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				getPopupWindowInstance();  
+		        mPopupWindow.showAsDropDown(v);  
+			}
+		});
+	    
+	    new AsyncTask<Void, Integer, Void>(){
+	    	boolean isNewVer = false;
+	    	@Override
+			protected Void doInBackground(Void... arg0) {
+				// TODO Auto-generated method stub
+	    		isNewVer = checkDevVer();
+				return null;
+			}
+	    	
+	    	protected void onPostExecute(Void result) {
+	    		if(isNewVer){
+	    			mStreamChange.setVisibility(View.VISIBLE);
+	    		}
+	    	};
+	    }.execute();
+	    
+	    /*mStreamChange = (ImageButton)findViewById(R.id.stream);
+	    mStreamChange.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				int isPlayBack = -1;
+				boolean ret;
+				if(playback){
+					isPlayBack = 1;
+				}else{
+					isPlayBack = 0;
+					startTime = 0;
+					endTime = 0;
+				}
+				if(stream == 1){
+					ret = client.Replay(isPlayBack, startTime, endTime, 0);
+					if(ret){
+						stream = 0;
+						mStreamChange.setImageDrawable(getResources().getDrawable(R.drawable.img_sd));
+					}
+				}else{
+					ret = client.Replay(isPlayBack, startTime, endTime, 1);
+					if(ret){
+						stream = 1;
+						mStreamChange.setImageDrawable(getResources().getDrawable(R.drawable.img_hd));
+					}
+				}
+			}
+		});*/
+	    
 	    mPause = (ImageButton)findViewById(R.id.ib_pause);
 	    mPause.setOnClickListener(new OnClickListener() {
 	    	
@@ -345,9 +422,9 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-//				if(null != client)
-//	        		client.setQuit(true);
-//	        	quitDisplay();
+				if(null != client)
+	        		client.setQuit(true);
+	        	quitDisplay();
 				audioStop();
 				if(!playback){
 					TakePhotoUtil.takePhoto("/sdcard/eCamera/cache", dev, client);
@@ -391,7 +468,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 					replayStartTime = startTime;
 				}
 				Log.e("---------->>>>", "onS startTime:"+replayStartTime+"onS endTime:"+endTime);
-				client.Replay(replayStartTime, endTime);
+				client.Replay(1,replayStartTime, endTime,stream);
 				Log.e("---------->>>>", "replay end");
 				stopSendMessage = false;
 				progressHasStop = false;
@@ -423,7 +500,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		});
         
         if(PhoneConfig.getPhoneHeight(this) < PhoneConfig.getPhoneWidth(this)){
-        	mBack.setVisibility(View.GONE);
+        	mTitle.setVisibility(View.GONE);
 			mSurfaceIcon.setVisibility(View.GONE);
 			System.out.println("onSingleTapUp:"+mSurfaceIcon.isShown());
 			isShowSurfaceIcon = false;
@@ -437,6 +514,58 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		InviteThread thread = new InviteThread();
 		thread.start();
 	}
+	
+	private boolean checkDevVer(){
+		GetDevVerReq getDevVerReq = new GetDevVerReq(SoapManager.getInstance().getLoginResponse().getAccount(),SoapManager.getInstance().getLoginResponse().getLoginSession(),dev.getDevID());
+		GetDevVerRes res = SoapManager.getInstance().getGetDevVerRes(getDevVerReq);
+		Log.e("", "CurDevVer:"+res.getCurDevVer());
+		return DeviceVersionUtils.isNewVersionDevice(res.getCurDevVer());
+	}
+	
+    /* 
+     * 获取PopupWindow实例 
+     */  
+    private void getPopupWindowInstance() {  
+        if (null != mPopupWindow) {  
+            mPopupWindow.dismiss();  
+            return;  
+        } else {  
+            initPopuptWindow();  
+        }  
+    }  
+  
+    /* 
+     * 创建PopupWindow 
+     */  
+    private void initPopuptWindow() {  
+        LayoutInflater layoutInflater = LayoutInflater.from(this);  
+        View popupWindow = layoutInflater.inflate(R.layout.popup_window, null);  
+//        RadioGroup radioGroup = (RadioGroup) popupWindow.findViewById(R.id.radioGroup);  
+//        radioGroup.setOnCheckedChangeListener(this);  
+        hd = (LinearLayout)popupWindow.findViewById(R.id.pop_layout_hd);
+        sd = (LinearLayout)popupWindow.findViewById(R.id.pop_layout_sd);
+        hd.setOnClickListener(this);
+        sd.setOnClickListener(this);
+        // 创建一个PopupWindow  
+        // 参数1：contentView 指定PopupWindow的内容  
+        // 参数2：width 指定PopupWindow的width  
+        // 参数3：height 指定PopupWindow的height  
+        int width = PhoneConfig.getPhoneWidth(this);
+        int height = width * 5 / 3;
+        mPopupWindow = new PopupWindow(popupWindow, width/4, height);  
+        
+        ColorDrawable dw = new ColorDrawable(0000000000);
+		// ��back�������ط�ʹ����ʧ,������������ܴ���OnDismisslistener ����������ؼ��仯�Ȳ���
+        mPopupWindow.setBackgroundDrawable(dw);
+        mPopupWindow.setFocusable(true);  
+        mPopupWindow.setOutsideTouchable(true);  
+  
+        // 获取屏幕和PopupWindow的width和height  
+//        mScreenWidth = getWindowManager().getDefaultDisplay().getWidth();  
+//        mScreenWidth = getWindowManager().getDefaultDisplay().getHeight();  
+//        mPopupWindowWidth = mPopupWindow.getWidth();  
+//        mPopupWindowHeight = mPopupWindow.getHeight();  
+    }  
 	
     public long getSDAllSize(){  
         File path = Environment.getExternalStorageDirectory();   
@@ -531,10 +660,10 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 			if (playback) {
 				Log.e("---------->>>>", "1111111111111111111");
 				System.out.println("startTime:"+startTime+"endTime:"+endTime);
-				inviteRet = PlayerActivity.client.InvitePlayback(startTime, endTime);
+				inviteRet = PlayerActivity.client.InvitePlayback(startTime, endTime,stream);
 		    } else {
 		        Log.e("---------->>>>", "2222222222222222222");
-		        inviteRet = PlayerActivity.client.InviteLive(1);
+		        inviteRet = PlayerActivity.client.InviteLive(stream);
 		    }
 			System.out.println("finish invite live");
 		}
@@ -715,14 +844,14 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		Log.e("main","config change");
 		if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
 			Log.i("info", "onConfigurationChanged landscape"); // 锟斤拷锟斤拷
-			mBack.setVisibility(View.GONE);
+			mTitle.setVisibility(View.GONE);
 			mSurfaceIcon.setVisibility(View.GONE);
 			System.out.println("onSingleTapUp:"+mSurfaceIcon.isShown());
 			isShowSurfaceIcon = false;
 			mStreamLen.setVisibility(View.VISIBLE);
 		} else if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
 			Log.i("info", "onConfigurationChanged PORTRAIT"); // 锟斤拷锟斤拷
-			mBack.setVisibility(View.VISIBLE);
+			mTitle.setVisibility(View.VISIBLE);
 			mSurfaceIcon.setVisibility(View.VISIBLE);
 			isShowSurfaceIcon = true;
 		}
@@ -742,9 +871,9 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		Log.e("PA", "onDestroy");
 		mActivities.removeActivity("PlayerActivity");
     	unregisterReceiver(receiver);
-		if(null != client)
-    		client.setQuit(true);
-    	quitDisplay();
+//		if(null != client)
+//    		client.setQuit(true);
+//    	quitDisplay();
 		super.onDestroy();
 		System.runFinalization();
 	}
@@ -830,6 +959,9 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
         super.onKeyDown(keyCode, event);
         if (keyCode == KeyEvent.KEYCODE_BACK) {
         	Log.e("backCount", "press back button backCount:"+backCount);
+        	if(null != client)
+        		client.setQuit(true);
+        	quitDisplay();
         	audioStop();
         	if(!playback){
         		TakePhotoUtil.takePhoto("/sdcard/eCamera/cache", dev, client);
@@ -1002,10 +1134,12 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 			if(isShowSurfaceIcon){
 				System.out.println("onSingleTapUp111:"+isShowSurfaceIcon);
 				mSurfaceIcon.setVisibility(View.GONE);
+				mTitle.setVisibility(View.GONE);
 				isShowSurfaceIcon = false;
 			}else{
 				System.out.println("onSingleTapUp222:"+isShowSurfaceIcon);
 				mSurfaceIcon.setVisibility(View.VISIBLE);
+				mTitle.setVisibility(View.VISIBLE);
 				System.out.println("onSingleTapUp:"+mSurfaceIcon.isShown());
 				isShowSurfaceIcon = true;
 			}
@@ -1022,6 +1156,107 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	public boolean onTouch(View v, MotionEvent event) {
 		// TODO Auto-generated method stub
 		return mGestureDetector.onTouchEvent(event);   
+	}
+//	@Override
+//	public void onItemClick(ActionItem item, int position) {
+//		// TODO Auto-generated method stub
+//		int isPlayBack = -1;
+//		boolean ret;
+//		if(playback){
+//			isPlayBack = 1;
+//		}else{
+//			isPlayBack = 0;
+//			startTime = 0;
+//			endTime = 0;
+//		}
+//		if(position == 0){
+//			ret = client.Replay(isPlayBack, startTime, endTime, 0);
+//			if(ret){
+//				stream = 0;
+//			}
+//		}else if(position == 1){
+//			ret = client.Replay(isPlayBack, startTime, endTime, 1);
+//			if(ret){
+//				stream = 1;
+//			}
+//		}
+//	}
+	
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.pop_layout_hd:
+			mPopupWindow.dismiss();
+			new AsyncTask<Void, Integer, Void>(){
+				int isPlayBack = -1;
+				boolean ret;
+				long replayStartTime = 0;
+				@Override
+				protected Void doInBackground(Void... arg0) {
+					// TODO Auto-generated method stub
+					if(playback){
+						isPlayBack = 1;
+						replayStartTime = correctedStartTime + (long)(mReplaySeekBar.getProgress())/1000;
+						if(replayStartTime < startTime){
+							replayStartTime = startTime;
+						}
+					}else{
+						isPlayBack = 0;
+						replayStartTime = 0;
+						endTime = 0;
+					}
+					ret = client.Replay(isPlayBack, replayStartTime, endTime, 0);
+					return null;
+				}
+				
+				protected void onPostExecute(Void result) {
+					if(ret){
+						stream = 0;
+						mStreamChange.setText("高清");
+					}
+				};
+				
+			}.execute();
+			
+			break;
+		case R.id.pop_layout_sd:
+			mPopupWindow.dismiss();
+			new AsyncTask<Void, Integer, Void>(){
+				int isPlayBack = -1;
+				boolean ret;
+				long replayStartTime = 0;
+				@Override
+				protected Void doInBackground(Void... arg0) {
+					// TODO Auto-generated method stub
+					if(playback){
+						isPlayBack = 1;
+						replayStartTime = correctedStartTime + (long)(mReplaySeekBar.getProgress())/1000;
+						if(replayStartTime < startTime){
+							replayStartTime = startTime;
+						}
+					}else{
+						isPlayBack = 0;
+						replayStartTime = 0;
+						endTime = 0;
+					}
+					ret = client.Replay(isPlayBack, replayStartTime, endTime, 1);
+					return null;
+				}
+				
+				protected void onPostExecute(Void result) {
+					if(ret){
+						stream = 1;
+						mStreamChange.setText("标清");
+					}
+				};
+				
+			}.execute();
+			
+			break;
+		default:
+			break;
+		}
 	}
 	
 }

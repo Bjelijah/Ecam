@@ -44,7 +44,7 @@ import com.howell.utils.ScaleImageUtils;
  */
 public class NoticeActivity extends Activity implements OnRefreshListener,OnClickListener{ 
 	private MyListViewWithFoot listview;
-	private ImageButton mBack;
+//	private ImageButton mBack;
 	private ArrayList<NoticeList> list;
 	private SoapManager mSoapManager;
 	private NoticeAdapter adapter;
@@ -74,8 +74,8 @@ public class NoticeActivity extends Activity implements OnRefreshListener,OnClic
 		
 		mSoapManager = SoapManager.getInstance();
 		
-		mBack = (ImageButton)findViewById(R.id.ib_notice_account_back);
-		mBack.setOnClickListener(this);
+//		mBack = (ImageButton)findViewById(R.id.ib_notice_account_back);
+//		mBack.setOnClickListener(this);
 		
 		pageUtils = new NoticePagingUtils();
 		
@@ -92,28 +92,30 @@ public class NoticeActivity extends Activity implements OnRefreshListener,OnClic
 		QueryNoticesRes res = pageUtils.getQueryNotices();
 		if(res == null){
 			list = new ArrayList<NoticeList>();
-			handler.sendEmptyMessage(ONFIRSTREFRESHDOWN);
+//			handler.sendEmptyMessage(ONFIRSTREFRESHDOWN);
 			handler.sendEmptyMessage(NO_MORE_NOTICE);
-		}else{
+		}else if(res.getResult().equals("OK")){
 			list = res.getNodeList();
 			System.out.println("大小："+list.size());
-			handler.sendEmptyMessage(ONFIRSTREFRESHDOWN);
+//			handler.sendEmptyMessage(ONFIRSTREFRESHDOWN);
 		}
+		handler.sendEmptyMessage(ONFIRSTREFRESHDOWN);
 	}
 
 	@Override
 	public void onFirstRefresh() {
 		// TODO Auto-generated method stub
 		QueryNoticesRes res = pageUtils.getQueryNotices();
+		list = new ArrayList<NoticeList>();
 		if(res == null){
-			list = new ArrayList<NoticeList>();
-			handler.sendEmptyMessage(ONFIRSTREFRESHDOWN);
+//			handler.sendEmptyMessage(ONFIRSTREFRESHDOWN);
 			handler.sendEmptyMessage(NO_MORE_NOTICE);
-		}else{
+		}else if(res.getResult().equals("OK")){
 			list = res.getNodeList();
-			System.out.println("大小："+list.size());
-			handler.sendEmptyMessage(ONFIRSTREFRESHDOWN);
+			//System.out.println("大小："+list.size());
+//			handler.sendEmptyMessage(ONFIRSTREFRESHDOWN);
 		}
+		handler.sendEmptyMessage(ONFIRSTREFRESHDOWN);
 	}
 	
 	@Override
@@ -486,9 +488,9 @@ public class NoticeActivity extends Activity implements OnRefreshListener,OnClic
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
-		case R.id.ib_notice_account_back:
-			finish();
-			break;
+//		case R.id.ib_notice_account_back:
+//			finish();
+//			break;
 		case R.id.notice_item_imageView1:
 			clickPiture(v,0); 
 			break;

@@ -12,8 +12,10 @@ public class StreamReqContext {
     private String udp_addr;
     private int udp_port;
     private StreamReqIceOpt ice_opt;
-    private long[] times = new long[2];
-
+    //private long[] times = new long[2];
+    private Crypto crypto;
+    private int channel;
+    private int stream;//0注码流 1次码流
     
     public StreamReqContext() {
 		super();
@@ -26,16 +28,33 @@ public class StreamReqContext {
         this.playback = playback;
         this.beg = beg;
         this.end = end;
-        times[0] = beg;
-        times[1] = end;
+        //times[0] = beg;
+        //times[1] = end;
         this.re_invite = re_invite;
         this.method_bitmap = method_bitmap;
         this.udp_addr = udp_addr;
         this.udp_port = udp_port;
         this.ice_opt = ice_opt;
     }
+	
+    public StreamReqContext(int playback, long beg, long end, int re_invite,
+			int method_bitmap, String udp_addr, int udp_port,
+			StreamReqIceOpt ice_opt, Crypto crypto, int channel, int stream) {
+		super();
+		this.playback = playback;
+		this.beg = beg;
+		this.end = end;
+		this.re_invite = re_invite;
+		this.method_bitmap = method_bitmap;
+		this.udp_addr = udp_addr;
+		this.udp_port = udp_port;
+		this.ice_opt = ice_opt;
+		this.crypto = crypto;
+		this.channel = channel;
+		this.stream = stream;
+	}
 
-    public int getPlayback() {
+	public int getPlayback() {
         return playback;
     }
 
@@ -105,9 +124,8 @@ public class StreamReqContext {
 				+ ", end=" + end + ", re_invite=" + re_invite
 				+ ", method_bitmap=" + method_bitmap + ", udp_addr=" + udp_addr
 				+ ", udp_port=" + udp_port + ", ice_opt=" + ice_opt
-				+ ", times=" + Arrays.toString(times) + "]";
+				+ ", crypto=" + crypto + ", channel=" + channel + ", stream="
+				+ stream + "]";
 	}
-    
-    
 
 }

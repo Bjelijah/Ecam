@@ -52,15 +52,20 @@ public class TitlePopup extends PopupWindow {
 	private ListView mListView;
 	
 	//定义弹窗子类项列表
-	private ArrayList<ActionItem> mActionItems = new ArrayList<ActionItem>();			
+	private ArrayList<ActionItem> mActionItems = new ArrayList<ActionItem>();		
+	
+	private int textColor;	//字体颜色
+	private int gravity;	//字体位置
 	
 	public TitlePopup(Context context){
 		//设置布局的参数
-		this(context, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+//		this(context, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 	}
 	
-	public TitlePopup(Context context, int width, int height){
+	public TitlePopup(Context context, int width, int height , int layout,int textColor,int gravity){
 		this.mContext = context;
+		this.textColor = textColor;
+		this.gravity = gravity;
 		
 		//设置可以获得焦点
 		setFocusable(true);
@@ -80,8 +85,8 @@ public class TitlePopup extends PopupWindow {
 		setBackgroundDrawable(new BitmapDrawable());
 		
 		//设置弹窗的布局界面
-		setContentView(LayoutInflater.from(mContext).inflate(R.layout.title_popup, null));
-		
+//		setContentView(LayoutInflater.from(mContext).inflate(R.layout.title_popup, null));
+		setContentView(LayoutInflater.from(mContext).inflate(layout, null));
 		initUI();
 	}
 		
@@ -108,10 +113,10 @@ public class TitlePopup extends PopupWindow {
 	 */
 	public void show(View view){
 		//获得点击屏幕的位置坐标
-		view.getLocationOnScreen(mLocation);
+		//view.getLocationOnScreen(mLocation);
 		
 		//设置矩形的大小
-		mRect.set(mLocation[0], mLocation[1], mLocation[0] + view.getWidth(),mLocation[1] + view.getHeight());
+		//mRect.set(mLocation[0], mLocation[1], mLocation[0] + view.getWidth(),mLocation[1] + view.getHeight());
 		
 		//判断是否需要添加或更新列表子类项
 		if(mIsDirty){
@@ -119,7 +124,8 @@ public class TitlePopup extends PopupWindow {
 		}
 		
 		//显示弹窗的位置
-		showAtLocation(view, popupGravity, mScreenWidth - LIST_PADDING - (getWidth()/2), mRect.bottom);
+//		showAtLocation(view, popupGravity, mScreenWidth - LIST_PADDING - (getWidth()/2), mRect.bottom);
+		showAsDropDown(view);
 	}
 	
 	/**
@@ -136,12 +142,12 @@ public class TitlePopup extends PopupWindow {
 				
 				if(convertView == null){
 					textView = new TextView(mContext);
-					textView.setTextColor(mContext.getResources().getColor(android.R.color.black));
+					textView.setTextColor(textColor);
 					textView.setTextSize(14);
 					//设置文本居中
 					textView.setGravity(Gravity.CENTER_VERTICAL);
 					//设置文本域的范围
-					textView.setPadding(0, 10, 0, 10);
+					textView.setPadding(10, 10, 0, 10);
 					//设置文本在一行内显示（不换行）
 					textView.setSingleLine(true);
 				}else{
@@ -155,8 +161,9 @@ public class TitlePopup extends PopupWindow {
 				//设置文字与图标的间隔
 				//textView.setCompoundDrawablePadding(10);
 				//设置在文字的左边放一个图标
-                textView.setCompoundDrawablesWithIntrinsicBounds(item.mDrawable, null , null, null);
-				
+				if(item.mDrawable != null){
+					textView.setCompoundDrawablesWithIntrinsicBounds(item.mDrawable, null , null, null);
+				}
                 return textView;
 			}
 			

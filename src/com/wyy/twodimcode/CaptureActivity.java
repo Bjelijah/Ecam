@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.kobjects.base64.Base64;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -200,12 +201,22 @@ public class CaptureActivity extends Activity implements Callback,OnClickListene
 		
 		String str = obj.getText();
 		System.out.println("res:"+str);
+		String decodeStr = "";
+		try{
+			decodeStr = new String(Base64.decode(str));
+			System.out.println("decodeStr:"+decodeStr);
+		}catch(Exception e){
+			MessageUtiles.postToast(CaptureActivity.this, getResources().getString(R.string.invalid_code), 1000);
+			finish();
+			return;
+		}
 		try {
-			add = parseJsonString(str);
+			add = parseJsonString(decodeStr);
+			System.out.println("add:"+add.toString());
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();
-			MessageUtiles.postToast(CaptureActivity.this, "添加失败", 1000);
+			MessageUtiles.postToast(CaptureActivity.this, getResources().getString(R.string.invalid_code), 1000);
 			finish();
 			return;
 		}

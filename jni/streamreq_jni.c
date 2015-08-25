@@ -319,6 +319,12 @@ static struct ecam_stream_req_context * fill_context(JNIEnv *env,jobject obj){
 	__android_log_print(ANDROID_LOG_INFO, "fill_context", "0.8");
 	jfieldID ice_optID = (*env)->GetFieldID(env,clazz, "ice_opt", "Lcom/howell/entityclass/StreamReqIceOpt;");
 	__android_log_print(ANDROID_LOG_INFO, "fill_context", "0.9");
+	jfieldID cryptoID = (*env)->GetFieldID(env,clazz, "crypto", "Lcom/howell/entityclass/Crypto;");
+	__android_log_print(ANDROID_LOG_INFO, "fill_context", "1.0");
+	jfieldID channelID = (*env)->GetFieldID(env,clazz, "channel", "I");
+	__android_log_print(ANDROID_LOG_INFO, "fill_context", "1.1");
+	jfieldID streamID = (*env)->GetFieldID(env,clazz, "stream", "I");
+	__android_log_print(ANDROID_LOG_INFO, "fill_context", "1.2");
 	jint jplayback = (jint)(*env)->GetIntField(env,obj, playbackID);
 	jlong jbeg = (jlong)(*env)->GetLongField(env,obj, begID);
 	jlong jend = (jlong)(*env)->GetLongField(env,obj, endID);
@@ -326,8 +332,12 @@ static struct ecam_stream_req_context * fill_context(JNIEnv *env,jobject obj){
 	jint jmethod_bitmap = (jint)(*env)->GetIntField(env,obj, method_bitmapID);
 	jstring judp_addr = (jstring)(*env)->GetObjectField(env,obj, udp_addrID);	
 	jint judp_port = (jint)(*env)->GetIntField(env,obj, udp_portID);
-	jstring jice_opt = (jstring)(*env)->GetObjectField(env,obj, ice_optID);	
-	__android_log_print(ANDROID_LOG_INFO, "fill_context", "2");
+	//jobject jice_opt = (jobject)(*env)->GetObjectField(env,obj, ice_optID);
+
+	jint jchannel = (jint)(*env)->GetIntField(env,obj, channelID);
+	__android_log_print(ANDROID_LOG_INFO, "fill_context", "channel:%d",jchannel);
+	jint jstream = (jint)(*env)->GetIntField(env,obj, streamID);
+	__android_log_print(ANDROID_LOG_INFO, "fill_context", "stream:%d",jstream);
 	
 	const char* cudp_addr = (*env)-> GetStringUTFChars(env,judp_addr,NULL);
 	__android_log_print(ANDROID_LOG_INFO, "jni", "jplayback %d,jre_invite %d,jmethod_bitmap %d,judp_addr %s,judp_port %d",jplayback,jre_invite,jmethod_bitmap
@@ -370,6 +380,12 @@ static struct ecam_stream_req_context * fill_context(JNIEnv *env,jobject obj){
 
 	const char* cstun_addr = (*env)-> GetStringUTFChars(env,jstun_addr,NULL);
 	
+	jobject crypto = (jobject)(*env)->GetObjectField(env,obj, cryptoID);
+	jclass clazz3 = (*env)->GetObjectClass(env, crypto);
+
+	jfieldID enableID = (*env)->GetFieldID(env,clazz3, "enable", "I");
+	jint jenable = (jint)(*env)->GetIntField(env,crypto, enableID);
+	__android_log_print(ANDROID_LOG_INFO, "jni", "jenable:%d",jenable);
 	__android_log_print(ANDROID_LOG_INFO, "jni", "finish receive data");
 
 	struct ecam_stream_req_context *c = malloc(sizeof(*c));
@@ -440,7 +456,11 @@ __android_log_print(ANDROID_LOG_INFO, "jni", "8");
 	(*env)->ReleaseStringUTFChars(env,judp_addr,cudp_addr);
 	(*env)->ReleaseStringUTFChars(env,jstun_addr,cstun_addr);
 		__android_log_print(ANDROID_LOG_INFO, "jni", "18");
-	c -> crypto.enable = 1;
+	c -> crypto.enable = jenable;
+	c->channel = jchannel;
+	__android_log_print(ANDROID_LOG_INFO, "jni", "jni channel:%d",c->channel);
+	c->stream = jstream;
+	__android_log_print(ANDROID_LOG_INFO, "jni", "jni stream:%d",c->stream);
 	__android_log_print(ANDROID_LOG_INFO, "jni", "19");
 	return c;
 }
@@ -596,6 +616,7 @@ JNIEXPORT jint JNICALL Java_com_howell_utils_InviteUtils_start
 	//ecam_stream_req_t * stream_req_ = (ecam_stream_req_t *)handle;
 	__android_log_print(ANDROID_LOG_INFO, "jni", "!!!!!!-----start start----------!!!!");
 	struct ecam_stream_req_context *c = fill_context(env,obj);
+	__android_log_print(ANDROID_LOG_INFO, "jni", "stream:%d,channel:%d",c->stream,c->channel);
 	//PLAY_HANDLE ph = initDecoder();
 	//resource->play_handle = ph;
 	//ecam_stream_req_set_usr_data(stream_req_,ph);
@@ -623,7 +644,7 @@ JNIEXPORT void JNICALL Java_com_howell_utils_InviteUtils_freeHandle
 }
 
 JNIEXPORT void JNICALL Java_com_howell_utils_InviteUtils_prepareReplay
-(JNIEnv *env, jclass cls, jlong handle){
+(JNIEnv *env, jclass cls,jint isPlayBack, jlong handle){
 	//struct StreamResource * res = handle;
 	int arr_index = handle;
 	ecam_stream_req_stop(res[arr_index]->req,3000);
@@ -631,7 +652,7 @@ JNIEXPORT void JNICALL Java_com_howell_utils_InviteUtils_prepareReplay
 	hwplay_stop(res[arr_index]->play_handle);
 	__android_log_print(ANDROID_LOG_INFO, ">>>>>>>>>", "hwplay_stop");
 	yuv12gl_set_enable(1);
-	res[arr_index]->play_handle = init_play_handle(1,arr_index);
+	res[arr_index]->play_handle = init_play_handle(isPlayBack,arr_index);
 	__android_log_print(ANDROID_LOG_INFO, ">>>>>>>>>", "init_play_handle");
 }
 

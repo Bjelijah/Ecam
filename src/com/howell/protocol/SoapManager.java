@@ -312,7 +312,7 @@ public class SoapManager implements Serializable {
         rpc.addProperty("StreamType", req.getStreamType());
         rpc.addProperty("DialogID", req.getDialogID());
         rpc.addProperty("SDPMessage", req.getSDPMessage());
-        SoapObject object = initEnvelopAndTransport(rpc,null);
+        SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/invite");
         try{
 	        Object result = object.getProperty("result");
 	        if(result.toString().equals("SessionExpired")){
@@ -343,7 +343,7 @@ public class SoapManager implements Serializable {
         rpc.addProperty("ChannelNo", req.getChannelNo());
         rpc.addProperty("StreamType", req.getStreamType());
         rpc.addProperty("DialogID", req.getDialogID());
-        SoapObject object = initEnvelopAndTransport(rpc,null);
+        SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/bye");
         try{
 	        Object result = object.getProperty("result");
 	        if(result.toString().equals("SessionExpired")){
@@ -366,7 +366,7 @@ public class SoapManager implements Serializable {
         rpc.addProperty("Account", req.getAccount());
         rpc.addProperty("LoginSession", req.getLoginSession());
 
-        SoapObject object = initEnvelopAndTransport(rpc,null);
+        SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/getAccount");
         try{
 	        Log.e("-------------->>>>>", "object = " + object.toString());
 	        
@@ -429,7 +429,7 @@ public class SoapManager implements Serializable {
         res.setChannelNo(req.getChannelNo());
         res.setStreamType(req.getStreamType());
 
-        SoapObject object = initEnvelopAndTransport(rpc,null);
+        SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/getCodingParam");
         try{
 	        Object result = object.getProperty("result");
 	        if(result.toString().equals("SessionExpired")){
@@ -515,7 +515,7 @@ public class SoapManager implements Serializable {
         rpc.addProperty("ImageQuality", res.getImageQuality());
         rpc.addProperty("AudioInput", res.getAudioInput());
 
-        SoapObject object = initEnvelopAndTransport(rpc,null);
+        SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/setCodingParam");
         try{
 	        Object result = object.getProperty("result");
 //	        if(result.toString().equals("SessionExpired")){
@@ -542,7 +542,7 @@ public class SoapManager implements Serializable {
         res.setDevID(req.getDevID());
         res.setChannelNo(req.getChannelNo());
 
-        SoapObject object = initEnvelopAndTransport(rpc,null);
+        SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/getVMDParam");
         try{
         	Log.v("sopa","object: "+object);
 	        Object result = object.getProperty("result");
@@ -603,7 +603,7 @@ public class SoapManager implements Serializable {
         }
         rpc.addProperty("Grid", so);
     	
-    	SoapObject object = initEnvelopAndTransport(rpc,null);
+    	SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/setVMDParam");
     	try{
 	        Object result = object.getProperty("result");
 //    	 	if(result.toString().equals("SessionExpired")){
@@ -625,7 +625,7 @@ public class SoapManager implements Serializable {
         rpc.addProperty("DevID", req.getDevID());
         rpc.addProperty("ChannelNo", req.getChannelNo());
         rpc.addProperty("RotationDegree", req.getRotationDegree());
-        SoapObject object = initEnvelopAndTransport(rpc,null);
+        SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/setVideoParam");
         try{
 	        Object result = object.getProperty("result");
 	        res.setResult(result.toString());
@@ -649,7 +649,7 @@ public class SoapManager implements Serializable {
         rpc.addProperty("LoginSession", req.getLoginSession());
         rpc.addProperty("DevID", req.getDevID());
         rpc.addProperty("ChannelNo", req.getChannelNo());
-        SoapObject object = initEnvelopAndTransport(rpc,null);
+        SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/getVideoParam");
         try{
 	        Object result = object.getProperty("result");
 	        res.setResult(result.toString());
@@ -754,7 +754,7 @@ public class SoapManager implements Serializable {
     	rpc.addProperty("LoginSession", req.getLoginSession());
     	rpc.addProperty("DialogID", req.getDialogID());
     	rpc.addProperty("NATType", req.getNATType());
-    	SoapObject object = initEnvelopAndTransport(rpc,null);
+    	SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/notifyNATResult");
     	try{
  	       	Object result = object.getProperty("result");
  	        res.setResult(result.toString());
@@ -779,7 +779,7 @@ public class SoapManager implements Serializable {
     	SoapObject rpc = new SoapObject(sNameSpace, "getNATServerReq");
     	rpc.addProperty("Account", req.getAccount());
     	rpc.addProperty("LoginSession", req.getLoginSession());
-    	SoapObject object = initEnvelopAndTransport(rpc,null);
+    	SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/getNATServer");
     	try{
  	       	Object result = object.getProperty("result");
  	       	mGetNATServerRes.setResult(result.toString());
@@ -825,7 +825,7 @@ public class SoapManager implements Serializable {
     	rpc.addProperty("DeviceToken", req.getDeviceToken());
     	rpc.addProperty("APNs", req.isAPNs());
     	//rpc.addProperty("AndroidOS", "Android");
-    	SoapObject object = initEnvelopAndTransport(rpc,null);
+    	SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/updateAndroidToken");
     	try{
  	       	Object result = object.getProperty("result");
  	       	res.setResult(result.toString());
@@ -847,7 +847,7 @@ public class SoapManager implements Serializable {
     	rpc.addProperty("Account", req.getAccount());
     	rpc.addProperty("LoginSession", req.getLoginSession());
     	rpc.addProperty("UDID", req.getUDID());
-    	SoapObject object = initEnvelopAndTransport(rpc,null);
+    	SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/queryAndroidToken");
     	try{
  	       	Object result = object.getProperty("result");
  	       	res.setResult(result.toString());
@@ -877,7 +877,7 @@ public class SoapManager implements Serializable {
     	rpc.addProperty("DevID", req.getDevID());
     	rpc.addProperty("ChannelNo", req.getChannelNo());
     	rpc.addProperty("PtzDirection", req.getPtzDirection());
-    	SoapObject object = initEnvelopAndTransport(rpc,null);
+    	SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/ptzControl");
     	try{
     		Object result = object.getProperty("result");
  	       	res.setResult(result.toString());
@@ -897,7 +897,7 @@ public class SoapManager implements Serializable {
     	QueryClientVersionRes res = new QueryClientVersionRes();
     	SoapObject rpc = new SoapObject(sNameSpace, "queryClientVersionReq");
     	rpc.addProperty("ClientType", req.getClientType());
-    	SoapObject object = initEnvelopAndTransport(rpc,null);
+    	SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/queryClientVersion");
     	
  	    Object result = object.getProperty("result");
  	    res.setResult(result.toString());
@@ -1209,7 +1209,7 @@ public class SoapManager implements Serializable {
     	try{
     		Object result = object.getProperty("result");
     	 	res.setResult(result.toString());
-    	 	
+    	 	System.out.println("UpdateChannelNameRes res:"+result.toString());
     	 	if(result.toString().equals("SessionExpired")){
 	        	mLoginResponse = getUserLoginRes(mLoginRequest);
 	        	req.setLoginSession(mLoginResponse.getLoginSession());
@@ -1435,25 +1435,25 @@ public class SoapManager implements Serializable {
 		        
 		        Object id = notice.getProperty("ID");
 		        n.setiD(id.toString());
-		        //System.out.println("id:"+id);
+		        System.out.println("id:"+id);
 		        Object message = notice.getProperty("Message");
 		        n.setMessage(message.toString());
-		       // System.out.println("message:"+message);
+		        System.out.println("message:"+message);
 		        Object classification = notice.getProperty("Classification");
 		        n.setClassification(classification.toString());
-		        //System.out.println("classification:"+classification);
+		        System.out.println("classification:"+classification);
 		        Object time = notice.getProperty("Time");
 		        n.setTime(time.toString());
-		        //System.out.println("time:"+time);
+		        System.out.println("time:"+time);
 		        Object status = notice.getProperty("Status");
 		        n.setStatus(status.toString());
-		       // System.out.println("status:"+status);
+		        System.out.println("status:"+status);
 		        Object devID = notice.getProperty("DevID");
 		        n.setDevID(devID.toString());
-		       // System.out.println("devID:"+devID);
+		        System.out.println("devID:"+devID);
 		        Object channelNo = notice.getProperty("ChannelNo");
 		        n.setChannelNo(Integer.valueOf(channelNo.toString()));
-		       // System.out.println("channelNo:"+channelNo);
+		        System.out.println("channelNo:"+channelNo);
 		        try{
 			        Object name = notice.getProperty("Name");
 			        n.setName(name.toString());

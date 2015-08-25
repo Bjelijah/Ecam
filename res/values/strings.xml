@@ -27,7 +27,7 @@
     <string name="account">My account</string>
     <string name="sys_message">System message</string>
     <string name="alarm">Alarm</string>
-    <string name="about">About eCamera V1.1.6</string>
+    <string name="about">About eCamera V1.1.8</string>
     <string name="exit">Log Out</string>
     <string name="email">Email</string>
     <string name="mobiletel">Mobile phone number</string>
@@ -192,6 +192,13 @@
 	<string name="match_activity_success_dialog_yes_btn">Sure</string>
 	
 	<string name="navigation_activity_btn">Go</string>
+	
+	<string name="title_popup_listen">Listen</string>
+	<string name="title_popup_scan">Scan</string>
+	<string name="popup_window_hd">HD</string>
+	<string name="popup_window_sd">SD</string>
+	
+	<string name="invalid_code">Illegal qr code</string>
 	
 	<string name="QR_code">QR code</string>
 	<string name="msg_default_status">put the qr code in the box, can automatically scan</string>

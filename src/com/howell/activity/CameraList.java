@@ -13,6 +13,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,30 +23,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
-//import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.android.howell.webcam.R;
 import com.howell.ecamera.cameraupdatedetective.DeviceVersionDetective;
 import com.howell.ecamera.cameraupdatedetective.Observer;
-import com.howell.ehlib.ActionItem;
 import com.howell.ehlib.MyListView;
 import com.howell.ehlib.MyListView.OnRefreshListener;
-import com.howell.ehlib.TitlePopup;
-import com.howell.ehlib.TitlePopup.OnItemOnClickListener;
 import com.howell.entityclass.NodeDetails;
-import com.howell.utils.ClientUpdateUtils;
-import com.howell.utils.MessageUtiles;
-import com.howell.utils.PhoneConfig;
-import com.howell.utils.ScaleImageUtils;
-import com.howell.utils.UpdateCameraUtils;
 import com.howell.protocol.GetDevVerReq;
 import com.howell.protocol.GetDevVerRes;
 import com.howell.protocol.LoginResponse;
@@ -55,10 +48,15 @@ import com.howell.protocol.QueryDeviceReq;
 import com.howell.protocol.SoapManager;
 import com.howell.protocol.UpdateAndroidTokenReq;
 import com.howell.protocol.UpdateAndroidTokenRes;
+import com.howell.utils.ClientUpdateUtils;
+import com.howell.utils.DeviceVersionUtils;
+import com.howell.utils.MessageUtiles;
+import com.howell.utils.PhoneConfig;
+import com.howell.utils.ScaleImageUtils;
 import com.wyy.twodimcode.CaptureActivity;
-import com.wyy.twodimcode.MainActivity;
+//import android.widget.Button;
 
-public class CameraList extends ListActivity implements Observer,OnItemOnClickListener{
+public class CameraList extends ListActivity implements Observer{
 
     private SoapManager mSoapManager;
     private LoginResponse mResponse;
@@ -83,8 +81,11 @@ public class CameraList extends ListActivity implements Observer,OnItemOnClickLi
     private Bitmap bm;
     
     private DeviceVersionDetective detective;
-	private TitlePopup titlePopup;
+//	private TitlePopup titlePopup;
     private int country;//中国 0 ，别的国家 1
+    
+	private PopupWindow mPopupWindow;  
+	private LinearLayout listen,scan;
     
     //private Button test;
     
@@ -169,9 +170,10 @@ public class CameraList extends ListActivity implements Observer,OnItemOnClickLi
         mBack = (ImageButton)findViewById(R.id.ib_camera_list_back);
         mBack.setOnClickListener(adapter.listener);
         
-        titlePopup = new TitlePopup(this, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        titlePopup.setItemOnClickListener(this);
-        initTitlePopupData();
+//        titlePopup = new TitlePopup(this, width,width * 3 / 4,R.layout.title_popup
+//        		,this.getResources().getColor(android.R.color.black),Gravity.CENTER_VERTICAL);
+//        titlePopup.setItemOnClickListener(this);
+//        initTitlePopupData();
         
         //-----如果是演示帐号则去掉添加按钮，加上返回按钮
         if(mResponse.getAccount().equals("100868")){
@@ -193,7 +195,7 @@ public class CameraList extends ListActivity implements Observer,OnItemOnClickLi
 //				                GetDevVerReq getDevVerReq = new GetDevVerReq(mResponse.getAccount(),mResponse.getLoginSession(),d.getDevID());
 //				                GetDevVerRes res = mSoapManager.getGetDevVerRes(getDevVerReq);
 //				                Log.e("GetDevVerRes", res.toString());
-//				                if(/*d.isOnLine() && */UpdateCameraUtils.needToUpdate(res.getCurDevVer(), res.getNewDevVer())){
+//				                if(/*d.isOnLine() && */DeviceVersionUtils.needToUpdate(res.getCurDevVer(), res.getNewDevVer())){
 //				                	System.out.println(res.getCurDevVer()+","+res.getNewDevVer());
 //				                	d.setHasUpdate(true);
 //				                }
@@ -207,7 +209,7 @@ public class CameraList extends ListActivity implements Observer,OnItemOnClickLi
 		                	GetDevVerReq getDevVerReq = new GetDevVerReq(mResponse.getAccount(),mResponse.getLoginSession(),d.getDevID());
 		                	GetDevVerRes getDevVerRes = mSoapManager.getGetDevVerRes(getDevVerReq);
 		                	Log.e("GetDevVerRes", getDevVerRes.toString());
-		                	if(d.isOnLine() && UpdateCameraUtils.needToUpdate(getDevVerRes.getCurDevVer(), getDevVerRes.getNewDevVer())){
+		                	if(d.isOnLine() && DeviceVersionUtils.needToUpdate(getDevVerRes.getCurDevVer(), getDevVerRes.getNewDevVer())){
 		                	//if(!getDevVerRes.getCurDevVer().equals(getDevVerRes.getNewDevVer())){	
 		                		System.out.println(getDevVerRes.getCurDevVer()+","+getDevVerRes.getNewDevVer());
 		                		d.setHasUpdate(true);
@@ -233,7 +235,7 @@ public class CameraList extends ListActivity implements Observer,OnItemOnClickLi
 
 				}.execute();
 			}
-
+			
 			@Override
 			public void onFirstRefresh() {
 				// TODO Auto-generated method stub
@@ -283,7 +285,7 @@ public class CameraList extends ListActivity implements Observer,OnItemOnClickLi
                 	GetDevVerReq getDevVerReq = new GetDevVerReq(mResponse.getAccount(),mResponse.getLoginSession(),d.getDevID());
                 	GetDevVerRes getDevVerRes = mSoapManager.getGetDevVerRes(getDevVerReq);
                 	Log.e("GetDevVerRes", getDevVerRes.toString());
-                	if(d.isOnLine() && UpdateCameraUtils.needToUpdate(getDevVerRes.getCurDevVer(), getDevVerRes.getNewDevVer())){
+                	if(d.isOnLine() && DeviceVersionUtils.needToUpdate(getDevVerRes.getCurDevVer(), getDevVerRes.getNewDevVer())){
                 	//if(!getDevVerRes.getCurDevVer().equals(getDevVerRes.getNewDevVer())){	
                 		System.out.println(getDevVerRes.getCurDevVer()+","+getDevVerRes.getNewDevVer());
                 		d.setHasUpdate(true);
@@ -296,11 +298,56 @@ public class CameraList extends ListActivity implements Observer,OnItemOnClickLi
         }.start();
     }
     
-    private void initTitlePopupData(){
-		//������������������
-		titlePopup.addAction(new ActionItem(this, "无线设备添加", R.drawable.more_about));
-		titlePopup.addAction(new ActionItem(this, "有线设备添加", R.drawable.more_help));
-	}
+    /* 
+     * 获取PopupWindow实例 
+     */  
+    private void getPopupWindowInstance() {  
+        if (null != mPopupWindow) {  
+            mPopupWindow.dismiss();  
+            return;  
+        } else {  
+            initPopuptWindow();  
+        }  
+    } 
+    
+    /* 
+     * 创建PopupWindow 
+     */  
+    private void initPopuptWindow() {  
+        LayoutInflater layoutInflater = LayoutInflater.from(CameraList.this);  
+        View popupWindow = layoutInflater.inflate(R.layout.title_popup, null);  
+        listen = (LinearLayout)popupWindow.findViewById(R.id.camera_list_pop_layout_listen);
+        scan = (LinearLayout)popupWindow.findViewById(R.id.camera_list_pop_layout_scan);
+        listen.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(CameraList.this, SetDeviceWifi.class);
+	            startActivity(intent);
+			}
+		});
+        scan.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent it = new Intent(CameraList.this, CaptureActivity.class);
+				startActivity(it);
+			}
+		});
+        
+        int width = PhoneConfig.getPhoneWidth(this)/4;
+        mPopupWindow = new PopupWindow(popupWindow, LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);  
+        
+        ColorDrawable dw = new ColorDrawable(0000000000);
+		// ��back�������ط�ʹ����ʧ,������������ܴ���OnDismisslistener ����������ؼ��仯�Ȳ���
+        mPopupWindow.setBackgroundDrawable(dw);
+        mPopupWindow.setFocusable(true);  
+        mPopupWindow.setOutsideTouchable(true);  
+  
+    }
+    
     
     private String getVersion(){
         PackageInfo pkg;
@@ -610,7 +657,9 @@ public class CameraList extends ListActivity implements Observer,OnItemOnClickLi
 				else if(arg0.getId() == R.id.ib_add){
 					//Intent intent = new Intent(CameraList.this, SetDeviceWifi.class);
 		            //startActivity(intent);
-					titlePopup.show(arg0);
+//					titlePopup.show(arg0);
+					getPopupWindowInstance();  
+			        mPopupWindow.showAsDropDown(arg0);  
 				}else if(arg0.getId() == R.id.to_play){
 					System.out.println(getItem(Integer.valueOf(arg0.getTag().toString())).toString());
 					if (!((NodeDetails)getItem(Integer.valueOf(arg0.getTag().toString()))).isOnLine()) {
@@ -648,16 +697,16 @@ public class CameraList extends ListActivity implements Observer,OnItemOnClickLi
 		myHandler.sendEmptyMessage(refreshDeviceUpdate);
 	}
 
-	@Override
-	public void onItemClick(ActionItem item, int position) {
-		// TODO Auto-generated method stub
-		if(position == 0){
-			Intent intent = new Intent(CameraList.this, SetDeviceWifi.class);
-            startActivity(intent);
-		}else if(position == 1){
-			Intent it = new Intent(CameraList.this, CaptureActivity.class);
-			startActivity(it);
-		}
-	}
+//	@Override
+//	public void onItemClick(ActionItem item, int position) {
+//		// TODO Auto-generated method stub
+//		if(position == 0){
+//			Intent intent = new Intent(CameraList.this, SetDeviceWifi.class);
+//            startActivity(intent);
+//		}else if(position == 1){
+//			Intent it = new Intent(CameraList.this, CaptureActivity.class);
+//			startActivity(it);
+//		}
+//	}
 
 }

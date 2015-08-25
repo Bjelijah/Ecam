@@ -4,6 +4,7 @@ import java.util.Random;
 import org.kobjects.base64.Base64;
 import android.util.Log;
 
+import com.howell.entityclass.Crypto;
 import com.howell.entityclass.NodeDetails;
 import com.howell.entityclass.StreamReqContext;
 import com.howell.entityclass.StreamReqIceOpt;
@@ -130,7 +131,7 @@ public class InviteUtils {
     }
 
     // srteam = 0 :main ,stream =1 :sub
-    public boolean InviteLive(int stream) {
+    public boolean InviteLive(final int stream) {
     	System.out.println("start invitelive");
         if (stream == 0) {
             streamType = "Main";
@@ -142,7 +143,7 @@ public class InviteUtils {
         	return false;
         }
         System.out.println("Invite handle success!!");
-        StreamReqContext context = fillStreamReqContext(0, 0, 0, 0, methodType);
+        StreamReqContext context = fillStreamReqContext(0, 0, 0, 0, methodType,stream);
         if(context == null ){
         	Log.e("false", "postMessage111");
         	if(!isQuit){
@@ -206,7 +207,7 @@ public class InviteUtils {
 						        return ;
 						    }
 						    System.out.println("Invite handle success!!");
-						    StreamReqContext context = fillStreamReqContext(0, 0, 0, 0, methodType);
+						    StreamReqContext context = fillStreamReqContext(0, 0, 0, 0, methodType,stream);
 						    if(context == null){
 						        Log.e("false", "postMessage111");
 						        if(!isQuit){
@@ -252,14 +253,14 @@ public class InviteUtils {
         return catchError(ret);
     }
 
-    public boolean InvitePlayback(long beg, long end) {
+    public boolean InvitePlayback(long beg, long end,int stream) {
         handle = createHandle(account, 1);
         if(handle == -1){
         	return false;
         }
         Log.e("----------->>>", "beg = " + beg);
         Log.e("----------->>>", "end = " + end);
-        StreamReqContext context = fillStreamReqContext(1, beg, end, 0 , methodType);
+        StreamReqContext context = fillStreamReqContext(1, beg, end, 0 , methodType,stream);
         if(context == null ){
         	if(!isQuit)
         		handler.sendEmptyMessage(POSTERROR);
@@ -285,9 +286,9 @@ public class InviteUtils {
         return catchError(ret);
     }
 
-    public boolean Replay(long beg, long end) {
-        prepareReplay(handle);
-        StreamReqContext context = fillStreamReqContext(1, beg, end, 1 , methodType);
+    public boolean Replay(int isPlayBack,long beg, long end,int stream) {
+        prepareReplay(isPlayBack,handle);
+        StreamReqContext context = fillStreamReqContext(isPlayBack, beg, end, 1 , methodType,stream);
         if(context == null){
         	if(!isQuit)
         		handler.sendEmptyMessage(POSTERROR);
@@ -306,7 +307,7 @@ public class InviteUtils {
     }
 
     private StreamReqContext fillStreamReqContext(int isPlayBack, long beg,
-            long end, int re_invite , int methodType) {
+            long end, int re_invite , int methodType,int stream) {
 //        StreamReqIceOpt opt = new StreamReqIceOpt(1, "180.166.7.214", 34780,
 //                "180.166.7.214", 34780, 0, "100", "100");
     	System.out.println("methodType:"+methodType);
@@ -337,15 +338,21 @@ public class InviteUtils {
 	        Log.e("InviteUtils", "1");
 //    		StreamReqIceOpt opt = new StreamReqIceOpt(1, "222.191.251.186", 34780,
 //                  "222.191.251.186", 34780, 0, "100", "100");
-	        
+	        Crypto crypto = new Crypto(1);
 	        Log.e("InviteUtils", "3");
 	        if(methodType == 0){
+//	        	streamReqContext = new StreamReqContext(isPlayBack,
+//		                beg, end, re_invite, 1 << 1 | 1 << 2 ,UpnpIP , UpnpPort, opt);
 	        	streamReqContext = new StreamReqContext(isPlayBack,
-		                beg, end, re_invite, 1 << 1 | 1 << 2 ,UpnpIP , UpnpPort, opt);
-	    		Log.e("streamReqContext", "UpnpIP:"+UpnpIP+"UpnpPort:"+UpnpPort);
+		                beg, end, re_invite, 1 << 1 | 1 << 2 ,UpnpIP , UpnpPort, opt,crypto,0,stream);
+	        	Log.e("streamReqContext", "java stream:"+stream);
+	        	Log.e("streamReqContext", "UpnpIP:"+UpnpIP+"UpnpPort:"+UpnpPort);
 	        }else if(methodType == 2){
+//	        	streamReqContext = new StreamReqContext(isPlayBack,
+//		                beg, end, re_invite, 1 << 2 ,UpnpIP , UpnpPort, opt);
 	        	streamReqContext = new StreamReqContext(isPlayBack,
-		                beg, end, re_invite, 1 << 2 ,UpnpIP , UpnpPort, opt);
+		                beg, end, re_invite, 1 << 2 ,UpnpIP , UpnpPort, opt,crypto,0,stream);
+	        	Log.e("streamReqContext", "java stream:"+stream);
 	    		Log.e("streamReqContext", "UpnpIP:"+UpnpIP+"UpnpPort:"+UpnpPort);
 	        }
     		
@@ -585,7 +592,7 @@ public class InviteUtils {
 
     public native void freeHandle(long handle);
 
-    public native void prepareReplay(long handle);
+    public native void prepareReplay(int isPlayBack,long handle);
     
     public native int getMethod(long handle);
     

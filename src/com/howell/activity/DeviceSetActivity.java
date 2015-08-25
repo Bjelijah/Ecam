@@ -30,7 +30,7 @@ import com.howell.broadcastreceiver.HomeKeyEventBroadCastReceiver;
 import com.howell.entityclass.NodeDetails;
 import com.howell.utils.AlerDialogUtils;
 import com.howell.utils.MessageUtiles;
-import com.howell.utils.UpdateCameraUtils;
+import com.howell.utils.DeviceVersionUtils;
 import com.howell.entityclass.VMDGrid;
 import com.howell.protocol.CodingParamReq;
 import com.howell.protocol.CodingParamRes;
@@ -445,7 +445,7 @@ public class DeviceSetActivity extends Activity implements
 			    	}
 					System.out.println("re4444444444444");
 					mCameraVersion.setText(getResources().getString(R.string.camera_version_title)+"(V"+res.getCurDevVer()+")");
-					if(!UpdateCameraUtils.needToUpdate(res.getCurDevVer(), res.getNewDevVer())){
+					if(!DeviceVersionUtils.needToUpdate(res.getCurDevVer(), res.getNewDevVer())){
 			    		mCameraUpdateStatus.setText(getResources().getString(R.string.camera_old_version1)+res.getCurDevVer()+getResources().getString(R.string.camera_old_version2));
 			    		mUpdateButton.setVisibility(View.INVISIBLE);
 			    	}else{

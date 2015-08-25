@@ -86,23 +86,27 @@ void * ecam_stream_req_get_usr_data(ecam_stream_req_t * req);
 /* 请求上下文 */
 struct ecam_stream_req_context
 {
-	int playback;
-	time_t beg,end;
+    int playback;
+    time_t beg,end;
 
-	/* 是否是重新invite，一般用于在playback时拖拉进度条，
-	 * 此时保持之前的连接方式,不需要重新udp认证或者ICE */
-	int re_invite;
+    /* 是否是重新invite，一般用于在playback时拖拉进度条，
+     * 此时保持之前的连接方式,不需要重新udp认证或者ICE */
+    int re_invite;
 
-	uint8_t method_map;	/* 获取视频的方法 */
+    uint8_t method_map;	/* 获取视频的方法 */
 
-	char udp_addr[64];
-	uint16_t udp_port;
-	struct ICEOption ice_opt;
+    char udp_addr[64];
+    uint16_t udp_port;
+    struct ICEOption ice_opt;
 
     // crypto
     struct {
         int enable;// 是否启用加密，0:disable 1:enable
     } crypto;
+
+    // channel stream
+    int channel;
+    int stream;
 };
 
 /**

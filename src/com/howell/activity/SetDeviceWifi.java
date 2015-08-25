@@ -66,7 +66,7 @@ public class SetDeviceWifi extends Activity implements OnClickListener{
 //		wifi_ssid = (EditText)findViewById(R.id.et_wifi);
 		wifi_ssid = (Spinner)findViewById(R.id.spinner_wifi);  
         myAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,Member);  
-        myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);  
+        myAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);  
         wifi_ssid.setAdapter(myAdapter);  
         wifi_ssid.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){  
             @Override  

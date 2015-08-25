@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.howell.webcam"
-    android:versionCode="26"
-    android:versionName="1.1.6" >
+    android:versionCode="28"
+    android:versionName="1.1.8" >
     
     <!-- 极光   -->
     <permission
@@ -46,7 +46,7 @@
 
     <uses-sdk
         android:minSdkVersion="10"
-        android:targetSdkVersion="10" />
+        android:targetSdkVersion="17" />
     
     <application
         android:allowBackup="true"
@@ -203,7 +203,7 @@
          <activity
             android:name="com.howell.activity.PlayerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
         <activity
             android:name="com.howell.activity.DeviceManageActivity"
             android:screenOrientation="portrait"

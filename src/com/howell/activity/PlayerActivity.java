@@ -8,6 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 import java.util.Timer;
 
+import org.kobjects.base64.Base64;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -75,6 +77,7 @@ import com.howell.utils.DeviceVersionUtils;
 import com.howell.utils.FileUtils;
 import com.howell.utils.InviteUtils;
 import com.howell.utils.MessageUtiles;
+import com.howell.utils.PasswordDecode;
 import com.howell.utils.PhoneConfig;
 import com.howell.utils.TakePhotoUtil;
 
@@ -179,21 +182,8 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		node.setChannelNo(0);
 		node.setUpnpIP("");
 		node.setUpnpPort(0);
+		node.setPtzFlag(true);
 		return node;
-	}
-	
-	private byte[] decodePassword(byte[] array){
-		for(int i = 0 ; i < array.length ; i++){
-			array[i] ^= 0x57; 
-		}
-		return array;
-	}
-	
-	private byte[] decodeUsername(byte[] array){
-		for(int i = 0 ; i < array.length ; i++){
-			array[i] ^= 0x48; 
-		}
-		return array;
 	}
 	
 	private boolean getWebpParams(){
@@ -203,9 +193,11 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		System.out.println("uri:"+uri);
 		if (uri != null) {//从网页点击进入app
 			String temp = uri.getUserInfo();
-			account = temp.split(":")[0];	//10086
+//			account = temp.split(":")[0];	//10086
+			account = new String(PasswordDecode.decodeUsername(Base64.decode(temp.split(":")[0])));
 			Log.e("account", account);
-			password = temp.split(":")[1];	//10086
+//			password = temp.split(":")[1];	//10086
+			password = new String(PasswordDecode.decodePassword(Base64.decode(temp.split(":")[1])));
 			Log.e("password", password);
 			String host = uri.getHost();	//www.haoweis.com
 			Log.e("host", host);

@@ -203,7 +203,19 @@
          <activity
             android:name="com.howell.activity.PlayerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+         	<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            
+         	<intent-filter>
+				<action android:name="android.intent.action.VIEW"/>   
+				<category android:name="android.intent.category.DEFAULT"/>             
+				<category android:name="android.intent.category.BROWSABLE"/>
+				<data android:scheme="ecamera"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name="com.howell.activity.DeviceManageActivity"
             android:screenOrientation="portrait"
@@ -225,10 +237,7 @@
             android:name="com.howell.activity.LogoActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" >
-             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+             
         </activity>
         
         <activity

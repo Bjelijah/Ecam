@@ -41,7 +41,12 @@ import com.howell.entityclass.NodeDetails;
 import com.howell.entityclass.VODRecord;
 import com.howell.protocol.GetDevVerReq;
 import com.howell.protocol.GetDevVerRes;
+import com.howell.protocol.GetNATServerReq;
+import com.howell.protocol.GetNATServerRes;
+import com.howell.protocol.LoginRequest;
+import com.howell.protocol.LoginResponse;
 import com.howell.protocol.SoapManager;
+import com.howell.utils.DecodeUtils;
 import com.howell.utils.InviteUtils;
 import com.howell.utils.PlaybackUtils;
 import com.howell.utils.TimeTransform;
@@ -271,9 +276,21 @@ public class VideoList extends ListActivity implements OnItemClickListener {
 				// TODO Auto-generated method stub
 				Intent intent = getIntent();
 		        dev = (NodeDetails) intent.getSerializableExtra("Device");
+		        boolean needLogin = intent.getBooleanExtra("needLogin", true);
+		        if(needLogin){
+		        	String account = intent.getStringExtra("account");
+		        	String password = intent.getStringExtra("password");
+		        	String encodedPassword = DecodeUtils.getEncodedPassword(password);
+		    		LoginRequest loginReq = new LoginRequest(account, "Common",encodedPassword, "1.0.0.1");
+		    		LoginResponse loginRes = SoapManager.getInstance().getUserLoginRes(loginReq);
+		    		if(loginRes.getResult().equals("OK")){
+		    			String loginSession = loginRes.getLoginSession();
+		    			GetNATServerRes res = SoapManager.getInstance().getGetNATServerRes(new GetNATServerReq(account, loginSession));
+		    		}
+		        }
 		        client = new InviteUtils(dev);
 				//判断设备版本号是否大于3.0.0
-				isNewVer = checkDevVer();
+				isNewVer = true;//checkDevVer();
 				Log.e("isNewVer", "isNewVer:"+isNewVer);
 				mList = new ArrayList<VODRecord>();
 				if(!isNewVer){

@@ -99,7 +99,7 @@ public class InviteUtils {
         if(!mDeviceManager.getMap().containsKey(dev.getDevID())){
         	mDeviceManager.addMember(dev);
         }
-        methodType = mDeviceManager.getMap().get(dev.getDevID()).getMethodType();
+        methodType = 2;//mDeviceManager.getMap().get(dev.getDevID()).getMethodType();
 //        queryDeviceRes = mSoapManager.getQueryDeviceRes(new QueryDeviceReq(
 //                account, loginSession, devID));
 //        Log.e("InviteUtils", queryDeviceRes.toString());
@@ -178,77 +178,77 @@ public class InviteUtils {
         System.out.println("finish start");
         System.out.println("isStartFinish:"+isStartFinish+","+this.toString());
         getNATResult();
-        new Thread(){
-        	@Override
-        	public void run() {
-        		// TODO Auto-generated method stub
-        		super.run();
-        		System.out.println("thread isQuit:"+isQuit);
-        		if(NATType.equals("UPnP") && !isQuit){
-        			System.out.println("thread start"+methodType);
-	        		try {
-						sleep(3000);
-						System.out.println("thread isQuit2:"+isQuit);
-						//������߳̿���֮ǰ�Ѿ��˳� ��ִ���߳�
-						if(isQuit) return;
-						int count = getStreamCount(handle);
-						System.out.println("thread start111 count"+count);
-						if(count < 25){
-							isStartFinish = false;
-							mDeviceManager.getMap().get(devID).setMethodType(2);
-							methodType = 2/*mDeviceManager.getMap().get(devID).getMethodType()*/;
-							dialogID = String.valueOf(random.nextInt());
-							System.out.println("thread start2222"+methodType);
-							joinThread(handle);
-							freeHandle(getHandle());
-							bye(account,loginSession,devID,channelNo,streamType,dialogID);	
-							handle = createHandle(account, 0);
-						    if(handle == -1){
-						        return ;
-						    }
-						    System.out.println("Invite handle success!!");
-						    StreamReqContext context = fillStreamReqContext(0, 0, 0, 0, methodType,stream);
-						    if(context == null){
-						        Log.e("false", "postMessage111");
-						        if(!isQuit){
-						        	Log.e("false", "postMessage222");
-						        	handler.sendEmptyMessage(POSTERROR);
-						        }
-						        isStartFinish = true;
-						        return ;
-						    }
-						    if (!invite(context,false)) {
-						        Log.e("false", "postMessage333");
-						        if(!isQuit){
-						        	Log.e("false", "postMessage444");
-						        	handler.sendEmptyMessage(POSTERROR);
-						        }
-						        System.out.println("invite fail");
-						        isStartFinish = true;
-						        return ;
-						    }
-						    System.out.println("start live start");
-						    int ret = InviteUtils.this.start(handle, context, REQ_TIMEOUT);
-						    isStartFinish = true;
-						    if(ret != 0) {
-						    	Log.e("false", "postMessage555");
-						        System.out.println("PlayerActivity.isQuit :"+isQuit);
-						        if(!isQuit){
-						        	Log.e("false", "postMessage666");
-						        	handler.sendEmptyMessage(POSTERROR);
-						        }
-						        return ; 
-						    }
-						    System.out.println("finish start");
-						    getNATResult();
-						}
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-        		}
-        	}
-        }.start();
+//        new Thread(){
+//        	@Override
+//        	public void run() {
+//        		// TODO Auto-generated method stub
+//        		super.run();
+//        		System.out.println("thread isQuit:"+isQuit);
+//        		if(NATType.equals("UPnP") && !isQuit){
+//        			System.out.println("thread start"+methodType);
+//	        		try {
+//						sleep(3000);
+//						System.out.println("thread isQuit2:"+isQuit);
+//						//������߳̿���֮ǰ�Ѿ��˳� ��ִ���߳�
+//						if(isQuit) return;
+//						int count = getStreamCount(handle);
+//						System.out.println("thread start111 count"+count);
+//						if(count < 25){
+//							isStartFinish = false;
+//							mDeviceManager.getMap().get(devID).setMethodType(2);
+//							methodType = 2/*mDeviceManager.getMap().get(devID).getMethodType()*/;
+//							dialogID = String.valueOf(random.nextInt());
+//							System.out.println("thread start2222"+methodType);
+//							joinThread(handle);
+//							freeHandle(getHandle());
+//							bye(account,loginSession,devID,channelNo,streamType,dialogID);	
+//							handle = createHandle(account, 0);
+//						    if(handle == -1){
+//						        return ;
+//						    }
+//						    System.out.println("Invite handle success!!");
+//						    StreamReqContext context = fillStreamReqContext(0, 0, 0, 0, methodType,stream);
+//						    if(context == null){
+//						        Log.e("false", "postMessage111");
+//						        if(!isQuit){
+//						        	Log.e("false", "postMessage222");
+//						        	handler.sendEmptyMessage(POSTERROR);
+//						        }
+//						        isStartFinish = true;
+//						        return ;
+//						    }
+//						    if (!invite(context,false)) {
+//						        Log.e("false", "postMessage333");
+//						        if(!isQuit){
+//						        	Log.e("false", "postMessage444");
+//						        	handler.sendEmptyMessage(POSTERROR);
+//						        }
+//						        System.out.println("invite fail");
+//						        isStartFinish = true;
+//						        return ;
+//						    }
+//						    System.out.println("start live start");
+//						    int ret = InviteUtils.this.start(handle, context, REQ_TIMEOUT);
+//						    isStartFinish = true;
+//						    if(ret != 0) {
+//						    	Log.e("false", "postMessage555");
+//						        System.out.println("PlayerActivity.isQuit :"+isQuit);
+//						        if(!isQuit){
+//						        	Log.e("false", "postMessage666");
+//						        	handler.sendEmptyMessage(POSTERROR);
+//						        }
+//						        return ; 
+//						    }
+//						    System.out.println("finish start");
+//						    getNATResult();
+//						}
+//					} catch (InterruptedException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//        		}
+//        	}
+//        }.start();
         //new MyGetNATResultTask().execute();
         return catchError(ret);
     }

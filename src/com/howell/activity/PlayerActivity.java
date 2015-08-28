@@ -2,6 +2,7 @@ package com.howell.activity;
 
 
 import java.io.File;
+import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
@@ -21,6 +22,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
+import android.net.Uri;
 import android.opengl.GLSurfaceView;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -61,10 +63,14 @@ import com.howell.entityclass.VODRecord;
 import com.howell.playerrender.YV12Renderer;
 import com.howell.protocol.GetDevVerReq;
 import com.howell.protocol.GetDevVerRes;
+import com.howell.protocol.GetNATServerReq;
+import com.howell.protocol.GetNATServerRes;
+import com.howell.protocol.LoginRequest;
 import com.howell.protocol.LoginResponse;
 import com.howell.protocol.PtzControlReq;
 import com.howell.protocol.PtzControlRes;
 import com.howell.protocol.SoapManager;
+import com.howell.utils.DecodeUtils;
 import com.howell.utils.DeviceVersionUtils;
 import com.howell.utils.FileUtils;
 import com.howell.utils.InviteUtils;
@@ -152,17 +158,98 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	private PopupWindow mPopupWindow;  
 	private LinearLayout hd,sd;
 	
+	private String password;	//密码
+	
 	public PlayerActivity() {   
         mGestureDetector = new GestureDetector(this);   
     } 
 	
 	static {
+		System.loadLibrary("jpush");
         System.loadLibrary("hwplay");
         System.loadLibrary("player_jni");
     }
 	
 	public native void nativeAudioInit();
 	public static native void nativeAudioStop();
+	
+	private NodeDetails createNodeDetail(String devid){
+		NodeDetails node = new NodeDetails();
+		node.setDevID(devid);
+		node.setChannelNo(0);
+		node.setUpnpIP("");
+		node.setUpnpPort(0);
+		return node;
+	}
+	
+	private byte[] decodePassword(byte[] array){
+		for(int i = 0 ; i < array.length ; i++){
+			array[i] ^= 0x57; 
+		}
+		return array;
+	}
+	
+	private byte[] decodeUsername(byte[] array){
+		for(int i = 0 ; i < array.length ; i++){
+			array[i] ^= 0x48; 
+		}
+		return array;
+	}
+	
+	private boolean getWebpParams(){
+		Intent intent = getIntent();
+//		String scheme = intent.getScheme();
+		Uri uri = intent.getData();
+		System.out.println("uri:"+uri);
+		if (uri != null) {//从网页点击进入app
+			String temp = uri.getUserInfo();
+			account = temp.split(":")[0];	//10086
+			Log.e("account", account);
+			password = temp.split(":")[1];	//10086
+			Log.e("password", password);
+			String host = uri.getHost();	//www.haoweis.com
+			Log.e("host", host);
+			int port = 8800;				//8800
+			String devId = uri.getPath().substring(1);	//1234567890
+			Log.e("devId", devId);
+			String mode = uri.getQueryParameter("mode"); //live
+			Log.e("mode", mode);
+			//---------test-------------------
+//			account = "10086012";
+//			password = "10086012";
+//			String host = "www.haoweis.com";
+//			int port = 8800;
+//			String devId = "20140430000000000129";
+//			String mode = "live"; 
+			
+			dev = createNodeDetail(devId);
+			
+			mSoapManger = SoapManager.getInstance();
+			mSoapManger.init(host, port);
+			
+			if(mode.equals("live")){
+				playback = false;
+			}else {
+				playback = true;
+				intent = new Intent(PlayerActivity.this, VideoList.class);
+	            intent.putExtra("Device", dev);
+	            intent.putExtra("needLogin",true);
+	            intent.putExtra("account", account);
+	            intent.putExtra("password", password);
+	            startActivity(intent);
+	            return false;
+			}
+			
+		}else{//正常启动app或从录像列表进入
+			dev = (NodeDetails) intent.getSerializableExtra("nodeDetails");
+			mRecord = (VODRecord) intent.getSerializableExtra("arg");
+			playback = true;
+			if(dev == null){
+				return false;
+			}
+		}
+		return true;
+	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -175,8 +262,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
         mActivities.addActivity("PlayerActivity",PlayerActivity.this);
         receiver = new HomeKeyEventBroadCastReceiver();
         
-		registerReceiver(receiver, new IntentFilter(
-				Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+		registerReceiver(receiver, new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
 		Log.e("main","activity on create");
 		setContentView(R.layout.glsurface);
 		mGlView = (GLSurfaceView)findViewById(R.id.glsurface_view);
@@ -192,20 +278,28 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		mGlView.setLongClickable(true);   
         mGestureDetector.setIsLongpressEnabled(true);  
         
-        Intent intent = getIntent();
-		if (intent.getSerializableExtra("arg") instanceof NodeDetails) {
-            dev = (NodeDetails) intent.getSerializableExtra("arg");
-            playback = false;
-		} else if (intent.getSerializableExtra("arg") instanceof VODRecord) {
-            mRecord = (VODRecord) intent.getSerializableExtra("arg");
-            dev = (NodeDetails) intent.getSerializableExtra("nodeDetails");
-            playback = true;
+        if(!getWebpParams()){
+        	finish();
+        	return;
         }
+       
+//        Intent intent = getIntent();
+//		if (intent.getSerializableExtra("arg") instanceof NodeDetails) {
+//            dev = (NodeDetails) intent.getSerializableExtra("arg");
+//        dev = createNodeDetail();
+//        password = "10086012";
+//        account = "10086012";
+//            playback = false;
+//		} else if (intent.getSerializableExtra("arg") instanceof VODRecord) {
+//            mRecord = (VODRecord) intent.getSerializableExtra("arg");
+//            dev = (NodeDetails) intent.getSerializableExtra("nodeDetails");
+//            playback = true;
+//        }
 		
-        mSoapManger = SoapManager.getInstance();
-        LoginResponse res = mSoapManger.getLoginResponse();
-        account = res.getAccount();
-        loginSession = res.getLoginSession();
+//        mSoapManger = SoapManager.getInstance();
+//        LoginResponse res = mSoapManger.getLoginResponse();
+//        account = res.getAccount();
+//        loginSession = res.getLoginSession();
         devID = dev.getDevID();
         channelNo =	dev.getChannelNo();
         
@@ -247,34 +341,35 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
         }
 		
 		mVedioList = (ImageButton) findViewById(R.id.vedio_list);
-		if(dev.iseStoreFlag()){
-			//.setEnabled(true);
-			mVedioList.setImageResource(R.drawable.img_record);
-		}else{
-			//mVedioList.setEnabled(false);
-			mVedioList.setImageResource(R.drawable.img_no_record);
-		}
+//		if(dev.iseStoreFlag()){
+//			//.setEnabled(true);
+//			mVedioList.setImageResource(R.drawable.img_record);
+//		}else{
+//			//mVedioList.setEnabled(false);
+//			mVedioList.setImageResource(R.drawable.img_no_record);
+//		}
 	    mVedioList.setOnClickListener(new View.OnClickListener() {
 	        @Override
 	        public void onClick(View v) {
 	            // TODO Auto-generated method stub
-	        	if(!dev.iseStoreFlag()){
-	        		MessageUtiles.postToast(getApplicationContext()
-	        				, getResources().getString(R.string.no_sdcard),2000);
-	        	}else{
+//	        	if(!dev.iseStoreFlag()){
+//	        		MessageUtiles.postToast(getApplicationContext()
+//	        				, getResources().getString(R.string.no_sdcard),2000);
+//	        	}else{
 		        	if(null != client)
 		        		client.setQuit(true);
 		        	quitDisplay();
 	        		audioStop();
-	        		if(!playback){
-	            		TakePhotoUtil.takePhoto("/sdcard/eCamera/cache", dev, client);
-	    			}
+//	        		if(!playback){
+//	            		TakePhotoUtil.takePhoto("/sdcard/eCamera/cache", dev, client);
+//	    			}
 	        		finish();
 		            Log.e("", "00000000");
 		            Intent intent = new Intent(PlayerActivity.this, VideoList.class);
 		            intent.putExtra("Device", dev);
+		            intent.putExtra("needLogin",false);
 		            startActivity(intent);
-	        	}
+//	        	}
 	        }
 	    });
 	        
@@ -348,21 +443,21 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 			}
 		});
 	    
-	    new AsyncTask<Void, Integer, Void>(){
-	    	boolean isNewVer = false;
-	    	@Override
-			protected Void doInBackground(Void... arg0) {
-				// TODO Auto-generated method stub
-	    		isNewVer = checkDevVer();
-				return null;
-			}
-	    	
-	    	protected void onPostExecute(Void result) {
-	    		if(isNewVer){
-	    			mStreamChange.setVisibility(View.VISIBLE);
-	    		}
-	    	};
-	    }.execute();
+//	    new AsyncTask<Void, Integer, Void>(){
+//	    	boolean isNewVer = false;
+//	    	@Override
+//			protected Void doInBackground(Void... arg0) {
+//				// TODO Auto-generated method stub
+//	    		isNewVer = checkDevVer();
+//				return null;
+//			}
+//	    	
+//	    	protected void onPostExecute(Void result) {
+//	    		if(isNewVer){
+	    			mStreamChange.setVisibility(View.GONE);
+//	    		}
+//	    	};
+//	    }.execute();
 	    
 	    /*mStreamChange = (ImageButton)findViewById(R.id.stream);
 	    mStreamChange.setOnClickListener(new OnClickListener() {
@@ -426,9 +521,9 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	        		client.setQuit(true);
 	        	quitDisplay();
 				audioStop();
-				if(!playback){
-					TakePhotoUtil.takePhoto("/sdcard/eCamera/cache", dev, client);
-				}
+//				if(!playback){
+//					TakePhotoUtil.takePhoto("/sdcard/eCamera/cache", dev, client);
+//				}
 				finish();
 			}
 		});
@@ -450,7 +545,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
         if(playback){
         	Log.e("----------->>>", "onS totoal time:"+endTime +","+ startTime);
         	mVedioList.setEnabled(false);
-        	Log.e("---------->>>>", "frames send message");
+//        	Log.e("---------->>>>", "frames send message");
         	mPlayerHandler.sendEmptyMessage(REPLAYSEEKBAR);
         }
         Log.e("----------->>>", "send stopprogress message!!!!!!!!!!");
@@ -650,11 +745,27 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		mAudioTrack = null;
 	}
 	
+	private void login(){
+		//login
+		String encodedPassword = DecodeUtils.getEncodedPassword(password);
+		LoginRequest loginReq = new LoginRequest(account, "Common",encodedPassword, "1.0.0.1");
+		LoginResponse loginRes = mSoapManger.getUserLoginRes(loginReq);
+		if(loginRes.getResult().equals("OK")){
+			loginSession = loginRes.getLoginSession();
+			GetNATServerRes res = mSoapManger.getGetNATServerRes(new GetNATServerReq(account, loginSession));
+		    Log.e("LogoActivity", res.toString());
+		}
+	}
+	
 	class InviteThread extends Thread{
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
 			super.run();
+			if(!playback){
+				login();
+			}
+			
 			client = new InviteUtils(dev);
 			System.out.println("start invite live");
 			if (playback) {
@@ -750,7 +861,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 				mPlayerHandler.sendEmptyMessageDelayed(REPLAYSEEKBAR,100);
 			}
 			if (msg.what == STOPPROGRESSBAR) {
-				System.out.println("frames: "+stopSendMessage);
+//				System.out.println("frames: "+stopSendMessage);
 				if(stopSendMessage){
 					return;
 				}
@@ -758,7 +869,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 					mPlayerHandler.sendEmptyMessageDelayed(STOPPROGRESSBAR,100);
 				}else{
 					mWaitProgressBar.setVisibility(View.GONE);
-					System.out.println("frames: send message DETECT_IF_NO_STREAM_ARRIVE");
+//					System.out.println("frames: send message DETECT_IF_NO_STREAM_ARRIVE");
 					mPlayerHandler.sendEmptyMessage(DETECT_IF_NO_STREAM_ARRIVE);
 				}
 			}

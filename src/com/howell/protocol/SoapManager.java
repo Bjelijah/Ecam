@@ -22,11 +22,11 @@ import android.util.Log;
 @SuppressWarnings("serial")
 public class SoapManager implements Serializable {
 
-    private static String sNameSpace = "http://www.haoweis.com/HomeServices/MCU/";
+    private String sNameSpace = "http://www.haoweis.com/HomeServices/MCU/";
 
     //https://www.haoweis.com:8807/HomeService/HomeMCUService.svc 
     //http://www.haoweis.com:8800/HomeService/HomeMCUService.svc?xsd=xsd0
-    private static String sEndPoint = "http://www.haoweis.com:8800/HomeService/HomeMCUService.svc?wsdl";
+    private String sEndPoint = "";
 
     //private static String sSoapAction = null;
 
@@ -47,6 +47,10 @@ public class SoapManager implements Serializable {
 
     public static SoapManager getInstance() {
         return sInstance;
+    }
+    
+    public void init(String host,int port){
+    	sEndPoint = "http://"+host+":"+port+"/HomeService/HomeMCUService.svc?wsdl";
     }
 
     public GetDeviceMatchingCodeRes getmGetDeviceMatchingCodeRes() {
@@ -315,6 +319,7 @@ public class SoapManager implements Serializable {
         SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/invite");
         try{
 	        Object result = object.getProperty("result");
+	        Log.e("","invite result:"+result);
 	        if(result.toString().equals("SessionExpired")){
 	        	mLoginResponse = getUserLoginRes(mLoginRequest);
 	        	req.setLoginSession(mLoginResponse.getLoginSession());

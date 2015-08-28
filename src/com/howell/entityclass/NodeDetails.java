@@ -38,6 +38,11 @@ public class NodeDetails implements Serializable {
 		hasUpdate = false;
 		picturePath = "/sdcard/eCamera/cache/"+devID+".jpg";
 	}
+	
+	public NodeDetails() {
+		super();
+	}
+
 	public NodeDetails(String devID, int channelNo, String name,
 			boolean onLine, boolean ptzFlag, int securityArea,
 			boolean eStoreFlag, String upnpIP, int upnpPort, String devVer,

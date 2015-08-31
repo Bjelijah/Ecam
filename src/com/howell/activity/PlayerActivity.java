@@ -67,6 +67,8 @@ import com.howell.protocol.GetDevVerReq;
 import com.howell.protocol.GetDevVerRes;
 import com.howell.protocol.GetNATServerReq;
 import com.howell.protocol.GetNATServerRes;
+import com.howell.protocol.LensControlReq;
+import com.howell.protocol.LensControlRes;
 import com.howell.protocol.LoginRequest;
 import com.howell.protocol.LoginResponse;
 import com.howell.protocol.PtzControlReq;
@@ -162,6 +164,8 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	private LinearLayout hd,sd;
 	
 	private String password;	//密码
+	float baseValue = 0;
+	float scale = 1;
 	
 	public PlayerActivity() {   
         mGestureDetector = new GestureDetector(this);   
@@ -1113,6 +1117,52 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
             return null;
         }
     }
+	
+	private void zoomTele(){
+		new AsyncTask<Void, Integer, Void>(){
+
+			@Override
+			protected Void doInBackground(Void... arg0) {
+				// TODO Auto-generated method stub
+				LensControlReq req = new LensControlReq(account,loginSession,devID,channelNo,"ZoomTele");
+				mSoapManger.getLensControlRes(req);
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				req = new LensControlReq(account,loginSession,devID,channelNo,"Stop");
+				mSoapManger.getLensControlRes(req);
+				return null;
+			}
+			
+		}.execute();
+		
+	}
+	
+	
+	private void zoomWide(){
+		new AsyncTask<Void, Integer, Void>(){
+
+			@Override
+			protected Void doInBackground(Void... arg0) {
+				// TODO Auto-generated method stub
+				LensControlReq req = new LensControlReq(account,loginSession,devID,channelNo,"ZoomWide");
+				mSoapManger.getLensControlRes(req);
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				req = new LensControlReq(account,loginSession,devID,channelNo,"Stop");
+				mSoapManger.getLensControlRes(req);
+				return null;
+			}
+			
+		}.execute();
+	}
 
 	private void animationStart(float fromXDelta, float toXDelta, float fromYDelta, float toYDelta){
 		System.out.println("Fling isAnimationStart:"+isAnimationStart);
@@ -1258,7 +1308,33 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		// TODO Auto-generated method stub
-		return mGestureDetector.onTouchEvent(event);   
+		/*if (event.getAction() == MotionEvent.ACTION_DOWN) {
+	        baseValue = 0;
+	        scale = 1;
+		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+	       if (event.getPointerCount() == 2) {
+	           float x = event.getX(0) - event.getX(1);
+	           float y = event.getY(0) - event.getY(1);
+	           float value = (float) Math.sqrt(x * x + y * y);// 计算两点的距离
+	           if (baseValue == 0) {
+	                baseValue = value;
+	                Log.v("onTouch", "baseValue:"+baseValue);
+	           } else {
+	               if (value - baseValue >= 10 || value - baseValue <= -10) {
+	                   scale = value / baseValue;// 当前两点间的距离除以手指落下时两点间的距离就是需要缩放的比例。
+	               }
+	           }
+	       } 
+		} else if(event.getAction() == MotionEvent.ACTION_UP){
+			if(scale > 1){
+				Log.e("","zoomTele");
+         	   zoomTele();
+            }else if(scale < 1){
+            	Log.e("","zoomWide");
+         	   zoomWide();
+            }
+		}*/
+		return mGestureDetector.onTouchEvent(event); 
 	}
 //	@Override
 //	public void onItemClick(ActionItem item, int position) {

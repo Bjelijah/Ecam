@@ -13,7 +13,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import com.android.howell.webcam.R;
+import com.android.howell.webcam.huanbao.R;
 import com.howell.utils.DecodeUtils;
 import com.howell.utils.MessageUtiles;
 import com.howell.protocol.CreateAccountReq;

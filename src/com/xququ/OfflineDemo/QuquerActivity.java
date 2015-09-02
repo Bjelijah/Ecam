@@ -1,6 +1,6 @@
 package com.xququ.OfflineDemo;
 
-import com.android.howell.webcam.R;
+import com.android.howell.webcam.huanbao.R;
 import com.xququ.OfflineSDK.XQuquerService;
 import com.xququ.OfflineSDK.XQuquerService.XQuquerListener;
 

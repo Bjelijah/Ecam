@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.howell.webcam.R;
+import com.android.howell.webcam.huanbao.R;
 
 public class MessageUtiles {
 	public static void postToast(Context context,String message,int time){

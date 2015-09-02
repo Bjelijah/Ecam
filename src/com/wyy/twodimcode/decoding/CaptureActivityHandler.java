@@ -27,7 +27,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.android.howell.webcam.R;
+import com.android.howell.webcam.huanbao.R;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 import com.wyy.twodimcode.CaptureActivity;

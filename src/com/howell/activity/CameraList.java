@@ -33,7 +33,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.android.howell.webcam.R;
+import com.android.howell.webcam.huanbao.R;
 import com.howell.ecamera.cameraupdatedetective.DeviceVersionDetective;
 import com.howell.ecamera.cameraupdatedetective.Observer;
 import com.howell.ehlib.MyListView;

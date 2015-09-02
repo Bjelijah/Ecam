@@ -9,7 +9,7 @@ import java.util.TimeZone;
 
 import android.view.View;
 
-import com.android.howell.webcam.R;
+import com.android.howell.webcam.huanbao.R;
 import com.howell.utils.TimeTransform;
 
 

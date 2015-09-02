@@ -1,7 +1,7 @@
 package com.howell.ehlib;
 
 
-import com.android.howell.webcam.R;
+import com.android.howell.webcam.huanbao.R;
 import com.howell.utils.PhoneConfig;
 
 import android.content.Context;

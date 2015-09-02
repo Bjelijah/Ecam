@@ -1,6 +1,6 @@
 package com.howell.activity;
 
-import com.android.howell.webcam.R;
+import com.android.howell.webcam.huanbao.R;
 import com.howell.broadcastreceiver.HomeKeyEventBroadCastReceiver;
 
 import android.app.Activity;

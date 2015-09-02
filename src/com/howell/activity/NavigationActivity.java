@@ -2,7 +2,7 @@ package com.howell.activity;
 
 import java.util.ArrayList;
 
-import com.android.howell.webcam.R;
+import com.android.howell.webcam.huanbao.R;
 
 import android.app.Activity;
 import android.content.Context;

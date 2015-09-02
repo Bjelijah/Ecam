@@ -19,7 +19,7 @@ import android.util.Log;
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
 
-import com.android.howell.webcam.R;
+import com.android.howell.webcam.huanbao.R;
 import com.howell.utils.DecodeUtils;
 import com.howell.utils.NetWorkUtils;
 import com.howell.protocol.GetNATServerReq;

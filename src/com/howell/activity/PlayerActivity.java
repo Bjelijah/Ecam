@@ -57,7 +57,7 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-import com.android.howell.webcam.R;
+import com.android.howell.webcam.huanbao.R;
 import com.howell.broadcastreceiver.HomeKeyEventBroadCastReceiver;
 import com.howell.ehlib.MySeekBar;
 import com.howell.entityclass.NodeDetails;
@@ -205,7 +205,11 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 			Log.e("password", password);
 			String host = uri.getHost();	//www.haoweis.com
 			Log.e("host", host);
-			int port = 8800;				//8800
+			int port = uri.getPort();		//8800
+			if(port == -1){
+				port = 8800;
+			}
+			Log.e("port", port+"");
 			String devId = uri.getPath().substring(1);	//1234567890
 			Log.e("devId", devId);
 			String mode = uri.getQueryParameter("mode"); //live

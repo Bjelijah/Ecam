@@ -1,6 +1,6 @@
 package com.howell.utils;
 
-import com.android.howell.webcam.R;
+import com.android.howell.webcam.huanbao.R;
 import com.howell.entityclass.NodeDetails;
 import com.howell.protocol.SoapManager;
 import com.howell.protocol.UpgradeDevVerReq;

@@ -10,7 +10,7 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TabHost;
 
-import com.android.howell.webcam.R;
+import com.android.howell.webcam.huanbao.R;
 import com.howell.broadcastreceiver.HomeKeyEventBroadCastReceiver;
 //import com.howell.ehlib.MyListView.OnRefreshListener;
 //import com.howell.entityclass.NodeDetails;

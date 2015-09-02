@@ -27,7 +27,7 @@ import android.view.SurfaceView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.android.howell.webcam.R;
+import com.android.howell.webcam.huanbao.R;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 import com.howell.activity.CameraList;

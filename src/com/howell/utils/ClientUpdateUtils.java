@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import com.android.howell.webcam.R;
+import com.android.howell.webcam.huanbao.R;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;

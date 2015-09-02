@@ -1,7 +1,5 @@
 package com.howell.ehlib;
 
-import com.android.howell.webcam.R;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;

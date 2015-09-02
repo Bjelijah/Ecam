@@ -1,6 +1,6 @@
 package com.wyy.twodimcode;
 
-import com.android.howell.webcam.R;
+import com.android.howell.webcam.huanbao.R;
 
 import android.net.Uri;
 import android.os.Bundle;

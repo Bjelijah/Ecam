@@ -21,7 +21,7 @@ import android.widget.TextView;
 
 import cn.jpush.android.api.JPushInterface;
 
-import com.android.howell.webcam.R;
+import com.android.howell.webcam.huanbao.R;
 
 public class Settings extends Activity implements OnClickListener {
 //    private SoapManager mSoapManager;

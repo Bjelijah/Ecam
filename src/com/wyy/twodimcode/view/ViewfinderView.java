@@ -32,7 +32,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.android.howell.webcam.R;
+import com.android.howell.webcam.huanbao.R;
 import com.google.zxing.ResultPoint;
 import com.howell.utils.PhoneConfig;
 import com.wyy.twodimcode.camera.CameraManager;

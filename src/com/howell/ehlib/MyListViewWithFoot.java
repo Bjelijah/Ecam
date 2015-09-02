@@ -2,7 +2,7 @@ package com.howell.ehlib;
 
 import java.util.Date;
 
-import com.android.howell.webcam.R;
+import com.android.howell.webcam.huanbao.R;
 
 import android.content.Context;
 import android.graphics.Canvas;

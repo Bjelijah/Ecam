@@ -1555,13 +1555,13 @@ public class SoapManager implements Serializable {
     	SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/lensControl");
     	try{
     		Object result = object.getProperty("result");
+    		Log.e("","LensControlRes result"+result);
     		if(result.toString().equals("SessionExpired")){
 	        	mLoginResponse = getUserLoginRes(mLoginRequest);
 	        	req.setLoginSession(mLoginResponse.getLoginSession());
 	        	return getLensControlRes(req);
 	        }
     	 	res.setResult(result.toString());
-    	 	Log.e("","LensControlRes result"+result);
     	 	
     	}catch (Exception e) {
     		// TODO: handle exception

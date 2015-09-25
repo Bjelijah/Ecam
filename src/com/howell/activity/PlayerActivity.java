@@ -265,7 +265,6 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		        	if(null != client)
 		        		client.setQuit(true);
 		        	quitDisplay();
-	        		audioStop();
 	        		if(!playback){
 	            		TakePhotoUtil.takePhoto("/sdcard/eCamera/cache", dev, client);
 	    			}
@@ -425,7 +424,6 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 				if(null != client)
 	        		client.setQuit(true);
 	        	quitDisplay();
-				audioStop();
 				if(!playback){
 					TakePhotoUtil.takePhoto("/sdcard/eCamera/cache", dev, client);
 				}
@@ -871,9 +869,9 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		Log.e("PA", "onDestroy");
 		mActivities.removeActivity("PlayerActivity");
     	unregisterReceiver(receiver);
-//		if(null != client)
-//    		client.setQuit(true);
-//    	quitDisplay();
+		if(null != client)
+			client.setQuit(true);
+		quitDisplay();
 		super.onDestroy();
 		System.runFinalization();
 	}
@@ -927,10 +925,6 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
         }
     }
 	
-	private void takePhoto(){
-		
-	}
-	
 	private void quitDisplay(){
 		if (backCount == 0) {
 			audioStop();
@@ -962,7 +956,6 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
         	if(null != client)
         		client.setQuit(true);
         	quitDisplay();
-        	audioStop();
         	if(!playback){
         		TakePhotoUtil.takePhoto("/sdcard/eCamera/cache", dev, client);
 			}

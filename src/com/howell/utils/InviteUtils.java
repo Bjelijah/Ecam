@@ -24,7 +24,7 @@ import com.howell.activity.PlayerActivity;
 import com.howell.activity.PlayerActivity.PlayerHandler;
 
 public class InviteUtils {
-    public static int REQ_TIMEOUT = 3000;
+    public static int REQ_TIMEOUT = 10000;
     // private String account;
     private Random random;
     private SoapManager mSoapManager;

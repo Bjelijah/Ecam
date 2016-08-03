@@ -181,7 +181,8 @@ public class NoticeActivity extends Activity implements OnRefreshListener,OnClic
 		protected Void doInBackground(Void... arg0) {
 			// TODO Auto-generated method stub
 			GetPictureReq req ,req2 ,req3,req4;
-			Log.e("","size:"+notice.getPictureID().size());
+			Log.e("123","size:"+notice.getPictureID().size());
+			
 			switch(notice.getPictureID().size()){
 			case 0:	
 				break;
@@ -189,6 +190,8 @@ public class NoticeActivity extends Activity implements OnRefreshListener,OnClic
 				if(!SDCardUtils.isBitmapExist(notice.getPictureID().get(0))){
 					req = new GetPictureReq(mSoapManager.getLoginResponse().getAccount(),mSoapManager.getLoginResponse().getLoginSession(),notice.getPictureID().get(0));
 					res = mSoapManager.getGetPictureRes(req);
+				}else{
+					Log.i("123", ""+notice.getPictureID().get(0));
 				}
 				break;
 			case 2:
@@ -252,6 +255,8 @@ public class NoticeActivity extends Activity implements OnRefreshListener,OnClic
 					bm = ScaleImageUtils.decodeByteArray(requiredWidthSize, requiredWidthSize, Base64.decode(res.getPicture()));
 					iv1.setImageBitmap(bm);
 					SDCardUtils.saveBmpToSd(bm,notice.getPictureID().get(0));
+					
+					SDCardUtils.saveBmpToSd(BitmapFactory.decodeByteArray(Base64.decode(res.getPicture()), 0, Base64.decode(res.getPicture()).length),notice.getPictureID().get(0)+HD);
 				}else if(res == null && SDCardUtils.isBitmapExist(notice.getPictureID().get(0))){
 					iv1.setImageBitmap(BitmapFactory.decodeFile(SDCardUtils.getBitmapCachePath()+notice.getPictureID().get(0)));
 				}
@@ -261,6 +266,7 @@ public class NoticeActivity extends Activity implements OnRefreshListener,OnClic
 					bm = ScaleImageUtils.decodeByteArray(requiredWidthSize, requiredWidthSize, Base64.decode(res.getPicture()));
 					iv1.setImageBitmap(bm);
 					SDCardUtils.saveBmpToSd(bm,notice.getPictureID().get(0));
+					SDCardUtils.saveBmpToSd(BitmapFactory.decodeByteArray(Base64.decode(res.getPicture()), 0, Base64.decode(res.getPicture()).length),notice.getPictureID().get(0)+HD);
 				}else if(res == null && SDCardUtils.isBitmapExist(notice.getPictureID().get(0))){
 					iv1.setImageBitmap(BitmapFactory.decodeFile(SDCardUtils.getBitmapCachePath()+notice.getPictureID().get(0)));
 				}
@@ -268,15 +274,22 @@ public class NoticeActivity extends Activity implements OnRefreshListener,OnClic
 					bm = ScaleImageUtils.decodeByteArray(requiredWidthSize, requiredWidthSize, Base64.decode(res2.getPicture()));
 					iv2.setImageBitmap(bm);
 					SDCardUtils.saveBmpToSd(bm,notice.getPictureID().get(1));
+					SDCardUtils.saveBmpToSd(BitmapFactory.decodeByteArray(Base64.decode(res2.getPicture()), 0, Base64.decode(res2.getPicture()).length),notice.getPictureID().get(1)+HD);
+					
 				}else if(res2 == null && SDCardUtils.isBitmapExist(notice.getPictureID().get(1))){
 					iv2.setImageBitmap(BitmapFactory.decodeFile(SDCardUtils.getBitmapCachePath()+notice.getPictureID().get(1)));
 				}
+				Log.i("123", "1  "+notice.getPictureID().get(0));
+				Log.i("123", "2  "+notice.getPictureID().get(1));
+				
 				break;
 			case 3:
 				if(res != null && res.getResult() != null && res.getResult().equals("OK")){
 					bm = ScaleImageUtils.decodeByteArray(requiredWidthSize, requiredWidthSize, Base64.decode(res.getPicture()));
 					iv1.setImageBitmap(bm);
 					SDCardUtils.saveBmpToSd(bm,notice.getPictureID().get(0));
+					
+					SDCardUtils.saveBmpToSd(BitmapFactory.decodeByteArray(Base64.decode(res.getPicture()), 0, Base64.decode(res.getPicture()).length),notice.getPictureID().get(0)+HD);
 				}else if(res == null && SDCardUtils.isBitmapExist(notice.getPictureID().get(0))){
 					iv1.setImageBitmap(BitmapFactory.decodeFile(SDCardUtils.getBitmapCachePath()+notice.getPictureID().get(0)));
 				}
@@ -284,6 +297,8 @@ public class NoticeActivity extends Activity implements OnRefreshListener,OnClic
 					bm = ScaleImageUtils.decodeByteArray(requiredWidthSize, requiredWidthSize, Base64.decode(res2.getPicture()));
 					iv2.setImageBitmap(bm);
 					SDCardUtils.saveBmpToSd(bm,notice.getPictureID().get(1));
+					
+					SDCardUtils.saveBmpToSd(BitmapFactory.decodeByteArray(Base64.decode(res2.getPicture()), 0, Base64.decode(res2.getPicture()).length),notice.getPictureID().get(1)+HD);
 				}else if(res2 == null && SDCardUtils.isBitmapExist(notice.getPictureID().get(1))){
 					iv2.setImageBitmap(BitmapFactory.decodeFile(SDCardUtils.getBitmapCachePath()+notice.getPictureID().get(1)));
 				}
@@ -291,6 +306,8 @@ public class NoticeActivity extends Activity implements OnRefreshListener,OnClic
 					bm = ScaleImageUtils.decodeByteArray(requiredWidthSize, requiredWidthSize, Base64.decode(res3.getPicture()));
 					iv3.setImageBitmap(bm);
 					SDCardUtils.saveBmpToSd(bm,notice.getPictureID().get(2));
+					
+					SDCardUtils.saveBmpToSd(BitmapFactory.decodeByteArray(Base64.decode(res3.getPicture()), 0, Base64.decode(res3.getPicture()).length),notice.getPictureID().get(2)+HD);
 				}else if(res3 == null && SDCardUtils.isBitmapExist(notice.getPictureID().get(2))){
 					iv3.setImageBitmap(BitmapFactory.decodeFile(SDCardUtils.getBitmapCachePath()+notice.getPictureID().get(2)));
 				}
@@ -472,10 +489,18 @@ public class NoticeActivity extends Activity implements OnRefreshListener,OnClic
 			if(SDCardUtils.isBitmapExist(list.get(position).getPictureID().get(i)+HD))
 				pathList.add(SDCardUtils.getBitmapCachePath()+list.get(position).getPictureID().get(i)+HD);
 		}
+		
+	
+		
+		
 		return pathList;
 	}
 	
 	private void clickPiture(View v,int which){
+		
+		
+		
+		
 		Intent intent = new Intent(this, BigImages.class);
 		intent.putExtra("position", which);
 		System.out.println("arrayList size:"+getPictures(Integer.valueOf(v.getTag().toString())).size());

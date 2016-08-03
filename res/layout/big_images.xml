@@ -5,6 +5,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="top" >
+    
+    
+    
+    
+    
 	<com.howell.ehlib.HackyViewPager
 		android:id="@+id/viewPager"  
 		android:layout_width="match_parent"  
@@ -46,15 +51,21 @@
 	    android:id="@+id/fl_bottom"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
-	    android:paddingTop="5dip"
+	    android:layout_gravity="bottom"
 	    android:paddingBottom="8dip"
-	    android:layout_gravity="bottom" >
+	    android:paddingTop="5dip" >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="right" >
-            
+<!-- 
+            <ImageView
+                android:id="@+id/imageView1_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/add" />
+             -->
             <ImageButton
                 android:id="@+id/ib_scale"
                 android:layout_width="wrap_content"
@@ -82,5 +93,7 @@
         </LinearLayout>
 
     </FrameLayout>
+
+
 
 </FrameLayout>

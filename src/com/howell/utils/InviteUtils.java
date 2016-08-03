@@ -600,4 +600,7 @@ public class InviteUtils {
     public native int getBegSdpTime(long handle);
     public native int getEndSdpTime(long handle);
     public native int setCatchPictureFlag(long handle,String path,int length);
+    
+    public native void testMainJni();
+    
 }

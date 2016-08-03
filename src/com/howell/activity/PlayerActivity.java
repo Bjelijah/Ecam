@@ -43,6 +43,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -52,6 +53,7 @@ import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.howell.webcam.R;
 import com.howell.broadcastreceiver.HomeKeyEventBroadCastReceiver;
@@ -71,8 +73,12 @@ import com.howell.utils.InviteUtils;
 import com.howell.utils.MessageUtiles;
 import com.howell.utils.PhoneConfig;
 import com.howell.utils.TakePhotoUtil;
+import com.howell.utils.TalkManager;
+import com.howell.utils.Util;
 
 public class PlayerActivity extends Activity implements Callback, OnTouchListener, OnGestureListener,OnClickListener {
+	
+	
 	
 	public static InviteUtils client;
 	private static PlayerActivity mPlayer;
@@ -152,6 +158,9 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	private PopupWindow mPopupWindow;  
 	private LinearLayout hd,sd;
 	
+	
+	
+	
 	public PlayerActivity() {   
         mGestureDetector = new GestureDetector(this);   
     } 
@@ -164,6 +173,9 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	public native void nativeAudioInit();
 	public static native void nativeAudioStop();
 	
+	private TextView talk;
+	private TalkManager talkManger;
+	private Button btTalk;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -235,11 +247,11 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
         System.out.println("soundMode:"+soundMode);
 		if (mRecord != null) {
             try {
-                SimpleDateFormat foo = new SimpleDateFormat(
+                SimpleDateFormat bar = new SimpleDateFormat(
                         "yyyy-MM-dd'T'HH:mm:ss");
-                foo.setTimeZone(TimeZone.getTimeZone("UTC"));
-                startTime = foo.parse(mRecord.getStartTime()).getTime()/1000;
-                endTime = foo.parse(mRecord.getEndTime()).getTime()/1000;
+                bar.setTimeZone(TimeZone.getTimeZone("UTC"));
+                startTime = bar.parse(mRecord.getStartTime()).getTime()/1000;
+                endTime = bar.parse(mRecord.getEndTime()).getTime()/1000;
             } catch (ParseException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -276,7 +288,76 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	        	}
 	        }
 	    });
-	        
+	    
+	    talk = (TextView)findViewById(R.id.player_talk);
+	    talk.setVisibility(View.GONE);//FIXME
+	    talk.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if(talkManger != null){
+					if(talkManger.getTalkState() == TalkManager.TALKING){
+						talk.setText("开始对讲");
+						if(mAudioTrack != null){
+							mAudioTrack.play();
+						}
+						talkManger.stopTalk();
+					}else{
+						talk.setText("停止对讲");
+						if(mAudioTrack != null){
+							mAudioTrack.pause();
+						}
+						talkManger.startTalk();
+					}
+				}
+			}
+		});
+	   
+	    btTalk = (Button)findViewById(R.id.play_talk);
+	    btTalk.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				
+				switch (event.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+					Log.i("123", "按下了   开始对讲");
+					if(mAudioTrack != null){
+						mAudioTrack.pause();
+					}
+					talkManger.startTalk();
+					break;
+				case MotionEvent.ACTION_UP:
+					Log.i("123", "ACTION_UP   停止对讲");
+					if(mAudioTrack != null){
+						mAudioTrack.play();
+					}
+					talkManger.stopTalk();		
+					break;
+				case MotionEvent.ACTION_CANCEL:
+					Log.i("123", "ACTION_CANCEL   停止对讲");
+					if(mAudioTrack != null){
+						mAudioTrack.play();
+					}
+					talkManger.stopTalk();
+					break;
+				default:
+					//Log.i("123", "default");
+					break;
+				}
+				
+				
+				return false;
+			}
+		});
+	    
+	    
+	    
+	    
+	    
+	    
+	    
 	    mCatchPicture = (ImageButton)findViewById(R.id.catch_picture);
 	    mCatchPicture.setOnClickListener(new OnClickListener() {
 				
@@ -301,7 +382,12 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	    audiomanage = (AudioManager)getSystemService(Context.AUDIO_SERVICE); 
 	    maxVolume = audiomanage.getStreamMaxVolume(AudioManager.STREAM_MUSIC);  
 	    System.out.println("maxVolume:"+maxVolume);
+	    
+	  
 	    mSound = (ImageButton)findViewById(R.id.sound);
+	
+	    
+	    
 	    if(soundMode){
 	    	System.out.println("soundMode:"+soundMode);
 	    	isAudioOpen = true;
@@ -445,6 +531,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
         System.out.println("activity start progress Bar");
         mWaitProgressBar = (ProgressBar)findViewById(R.id.waitProgressBar);
         mPlayerHandler = new PlayerHandler();
+        mPlayerHandler.setContext(this);
         if(playback){
         	Log.e("----------->>>", "onS totoal time:"+endTime +","+ startTime);
         	mVedioList.setEnabled(false);
@@ -472,7 +559,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 				progressHasStop = false;
 				stopTrackingTouchProgress = progress;
 				mPlayerHandler.sendEmptyMessage(REPLAYSEEKBAR);
-				client.playbackPause(client.getHandle(), false);
+				//client.playbackPause(client.getHandle(), false);
 				bPause = true;
 				mPause.setImageDrawable(getResources().getDrawable(R.drawable.img_pause));
 			}
@@ -590,9 +677,9 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
     }  
 	
 	private String translateTime(int progress){
-		SimpleDateFormat foo = new SimpleDateFormat("HH:mm:ss");
-		foo.setTimeZone(TimeZone.getDefault());
-        String text = foo.format(correctedStartTime*1000 + progress);
+		SimpleDateFormat bar = new SimpleDateFormat("HH:mm:ss");
+		bar.setTimeZone(TimeZone.getDefault());
+        String text = bar.format(correctedStartTime*1000 + progress);
         return text;
 	}
 	
@@ -655,6 +742,10 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 			super.run();
 			client = new InviteUtils(dev);
 			System.out.println("start invite live");
+			
+//			client.testMainJni();
+			//FIXME
+			
 			if (playback) {
 				Log.e("---------->>>>", "1111111111111111111");
 				System.out.println("startTime:"+startTime+"endTime:"+endTime);
@@ -662,8 +753,10 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		    } else {
 		        Log.e("---------->>>>", "2222222222222222222");
 		        inviteRet = PlayerActivity.client.InviteLive(stream);
+		        talkManger = new TalkManager(client.getHandle());
 		    }
 			System.out.println("finish invite live");
+			
 		}
 	}
 	
@@ -678,7 +771,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
     	private boolean isTimeStampBreak;	//时标溢出标志位
     	private int progress,progressTemp;	//progressTemp：记录时标未溢出时的拖动条播放长度
     	private long firstBreakFrameTime;	//记录时标溢出时的第一帧数据的时标
-    	
+    	Context context;
 		public PlayerHandler() {
 			super();
 			this.isTimeStampBreak = false;
@@ -687,6 +780,10 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 			this.firstBreakFrameTime = 0;
 		}
 
+		public void setContext(Context context) {
+			this.context = context;
+		}
+		@SuppressWarnings("unused")
 		@Override
 		public void handleMessage(Message msg) {
 			// TODO Auto-generated method stub
@@ -699,7 +796,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 				if(YV12Renderer.time != 0 && frameFlag == 0){
 					firstFrameTime = YV12Renderer.time;
 					frameFlag++;
-					System.out.println("test firstFrame:"+firstFrameTime);
+//					System.out.println("test firstFrame:"+firstFrameTime);
 					while(true){
 						correctedStartTime = client.getBeg();
 						correctedEndTime = client.getEnd();
@@ -709,13 +806,13 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 							break;
 					}
 					mReplaySeekBar.setMax((int)(correctedEndTime - correctedStartTime)*1000);
-					System.out.println("test maxFrame:"+(int)(correctedEndTime - correctedStartTime)*1000);
+//					System.out.println("test maxFrame:"+(int)(correctedEndTime - correctedStartTime)*1000);
 				}else if(YV12Renderer.time != 0 && frameFlag > 0){
 					
 					endFrameTime = YV12Renderer.time;
 					
-					System.out.println("test endFrameTime:"+endFrameTime);
-					System.out.println("test progress:"+(int)(endFrameTime - firstFrameTime));
+//					System.out.println("test endFrameTime:"+endFrameTime);
+//					System.out.println("test progress:"+(int)(endFrameTime - firstFrameTime));
 					if(!progressHasStop){
 						mPlayerHandler.sendEmptyMessage(HIDEPROGRESSBAR);
 						progressHasStop = true;
@@ -723,7 +820,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 					if((int)(endFrameTime - firstFrameTime) < 0 && !isTimeStampBreak ){
 						isTimeStampBreak = true;
 						firstBreakFrameTime = endFrameTime;
-						System.out.println("test isTimeStampBreak"+isTimeStampBreak);
+//						System.out.println("test isTimeStampBreak"+isTimeStampBreak);
 						progress = stopTrackingTouchProgress;
 						if(progress == 0){
 							progress = progressTemp;
@@ -733,8 +830,8 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 						isTimeStampBreak = false;
 					}
 					if(isTimeStampBreak){
-						System.out.println("test stopTrackingTouchProgress:"+progress);
-						System.out.println("test new progress:"+(int)(endFrameTime - firstBreakFrameTime));
+//						System.out.println("test stopTrackingTouchProgress:"+progress);
+//						System.out.println("test new progress:"+(int)(endFrameTime - firstBreakFrameTime));
 						mReplaySeekBar.setProgress(progress + (int)(endFrameTime - firstBreakFrameTime));
 					}else{
 						mReplaySeekBar.setProgress((int)(endFrameTime - firstFrameTime));
@@ -748,7 +845,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 				mPlayerHandler.sendEmptyMessageDelayed(REPLAYSEEKBAR,100);
 			}
 			if (msg.what == STOPPROGRESSBAR) {
-				System.out.println("frames: "+stopSendMessage);
+				//System.out.println("frames: "+stopSendMessage);
 				if(stopSendMessage){
 					return;
 				}
@@ -797,7 +894,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
         	    create();   
         		alertDialog.show();   
 			}
-			if (msg.what == SHOWSTREAMLEN) {
+			if (msg.what == SHOWSTREAMLEN) {//FIXME
 				int msg_boj = Integer.valueOf(msg.obj.toString());
 				if(mStreamLen != null){
 					streamLenFlag++;
@@ -810,13 +907,19 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 						streamLen += Integer.valueOf(msg.obj.toString());
 					}
 				}
+				
+				
+//				mStreamLen.setText(Util.getDownloadSpeed(context));
+				
+						
 			}
 //			if(msg.what == SETVEDIOLISTENABLE){
 //				mVedioList.setEnabled(true);
 //				mVedioList.setImageResource(R.drawable.img_record);
 //			}
 			if(msg.what == DETECT_IF_NO_STREAM_ARRIVE){
-				if(stopSendMessage){
+				
+				if(stopSendMessage||true){
 					return;
 				}
 				if(!client.isQuit()){
@@ -836,6 +939,10 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		}
 	}
 
+    
+
+    
+    
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
@@ -869,9 +976,16 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		Log.e("PA", "onDestroy");
 		mActivities.removeActivity("PlayerActivity");
     	unregisterReceiver(receiver);
+    	if(talkManger != null){
+    		talkManger.release();
+        	talkManger = null;
+    	}
+    
+    	
 		if(null != client)
 			client.setQuit(true);
 		quitDisplay();
+		
 		super.onDestroy();
 		System.runFinalization();
 	}
@@ -951,7 +1065,9 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	@Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         super.onKeyDown(keyCode, event);
+      
         if (keyCode == KeyEvent.KEYCODE_BACK) {
+        	
         	Log.e("backCount", "press back button backCount:"+backCount);
         	if(null != client)
         		client.setQuit(true);
@@ -959,8 +1075,10 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
         	if(!playback){
         		TakePhotoUtil.takePhoto("/sdcard/eCamera/cache", dev, client);
 			}
+			
         	finish();
         }
+        
         return false;
     }
 

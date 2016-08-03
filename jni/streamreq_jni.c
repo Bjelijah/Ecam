@@ -6,8 +6,14 @@
 #include "hwplay/stream_type.h"
 #include "hwplay/play_def.h"
 #include <time.h>
+#include "g711/g711.h"
 
-//#include <sys/timeb.h>
+#include <sys/timeb.h>
+
+
+#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "streamreq_jni", __VA_ARGS__))
+#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "streamreq_jni", __VA_ARGS__))
+#define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, "streamreq_jni", __VA_ARGS__))
 
 #define RESOURCE_ARRAY_LENGHT 20
 struct StreamResource
@@ -49,6 +55,9 @@ struct audio_data{
 };*/
 
 /* 鍏ㄥ眬鍒濆鍖�*/
+
+
+
 static void global_init(void)
 {
   ice_global_init();
@@ -56,6 +65,11 @@ static void global_init(void)
 }
 //static long timer = 0,lastTimer = 0;
 struct timeval last_tv;
+
+static int num = 0;
+static uint32_t last_time = 0;
+
+unsigned long long temp = 0;
 static void on_yuv_callback_ex(PLAY_HANDLE handle,
 									 const unsigned char* y,
 									 const unsigned char* u,
@@ -67,19 +81,35 @@ static void on_yuv_callback_ex(PLAY_HANDLE handle,
 									 unsigned long long time,
 									 long user)
 {	
-//	__android_log_print(ANDROID_LOG_INFO, "jni", "start decode  time: %llu",time);
+	//__android_log_print(ANDROID_LOG_INFO, "jni", "on_yuv_callback_ex :%llu, %llu",time,(time - temp));
+	temp = time;
 	//getNowTime();
 	//sdl_display_input_data(y,u,v,width,height,time);
-	/*struct timeval now;
+
+	//fixme
+	/*
+	struct timeval now;
 	long diff;
 	gettimeofday(&now,NULL);
 	if (last_tv.tv_sec>0) {
 		diff=now.tv_sec/1000+now.tv_usec*1000-(last_tv.tv_sec/1000+last_tv.tv_usec*1000);
 	}
 	__android_log_print(ANDROID_LOG_INFO, "yuv", "on_yuv_callback_ex:%ld ",diff);
-	last_tv=now;*/
+	last_tv=now;
+*/
+	//fixme
 
 	if(res[user]->is_exit == 1) return;
+
+	//LOGI("time=%d",time);
+//	if(last_time == 0){
+//		last_time = time;
+//	}
+
+
+
+	//LOGI("w*h = %d  *   %d",width,height);
+
 	yv12gl_display(y,u,v,width,height,time);
 }
 
@@ -126,7 +156,7 @@ on_audio_callback(PLAY_HANDLE handle,
 		int len,//数据长度,如果为视频则应该等于w * h * 3 / 2
 		unsigned long timestamp,//时标,单位为毫秒
 		long user){
-//	__android_log_print(ANDROID_LOG_INFO, "audio", "on_audio_callback timestamp: %lu ",timestamp);
+	//__android_log_print(ANDROID_LOG_INFO, "audio", "on_audio_callback timestamp: %lu ",timestamp);
 
 	if(res[user]->is_exit == 1) return;
 	audio_play(buf,len,0,0,0);
@@ -186,11 +216,45 @@ error:
 	
 }
 
-static void OnStreamArrive(ecam_stream_req_t * req, ECAM_STREAM_REQ_FRAME_TYPE media_type, const char * data, size_t len, uint32_t timestamp) {
 
-	//PLAY_HANDLE ph = ecam_stream_req_get_usr_data(req);
-	//__android_log_print(ANDROID_LOG_INFO, "OnStreamArrive", "len: %d",len);
+static uint32_t get_my_clock() {
+          struct timeval time;
+          gettimeofday(&time, NULL);
+          uint64_t value = ((uint64_t)time.tv_sec) * 1000 + (time.tv_usec / 1000);
+          return (uint32_t)(value & 0xfffffffful);
+      }
+
+
+static uint32_t my_last_time = 0;
+static int my_frame_num = 0;
+
+static void OnStreamArrive(ecam_stream_req_t * req, ECAM_STREAM_REQ_FRAME_TYPE media_type, const char * data, size_t len, uint32_t timestamp) {
+/**
+ *帧数统计
+	my_frame_num++;
+	if(my_last_time==0){
+		my_last_time = get_my_clock();
+		LOGI("last_time=%d",my_last_time);
+	}
+
+
+
+	if((get_my_clock()-my_last_time)>5000){
+		LOGI("num=%d",my_frame_num);
+		my_frame_num=0;
+		my_last_time=0;
+	}
+
+	return;
+*/
+	//__android_log_print(ANDROID_LOG_INFO, "thread", "aaaaa");
 	//return;
+	//PLAY_HANDLE ph = ecam_stream_req_get_usr_data(req);
+	//__android_log_print(ANDROID_LOG_INFO, "OnStreamArrive", "timestamp: %d",timestamp);
+	//return;
+	//if(media_type == 2){
+		//return;
+	//}
 	int arr_index = ecam_stream_req_get_usr_data(req);
 	//__android_log_print(ANDROID_LOG_INFO, "OnStreamArrive", "len: %d, arr_idx: %d",len,arr_index);
 
@@ -255,6 +319,15 @@ static void OnStreamArrive(ecam_stream_req_t * req, ECAM_STREAM_REQ_FRAME_TYPE m
 static PLAY_HANDLE init_play_handle(int is_playback,int arr_index){
 	__android_log_print(ANDROID_LOG_INFO, "jni", "start init ph palyback: %d",is_playback);
 	//hwplay_init(1,352,288);
+	char *desc = malloc(100);
+	memset(desc,0,100);
+	int payload;
+	int ret = -1;
+	ret = ecam_stream_req_get_audio(res[arr_index]->req, desc, &payload);
+	__android_log_print(ANDROID_LOG_INFO, "init_play_handle", "ecam_stream_req_get_audio ret:%d,desc:%s,payload:%d",ret,desc,payload);
+	//ret = ecam_stream_req_get_video(res[arr_index]->req, desc, &payload);
+	//__android_log_print(ANDROID_LOG_INFO, "init_play_handle", "ecam_stream_req_get_video desc:%s,payload:%d",desc,payload);
+
 	RECT area ;
 	//memset(&area,0,sizeof(area));
 	//area.right = 177;
@@ -267,12 +340,19 @@ static PLAY_HANDLE init_play_handle(int is_playback,int arr_index){
 	media_head.au_bits = 16;
 	media_head.adec_code = ADEC_AAC;
 	media_head.vdec_code = VDEC_H264;
-	//__android_log_print(ANDROID_LOG_INFO, "JNI", "media_head finish");
+	if(ret == 1){
+		if(strstr(desc,"pcmu") != NULL || strstr(desc,"PCMU") != NULL){
+			__android_log_print(ANDROID_LOG_INFO, "init_play_handle", "ecam_stream_req_get_audio g711");
+			media_head.adec_code = ADEC_G711U;
+		}
+	}
+	free(desc);
+	__android_log_print(ANDROID_LOG_INFO, "init_play_handle", "ecam_stream_req_get_audio aac");
 	PLAY_HANDLE  ph = hwplay_open_stream((char*)&media_head,sizeof(media_head),1024*1024,is_playback,area);
-	int ret = hwplay_open_sound(ph);
+	ret = hwplay_open_sound(ph);
 	__android_log_print(ANDROID_LOG_INFO, "JNI", "hwplay_open_sound ret:%d",ret);
 	__android_log_print(ANDROID_LOG_INFO, "JNI", "is_playback is:%d",is_playback);
-	hwplay_set_max_framenum_in_buf(ph,5);
+//	hwplay_set_max_framenum_in_buf(ph,25);
 	//__android_log_print(ANDROID_LOG_INFO, "JNI", "media_head.media_fourcc is:%d",media_head.media_fourcc);
 	__android_log_print(ANDROID_LOG_INFO, "JNI", "ph is:%d",ph);
 	//resource->play_handle = ph;
@@ -457,6 +537,7 @@ __android_log_print(ANDROID_LOG_INFO, "jni", "8");
 	(*env)->ReleaseStringUTFChars(env,jstun_addr,cstun_addr);
 		__android_log_print(ANDROID_LOG_INFO, "jni", "18");
 	c -> crypto.enable = jenable;
+	LOGI("crypto  enable = %d",c->crypto.enable);
 	c->channel = jchannel;
 	__android_log_print(ANDROID_LOG_INFO, "jni", "jni channel:%d",c->channel);
 	c->stream = jstream;
@@ -499,10 +580,9 @@ static jlong new_resource(JNIEnv *env,jobject obj,const char * account,int is_pl
 	ecam_stream_req_set_usr_data(res[arr_index]->req,(void *)arr_index);
 	ecam_stream_req_regist_stream_cb(res[arr_index]->req,OnStreamArrive);
 		  //res->context = init_context_handle(env,obj);
-	res[arr_index]->play_handle = init_play_handle(is_playback,arr_index);
+	//res[arr_index]->play_handle = init_play_handle(is_playback,arr_index);
 	(*env)->GetJavaVM(env,&res[arr_index]->jvm);
 	res[arr_index]->obj = (*env)->NewGlobalRef(env,obj);
-	__android_log_print(ANDROID_LOG_INFO, "new res", "2222222222");
 	return arr_index;
 }
 
@@ -539,7 +619,7 @@ static void free_resource(void* handle)
 	}
 }
 
-JNIEXPORT int JNICALL Java_com_howell_utils_InviteUtils_setCatchPictureFlag(JNIEnv *env, jclass cls,jlong index,jstring jpath,jint jlength)
+int Java_com_howell_utils_InviteUtils_setCatchPictureFlag(JNIEnv *env, jclass cls,jlong index,jstring jpath,jint jlength)
 {
 	__android_log_print(ANDROID_LOG_INFO, "--->", "setflag");
 	//self.is_catch_picture = 1;
@@ -554,7 +634,7 @@ JNIEXPORT int JNICALL Java_com_howell_utils_InviteUtils_setCatchPictureFlag(JNIE
 	return ret;
 }
 
-JNIEXPORT void JNICALL Java_com_howell_utils_InviteUtils_joinThread
+void Java_com_howell_utils_InviteUtils_joinThread
 (JNIEnv *env, jobject obj,jlong handle){
 	__android_log_print(ANDROID_LOG_INFO, "jni", "handle:%d",handle);
 	__android_log_print(ANDROID_LOG_INFO, "jni", "start join thread ");
@@ -565,13 +645,13 @@ JNIEXPORT void JNICALL Java_com_howell_utils_InviteUtils_joinThread
 	__android_log_print(ANDROID_LOG_INFO, "jni", "finish join thread ");
 }
 
-JNIEXPORT jlong JNICALL Java_com_howell_utils_InviteUtils_createHandle
+long Java_com_howell_utils_InviteUtils_createHandle
 (JNIEnv *env, jobject obj, jstring str,jint is_palyback){
 	const char * account = (*env)->GetStringUTFChars(env,str,NULL);
 	return new_resource(env,obj,account,is_palyback);
 }
 
-JNIEXPORT jstring JNICALL Java_com_howell_utils_InviteUtils_prepareSDP
+jstring Java_com_howell_utils_InviteUtils_prepareSDP
 (JNIEnv *env, jclass cls, jlong handle,jobject obj){
 	__android_log_print(ANDROID_LOG_INFO, "jni", "start prepareSDP ");
 	if(obj == NULL){
@@ -594,7 +674,7 @@ JNIEXPORT jstring JNICALL Java_com_howell_utils_InviteUtils_prepareSDP
 	return (*env)->NewStringUTF(env,local_sdp);
 }
 
-JNIEXPORT jint JNICALL Java_com_howell_utils_InviteUtils_handleRemoteSDP
+int Java_com_howell_utils_InviteUtils_handleRemoteSDP
 (JNIEnv *env, jclass cls, jlong handle,jobject obj, jstring dialog_id, jstring remote_sdp){
 	//ecam_stream_req_t * stream_req_ = (ecam_stream_req_t *)handle;
 	struct ecam_stream_req_context *c = fill_context(env,obj);
@@ -604,6 +684,9 @@ JNIEXPORT jint JNICALL Java_com_howell_utils_InviteUtils_handleRemoteSDP
 	char *dialog_id_jni = (*env)-> GetStringUTFChars(env,dialog_id,NULL);
 	char *remote_sdp_jni = (*env)-> GetStringUTFChars(env,remote_sdp,NULL);
 	ecam_stream_req_handle_remote_sdp(res[arr_index]->req,c,dialog_id_jni,remote_sdp_jni);
+	//初始化解码器
+	res[arr_index]->play_handle = init_play_handle(res[arr_index]->is_playback,arr_index);
+
 	free(c);	
 	(*env)->ReleaseStringUTFChars(env,remote_sdp,remote_sdp_jni);
 	(*env)->ReleaseStringUTFChars(env,remote_sdp,dialog_id_jni);
@@ -611,7 +694,7 @@ JNIEXPORT jint JNICALL Java_com_howell_utils_InviteUtils_handleRemoteSDP
 	return 0;//鎴愬姛
 }
 
-JNIEXPORT jint JNICALL Java_com_howell_utils_InviteUtils_start
+int Java_com_howell_utils_InviteUtils_start
 (JNIEnv *env, jclass cls, jlong handle,jobject obj, jint timeout_ms){
 	//ecam_stream_req_t * stream_req_ = (ecam_stream_req_t *)handle;
 	__android_log_print(ANDROID_LOG_INFO, "jni", "!!!!!!-----start start----------!!!!");
@@ -636,14 +719,14 @@ JNIEXPORT jint JNICALL Java_com_howell_utils_InviteUtils_start
 	return ret;
 }
 
-JNIEXPORT void JNICALL Java_com_howell_utils_InviteUtils_freeHandle
+void Java_com_howell_utils_InviteUtils_freeHandle
 (JNIEnv *env, jclass cls, jlong handle){
 	__android_log_print(ANDROID_LOG_INFO, "JNI", "Start stop");
 	free_resource(handle);
 	__android_log_print(ANDROID_LOG_INFO, "JNI", "finish stop");
 }
 
-JNIEXPORT void JNICALL Java_com_howell_utils_InviteUtils_prepareReplay
+void Java_com_howell_utils_InviteUtils_prepareReplay
 (JNIEnv *env, jclass cls,jint isPlayBack, jlong handle){
 	//struct StreamResource * res = handle;
 	int arr_index = handle;
@@ -656,7 +739,7 @@ JNIEXPORT void JNICALL Java_com_howell_utils_InviteUtils_prepareReplay
 	__android_log_print(ANDROID_LOG_INFO, ">>>>>>>>>", "init_play_handle");
 }
 
-JNIEXPORT jint JNICALL Java_com_howell_utils_InviteUtils_getMethod
+jint Java_com_howell_utils_InviteUtils_getMethod
 (JNIEnv *env, jclass cls,jlong handle){
 	int arr_index = handle;
 	int req_flag = ecam_stream_req_get_transfer_method(res[arr_index]->req);
@@ -681,7 +764,7 @@ JNIEXPORT jint JNICALL Java_com_howell_utils_InviteUtils_getMethod
 	}
 }
 
-JNIEXPORT int JNICALL Java_com_howell_utils_InviteUtils_getStreamCount
+int Java_com_howell_utils_InviteUtils_getStreamCount
 (JNIEnv *env, jclass cls,jlong handle){
 	__android_log_print(ANDROID_LOG_INFO, "getStreamCount", "000000000 ,handle:%d",handle);
 	int arr_index = handle;
@@ -690,26 +773,55 @@ JNIEXPORT int JNICALL Java_com_howell_utils_InviteUtils_getStreamCount
 	return res[arr_index]->stream_count;
 }
 
-JNIEXPORT void JNICALL Java_com_howell_utils_InviteUtils_playbackPause
+void Java_com_howell_utils_InviteUtils_playbackPause
 (JNIEnv *env, jclass cls,jlong handle,jboolean bPause){
 	int arr_index = handle;
 	hwplay_pause(res[arr_index]->play_handle,bPause);
 }
 
-JNIEXPORT void JNICALL Java_com_howell_utils_InviteUtils_getSdpTime
+void Java_com_howell_utils_InviteUtils_getSdpTime
 (JNIEnv *env, jclass cls,jlong handle){
 	int arr_index = handle;
 	ecam_stream_req_get_sdp_time(res[arr_index]->req,&res[arr_index]->beg_time, &res[arr_index]->end_time);
 }
 
-JNIEXPORT long JNICALL Java_com_howell_utils_InviteUtils_getBegSdpTime
+long Java_com_howell_utils_InviteUtils_getBegSdpTime
 (JNIEnv *env, jclass cls,jlong handle){
 	int arr_index = handle;
 	return res[arr_index]->beg_time;
 }
 
-JNIEXPORT long JNICALL Java_com_howell_utils_InviteUtils_getEndSdpTime
+long Java_com_howell_utils_InviteUtils_getEndSdpTime
 (JNIEnv *env, jclass cls,jlong handle){
 	int arr_index = handle;
 	return res[arr_index]->end_time;
 }
+
+int Java_com_howell_utils_TalkManager_setAudioData(JNIEnv *env, jclass cls,jlong handle,jbyteArray bytes ,int len){
+	int arr_index = handle;
+	char *data = (*env)->GetByteArrayElements(env,bytes,NULL);
+	if(data == NULL){
+		__android_log_print(ANDROID_LOG_INFO, "setAudioData", "data == NULL");
+		return -1;
+	}
+	int dstlen = 0;
+	char *encodeData = malloc(1024);
+	memset(encodeData,0,1024);
+	g711u_Encode(data, encodeData, len, &dstlen);
+	int ret = ecam_stream_send_audio(res[arr_index]->req,0, encodeData, dstlen, 0);
+	(*env)->ReleaseByteArrayElements(env,bytes, data, 0);
+	free(encodeData);
+	return ret;
+}
+
+//extern void my_test();
+
+
+
+void Java_com_howell_utils_InviteUtils_testMainJni
+(JNIEnv *env, jclass cls){
+	my_test1();
+//	LOGI("test main jni  ");
+}
+
+

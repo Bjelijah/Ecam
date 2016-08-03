@@ -82,7 +82,7 @@ void audio_play(const char* buf,int len,int au_sample,int au_channel,int au_bits
   /* update data */
 
   if (len<=self.data_array_len) {
-	  LOGI("audio_play");
+	  //LOGI("audio_play");
 
     (*self.env)->SetByteArrayRegion(self.env,self.data_array,0,len,buf);
 

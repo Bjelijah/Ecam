@@ -262,7 +262,6 @@ public class VideoList extends ListActivity implements OnItemClickListener {
 							// TODO: handle exception
 						}
 					}
-
 				}.execute();
 			}
 			

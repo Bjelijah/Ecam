@@ -207,4 +207,6 @@
 		<item name="android:button">@drawable/cb_select</item>
 	</style>
 	
+	<string name="play_talk">按住说话</string>
+	<string name="device_set_no_permission">没有操作权限</string>
 </resources>

@@ -34,6 +34,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.android.howell.webcam.R;
+import com.howell.action.UserPowerAction;
 import com.howell.ecamera.cameraupdatedetective.DeviceVersionDetective;
 import com.howell.ecamera.cameraupdatedetective.Observer;
 import com.howell.ehlib.MyListView;
@@ -99,7 +100,7 @@ public class CameraList extends ListActivity implements Observer{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.camera_list);
-        Log.e("CameraList", "onCreate");
+        Log.i("123", "onCreate");
         File eCameraDir = new File("/sdcard/eCamera");
 		if (!eCameraDir.exists()) {
 			eCameraDir.mkdirs();
@@ -177,8 +178,11 @@ public class CameraList extends ListActivity implements Observer{
         
         //-----如果是演示帐号则去掉添加按钮，加上返回按钮
         if(mResponse.getAccount().equals("100868")){
+        	UserPowerAction.getInstance().setPower(UserPowerAction.RIGHT_VISITOR);
         	mAddDevice.setVisibility(View.GONE);
         	mBack.setVisibility(View.VISIBLE);
+        }else{
+        	UserPowerAction.getInstance().setPower(UserPowerAction.RIGHT_USER);
         }
         
         listView = (MyListView)findViewById(android.R.id.list);
@@ -190,6 +194,7 @@ public class CameraList extends ListActivity implements Observer{
 						try {
 							mSoapManager.getQueryDeviceRes(new QueryDeviceReq(mResponse.getAccount(), mResponse.getLoginSession()));
 							list = mSoapManager.getNodeDetails();
+//							Log.i("123", "list size="+list.size());
 					        sort(list);
 //				        	for(NodeDetails d:list){
 //				                GetDevVerReq getDevVerReq = new GetDevVerReq(mResponse.getAccount(),mResponse.getLoginSession(),d.getDevID());

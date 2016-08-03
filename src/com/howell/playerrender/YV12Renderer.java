@@ -30,8 +30,7 @@ import com.howell.activity.PlayerActivity;
  * 		Use native code to render Y,U,V, rest thing is done by the class.
  */
 
-public class YV12Renderer 
-	implements Renderer {
+public class YV12Renderer implements Renderer {
 
 	//private ActivityFilterGL activity;
 	public static long time;
@@ -105,7 +104,7 @@ public class YV12Renderer
 		}
 		YV12Renderer.time = time;
 	}
-		
+	
 	  
 	public YV12Renderer(Context context, GLSurfaceView view) {
 		context_ = context;

@@ -104,7 +104,7 @@ struct ecam_stream_req_context
         int enable;// 是否启用加密，0:disable 1:enable
     } crypto;
 
-    // channel stream
+    // channel stream, 支持在线切换视频
     int channel;
     int stream;
 };
@@ -157,18 +157,29 @@ ICE_t * ecam_stream_req_get_ice(ecam_stream_req_t * req);
 /**
  * @desc 在handle_remote_sdp()之后，可以通过该接口获取录像列表修正过的时间,即将预置流时间也计算在内
  */
-  void ecam_stream_req_get_sdp_time(ecam_stream_req_t * req,time_t *beg, time_t *end);
+void ecam_stream_req_get_sdp_time(ecam_stream_req_t * req,time_t *beg, time_t *end);
 
 /**
  * @desc 发送心跳信息,保持媒体数据链路
  */
 //int stream_req_keeplive(stream_req_t * req);
 
-  /**
-   * @desc 发送音频数据
-   * @param rtp_payload: g.711为0
-   */
-  int ecam_stream_send_audio(ecam_stream_req_t * req, int rtp_payload, const char * data, size_t len, uint32_t timestamp);
+/**
+* @desc 发送音频数据
+* @param rtp_payload: g.711为0
+*/
+int ecam_stream_send_audio(ecam_stream_req_t * req, int rtp_payload, const char * data, size_t len, uint32_t timestamp);
+
+/**
+ * @desc 获取远程的rtp数据，可用于设置本地的解码器
+ * @param req: 请求对象
+ * @param desc: 媒体描述，实际是rtpmap的信息
+ * @param payload: rtp payload
+
+ * @return -1: failed 0:sdp中不存在该媒体信息 1：存在该媒体信息
+ */
+int ecam_stream_req_get_video(ecam_stream_req_t *req, char *desc, int *payload);
+int ecam_stream_req_get_audio(ecam_stream_req_t *req, char *desc, int *payload);
 
 #ifdef __cplusplus
 }

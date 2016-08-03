@@ -51,12 +51,12 @@ public class AnalyzingDoNetOutput {
     }
     
     private static String getTimeZoneStartTime(VODRecord record){
-    	 SimpleDateFormat foo = new SimpleDateFormat(
+    	 SimpleDateFormat bar = new SimpleDateFormat(
                  "yyyy-MM-dd'T'HH:mm:ss");
-         foo.setTimeZone(TimeZone.getTimeZone("UTC"));
+         bar.setTimeZone(TimeZone.getTimeZone("UTC"));
          long startTime = 0;
 		try {
-			startTime = foo.parse(record.getStartTime()).getTime();
+			startTime = bar.parse(record.getStartTime()).getTime();
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -70,12 +70,12 @@ public class AnalyzingDoNetOutput {
     }
     
     private static String getTimeZoneEndTime(VODRecord record){
-    	 SimpleDateFormat foo = new SimpleDateFormat(
+    	 SimpleDateFormat bar = new SimpleDateFormat(
                  "yyyy-MM-dd'T'HH:mm:ss");
-         foo.setTimeZone(TimeZone.getTimeZone("UTC"));
+         bar.setTimeZone(TimeZone.getTimeZone("UTC"));
          long endTime = 0;
 		try {
-			endTime = foo.parse(record.getEndTime()).getTime();
+			endTime = bar.parse(record.getEndTime()).getTime();
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

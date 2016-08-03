@@ -34,6 +34,7 @@ public class HomeKeyEventBroadCastReceiver extends BroadcastReceiver {
 					for (Map.Entry entry : mActivities.getmActivityList().entrySet()) {       
 					    
 					    Object value = entry.getValue();
+//					    Log.i("123", ""+ value.toString());
 					    ((Activity) value).finish();
 					    
 					}   

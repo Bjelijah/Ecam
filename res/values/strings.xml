@@ -207,4 +207,9 @@
 		<item name="android:button">@drawable/cb_select</item>
 	</style>
 	
+	
+	<string name="play_talk">talk</string>
+	<string name="device_set_no_permission">no permission</string>
+	
+	
 </resources>

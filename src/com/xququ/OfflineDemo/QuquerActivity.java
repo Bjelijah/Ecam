@@ -58,7 +58,8 @@ public class QuquerActivity extends Activity implements OnClickListener, XQuquer
 	protected void onStop()
 	{
 		super.onStop();
-		xququerService.stop();		
+		xququerService.stop();	
+
 		Log.i(TAG, "onStop");
 	}
 

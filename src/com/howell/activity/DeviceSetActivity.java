@@ -24,8 +24,10 @@ import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.howell.webcam.R;
+import com.howell.action.UserPowerAction;
 import com.howell.broadcastreceiver.HomeKeyEventBroadCastReceiver;
 import com.howell.entityclass.NodeDetails;
 import com.howell.utils.AlerDialogUtils;
@@ -754,6 +756,10 @@ public class DeviceSetActivity extends Activity implements
 			startActivity(intent);
 			break;
 		case R.id.ll_deviceset_remove:
+			if (UserPowerAction.getInstance().getPower() == UserPowerAction.RIGHT_VISITOR ) {
+				Toast.makeText(this, getResources().getString(R.string.device_set_no_permission), Toast.LENGTH_LONG).show();
+				break;
+			}
 			showPopupWindow();
 			break;
 			

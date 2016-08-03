@@ -13,16 +13,19 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.howell.webcam.R;
@@ -55,6 +58,9 @@ public class BigImages extends Activity implements OnClickListener,OnPageChangeL
 	//用于监听home键
 	private HomeKeyEventBroadCastReceiver receiver;
 	
+	
+	private	ImageView im;//fixme
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -69,7 +75,7 @@ public class BigImages extends Activity implements OnClickListener,OnPageChangeL
 		registerReceiver(receiver, new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
         
         Intent intent = getIntent();
-        position = intent.getIntExtra("position", 0);
+        position = intent.getIntExtra("position", 0);     
         System.out.println("position:"+position);
         mList = intent.getStringArrayListExtra("arrayList");
         
@@ -99,8 +105,14 @@ public class BigImages extends Activity implements OnClickListener,OnPageChangeL
         }
         
         viewPager.setAdapter(adapter);
+     
         viewPager.setCurrentItem(position);
+
         viewPager.setOnPageChangeListener(this);
+        
+        
+//        im = (ImageView)findViewById(R.id.imageView1_iv);
+      
 	}
 	
 	@Override
@@ -143,6 +155,7 @@ public class BigImages extends Activity implements OnClickListener,OnPageChangeL
 
 		@Override
 		public View instantiateItem(ViewGroup container, int position) {
+			
 			System.out.println("instatiateItem position:"+position);
 			//获取手机屏幕宽度
 			int requiredWidthSize = PhoneConfig.getPhoneWidth(BigImages.this);
@@ -151,11 +164,22 @@ public class BigImages extends Activity implements OnClickListener,OnPageChangeL
 			SimpleDateFormat foo = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			System.out.println("最后修改时间："+foo.format(d));
 			System.out.println("最后修改时间："+new File(mList.get(position)).lastModified());
+			Log.i("123", "view:"+position);
 			if(scale){
+				Log.e("123", "scale  view:"+position+"file name:"+mList.get(position));
+//				Bitmap bm = ScaleImageUtils.resizeImage(ScaleImageUtils.decodeFile(requiredWidthSize,requiredWidthSize * 9 / 16
+//						,new File(mList.get(1))),requiredWidthSize , requiredWidthSize * 9 / 16);
 				photoView.setImageBitmap(/*sDrawables[position]*/ScaleImageUtils.resizeImage(ScaleImageUtils.decodeFile(requiredWidthSize,requiredWidthSize * 9 / 16
 						,new File(mList.get(position))),requiredWidthSize , requiredWidthSize * 9 / 16));
 				
+				
+//				im.setImageBitmap(bm);
+				
+				
+				
+				
 			}else{
+				Log.e("123", "no scale  view:"+position);
 				photoView.setImageBitmap(ScaleImageUtils.decodeFile(requiredWidthSize,requiredWidthSize * 3 / 4
 						,new File(mList.get(position))));
 			}
@@ -256,8 +280,14 @@ public class BigImages extends Activity implements OnClickListener,OnPageChangeL
 	@Override
 	public void onPageSelected(int position) {
 		// TODO Auto-generated method stub
+		Log.i("123", "onPageSelected  :"+ position);
 		this.position = position;
 		mImagePosition.setText((position+1) + "/" + mList.size());
+		
+//		for(int i =0;i<mList.size();i++){
+//			Log.i("123", "mlist "+i+ mList.get(i).toString());
+//		}
+		
 	}
 
 	@Override

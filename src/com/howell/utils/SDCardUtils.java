@@ -95,7 +95,7 @@ public class SDCardUtils {
 	
 	public static void saveBmpToSd(Bitmap bm, String filename) {  
         if (bm == null) {  
-        	
+        	Log.e("", "bm == null");
             return;  
         }  
          //判断sdcard上的空间  

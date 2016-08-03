@@ -679,12 +679,12 @@ public class SoapManager implements Serializable {
         rpc.addProperty("ChannelNo", channelNo);
         rpc.addProperty("StreamType", streamType);
         try {
-            SimpleDateFormat foo = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            SimpleDateFormat bar = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             if(endTime.equals("") || startTime.equals("")){
             	Date endDate = new Date();
                 Date startDate = new Date(System.currentTimeMillis() - REPLAYTIME);
-                endTime = foo.format(endDate);
-                startTime = foo.format(startDate);
+                endTime = bar.format(endDate);
+                startTime = bar.format(startDate);
             }
             Log.e("", startTime+","+endTime);
             rpc.addProperty("StartTime", startTime);
@@ -1425,7 +1425,7 @@ public class SoapManager implements Serializable {
     	 	res.setRecordCount(Integer.valueOf(recordCount.toString()));
     	 	
     	 	SoapObject noticeList = (SoapObject)object.getProperty("Notice");
-//	        System.out.println("QueryNoticesRes nodeList:"+noticeList.toString());
+	        Log.e("","QueryNoticesRes nodeList:"+noticeList.toString());
 	        ArrayList<NoticeList> list = new ArrayList<NoticeList>();
 	        for(int i = 0 ;i<noticeList.getPropertyCount();i++){
 	        	NoticeList n = new NoticeList();
@@ -1474,7 +1474,7 @@ public class SoapManager implements Serializable {
 			        n.setPictureID(pictureIdList);
 			        
 		        }catch(Exception e){
-		        	//System.out.println("pictureID is null");
+		        	System.out.println("pictureID is null");
 		        	n.setPictureID(new ArrayList<String>());
 		        }
 		        list.add(n);

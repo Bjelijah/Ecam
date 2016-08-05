@@ -81,7 +81,7 @@ static void on_yuv_callback_ex(PLAY_HANDLE handle,
 									 unsigned long long time,
 									 long user)
 {	
-	__android_log_print(ANDROID_LOG_INFO, "jni", "on_yuv_callback_ex :%llu, %llu",time,(time - temp));
+//	__android_log_print(ANDROID_LOG_INFO, "jni", "on_yuv_callback_ex :%llu, %llu",time,(time - temp));
 	temp = time;
 	//getNowTime();
 	//sdl_display_input_data(y,u,v,width,height,time);

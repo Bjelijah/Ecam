@@ -81,7 +81,7 @@ static void on_yuv_callback_ex(PLAY_HANDLE handle,
 									 unsigned long long time,
 									 long user)
 {	
-	//__android_log_print(ANDROID_LOG_INFO, "jni", "on_yuv_callback_ex :%llu, %llu",time,(time - temp));
+	__android_log_print(ANDROID_LOG_INFO, "jni", "on_yuv_callback_ex :%llu, %llu",time,(time - temp));
 	temp = time;
 	//getNowTime();
 	//sdl_display_input_data(y,u,v,width,height,time);
@@ -255,6 +255,7 @@ static void OnStreamArrive(ecam_stream_req_t * req, ECAM_STREAM_REQ_FRAME_TYPE m
 	//if(media_type == 2){
 		//return;
 	//}
+//	LOGI("on stream come");
 	int arr_index = ecam_stream_req_get_usr_data(req);
 	//__android_log_print(ANDROID_LOG_INFO, "OnStreamArrive", "len: %d, arr_idx: %d",len,arr_index);
 
@@ -284,9 +285,12 @@ static void OnStreamArrive(ecam_stream_req_t * req, ECAM_STREAM_REQ_FRAME_TYPE m
 	head.type = media_type;
 	//__android_log_print(ANDROID_LOG_INFO, "jni", "-------------media_type %d- timestamp: %llu",media_type,head.time_stamp);
 		//getNowTime();
+
 	if(res[arr_index]->is_playback == 0){
 		hwplay_input_data(res[arr_index]->play_handle, (char*)&head ,sizeof(head));
+
 		hwplay_input_data(res[arr_index]->play_handle, data ,len);
+
 	}else if (res[arr_index]->is_playback == 1)
 	{
 		#if 1

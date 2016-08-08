@@ -23,6 +23,7 @@ import com.android.howell.webcam.R;
 //import com.example.yuvtest.GraphicsUtil;
 //import com.howell.webcam.protocol.playerrender.R;
 import com.howell.activity.PlayerActivity;
+import com.howell.jni.JniUtil;
 
 /**
  * @class YV12Renderer
@@ -89,12 +90,24 @@ public class YV12Renderer implements Renderer {
 //	private static float frames;
 	
 
-	private native void nativeInit();
-	public static native void nativeDeinit();
-	private native void nativeRenderY();
-	private native void nativeRenderU();
-	private native void nativeRenderV();
-	private native void nativeOnSurfaceCreated();
+	private  void nativeInit(){
+		JniUtil.nativeInit(this);
+	}
+	public static  void nativeDeinit(){
+		JniUtil.nativeDeinit();
+	}
+	private  void nativeRenderY(){
+		JniUtil.nativeRenderY();
+	}
+	private  void nativeRenderU(){
+		JniUtil.nativeRenderU();
+	}
+	private void nativeRenderV(){
+		JniUtil.nativeRenderV();
+	}
+	private  void nativeOnSurfaceCreated(){
+		JniUtil.nativeOnSurfaceCreated();
+	}
 	//public static native void setCatchPictureFlag(String path,int length);
 		
 	public void setTime(long time){

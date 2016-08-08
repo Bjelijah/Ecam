@@ -60,6 +60,7 @@ import com.howell.broadcastreceiver.HomeKeyEventBroadCastReceiver;
 import com.howell.ehlib.MySeekBar;
 import com.howell.entityclass.NodeDetails;
 import com.howell.entityclass.VODRecord;
+import com.howell.jni.JniUtil;
 import com.howell.playerrender.YV12Renderer;
 import com.howell.protocol.GetDevVerReq;
 import com.howell.protocol.GetDevVerRes;
@@ -165,13 +166,17 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
         mGestureDetector = new GestureDetector(this);   
     } 
 	
-	static {
-        System.loadLibrary("hwplay");
-        System.loadLibrary("player_jni");
-    }
+//	static {
+//        System.loadLibrary("hwplay");
+//        System.loadLibrary("player_jni");
+//    }
 	
-	public native void nativeAudioInit();
-	public static native void nativeAudioStop();
+	public  void nativeAudioInit(){
+		JniUtil.nativeAudioInit(this);
+	}
+	public static void nativeAudioStop(){
+		JniUtil.nativeAudioStop();
+	}
 	
 	private TextView talk;
 	private TalkManager talkManger;
@@ -743,8 +748,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 			client = new InviteUtils(dev);
 			System.out.println("start invite live");
 			
-//			client.testMainJni();
-			//FIXME
+
 			
 			if (playback) {
 				Log.e("---------->>>>", "1111111111111111111");

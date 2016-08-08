@@ -120,7 +120,7 @@ include $(PREBUILT_SHARED_LIBRARY)
 include $(CLEAR_VARS)
 LOCAL_MODULE := player_jni
 # Add your application source files here...
-LOCAL_SRC_FILES := yv12gl_jni.c streamreq_jni.c audio_jni.c g711.cpp g7.cpp main1.c
+LOCAL_SRC_FILES := WebcamECamera.cpp g711.cpp g7.cpp 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/include
 LOCAL_SHARED_LIBRARIES := hwplay jpush 
 LOCAL_STATIC_LIBRARIES := ecamstream

@@ -8,6 +8,7 @@ import com.howell.entityclass.Crypto;
 import com.howell.entityclass.NodeDetails;
 import com.howell.entityclass.StreamReqContext;
 import com.howell.entityclass.StreamReqIceOpt;
+import com.howell.jni.JniUtil;
 import com.howell.protocol.ByeRequest;
 import com.howell.protocol.ByeResponse;
 import com.howell.protocol.GetNATServerRes;
@@ -575,32 +576,60 @@ public class InviteUtils {
 		//Log.e("getStreamLen", (streamLen/1024*8)+"");
 	}
 	
-	public native void playbackPause(long handle,boolean bPause);
-	public native int getStreamCount(long handle);
-	public native void joinThread(long handle);
-    public native long createHandle(String account, int is_palyback);
+	public void playbackPause(long handle,boolean bPause){
+		JniUtil.nativePlaybackPause(handle, bPause);
+	}
+	public  int getStreamCount(long handle){
+		return JniUtil.nativeGetStreamCount(handle);
+	}
+	public  void joinThread(long handle){
+		JniUtil.nativeJoinThread(handle);
+	}
+    public  long createHandle(String account, int is_palyback){
+    	return JniUtil.nativeCreateHandle(this, account, is_palyback);
+    }
 
-    public native String prepareSDP(long handle,
-            StreamReqContext streamReqContext);
+    public  String prepareSDP(long handle,
+            StreamReqContext streamReqContext){
+    	return JniUtil.nativePrepareSDP(handle, streamReqContext);
+    }
 
-    public native int handleRemoteSDP(long handle,
+    public  int handleRemoteSDP(long handle,
             StreamReqContext streamReqContext, String dialog_id,
-            String remote_sdp);
+            String remote_sdp){
+    	return JniUtil.nativeHandleRemoteSDP(handle, streamReqContext, dialog_id, remote_sdp);
+    }
 
-    public native int start(long handle, StreamReqContext streamReqContext,
-            int timeout_ms);
+    public  int start(long handle, StreamReqContext streamReqContext,
+            int timeout_ms){
+    	return JniUtil.nativeStart(handle, streamReqContext, timeout_ms);
+    }
 
-    public native void freeHandle(long handle);
+    public  void freeHandle(long handle){
+    	JniUtil.nativeFreeHandle(handle);
+    }
 
-    public native void prepareReplay(int isPlayBack,long handle);
+    public  void prepareReplay(int isPlayBack,long handle){
+    	JniUtil.nativePrepareReplay(isPlayBack, handle);
+    }
     
-    public native int getMethod(long handle);
+    public  int getMethod(long handle){
+    	return JniUtil.nativeGetMethod(handle);
+    }
     
-    public native int getSdpTime(long handle);
-    public native int getBegSdpTime(long handle);
-    public native int getEndSdpTime(long handle);
-    public native int setCatchPictureFlag(long handle,String path,int length);
+    public  int getSdpTime(long handle){
+    	return JniUtil.nativeGetSdpTime(handle);
+    }
+    public int getBegSdpTime(long handle){
+    	return JniUtil.nativeGetBegSdpTime(handle);
+    }
+    public int getEndSdpTime(long handle){
+    	return JniUtil.nativeGetEndSdpTime(handle);
+    }
+    public int setCatchPictureFlag(long handle,String path,int length){
+    	return JniUtil.nativeSetCatchPictureFlag(handle, path, length);
+    }
     
-    public native void testMainJni();
+  
     
 }

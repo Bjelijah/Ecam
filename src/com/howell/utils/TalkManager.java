@@ -1,5 +1,7 @@
 package com.howell.utils;
 
+import com.howell.jni.JniUtil;
+
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
@@ -23,7 +25,9 @@ public class TalkManager {
 	private static final int channelConfiguration = AudioFormat.CHANNEL_CONFIGURATION_MONO;  
 	private static final int audioEncoding = AudioFormat.ENCODING_PCM_16BIT;
 	
-	private native int setAudioData(long handle,byte[] buf ,int len);
+	private  int setAudioData(long handle,byte[] buf ,int len){
+		return JniUtil.nativeSetAudioData(handle, buf, len);
+	}
 	
 	private RecordPlayThread thread;
 	

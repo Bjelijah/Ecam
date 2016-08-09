@@ -404,7 +404,8 @@ static void on_source_callback(PLAY_HANDLE handle,
 	//LOGE("type=%d  len=%d  w=%d  h=%d  timestamp=%ld sys_tm=%ld  framerate=%d  au_sample=%d  au_channel=%d au_bits=%d",type,len,w,h,timestamp,sys_tm,framerate,au_sample,au_channel,au_bits);
 	if(res[user]->is_exit == 1) return;
 	if(type == 0){//音频
-		audio_play(buf,len,0,0,0);//add cbj
+//		audio_play(buf,len,0,0,0);//add cbj
+		audio_play(buf,len,au_sample,au_channel,au_bits);
 	}else if(type == 1){//视频
 		unsigned char* y = (unsigned char *)buf;
 		unsigned char* u = y+w*h;

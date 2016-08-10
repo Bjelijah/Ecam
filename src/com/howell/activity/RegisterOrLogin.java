@@ -90,8 +90,6 @@ public class RegisterOrLogin extends Activity implements OnClickListener{
 						Intent intent = new Intent(RegisterOrLogin.this,CameraList.class);
 						startActivity(intent);
 					}
-
-
 					return null;
 				}
 
@@ -100,9 +98,6 @@ public class RegisterOrLogin extends Activity implements OnClickListener{
 					// TODO Auto-generated method stub
 					super.onPostExecute(result);
 					waitDialog.dismiss();
-
-
-
 				}
 
 			}.execute();

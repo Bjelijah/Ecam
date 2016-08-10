@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.android.howell.webcam.R;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,10 +14,13 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -50,6 +54,10 @@ public class NavigationActivity extends Activity {
 		View thirdView = inflater.inflate(R.layout.viewpager03, null);
 		View fourthView = inflater.inflate(R.layout.viewpager04, null);
 		
+		
+		
+	
+		
 		pageViews = new ArrayList<View>();
 		pageViews.add(firstView);
 		pageViews.add(secondView);
@@ -60,6 +68,20 @@ public class NavigationActivity extends Activity {
 		LinearLayout second = (LinearLayout)secondView.findViewById(R.id.second_viewpager);
 		LinearLayout third = (LinearLayout)thirdView.findViewById(R.id.third_viewpager);
 		LinearLayout fourth = (LinearLayout)fourthView.findViewById(R.id.fourth_viewpager);
+		
+		
+		
+		Button startBtn = (Button) fourthView.findViewById(R.id.logo_start_button);
+		startBtn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Log.i("123", "start btn clicked");
+				startbutton(v);
+			}
+		});
+		
+		
 		
 		if(getResources().getConfiguration().locale.getCountry().equals("CN")){
 			first.setBackgroundResource(R.drawable.b1);
@@ -180,7 +202,7 @@ public class NavigationActivity extends Activity {
         Editor editor = sharedPreferences.edit();
         editor.putBoolean("isFirstLogin", false);
         editor.commit();
-		//NavigationActivity.this.finish();
+		NavigationActivity.this.finish();
 	}
 
 }

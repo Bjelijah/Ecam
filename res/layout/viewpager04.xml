@@ -10,13 +10,16 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/logo_start_button"
         android:layout_marginBottom="45dip"
         android:paddingTop="5dip"
         android:paddingBottom="5dip"
-        android:onClick="startbutton"
+   
         android:text="@string/navigation_activity_btn"
         android:textSize="18sp"
         android:textColor="@color/white"
         android:background="@drawable/guide_enter_app_btn_selector" />
 
 </LinearLayout>
+
+    <!--   android:onClick="startbutton"-->

@@ -489,7 +489,7 @@ static void OnStreamArrive(ecam_stream_req_t * req, ECAM_STREAM_REQ_FRAME_TYPE m
 
 	return;
 	 */
-	__android_log_print(ANDROID_LOG_INFO, "thread", "aaaaa");
+//	__android_log_print(ANDROID_LOG_INFO, "thread", "aaaaa");
 	//return;
 	//PLAY_HANDLE ph = ecam_stream_req_get_usr_data(req);
 	//__android_log_print(ANDROID_LOG_INFO, "OnStreamArrive", "timestamp: %d",timestamp);

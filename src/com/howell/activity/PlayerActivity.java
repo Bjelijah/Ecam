@@ -56,6 +56,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.howell.webcam.R;
+import com.howell.action.PTZControlAction;
 import com.howell.broadcastreceiver.HomeKeyEventBroadCastReceiver;
 import com.howell.ehlib.MySeekBar;
 import com.howell.entityclass.NodeDetails;
@@ -77,9 +78,9 @@ import com.howell.utils.TalkManager;
 import com.howell.utils.Util;
 
 public class PlayerActivity extends Activity implements Callback, OnTouchListener, OnGestureListener,OnClickListener {
-	
-	
-	
+
+
+
 	public static InviteUtils client;
 	private static PlayerActivity mPlayer;
 	private Thread inviteThread;
@@ -97,21 +98,21 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	private boolean isShowSurfaceIcon;
 	public static boolean stopSendMessage;
 	private static long firstFrameTime,endFrameTime;
-    private static int frameFlag;
-    private static int streamLenFlag;
-    private static int streamLen;
-    
-	private LinearLayout mSurfaceIcon;
-    private static MySeekBar mReplaySeekBar;
-    private static ProgressBar mWaitProgressBar;
-    private static PlayerHandler mPlayerHandler;
-    private static ImageButton mVedioList;
+	private static int frameFlag;
+	private static int streamLenFlag;
+	private static int streamLen;
+
+	private LinearLayout mSurfaceIcon ,mPlayWide,mPlayTele;
+	private static MySeekBar mReplaySeekBar;
+	private static ProgressBar mWaitProgressBar;
+	private static PlayerHandler mPlayerHandler;
+	private static ImageButton mVedioList;
 	private ImageButton mSound,mCatchPicture/*,mStreamChange*/;
 	private TextView mStreamChange;
-    private static TextView mStreamLen;
-    private ImageButton mPause,mBack;
-    private FrameLayout mTitle;
-	
+	private static TextView mStreamLen;
+	private ImageButton mPause,mBack;
+	private FrameLayout mTitle;
+
 	public static final Integer REPLAYSEEKBAR = 0x0001;
 	public static final Integer STOPPROGRESSBAR = 0x0002;
 	public static final Integer SHOWPROGRESSBAR = 0x0003;
@@ -123,56 +124,56 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	public static final Integer SHOW_NO_STREAM_ARRIVE_PROGRESS = 0x0009;
 	public static final Integer HIDE_HAS_STREAM_ARRIVE_PROGRESS = 0x0010;
 	public static final Integer DETECT_IF_NO_STREAM_ARRIVE = 0x0011;
-	
+
 	private SoapManager mSoapManger;
 	private String account,loginSession,devID;
 	private int channelNo;
 	private MyFlingTask mFlingTask;
 	private GestureDetector mGestureDetector;
-	
+
 	private Animation translateAnimation;
 	private ImageView animationAim,animationBackground;
 	private boolean inviteRet;
-	
+
 	private static int nowFrames;
 	private static int lastSecondFrames;
-	
-//	private TitlePopup titlePopup;
-	
+
+	//	private TitlePopup titlePopup;
+
 	private static Timer mTimer;
 	private static boolean progressHasStop;
-	
+
 	public  AudioManager audiomanage;  
 	private int maxVolume ;  
-	
+
 	private static long correctedStartTime;
 	private static long correctedEndTime;
 	private static int stopTrackingTouchProgress;
-	
+
 	boolean bPause ;
 	boolean isAnimationStart;
 	private Activities mActivities;
 	private HomeKeyEventBroadCastReceiver receiver;
-	
+
 	private int stream;//主次码流
 	private PopupWindow mPopupWindow;  
 	private LinearLayout hd,sd;
-	
-	
-	
-	
+
+
+
+
 	public PlayerActivity() {   
-        mGestureDetector = new GestureDetector(this);   
-    } 
-	
+		mGestureDetector = new GestureDetector(this);   
+	} 
+
 	static {
-        System.loadLibrary("hwplay");
-        System.loadLibrary("player_jni");
-    }
-	
+		System.loadLibrary("hwplay");
+		System.loadLibrary("player_jni");
+	}
+
 	public native void nativeAudioInit();
 	public static native void nativeAudioStop();
-	
+
 	private TextView talk;
 	private TalkManager talkManger;
 	private Button btTalk;
@@ -180,13 +181,13 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		
+
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		
+
 		mActivities = Activities.getInstance();
-        mActivities.addActivity("PlayerActivity",PlayerActivity.this);
-        receiver = new HomeKeyEventBroadCastReceiver();
-        
+		mActivities.addActivity("PlayerActivity",PlayerActivity.this);
+		receiver = new HomeKeyEventBroadCastReceiver();
+
 		registerReceiver(receiver, new IntentFilter(
 				Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
 		Log.e("main","activity on create");
@@ -197,30 +198,30 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		mGlView.setRenderer(new YV12Renderer(this,mGlView));
 		mGlView.getHolder().addCallback((Callback) this);
 		mGlView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
-		
+
 		mGlView.setOnTouchListener(this);   
 		mGlView.setFocusable(true);   
 		mGlView.setClickable(true);   
 		mGlView.setLongClickable(true);   
-        mGestureDetector.setIsLongpressEnabled(true);  
-        
-        Intent intent = getIntent();
+		mGestureDetector.setIsLongpressEnabled(true);  
+
+		Intent intent = getIntent();
 		if (intent.getSerializableExtra("arg") instanceof NodeDetails) {
-            dev = (NodeDetails) intent.getSerializableExtra("arg");
-            playback = false;
+			dev = (NodeDetails) intent.getSerializableExtra("arg");
+			playback = false;
 		} else if (intent.getSerializableExtra("arg") instanceof VODRecord) {
-            mRecord = (VODRecord) intent.getSerializableExtra("arg");
-            dev = (NodeDetails) intent.getSerializableExtra("nodeDetails");
-            playback = true;
-        }
-		
-        mSoapManger = SoapManager.getInstance();
-        LoginResponse res = mSoapManger.getLoginResponse();
-        account = res.getAccount();
-        loginSession = res.getLoginSession();
-        devID = dev.getDevID();
-        channelNo =	dev.getChannelNo();
-        
+			mRecord = (VODRecord) intent.getSerializableExtra("arg");
+			dev = (NodeDetails) intent.getSerializableExtra("nodeDetails");
+			playback = true;
+		}
+
+		mSoapManger = SoapManager.getInstance();
+		LoginResponse res = mSoapManger.getLoginResponse();
+		account = res.getAccount();
+		loginSession = res.getLoginSession();
+		devID = dev.getDevID();
+		channelNo =	dev.getChannelNo();
+
 		backCount = 0;
 		isAudioOpen = true;
 		frameFlag = 0;
@@ -240,24 +241,24 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		correctedEndTime = -1;
 		stopTrackingTouchProgress = 0;
 		stream = 1;//默认次码流
-		
+
 		SharedPreferences sharedPreferences = getSharedPreferences("set",
-                Context.MODE_PRIVATE);
-        boolean soundMode = sharedPreferences.getBoolean("sound_mode", true);
-        System.out.println("soundMode:"+soundMode);
+				Context.MODE_PRIVATE);
+		boolean soundMode = sharedPreferences.getBoolean("sound_mode", true);
+		System.out.println("soundMode:"+soundMode);
 		if (mRecord != null) {
-            try {
-                SimpleDateFormat bar = new SimpleDateFormat(
-                        "yyyy-MM-dd'T'HH:mm:ss");
-                bar.setTimeZone(TimeZone.getTimeZone("UTC"));
-                startTime = bar.parse(mRecord.getStartTime()).getTime()/1000;
-                endTime = bar.parse(mRecord.getEndTime()).getTime()/1000;
-            } catch (ParseException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-		
+			try {
+				SimpleDateFormat bar = new SimpleDateFormat(
+						"yyyy-MM-dd'T'HH:mm:ss");
+				bar.setTimeZone(TimeZone.getTimeZone("UTC"));
+				startTime = bar.parse(mRecord.getStartTime()).getTime()/1000;
+				endTime = bar.parse(mRecord.getEndTime()).getTime()/1000;
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
 		mVedioList = (ImageButton) findViewById(R.id.vedio_list);
 		if(dev.iseStoreFlag()){
 			//.setEnabled(true);
@@ -266,33 +267,33 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 			//mVedioList.setEnabled(false);
 			mVedioList.setImageResource(R.drawable.img_no_record);
 		}
-	    mVedioList.setOnClickListener(new View.OnClickListener() {
-	        @Override
-	        public void onClick(View v) {
-	            // TODO Auto-generated method stub
-	        	if(!dev.iseStoreFlag()){
-	        		MessageUtiles.postToast(getApplicationContext()
-	        				, getResources().getString(R.string.no_sdcard),2000);
-	        	}else{
-		        	if(null != client)
-		        		client.setQuit(true);
-		        	quitDisplay();
-	        		if(!playback){
-	            		TakePhotoUtil.takePhoto("/sdcard/eCamera/cache", dev, client);
-	    			}
-	        		finish();
-		            Log.e("", "00000000");
-		            Intent intent = new Intent(PlayerActivity.this, VideoList.class);
-		            intent.putExtra("Device", dev);
-		            startActivity(intent);
-	        	}
-	        }
-	    });
-	    
-	    talk = (TextView)findViewById(R.id.player_talk);
-	    talk.setVisibility(View.GONE);//FIXME
-	    talk.setOnClickListener(new OnClickListener() {
-			
+		mVedioList.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if(!dev.iseStoreFlag()){
+					MessageUtiles.postToast(getApplicationContext()
+							, getResources().getString(R.string.no_sdcard),2000);
+				}else{
+					if(null != client)
+						client.setQuit(true);
+					quitDisplay();
+					if(!playback){
+						TakePhotoUtil.takePhoto("/sdcard/eCamera/cache", dev, client);
+					}
+					finish();
+					Log.e("", "00000000");
+					Intent intent = new Intent(PlayerActivity.this, VideoList.class);
+					intent.putExtra("Device", dev);
+					startActivity(intent);
+				}
+			}
+		});
+
+		talk = (TextView)findViewById(R.id.player_talk);
+		talk.setVisibility(View.GONE);//FIXME
+		talk.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -313,13 +314,13 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 				}
 			}
 		});
-	   
-	    btTalk = (Button)findViewById(R.id.play_talk);
-	    btTalk.setOnTouchListener(new OnTouchListener() {
-			
+
+		btTalk = (Button)findViewById(R.id.play_talk);
+		btTalk.setOnTouchListener(new OnTouchListener() {
+
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				
+
 				switch (event.getAction()) {
 				case MotionEvent.ACTION_DOWN:
 					Log.i("123", "按下了   开始对讲");
@@ -346,21 +347,21 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 					//Log.i("123", "default");
 					break;
 				}
-				
-				
+
+
 				return false;
 			}
 		});
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    mCatchPicture = (ImageButton)findViewById(R.id.catch_picture);
-	    mCatchPicture.setOnClickListener(new OnClickListener() {
-				
+
+
+
+
+
+
+
+		mCatchPicture = (ImageButton)findViewById(R.id.catch_picture);
+		mCatchPicture.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -376,82 +377,82 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 				if(client.setCatchPictureFlag(client.getHandle(),path,path.length()) == 1)
 					MessageUtiles.postToast(getApplicationContext(), getResources().getString(R.string.save_picture),2000);
 			}
-	    });
-	    System.out.println("audio init");
-	    audioInit();
-	    audiomanage = (AudioManager)getSystemService(Context.AUDIO_SERVICE); 
-	    maxVolume = audiomanage.getStreamMaxVolume(AudioManager.STREAM_MUSIC);  
-	    System.out.println("maxVolume:"+maxVolume);
-	    
-	  
-	    mSound = (ImageButton)findViewById(R.id.sound);
-	
-	    
-	    
-	    if(soundMode){
-	    	System.out.println("soundMode:"+soundMode);
-	    	isAudioOpen = true;
+		});
+		System.out.println("audio init");
+		audioInit();
+		audiomanage = (AudioManager)getSystemService(Context.AUDIO_SERVICE); 
+		maxVolume = audiomanage.getStreamMaxVolume(AudioManager.STREAM_MUSIC);  
+		System.out.println("maxVolume:"+maxVolume);
+
+
+		mSound = (ImageButton)findViewById(R.id.sound);
+
+
+
+		if(soundMode){
+			System.out.println("soundMode:"+soundMode);
+			isAudioOpen = true;
 			mSound.setImageDrawable(getResources().getDrawable(R.drawable.img_sound));
-	    }
-        else {
-        	System.out.println("soundMode:"+soundMode);
-        	audioPause();
-        }
-	    mSound.setOnClickListener(new OnClickListener() {
-				
+		}
+		else {
+			System.out.println("soundMode:"+soundMode);
+			audioPause();
+		}
+		mSound.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Log.e("sdl--->", "mSound.setOnClickListener");
 				if(isAudioOpen){
 					audioPause();
-					
+
 				}else {
 					audioPlay();
 				}
 				SharedPreferences sharedPreferences = getSharedPreferences(
-		                "set", Context.MODE_PRIVATE);
-		        Editor editor = sharedPreferences.edit();
-		        editor.putBoolean("sound_mode", isAudioOpen);
-		        editor.commit();
-					
+						"set", Context.MODE_PRIVATE);
+				Editor editor = sharedPreferences.edit();
+				editor.putBoolean("sound_mode", isAudioOpen);
+				editor.commit();
+
 			}
-	    });
-	    
-	    mTitle = (FrameLayout)findViewById(R.id.player_title_bar);
-	    
-	    mStreamChange = (TextView)findViewById(R.id.player_change_stream);
-	    mStreamChange.setVisibility(View.GONE);
-//	    LayoutConfig config = mesureViewWidth(mStreamChange);
-	    mStreamChange.setOnClickListener(new OnClickListener() {
-			
+		});
+
+		mTitle = (FrameLayout)findViewById(R.id.player_title_bar);
+
+		mStreamChange = (TextView)findViewById(R.id.player_change_stream);
+		mStreamChange.setVisibility(View.GONE);
+		//	    LayoutConfig config = mesureViewWidth(mStreamChange);
+		mStreamChange.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				getPopupWindowInstance();  
-		        mPopupWindow.showAsDropDown(v);  
+				mPopupWindow.showAsDropDown(v);  
 			}
 		});
-	    
-	    new AsyncTask<Void, Integer, Void>(){
-	    	boolean isNewVer = false;
-	    	@Override
+
+		new AsyncTask<Void, Integer, Void>(){
+			boolean isNewVer = false;
+			@Override
 			protected Void doInBackground(Void... arg0) {
 				// TODO Auto-generated method stub
-	    		isNewVer = checkDevVer();
+				isNewVer = checkDevVer();
 				return null;
 			}
-	    	
-	    	protected void onPostExecute(Void result) {
-	    		if(isNewVer){
-	    			mStreamChange.setVisibility(View.VISIBLE);
-	    		}
-	    	};
-	    }.execute();
-	    
-	    /*mStreamChange = (ImageButton)findViewById(R.id.stream);
+
+			protected void onPostExecute(Void result) {
+				if(isNewVer){
+					mStreamChange.setVisibility(View.VISIBLE);
+				}
+			};
+		}.execute();
+
+		/*mStreamChange = (ImageButton)findViewById(R.id.stream);
 	    mStreamChange.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -479,10 +480,10 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 				}
 			}
 		});*/
-	    
-	    mPause = (ImageButton)findViewById(R.id.ib_pause);
-	    mPause.setOnClickListener(new OnClickListener() {
-	    	
+
+		mPause = (ImageButton)findViewById(R.id.ib_pause);
+		mPause.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
@@ -500,25 +501,25 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 				}
 			}
 		});
-	    
-	    mBack = (ImageButton)findViewById(R.id.player_imagebutton_back);
-	    mBack.setOnClickListener(new OnClickListener() {
-			
+
+		mBack = (ImageButton)findViewById(R.id.player_imagebutton_back);
+		mBack.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				if(null != client)
-	        		client.setQuit(true);
-	        	quitDisplay();
+					client.setQuit(true);
+				quitDisplay();
 				if(!playback){
 					TakePhotoUtil.takePhoto("/sdcard/eCamera/cache", dev, client);
 				}
 				finish();
 			}
 		});
-	    
-        mReplaySeekBar = (MySeekBar)findViewById(R.id.replaySeekBar);
-        if(playback){
+
+		mReplaySeekBar = (MySeekBar)findViewById(R.id.replaySeekBar);
+		if(playback){
 			mReplaySeekBar.setVisibility(View.VISIBLE);
 			mPause.setVisibility(View.VISIBLE);
 			mVedioList.setVisibility(View.GONE);
@@ -527,22 +528,22 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 			mPause.setVisibility(View.GONE);
 			mVedioList.setVisibility(View.VISIBLE);
 		}
-        mSurfaceIcon = (LinearLayout)findViewById(R.id.surface_icons);
-        System.out.println("activity start progress Bar");
-        mWaitProgressBar = (ProgressBar)findViewById(R.id.waitProgressBar);
-        mPlayerHandler = new PlayerHandler();
-        mPlayerHandler.setContext(this);
-        if(playback){
-        	Log.e("----------->>>", "onS totoal time:"+endTime +","+ startTime);
-        	mVedioList.setEnabled(false);
-        	Log.e("---------->>>>", "frames send message");
-        	mPlayerHandler.sendEmptyMessage(REPLAYSEEKBAR);
-        }
-        Log.e("----------->>>", "send stopprogress message!!!!!!!!!!");
-        mPlayerHandler.sendEmptyMessage(STOPPROGRESSBAR);
-        
-        mReplaySeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-			
+		mSurfaceIcon = (LinearLayout)findViewById(R.id.surface_icons);
+		System.out.println("activity start progress Bar");
+		mWaitProgressBar = (ProgressBar)findViewById(R.id.waitProgressBar);
+		mPlayerHandler = new PlayerHandler();
+		mPlayerHandler.setContext(this);
+		if(playback){
+			Log.e("----------->>>", "onS totoal time:"+endTime +","+ startTime);
+			mVedioList.setEnabled(false);
+			Log.e("---------->>>>", "frames send message");
+			mPlayerHandler.sendEmptyMessage(REPLAYSEEKBAR);
+		}
+		Log.e("----------->>>", "send stopprogress message!!!!!!!!!!");
+		mPlayerHandler.sendEmptyMessage(STOPPROGRESSBAR);
+
+		mReplaySeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
 				// TODO Auto-generated method stub
@@ -563,7 +564,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 				bPause = true;
 				mPause.setImageDrawable(getResources().getDrawable(R.drawable.img_pause));
 			}
-			
+
 			@Override
 			public void onStartTrackingTouch(SeekBar seekBar) {
 				// TODO Auto-generated method stub
@@ -573,7 +574,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 				mPlayerHandler.sendEmptyMessage(SHOWPROGRESSBAR);
 				stopSendMessage = true;
 			}
-			
+
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress,
 					boolean fromUser) {
@@ -583,158 +584,167 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 				}
 			}
 		});
-        
-        if(PhoneConfig.getPhoneHeight(this) < PhoneConfig.getPhoneWidth(this)){
-        	mTitle.setVisibility(View.GONE);
+
+
+		PTZControlAction.getInstance().setPtzInfo(mSoapManger, account, loginSession, devID, channelNo);
+
+		mPlayWide = (LinearLayout)findViewById(R.id.play_wide);
+		mPlayWide.setOnTouchListener(this);
+		mPlayTele = (LinearLayout)findViewById(R.id.play_tele);
+		mPlayTele.setOnTouchListener(this);
+
+		mStreamLen = (TextView)findViewById(R.id.tv_stream_len);
+		if(PhoneConfig.getPhoneHeight(this) < PhoneConfig.getPhoneWidth(this)){
+			mTitle.setVisibility(View.GONE);
 			mSurfaceIcon.setVisibility(View.GONE);
 			System.out.println("onSingleTapUp:"+mSurfaceIcon.isShown());
 			isShowSurfaceIcon = false;
 			mStreamLen.setVisibility(View.VISIBLE);
-        }
- 
-        mStreamLen = (TextView)findViewById(R.id.tv_stream_len);
-        animationAim = (ImageView)findViewById(R.id.animation_aim);
-        animationBackground = (ImageView)findViewById(R.id.animation_back);
-        
+		}
+
+
+		animationAim = (ImageView)findViewById(R.id.animation_aim);
+		animationBackground = (ImageView)findViewById(R.id.animation_back);
+
 		InviteThread thread = new InviteThread();
 		thread.start();
 	}
-	
+
 	private boolean checkDevVer(){
 		GetDevVerReq getDevVerReq = new GetDevVerReq(SoapManager.getInstance().getLoginResponse().getAccount(),SoapManager.getInstance().getLoginResponse().getLoginSession(),dev.getDevID());
 		GetDevVerRes res = SoapManager.getInstance().getGetDevVerRes(getDevVerReq);
 		Log.e("", "CurDevVer:"+res.getCurDevVer());
 		return DeviceVersionUtils.isNewVersionDevice(res.getCurDevVer());
 	}
-	
-    /* 
-     * 获取PopupWindow实例 
-     */  
-    private void getPopupWindowInstance() {  
-        if (null != mPopupWindow) {  
-            mPopupWindow.dismiss();  
-            return;  
-        } else {  
-            initPopuptWindow();  
-        }  
-    }  
-  
-    /* 
-     * 创建PopupWindow 
-     */  
-    private void initPopuptWindow() {  
-        LayoutInflater layoutInflater = LayoutInflater.from(this);  
-        View popupWindow = layoutInflater.inflate(R.layout.popup_window, null);  
-//        RadioGroup radioGroup = (RadioGroup) popupWindow.findViewById(R.id.radioGroup);  
-//        radioGroup.setOnCheckedChangeListener(this);  
-        hd = (LinearLayout)popupWindow.findViewById(R.id.pop_layout_hd);
-        sd = (LinearLayout)popupWindow.findViewById(R.id.pop_layout_sd);
-        hd.setOnClickListener(this);
-        sd.setOnClickListener(this);
-        // 创建一个PopupWindow  
-        // 参数1：contentView 指定PopupWindow的内容  
-        // 参数2：width 指定PopupWindow的width  
-        // 参数3：height 指定PopupWindow的height  
-        int width = PhoneConfig.getPhoneWidth(this);
-        int height = width * 5 / 3;
-        mPopupWindow = new PopupWindow(popupWindow, width/4, height);  
-        
-        ColorDrawable dw = new ColorDrawable(0000000000);
+
+	/* 
+	 * 获取PopupWindow实例 
+	 */  
+	private void getPopupWindowInstance() {  
+		if (null != mPopupWindow) {  
+			mPopupWindow.dismiss();  
+			return;  
+		} else {  
+			initPopuptWindow();  
+		}  
+	}  
+
+	/* 
+	 * 创建PopupWindow 
+	 */  
+	private void initPopuptWindow() {  
+		LayoutInflater layoutInflater = LayoutInflater.from(this);  
+		View popupWindow = layoutInflater.inflate(R.layout.popup_window, null);  
+		//        RadioGroup radioGroup = (RadioGroup) popupWindow.findViewById(R.id.radioGroup);  
+		//        radioGroup.setOnCheckedChangeListener(this);  
+		hd = (LinearLayout)popupWindow.findViewById(R.id.pop_layout_hd);
+		sd = (LinearLayout)popupWindow.findViewById(R.id.pop_layout_sd);
+		hd.setOnClickListener(this);
+		sd.setOnClickListener(this);
+		// 创建一个PopupWindow  
+		// 参数1：contentView 指定PopupWindow的内容  
+		// 参数2：width 指定PopupWindow的width  
+		// 参数3：height 指定PopupWindow的height  
+		int width = PhoneConfig.getPhoneWidth(this);
+		int height = width * 5 / 3;
+		mPopupWindow = new PopupWindow(popupWindow, width/4, height);  
+
+		ColorDrawable dw = new ColorDrawable(0000000000);
 		// ��back�������ط�ʹ����ʧ,������������ܴ���OnDismisslistener ����������ؼ��仯�Ȳ���
-        mPopupWindow.setBackgroundDrawable(dw);
-        mPopupWindow.setFocusable(true);  
-        mPopupWindow.setOutsideTouchable(true);  
-  
-        // 获取屏幕和PopupWindow的width和height  
-//        mScreenWidth = getWindowManager().getDefaultDisplay().getWidth();  
-//        mScreenWidth = getWindowManager().getDefaultDisplay().getHeight();  
-//        mPopupWindowWidth = mPopupWindow.getWidth();  
-//        mPopupWindowHeight = mPopupWindow.getHeight();  
-    }  
-	
-    public long getSDAllSize(){  
-        File path = Environment.getExternalStorageDirectory();   
-        StatFs sf = new StatFs(path.getPath());   
-        long blockSize = sf.getBlockSize();   
-        long allBlocks = sf.getBlockCount();  
-        return (allBlocks * blockSize)/1024/1024; //锟斤拷位MB  
-    }    
-    
-    public long getSDFreeSize(){  
-        File path = Environment.getExternalStorageDirectory();   
-        StatFs sf = new StatFs(path.getPath());   
-        long blockSize = sf.getBlockSize();   
-        long freeBlocks = sf.getAvailableBlocks();  
-        return (freeBlocks * blockSize)/1024 /1024; //锟斤拷位MB  
-    }      
-    
-    private boolean existSDCard() {  
-    	if (android.os.Environment.getExternalStorageState().equals(  
-    		android.os.Environment.MEDIA_MOUNTED)) {  
-        	return true;  
-        } else  
-        	return false;  
-    }  
-	
+		mPopupWindow.setBackgroundDrawable(dw);
+		mPopupWindow.setFocusable(true);  
+		mPopupWindow.setOutsideTouchable(true);  
+
+		// 获取屏幕和PopupWindow的width和height  
+		//        mScreenWidth = getWindowManager().getDefaultDisplay().getWidth();  
+		//        mScreenWidth = getWindowManager().getDefaultDisplay().getHeight();  
+		//        mPopupWindowWidth = mPopupWindow.getWidth();  
+		//        mPopupWindowHeight = mPopupWindow.getHeight();  
+	}  
+
+	public long getSDAllSize(){  
+		File path = Environment.getExternalStorageDirectory();   
+		StatFs sf = new StatFs(path.getPath());   
+		long blockSize = sf.getBlockSize();   
+		long allBlocks = sf.getBlockCount();  
+		return (allBlocks * blockSize)/1024/1024; //锟斤拷位MB  
+	}    
+
+	public long getSDFreeSize(){  
+		File path = Environment.getExternalStorageDirectory();   
+		StatFs sf = new StatFs(path.getPath());   
+		long blockSize = sf.getBlockSize();   
+		long freeBlocks = sf.getAvailableBlocks();  
+		return (freeBlocks * blockSize)/1024 /1024; //锟斤拷位MB  
+	}      
+
+	private boolean existSDCard() {  
+		if (android.os.Environment.getExternalStorageState().equals(  
+				android.os.Environment.MEDIA_MOUNTED)) {  
+			return true;  
+		} else  
+			return false;  
+	}  
+
 	private String translateTime(int progress){
 		SimpleDateFormat bar = new SimpleDateFormat("HH:mm:ss");
 		bar.setTimeZone(TimeZone.getDefault());
-        String text = bar.format(correctedStartTime*1000 + progress);
-        return text;
+		String text = bar.format(correctedStartTime*1000 + progress);
+		return text;
 	}
-	
-    public static Context getContext() {
-        return mPlayer;
-    }
-    
-    public static PlayerHandler getHandler(){
-    	return mPlayerHandler;
-    }
-    
-    private int getFrames(){
-    	return nowFrames;
-    }
-    
-    public static void addFrames(){
-    	nowFrames += 1;
-    } 
+
+	public static Context getContext() {
+		return mPlayer;
+	}
+
+	public static PlayerHandler getHandler(){
+		return mPlayerHandler;
+	}
+
+	private int getFrames(){
+		return nowFrames;
+	}
+
+	public static void addFrames(){
+		nowFrames += 1;
+	} 
 
 	private void audioInit() {
 		// TODO Auto-generated method stub
 		int buffer_size = AudioTrack.getMinBufferSize(8000, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
 		mAudioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, 8000, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT, buffer_size*8, AudioTrack.MODE_STREAM);
 		mAudioData = new byte[buffer_size*8];
-		
+
 		nativeAudioInit();
-		
+
 		mAudioTrack.play();
 	}
-	
+
 	private void audioPause(){
 		audiomanage.setStreamVolume(AudioManager.STREAM_MUSIC, 0 , 0);
 		isAudioOpen = false;
 		mSound.setImageDrawable(getResources().getDrawable(R.drawable.img_no_sound));
 	}
-	
+
 	private void audioPlay(){
 		audiomanage.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume/2 , 0);
 		isAudioOpen = true;
 		mSound.setImageDrawable(getResources().getDrawable(R.drawable.img_sound));
 	}
-	
+
 	private void audioStop(){
 		if(mAudioTrack != null){
 			mAudioTrack.flush();
 			mAudioTrack.stop();
 		}
 	}
-	
+
 	private void audioRelease(){
 		System.out.println(mAudioTrack.toString());
 		mAudioTrack.release();
 		mAudioTrack = null;
 	}
-	
+
 	class InviteThread extends Thread{
 		@Override
 		public void run() {
@@ -742,36 +752,36 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 			super.run();
 			client = new InviteUtils(dev);
 			System.out.println("start invite live");
-			
-//			client.testMainJni();
+
+			//			client.testMainJni();
 			//FIXME
-			
+
 			if (playback) {
 				Log.e("---------->>>>", "1111111111111111111");
 				System.out.println("startTime:"+startTime+"endTime:"+endTime);
 				inviteRet = PlayerActivity.client.InvitePlayback(startTime, endTime,stream);
-		    } else {
-		        Log.e("---------->>>>", "2222222222222222222");
-		        inviteRet = PlayerActivity.client.InviteLive(stream);
-		        talkManger = new TalkManager(client.getHandle());
-		    }
+			} else {
+				Log.e("---------->>>>", "2222222222222222222");
+				inviteRet = PlayerActivity.client.InviteLive(stream);
+				talkManger = new TalkManager(client.getHandle());
+			}
 			System.out.println("finish invite live");
-			
+
 		}
 	}
-	
+
 	public static void showStreamLen(int streamLen){
 		Message msg = new Message();
 		msg.what = SHOWSTREAMLEN;
 		msg.obj = streamLen;
 		mPlayerHandler.sendMessage(msg);
 	}
-	
-    public static class PlayerHandler extends Handler{
-    	private boolean isTimeStampBreak;	//时标溢出标志位
-    	private int progress,progressTemp;	//progressTemp：记录时标未溢出时的拖动条播放长度
-    	private long firstBreakFrameTime;	//记录时标溢出时的第一帧数据的时标
-    	Context context;
+
+	public static class PlayerHandler extends Handler{
+		private boolean isTimeStampBreak;	//时标溢出标志位
+		private int progress,progressTemp;	//progressTemp：记录时标未溢出时的拖动条播放长度
+		private long firstBreakFrameTime;	//记录时标溢出时的第一帧数据的时标
+		Context context;
 		public PlayerHandler() {
 			super();
 			this.isTimeStampBreak = false;
@@ -796,7 +806,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 				if(YV12Renderer.time != 0 && frameFlag == 0){
 					firstFrameTime = YV12Renderer.time;
 					frameFlag++;
-//					System.out.println("test firstFrame:"+firstFrameTime);
+					//					System.out.println("test firstFrame:"+firstFrameTime);
 					while(true){
 						correctedStartTime = client.getBeg();
 						correctedEndTime = client.getEnd();
@@ -806,13 +816,13 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 							break;
 					}
 					mReplaySeekBar.setMax((int)(correctedEndTime - correctedStartTime)*1000);
-//					System.out.println("test maxFrame:"+(int)(correctedEndTime - correctedStartTime)*1000);
+					//					System.out.println("test maxFrame:"+(int)(correctedEndTime - correctedStartTime)*1000);
 				}else if(YV12Renderer.time != 0 && frameFlag > 0){
-					
+
 					endFrameTime = YV12Renderer.time;
-					
-//					System.out.println("test endFrameTime:"+endFrameTime);
-//					System.out.println("test progress:"+(int)(endFrameTime - firstFrameTime));
+
+					//					System.out.println("test endFrameTime:"+endFrameTime);
+					//					System.out.println("test progress:"+(int)(endFrameTime - firstFrameTime));
 					if(!progressHasStop){
 						mPlayerHandler.sendEmptyMessage(HIDEPROGRESSBAR);
 						progressHasStop = true;
@@ -820,7 +830,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 					if((int)(endFrameTime - firstFrameTime) < 0 && !isTimeStampBreak ){
 						isTimeStampBreak = true;
 						firstBreakFrameTime = endFrameTime;
-//						System.out.println("test isTimeStampBreak"+isTimeStampBreak);
+						//						System.out.println("test isTimeStampBreak"+isTimeStampBreak);
 						progress = stopTrackingTouchProgress;
 						if(progress == 0){
 							progress = progressTemp;
@@ -830,13 +840,13 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 						isTimeStampBreak = false;
 					}
 					if(isTimeStampBreak){
-//						System.out.println("test stopTrackingTouchProgress:"+progress);
-//						System.out.println("test new progress:"+(int)(endFrameTime - firstBreakFrameTime));
+						//						System.out.println("test stopTrackingTouchProgress:"+progress);
+						//						System.out.println("test new progress:"+(int)(endFrameTime - firstBreakFrameTime));
 						mReplaySeekBar.setProgress(progress + (int)(endFrameTime - firstBreakFrameTime));
 					}else{
 						mReplaySeekBar.setProgress((int)(endFrameTime - firstFrameTime));
 						progressTemp = (int)(endFrameTime - firstFrameTime);
-						
+
 					}
 					if(stopTrackingTouchProgress != 0){
 						stopTrackingTouchProgress = 0;
@@ -869,30 +879,30 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 					mWaitProgressBar.setVisibility(View.GONE);
 				}
 			}
-//			if(msg.what == TIMEOUT){
-//				if(!stopSendMessage && YV12Renderer.time == 0){
-//					MessageUtiles.postNewUIDialog(PlayerActivity.getContext(), PlayerActivity.getContext().getString(R.string.link_timeout), PlayerActivity.getContext().getString(R.string.ok),0);
-//					
-//				}
-//			}
+			//			if(msg.what == TIMEOUT){
+			//				if(!stopSendMessage && YV12Renderer.time == 0){
+			//					MessageUtiles.postNewUIDialog(PlayerActivity.getContext(), PlayerActivity.getContext().getString(R.string.link_timeout), PlayerActivity.getContext().getString(R.string.ok),0);
+			//					
+			//				}
+			//			}
 			if (msg.what == POSTERROR) {
 				//MessageUtiles.postNewUIDialog(PlayerActivity.getContext(), PlayerActivity.getContext().getString(R.string.link_error), PlayerActivity.getContext().getString(R.string.ok), 1);
 				Dialog alertDialog = new AlertDialog.Builder(PlayerActivity.getContext()).   
-        	            setTitle("登录失败").   
-        	            setMessage(PlayerActivity.getContext().getString(R.string.link_error)).   
-        	            setIcon(R.drawable.expander_ic_minimized).   
-        	            setPositiveButton("确定", new DialogInterface.OnClickListener() {   
-        	                @Override   
-        	                public void onClick(DialogInterface dialog, int which) {   
-        	                    // TODO Auto-generated method stub  
-//        	                	if(null != client)
-//        	    	        		client.setQuit(true);
-//        	    	        	quitDisplay();
-        	                	
-        	                }   
-        	            }).   
-        	    create();   
-        		alertDialog.show();   
+						setTitle("登录失败").   
+						setMessage(PlayerActivity.getContext().getString(R.string.link_error)).   
+						setIcon(R.drawable.expander_ic_minimized).   
+						setPositiveButton("确定", new DialogInterface.OnClickListener() {   
+							@Override   
+							public void onClick(DialogInterface dialog, int which) {   
+								// TODO Auto-generated method stub  
+								//        	                	if(null != client)
+								//        	    	        		client.setQuit(true);
+								//        	    	        	quitDisplay();
+
+							}   
+						}).   
+						create();   
+				alertDialog.show();   
 			}
 			if (msg.what == SHOWSTREAMLEN) {//FIXME
 				int msg_boj = Integer.valueOf(msg.obj.toString());
@@ -901,24 +911,24 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 					if(streamLenFlag % 10 == 0){
 						streamLen += msg_boj;
 						mStreamLen.setText(streamLen/2 + " Kbit/s");
-						
+
 						streamLen = 0;
 					}else{
 						streamLen += Integer.valueOf(msg.obj.toString());
 					}
 				}
-				
-				
-//				mStreamLen.setText(Util.getDownloadSpeed(context));
-				
-						
+
+
+				//				mStreamLen.setText(Util.getDownloadSpeed(context));
+
+
 			}
-//			if(msg.what == SETVEDIOLISTENABLE){
-//				mVedioList.setEnabled(true);
-//				mVedioList.setImageResource(R.drawable.img_record);
-//			}
+			//			if(msg.what == SETVEDIOLISTENABLE){
+			//				mVedioList.setEnabled(true);
+			//				mVedioList.setImageResource(R.drawable.img_record);
+			//			}
 			if(msg.what == DETECT_IF_NO_STREAM_ARRIVE){
-				
+
 				if(stopSendMessage||true){
 					return;
 				}
@@ -936,13 +946,17 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 					mPlayerHandler.sendEmptyMessageDelayed(DETECT_IF_NO_STREAM_ARRIVE, 1000);
 				}
 			}
+
+
+
+
 		}
 	}
 
-    
 
-    
-    
+
+
+
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
@@ -960,8 +974,11 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 			mSurfaceIcon.setVisibility(View.VISIBLE);
 			isShowSurfaceIcon = true;
 		}
+		//if changed play_wide and play_tele vanish
+		mPlayWide.setVisibility(View.GONE);
+		mPlayTele.setVisibility(View.GONE);
 	}
-	
+
 	@Override
 	protected void onPause() {
 		Log.e("PA", "onPause");
@@ -975,17 +992,17 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	protected void onDestroy() {
 		Log.e("PA", "onDestroy");
 		mActivities.removeActivity("PlayerActivity");
-    	unregisterReceiver(receiver);
-    	if(talkManger != null){
-    		talkManger.release();
-        	talkManger = null;
-    	}
-    
-    	
+		unregisterReceiver(receiver);
+		if(talkManger != null){
+			talkManger.release();
+			talkManger = null;
+		}
+
+
 		if(null != client)
 			client.setQuit(true);
 		quitDisplay();
-		
+
 		super.onDestroy();
 		System.runFinalization();
 	}
@@ -997,7 +1014,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		mGlView.onResume();
 		super.onResume();
 	}
-	
+
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,int height) {}
 
@@ -1011,39 +1028,39 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	public void audioWrite() {
 		mAudioTrack.write(mAudioData,0,mAudioDataLength);
 	}
-	
+
 	public class MyQuitTask extends AsyncTask<Void, Integer, Void> {
 		private InviteUtils client;
 		public MyQuitTask(InviteUtils client){
 			this.client = client;
 		}
-        @Override
-        protected Void doInBackground(Void... params) {
-            // TODO Auto-generated method stub
+		@Override
+		protected Void doInBackground(Void... params) {
+			// TODO Auto-generated method stub
 			if(client != null && client.getHandle() != -1){
 				System.out.println("isStartFinish:"+client.isStartFinish()+","+client.toString());
-            	while(true){
-            		if(client.isStartFinish()){
-		        		System.out.println("free handle");
+				while(true){
+					if(client.isStartFinish()){
+						System.out.println("free handle");
 						client.freeHandle(client.getHandle());
 						break;
-            		}
-            	}
+					}
+				}
 			}
 			System.out.println("release audio");
 			audioRelease();
-            if(client != null)
-	            client.bye(client.getAccount(),client.getLoginSession(),client.getDevID(),client.getChannelNo(),client.getStreamType(),client.getDialogID());	
-	        System.out.println("finish activity");
-            return null;
-        }
-    }
-	
+			if(client != null)
+				client.bye(client.getAccount(),client.getLoginSession(),client.getDevID(),client.getChannelNo(),client.getStreamType(),client.getDialogID());	
+			System.out.println("finish activity");
+			return null;
+		}
+	}
+
 	private void quitDisplay(){
 		if (backCount == 0) {
 			audioStop();
 			stopSendMessage = true;
-			
+
 			while(true){
 				if(client != null){
 					client.setQuit(true);
@@ -1056,38 +1073,38 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 			YV12Renderer.nativeDeinit();
 			finish();
 			MyQuitTask mTask = new MyQuitTask(client);
-            mTask.execute();
-        }
-        System.out.println(backCount);
-        backCount++;
+			mTask.execute();
+		}
+		System.out.println(backCount);
+		backCount++;
 	}
-	
+
 	@Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        super.onKeyDown(keyCode, event);
-      
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-        	
-        	Log.e("backCount", "press back button backCount:"+backCount);
-        	if(null != client)
-        		client.setQuit(true);
-        	quitDisplay();
-        	if(!playback){
-        		TakePhotoUtil.takePhoto("/sdcard/eCamera/cache", dev, client);
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		super.onKeyDown(keyCode, event);
+
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+			Log.e("backCount", "press back button backCount:"+backCount);
+			if(null != client)
+				client.setQuit(true);
+			quitDisplay();
+			if(!playback){
+				TakePhotoUtil.takePhoto("/sdcard/eCamera/cache", dev, client);
 			}
-			
-        	finish();
-        }
-        
-        return false;
-    }
+
+			finish();
+		}
+
+		return false;
+	}
 
 	@Override
 	public boolean onDown(MotionEvent e) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 	public class MyFlingTask extends AsyncTask<Void, Integer, Void> {
 		private String direction;
 		private int time;
@@ -1096,51 +1113,51 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 			this.direction = direction;
 			this.time = time;
 		}
-        @Override
-        protected Void doInBackground(Void... params) {
-            // TODO Auto-generated method stub
-            System.out.println("call doInBackground");
-            Log.e("start direction", direction);
-            
-            PtzControlReq req = new PtzControlReq(account,loginSession,devID,channelNo,direction);
-        	PtzControlRes ptzRes = mSoapManger.GetPtzControlRes(req);
-        	if(ptzRes != null){
-	            Log.e("start Res", ptzRes.getResult());
-	            try {
-	            	Thread.sleep(time);
+		@Override
+		protected Void doInBackground(Void... params) {
+			// TODO Auto-generated method stub
+			System.out.println("call doInBackground");
+			Log.e("start direction", direction);
+
+			PtzControlReq req = new PtzControlReq(account,loginSession,devID,channelNo,direction);
+			PtzControlRes ptzRes = mSoapManger.GetPtzControlRes(req);
+			if(ptzRes != null){
+				Log.e("start Res", ptzRes.getResult());
+				try {
+					Thread.sleep(time);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-	            req = new PtzControlReq(account,loginSession,devID,channelNo,"Stop");
-	            ptzRes = mSoapManger.GetPtzControlRes(req);
-	            Log.e("stop Res", ptzRes.getResult());
-        	}else{
-        		loginSession = mSoapManger.getLoginResponse().getLoginSession();
-        	}
-            return null;
-        }
-    }
+				req = new PtzControlReq(account,loginSession,devID,channelNo,"Stop");
+				ptzRes = mSoapManger.GetPtzControlRes(req);
+				Log.e("stop Res", ptzRes.getResult());
+			}else{
+				loginSession = mSoapManger.getLoginResponse().getLoginSession();
+			}
+			return null;
+		}
+	}
 
 	private void animationStart(float fromXDelta, float toXDelta, float fromYDelta, float toYDelta){
 		System.out.println("Fling isAnimationStart:"+isAnimationStart);
 		isAnimationStart = true;
-	    translateAnimation = new TranslateAnimation(fromXDelta, toXDelta,fromYDelta,toYDelta);
-	    translateAnimation.setDuration(2000);  
-		
+		translateAnimation = new TranslateAnimation(fromXDelta, toXDelta,fromYDelta,toYDelta);
+		translateAnimation.setDuration(2000);  
+
 		translateAnimation.setAnimationListener(new AnimationListener() {
-			
+
 			@Override
 			public void onAnimationStart(Animation arg0) {
 				// TODO Auto-generated method stub
 			}
-			
+
 			@Override
 			public void onAnimationRepeat(Animation arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void onAnimationEnd(Animation arg0) {
 				// TODO Auto-generated method stub
@@ -1149,12 +1166,12 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 				animationAim.clearAnimation();
 				isAnimationStart = false;
 			}
-        });
-		
+		});
+
 		animationAim.startAnimation(translateAnimation);  
-		
+
 	}
-	
+
 	@Override
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
 			float velocityY) {
@@ -1163,63 +1180,81 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 			System.out.println("is not PTZ");
 			return false;
 		}
-		
-        String direction = "Stop";
-        int time = 0;
-        
-        if(mFlingTask != null){
-        	Log.e("start status", mFlingTask.getStatus().toString());
-	        if( mFlingTask.getStatus() != AsyncTask.Status.FINISHED){
-	        	Log.e("return", mFlingTask.getStatus().toString());
-	        	Log.e("return", "return");
-	        	return true;
-	        }
-        }
-        
-        //显示平移动画素材
-        System.out.println("Fling00000000");
-		animationAim.setVisibility(View.VISIBLE);
-		System.out.println("Fling1111111");
-		animationBackground.setVisibility(View.VISIBLE);
-		System.out.println("Fling2222222");
-		
-        final int FLING_MIN_DISTANCE = 100, FLING_MIN_VELOCITY = 200;   
-        if (e1.getX() - e2.getX() > FLING_MIN_DISTANCE && Math.abs(velocityX) > FLING_MIN_VELOCITY) {   
-            // Fling left   
-        	direction = "Right";
-        	time = 700;
-        	animationStart(0,40,0,0);
-        	Log.e("MyGesture", "Fling left "+"x:"+Math.abs(e1.getX() - e2.getX())+"y:"+Math.abs(e1.getY() - e2.getY()));  
-        } else if (e2.getX() - e1.getX() > FLING_MIN_DISTANCE && Math.abs(velocityX) > FLING_MIN_VELOCITY) {   
-            // Fling right   
-        	Log.e("MyGesture", "Fling right "+"x:"+Math.abs(e1.getX() - e2.getX())+"y:"+Math.abs(e1.getY() - e2.getY()));   
-        	direction = "Left";
-        	animationStart(0, -40,0,0);
-        	time = 700;
-        }  else if (e2.getY() - e1.getY() > FLING_MIN_DISTANCE && Math.abs(velocityY) > FLING_MIN_VELOCITY) {   
-            // Fling Down   
-        	Log.e("MyGesture", "Fling Down "+"y:"+Math.abs(e1.getY() - e2.getY())+"x:"+Math.abs(e1.getX() - e2.getX()));   
-        	direction = "Up";
-        	animationStart(0, 0,0,-40);
-        	time = 500;
-        }   else if (e1.getY() - e2.getY() > FLING_MIN_DISTANCE && Math.abs(velocityY) > FLING_MIN_VELOCITY) {   
-            // Fling Up   
-        	Log.e("MyGesture", "Fling Up "+"y:"+Math.abs(e1.getY() - e2.getY())+"x:"+Math.abs(e1.getX() - e2.getX()));   
-        	direction = "Down";
-        	time = 500;
-        	animationStart(0, 0,0,40);
-        }   else{
-        	return true;
-        }
-        mFlingTask = new MyFlingTask(direction,time);
-        mFlingTask.execute();
-        return true;   
+
+		//wide and tele
+		int xLimit = PhoneConfig.getPhoneWidth(this) - 40 - mPlayWide.getWidth();
+		//		Log.i("123", "x1="+e1.getX()+" x2="+e2.getX()+" velocityX="+velocityX +"  xlimit="+xLimit);
+		if(e1.getX() > xLimit){
+			Log.i("123", "islimit ptz move!! ");
+			return false;
+		}
+
+
+
+		String direction = "Stop";
+		int time = 0;
+
+		if(mFlingTask != null){
+			Log.e("start status", mFlingTask.getStatus().toString());
+			if( mFlingTask.getStatus() != AsyncTask.Status.FINISHED){
+				Log.e("return", mFlingTask.getStatus().toString());
+				Log.e("return", "return");
+				return true;
+			}
+		}
+
+		//显示平移动画素材
+//		System.out.println("Fling00000000");
+//		animationAim.setVisibility(View.VISIBLE);
+//		System.out.println("Fling1111111");
+//		animationBackground.setVisibility(View.VISIBLE);
+//		System.out.println("Fling2222222");
+
+		final int FLING_MIN_DISTANCE = 100, FLING_MIN_VELOCITY = 200;   
+		if (e1.getX() - e2.getX() > FLING_MIN_DISTANCE && Math.abs(velocityX) > FLING_MIN_VELOCITY) {   
+			// Fling left   
+			animationAim.setVisibility(View.VISIBLE);	
+			animationBackground.setVisibility(View.VISIBLE);
+			direction = "Right";
+			time = 700;
+			animationStart(0,40,0,0);
+			Log.e("MyGesture", "Fling left "+"x:"+Math.abs(e1.getX() - e2.getX())+"y:"+Math.abs(e1.getY() - e2.getY()));  
+		} else if (e2.getX() - e1.getX() > FLING_MIN_DISTANCE && Math.abs(velocityX) > FLING_MIN_VELOCITY) {   
+			// Fling right  
+			animationAim.setVisibility(View.VISIBLE);	
+			animationBackground.setVisibility(View.VISIBLE);
+			Log.e("MyGesture", "Fling right "+"x:"+Math.abs(e1.getX() - e2.getX())+"y:"+Math.abs(e1.getY() - e2.getY()));   
+			direction = "Left";
+			animationStart(0, -40,0,0);
+			time = 700;
+		}  else if (e2.getY() - e1.getY() > FLING_MIN_DISTANCE && Math.abs(velocityY) > FLING_MIN_VELOCITY) {   
+			// Fling Down   
+			animationAim.setVisibility(View.VISIBLE);	
+			animationBackground.setVisibility(View.VISIBLE);
+			Log.e("MyGesture", "Fling Down "+"y:"+Math.abs(e1.getY() - e2.getY())+"x:"+Math.abs(e1.getX() - e2.getX()));   
+			direction = "Up";
+			animationStart(0, 0,0,-40);
+			time = 500;
+		}   else if (e1.getY() - e2.getY() > FLING_MIN_DISTANCE && Math.abs(velocityY) > FLING_MIN_VELOCITY) {   
+			// Fling Up   
+			animationAim.setVisibility(View.VISIBLE);	
+			animationBackground.setVisibility(View.VISIBLE);
+			Log.e("MyGesture", "Fling Up "+"y:"+Math.abs(e1.getY() - e2.getY())+"x:"+Math.abs(e1.getX() - e2.getX()));   
+			direction = "Down";
+			time = 500;
+			animationStart(0, 0,0,40);
+		}   else{
+			return true;
+		}
+		mFlingTask = new MyFlingTask(direction,time);
+		mFlingTask.execute();
+		return true;   
 	}
-	
+
 	@Override
 	public void onLongPress(MotionEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -1232,7 +1267,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	@Override
 	public void onShowPress(MotionEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -1246,11 +1281,14 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 				System.out.println("onSingleTapUp111:"+isShowSurfaceIcon);
 				mSurfaceIcon.setVisibility(View.GONE);
 				mTitle.setVisibility(View.GONE);
+				mPlayWide.setVisibility(View.GONE);
+				mPlayTele.setVisibility(View.GONE);
 				isShowSurfaceIcon = false;
 			}else{
 				System.out.println("onSingleTapUp222:"+isShowSurfaceIcon);
 				mSurfaceIcon.setVisibility(View.VISIBLE);
 				mTitle.setVisibility(View.VISIBLE);
+				showPlayWideTeleButton();
 				System.out.println("onSingleTapUp:"+mSurfaceIcon.isShown());
 				isShowSurfaceIcon = true;
 			}
@@ -1262,37 +1300,53 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		}
 		return true;
 	}
-	
+
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		// TODO Auto-generated method stub
+
+		if (v.getId() == R.id.play_wide) {
+			if (event.getAction() == MotionEvent.ACTION_DOWN) {//图片 反了
+				PTZControlAction.getInstance().zoomTeleStart();
+			}else if(event.getAction() == MotionEvent.ACTION_UP){
+				PTZControlAction.getInstance().zoomTeleStop();
+			}
+			return true;
+		}else if(v.getId() == R.id.play_tele){
+			if (event.getAction() == MotionEvent.ACTION_DOWN) {
+				PTZControlAction.getInstance().zoomWideStart();
+			}else if(event.getAction() == MotionEvent.ACTION_UP){
+				PTZControlAction.getInstance().zoomWideStop();
+			}
+			return true;
+		}
 		return mGestureDetector.onTouchEvent(event);   
 	}
-//	@Override
-//	public void onItemClick(ActionItem item, int position) {
-//		// TODO Auto-generated method stub
-//		int isPlayBack = -1;
-//		boolean ret;
-//		if(playback){
-//			isPlayBack = 1;
-//		}else{
-//			isPlayBack = 0;
-//			startTime = 0;
-//			endTime = 0;
-//		}
-//		if(position == 0){
-//			ret = client.Replay(isPlayBack, startTime, endTime, 0);
-//			if(ret){
-//				stream = 0;
-//			}
-//		}else if(position == 1){
-//			ret = client.Replay(isPlayBack, startTime, endTime, 1);
-//			if(ret){
-//				stream = 1;
-//			}
-//		}
-//	}
-	
+	//	@Override
+	//	public void onItemClick(ActionItem item, int position) {
+	//		// TODO Auto-generated method stub
+	//		int isPlayBack = -1;
+	//		boolean ret;
+	//		if(playback){
+	//			isPlayBack = 1;
+	//		}else{
+	//			isPlayBack = 0;
+	//			startTime = 0;
+	//			endTime = 0;
+	//		}
+	//		if(position == 0){
+	//			ret = client.Replay(isPlayBack, startTime, endTime, 0);
+	//			if(ret){
+	//				stream = 0;
+	//			}
+	//		}else if(position == 1){
+	//			ret = client.Replay(isPlayBack, startTime, endTime, 1);
+	//			if(ret){
+	//				stream = 1;
+	//			}
+	//		}
+	//	}
+
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -1320,16 +1374,16 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 					ret = client.Replay(isPlayBack, replayStartTime, endTime, 0);
 					return null;
 				}
-				
+
 				protected void onPostExecute(Void result) {
 					if(ret){
 						stream = 0;
 						mStreamChange.setText("高清");
 					}
 				};
-				
+
 			}.execute();
-			
+
 			break;
 		case R.id.pop_layout_sd:
 			mPopupWindow.dismiss();
@@ -1354,20 +1408,39 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 					ret = client.Replay(isPlayBack, replayStartTime, endTime, 1);
 					return null;
 				}
-				
+
 				protected void onPostExecute(Void result) {
 					if(ret){
 						stream = 1;
 						mStreamChange.setText("标清");
 					}
 				};
-				
+
 			}.execute();
-			
+
 			break;
 		default:
 			break;
 		}
 	}
-	
+
+	private void showPlayWideTeleButton(){
+		//		int phH = PhoneConfig.getPhoneHeight(this);
+		//		int cH = mPlayWide.getHeight();
+		//		mPlayWide.setPadding(mPlayWide.getPaddingLeft(), phH/2 - cH - 10, mPlayWide.getPaddingRight(), mPlayWide.getPaddingBottom());
+		if(!dev.isPtzFlag()){
+			
+			return;
+		}
+		
+		
+		
+		mPlayWide.setVisibility(View.VISIBLE);
+		mPlayTele.setVisibility(View.VISIBLE);
+		//		cH = mPlayTele.getHeight();
+
+		//		mPlayTele.setPadding(mPlayTele.getPaddingLeft(), top, right, bottom);
+
+	}
+
 }

@@ -199,7 +199,7 @@
         android:id="@+id/play_wide"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:background="@drawable/play_wide_tele"
+        android:background="@drawable/play_wide_tele_selector"
         
     	
         
@@ -208,12 +208,16 @@
       	android:layout_marginRight="20dp"
      	android:layout_marginBottom="20dp"
      	android:visibility="gone"
+     	android:clickable="true"
+     
+     	
         >
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/play_wide"
             android:padding="12dp"
+            android:focusable="false"
             />
         
         
@@ -226,12 +230,14 @@
         android:id="@+id/play_tele"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:background="@drawable/play_wide_tele"
+        android:background="@drawable/play_wide_tele_selector"
         android:layout_below="@id/play_center"
      	android:layout_alignParentRight="true"
         android:layout_marginRight="20dp"
     	android:layout_marginTop="10dp"
         android:visibility="gone"
+        android:clickable="true"
+     
         >
         
       <ImageView 
@@ -239,7 +245,7 @@
           android:layout_height="match_parent"
           android:src="@drawable/play_tele"
           android:padding="12dp"
-          
+          android:focusable="false"
           />
         
         

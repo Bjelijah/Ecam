@@ -1311,14 +1311,14 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 			}else if(event.getAction() == MotionEvent.ACTION_UP){
 				PTZControlAction.getInstance().zoomTeleStop();
 			}
-			return true;
+			return false;
 		}else if(v.getId() == R.id.play_tele){
 			if (event.getAction() == MotionEvent.ACTION_DOWN) {
 				PTZControlAction.getInstance().zoomWideStart();
 			}else if(event.getAction() == MotionEvent.ACTION_UP){
 				PTZControlAction.getInstance().zoomWideStop();
 			}
-			return true;
+			return false;
 		}
 		return mGestureDetector.onTouchEvent(event);   
 	}
@@ -1425,21 +1425,11 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	}
 
 	private void showPlayWideTeleButton(){
-		//		int phH = PhoneConfig.getPhoneHeight(this);
-		//		int cH = mPlayWide.getHeight();
-		//		mPlayWide.setPadding(mPlayWide.getPaddingLeft(), phH/2 - cH - 10, mPlayWide.getPaddingRight(), mPlayWide.getPaddingBottom());
 		if(!dev.isPtzFlag()){
-			
-			return;
+			//return;
 		}
-		
-		
-		
 		mPlayWide.setVisibility(View.VISIBLE);
 		mPlayTele.setVisibility(View.VISIBLE);
-		//		cH = mPlayTele.getHeight();
-
-		//		mPlayTele.setPadding(mPlayTele.getPaddingLeft(), top, right, bottom);
 
 	}
 

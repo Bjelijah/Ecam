@@ -3,4 +3,7 @@
     
 	<corners android:radius="12dp"/>
     <solid android:color="@color/play_wide_tele"/>
+    
+    
 </shape>
+

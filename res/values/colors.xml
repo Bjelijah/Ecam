@@ -38,4 +38,5 @@
   
   	<color name="play_talk">#50333333</color>
   	<color name="play_wide_tele">#50333333</color>
+  	<color name="play_wide_tele_clicked">#cbaaaaaa</color>
 </resources>

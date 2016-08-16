@@ -22,6 +22,14 @@ public class SDCardUtils {
 		return Environment.getExternalStorageDirectory().getAbsolutePath();
 	}
 	
+	public static boolean existSDCard() {  
+		if (Environment.getExternalStorageState().equals(  
+				android.os.Environment.MEDIA_MOUNTED)) {  
+			return true;  
+		} else  
+			return false;  
+	} 
+	
 	public static String getBitmapCachePath(){
 		return getSDCardPath() + File.separator + "eCamera" + File.separator + "notice_cache" + File.separator;
 	}
@@ -128,5 +136,8 @@ public class SDCardUtils {
 		return f.exists();
 	}
 	
-	 
+	
+	
+	
+	
 }

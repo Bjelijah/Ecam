@@ -37,6 +37,6 @@
   	<color name="title_tv_color">#ffffffff</color>
   
   	<color name="play_talk">#50333333</color>
-  	<color name="play_wide_tele">#50333333</color>
-  	<color name="play_wide_tele_clicked">#cbaaaaaa</color>
+  	<color name="play_ptz">#50333333</color>
+  	<color name="play_ptz_clicked">#cbaaaaaa</color>
 </resources>

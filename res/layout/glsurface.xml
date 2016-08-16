@@ -24,7 +24,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1" >
 
-        
             <com.howell.ehlib.MySeekBar
                 android:id="@+id/replaySeekBar"
                 android:layout_width="match_parent"
@@ -62,12 +61,12 @@
                     android:id="@+id/play_talk"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
+                    android:background="@drawable/btn_play_talk"
                     android:gravity="center"
-                    android:textSize="15sp"
+                    android:padding="10dp"
+                    android:text="@string/play_talk"
                     android:textColor="@color/white_highlight"
-                	android:background="@drawable/btn_play_talk"
-              		android:padding="10dp"
-                    android:text="@string/play_talk" />
+                    android:textSize="15sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -75,9 +74,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="15dip"
                 android:layout_marginRight="5dip"
-                android:layout_weight="0.34" 
-                android:gravity="center_horizontal"
-                >
+                android:layout_weight="0.34"
+                android:gravity="center_horizontal" >
 
                 <ImageButton
                     android:id="@+id/ib_pause"
@@ -146,117 +144,147 @@
         android:layout_marginLeft="15dip" >
     </LinearLayout>
 
-    
-    <RelativeLayout 
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
-    
-    
-    <FrameLayout
-        android:id="@+id/player_title_bar"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@color/title_pop_normol" >
+        android:layout_height="match_parent" >
 
-        <ImageButton
-            android:id="@+id/player_imagebutton_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left|center"
-            android:background="#00000000"
-            android:src="@drawable/back_btn_selector" />
+        <!-- 上标题栏 -->
 
-        <TextView
-            android:id="@+id/player_change_stream"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="right|center"
-            android:layout_marginRight="15dp"
-            android:gravity="center"
-            android:text="标清"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/player_talk"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="right|center"
-            android:layout_marginRight="60dp"
-            android:gravity="center"
-            android:text="开始对讲"
-            android:textSize="18sp" />
-    </FrameLayout>
-
-    <LinearLayout 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/play_center"
-        android:layout_centerVertical="true"
-        />
-    
-    <LinearLayout 
-        android:id="@+id/play_wide"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:background="@drawable/play_wide_tele_selector"
-        
-    	
-        
-     	android:layout_above="@id/play_center"
-    	android:layout_alignParentRight="true"
-      	android:layout_marginRight="20dp"
-     	android:layout_marginBottom="20dp"
-     	android:visibility="gone"
-     	android:clickable="true"
-     
-     	
-        >
-        <ImageView
+        <FrameLayout
+            android:id="@+id/player_title_bar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/play_wide"
-            android:padding="12dp"
-            android:focusable="false"
-            />
-        
-        
-       
-        
-        
-    </LinearLayout>
-    
-    <LinearLayout 
-        android:id="@+id/play_tele"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:background="@drawable/play_wide_tele_selector"
-        android:layout_below="@id/play_center"
-     	android:layout_alignParentRight="true"
-        android:layout_marginRight="20dp"
-    	android:layout_marginTop="10dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:background="@color/title_pop_normol" >
+
+            <ImageButton
+                android:id="@+id/player_imagebutton_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center"
+                android:background="#00000000"
+                android:src="@drawable/back_btn_selector" />
+
+            <TextView
+                android:id="@+id/player_change_stream"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right|center"
+                android:layout_marginRight="15dp"
+                android:gravity="center"
+                android:text="标清"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/player_talk"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right|center"
+                android:layout_marginRight="60dp"
+                android:gravity="center"
+                android:text="开始对讲"
+                android:textSize="18sp" />
+        </FrameLayout>
+
+      
+
+       <com.howell.activity.PlayFunViewPage
+        android:id="@+id/play_fun"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:visibility="gone"
-        android:clickable="true"
-     
-        >
-        
-      <ImageView 
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:src="@drawable/play_tele"
-          android:padding="12dp"
-          android:focusable="false"
-          />
+         /> 
         
         
         
-    </LinearLayout>
-    
-    
+        <!-- 左侧 ptz 按钮 -->
+
+        <RelativeLayout
+            android:id="@+id/play_rl_ptz"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:visibility="gone" >
+
+            <LinearLayout
+                android:id="@+id/play_ptz_center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
+
+            <LinearLayout
+                android:id="@+id/play_ptz_top"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_above="@id/play_ptz_center"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="25dp"
+                android:background="@drawable/play_ptz_move_selector"
+                android:clickable="true" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:padding="8dp"
+                    android:src="@drawable/play_up" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/play_ptz_bottom"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_below="@id/play_ptz_center"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/play_ptz_move_selector"
+                android:clickable="true" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:padding="8dp"
+                    android:src="@drawable/play_down" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/play_ptz_left"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/play_ptz_bottom"
+                android:background="@drawable/play_ptz_move_selector"
+                android:clickable="true" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:padding="8dp"
+                    android:src="@drawable/play_left" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/play_ptz_right"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/play_ptz_bottom"
+                android:layout_toRightOf="@id/play_ptz_bottom"
+                android:background="@drawable/play_ptz_move_selector"
+                android:clickable="true" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:padding="8dp"
+                    android:src="@drawable/play_right" />
+            </LinearLayout>
+        </RelativeLayout>
     </RelativeLayout>
-    
-    
-    
-    
-    
+
 </FrameLayout>

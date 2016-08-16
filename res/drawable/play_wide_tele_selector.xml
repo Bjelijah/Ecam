@@ -4,17 +4,17 @@
     <item android:state_pressed="true"><shape>
             <corners android:radius="12dp" />
 
-            <solid android:color="@color/play_wide_tele_clicked" />
+            <solid android:color="@color/play_ptz_clicked" />
         </shape></item>
     <item android:state_focused="true"><shape>
             <corners android:radius="12dp" />
 
-            <solid android:color="@color/play_wide_tele_clicked" />
+            <solid android:color="@color/play_ptz_clicked" />
         </shape></item>
     <item><shape>
             <corners android:radius="12dp" />
 
-            <solid android:color="@color/play_wide_tele" />
+            <solid android:color="@color/play_ptz" />
         </shape></item>
 
 </selector>

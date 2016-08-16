@@ -4,10 +4,31 @@ package com.howell.activity;
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.LinkedList;
 import java.util.TimeZone;
 import java.util.Timer;
 
-import android.app.Activity;
+import com.android.howell.webcam.R;
+import com.howell.action.PTZControlAction;
+import com.howell.adapter.MyPagerAdapter;
+import com.howell.broadcastreceiver.HomeKeyEventBroadCastReceiver;
+import com.howell.ehlib.MySeekBar;
+import com.howell.entityclass.NodeDetails;
+import com.howell.entityclass.VODRecord;
+import com.howell.playerrender.YV12Renderer;
+import com.howell.protocol.GetDevVerReq;
+import com.howell.protocol.GetDevVerRes;
+import com.howell.protocol.LoginResponse;
+import com.howell.protocol.SoapManager;
+import com.howell.transformer.CubeInTransformer;
+import com.howell.utils.DeviceVersionUtils;
+import com.howell.utils.FileUtils;
+import com.howell.utils.InviteUtils;
+import com.howell.utils.MessageUtiles;
+import com.howell.utils.PhoneConfig;
+import com.howell.utils.TakePhotoUtil;
+import com.howell.utils.TalkManager;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -28,6 +49,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.StatFs;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
@@ -41,8 +64,6 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
-import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -50,34 +71,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.howell.webcam.R;
-import com.howell.action.PTZControlAction;
-import com.howell.broadcastreceiver.HomeKeyEventBroadCastReceiver;
-import com.howell.ehlib.MySeekBar;
-import com.howell.entityclass.NodeDetails;
-import com.howell.entityclass.VODRecord;
-import com.howell.playerrender.YV12Renderer;
-import com.howell.protocol.GetDevVerReq;
-import com.howell.protocol.GetDevVerRes;
-import com.howell.protocol.LoginResponse;
-import com.howell.protocol.PtzControlReq;
-import com.howell.protocol.PtzControlRes;
-import com.howell.protocol.SoapManager;
-import com.howell.utils.DeviceVersionUtils;
-import com.howell.utils.FileUtils;
-import com.howell.utils.InviteUtils;
-import com.howell.utils.MessageUtiles;
-import com.howell.utils.PhoneConfig;
-import com.howell.utils.TakePhotoUtil;
-import com.howell.utils.TalkManager;
-import com.howell.utils.Util;
-
-public class PlayerActivity extends Activity implements Callback, OnTouchListener, OnGestureListener,OnClickListener {
+public class PlayerActivity extends FragmentActivity implements Callback, OnTouchListener, OnGestureListener,OnClickListener,IPlayFun {
 
 
 
@@ -102,7 +101,13 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	private static int streamLenFlag;
 	private static int streamLen;
 
-	private LinearLayout mSurfaceIcon ,mPlayWide,mPlayTele;
+//	private PlayFunPanel mFunPanel;
+	
+	private LinearLayout mSurfaceIcon ,mPlayWide,mPlayTele,mPtzLeft,mPtzRight,mPtzUp,mPtzDown;
+	private RelativeLayout mPlayPtzMove;
+	private PlayFunViewPage mPlayFun;
+	private boolean mIsShowPtz;
+	private boolean mBfirstFling = true;
 	private static MySeekBar mReplaySeekBar;
 	private static ProgressBar mWaitProgressBar;
 	private static PlayerHandler mPlayerHandler;
@@ -124,11 +129,11 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	public static final Integer SHOW_NO_STREAM_ARRIVE_PROGRESS = 0x0009;
 	public static final Integer HIDE_HAS_STREAM_ARRIVE_PROGRESS = 0x0010;
 	public static final Integer DETECT_IF_NO_STREAM_ARRIVE = 0x0011;
-
+	public static final int MSG_PTZ_SHAKE = 0xff00;
+	
 	private SoapManager mSoapManger;
 	private String account,loginSession,devID;
 	private int channelNo;
-	private MyFlingTask mFlingTask;
 	private GestureDetector mGestureDetector;
 
 	private Animation translateAnimation;
@@ -161,7 +166,6 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 
 
 
-
 	public PlayerActivity() {   
 		mGestureDetector = new GestureDetector(this);   
 	} 
@@ -179,9 +183,11 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	private Button btTalk;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 
+		
+		
+		
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 		mActivities = Activities.getInstance();
@@ -254,7 +260,6 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 				startTime = bar.parse(mRecord.getStartTime()).getTime()/1000;
 				endTime = bar.parse(mRecord.getEndTime()).getTime()/1000;
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -270,7 +275,6 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		mVedioList.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				if(!dev.iseStoreFlag()){
 					MessageUtiles.postToast(getApplicationContext()
 							, getResources().getString(R.string.no_sdcard),2000);
@@ -364,7 +368,6 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				if(!existSDCard()){
 					MessageUtiles.postToast(getApplicationContext(), getResources().getString(R.string.no_sdcard),2000);
 					return;
@@ -402,11 +405,9 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Log.e("sdl--->", "mSound.setOnClickListener");
 				if(isAudioOpen){
 					audioPause();
-
 				}else {
 					audioPlay();
 				}
@@ -415,7 +416,7 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 				Editor editor = sharedPreferences.edit();
 				editor.putBoolean("sound_mode", isAudioOpen);
 				editor.commit();
-
+				mPlayFun.updataAllView();
 			}
 		});
 
@@ -428,7 +429,6 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				getPopupWindowInstance();  
 				mPopupWindow.showAsDropDown(v);  
 			}
@@ -438,7 +438,6 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 			boolean isNewVer = false;
 			@Override
 			protected Void doInBackground(Void... arg0) {
-				// TODO Auto-generated method stub
 				isNewVer = checkDevVer();
 				return null;
 			}
@@ -455,7 +454,6 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				int isPlayBack = -1;
 				boolean ret;
 				if(playback){
@@ -486,7 +484,6 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
 				if(playback){
 					if(bPause){
 						client.playbackPause(client.getHandle(), true);
@@ -507,7 +504,6 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
 				if(null != client)
 					client.setQuit(true);
 				quitDisplay();
@@ -546,7 +542,6 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
-				// TODO Auto-generated method stub
 				int progress = mReplaySeekBar.getProgress();
 				Log.e("----------->>>", "onStopTrackingTouch progress:"+progress);
 				long replayStartTime = correctedStartTime + (long)progress/1000;
@@ -567,7 +562,6 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 
 			@Override
 			public void onStartTrackingTouch(SeekBar seekBar) {
-				// TODO Auto-generated method stub
 				int progress = mReplaySeekBar.getProgress();
 				Log.e("----------->>>", "onStartTrackingTouch progress:"+progress);
 				mReplaySeekBar.setSeekBarText(translateTime(progress));
@@ -578,21 +572,43 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress,
 					boolean fromUser) {
-				// TODO Auto-generated method stub
 				if(fromUser){
 					mReplaySeekBar.setSeekBarText(translateTime(progress));
 				}
 			}
 		});
 
+		
+//		mFunPanel = new PlayFunPanel(this);
+//		mFunPanel.setHandle(mPlayerHandler);
 
 		PTZControlAction.getInstance().setPtzInfo(mSoapManger, account, loginSession, devID, channelNo);
-
-		mPlayWide = (LinearLayout)findViewById(R.id.play_wide);
-		mPlayWide.setOnTouchListener(this);
-		mPlayTele = (LinearLayout)findViewById(R.id.play_tele);
-		mPlayTele.setOnTouchListener(this);
-
+		PTZControlAction.getInstance().setHandle(mPlayerHandler);
+		fragmentInit();
+//		mPlayFun1 = (RelativeLayout) findViewById(R.id.play_rl_fun1);
+//		mPlayFun2 = (RelativeLayout)findViewById(R.id.play_rl_fun2);
+//		mFunPanel.addLayout(mPlayFun1);
+//		mFunPanel.addLayout(mPlayFun2);
+//		mPlayFun = mFunPanel.getCurLayout();
+		
+		
+		mPlayPtzMove = (RelativeLayout) findViewById(R.id.play_rl_ptz);
+		mIsShowPtz = false;
+		
+		
+		
+//		mPlayWide = (LinearLayout)findViewById(R.id.play_wide);
+//		mPlayWide.setOnTouchListener(this);
+//		mPlayTele = (LinearLayout)findViewById(R.id.play_tele);
+//		mPlayTele.setOnTouchListener(this);
+		mPtzLeft = (LinearLayout) findViewById(R.id.play_ptz_left);
+		mPtzLeft.setOnTouchListener(this);
+		mPtzRight = (LinearLayout) findViewById(R.id.play_ptz_right);
+		mPtzRight.setOnTouchListener(this);
+		mPtzUp = (LinearLayout) findViewById(R.id.play_ptz_top);
+		mPtzUp.setOnTouchListener(this);
+		mPtzDown = (LinearLayout) findViewById(R.id.play_ptz_bottom);
+		mPtzDown.setOnTouchListener(this);
 		mStreamLen = (TextView)findViewById(R.id.tv_stream_len);
 		if(PhoneConfig.getPhoneHeight(this) < PhoneConfig.getPhoneWidth(this)){
 			mTitle.setVisibility(View.GONE);
@@ -610,6 +626,19 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		thread.start();
 	}
 
+
+	
+	
+	private void fragmentInit(){
+		mPlayFun = (PlayFunViewPage) findViewById(R.id.play_fun);
+		mPlayFun.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
+		mPlayFun.setCurrentItem(200);
+		mPlayFun.setPageTransformer(true,new CubeInTransformer());
+		mPlayFun.setBottomView(mSurfaceIcon);
+	}
+	
+
+	
 	private boolean checkDevVer(){
 		GetDevVerReq getDevVerReq = new GetDevVerReq(SoapManager.getInstance().getLoginResponse().getAccount(),SoapManager.getInstance().getLoginResponse().getLoginSession(),dev.getDevID());
 		GetDevVerRes res = SoapManager.getInstance().getGetDevVerRes(getDevVerReq);
@@ -710,7 +739,6 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	} 
 
 	private void audioInit() {
-		// TODO Auto-generated method stub
 		int buffer_size = AudioTrack.getMinBufferSize(8000, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
 		mAudioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, 8000, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT, buffer_size*8, AudioTrack.MODE_STREAM);
 		mAudioData = new byte[buffer_size*8];
@@ -748,7 +776,6 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 	class InviteThread extends Thread{
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
 			super.run();
 			client = new InviteUtils(dev);
 			System.out.println("start invite live");
@@ -796,7 +823,6 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		@SuppressWarnings("unused")
 		@Override
 		public void handleMessage(Message msg) {
-			// TODO Auto-generated method stub
 			super.handleMessage(msg);
 			if (msg.what == REPLAYSEEKBAR) {
 				//-------------------------------------------------
@@ -894,7 +920,6 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 						setPositiveButton("确定", new DialogInterface.OnClickListener() {   
 							@Override   
 							public void onClick(DialogInterface dialog, int which) {   
-								// TODO Auto-generated method stub  
 								//        	                	if(null != client)
 								//        	    	        		client.setQuit(true);
 								//        	    	        	quitDisplay();
@@ -947,36 +972,66 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 				}
 			}
 
-
+			if (msg.what == MSG_PTZ_SHAKE) {
+				
+				PTZControlAction.getInstance().ptzShake(context, (View)msg.obj);
+				
+			}
 
 
 		}
 	}
 
 
-
+	private void showPtzLayout(View v,boolean bshow){
+		v.setVisibility(View.VISIBLE);
+		int hMax = PhoneConfig.getPhoneHeight(this);
+	
+		int left,right,top,bottom;
+		 left = v.getLeft();
+		 right = v.getRight();
+		 top = v.getTop();
+		 bottom = v.getBottom();
+		Log.i("123", "show before  left="+left+" right="+right+" top="+top+" bottom="+bottom);
+		
+		if (bshow) {
+			
+		}else{
+			
+			v.layout(left, top+hMax, right, bottom+hMax);
+			
+			 left = v.getLeft();
+			 right = v.getRight();
+			 top = v.getTop();
+			 bottom = v.getBottom();
+			 Log.i("123", "show after  left="+left+" right="+right+" top="+top+" bottom="+bottom);
+		}
+		
+	}
 
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 		Log.e("main","config change");
-		if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+		if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){//heng
 			Log.i("info", "onConfigurationChanged landscape"); // 锟斤拷锟斤拷
 			mTitle.setVisibility(View.GONE);
 			mSurfaceIcon.setVisibility(View.GONE);
 			System.out.println("onSingleTapUp:"+mSurfaceIcon.isShown());
 			isShowSurfaceIcon = false;
 			mStreamLen.setVisibility(View.VISIBLE);
-		} else if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+			
+//			showPtzLayout(mPlayPtzMove,false);
+			
+		} else if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){//zong
 			Log.i("info", "onConfigurationChanged PORTRAIT"); // 锟斤拷锟斤拷
 			mTitle.setVisibility(View.VISIBLE);
 			mSurfaceIcon.setVisibility(View.VISIBLE);
 			isShowSurfaceIcon = true;
 		}
 		//if changed play_wide and play_tele vanish
-		mPlayWide.setVisibility(View.GONE);
-		mPlayTele.setVisibility(View.GONE);
+
 	}
 
 	@Override
@@ -1036,7 +1091,6 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 		}
 		@Override
 		protected Void doInBackground(Void... params) {
-			// TODO Auto-generated method stub
 			if(client != null && client.getHandle() != -1){
 				System.out.println("isStartFinish:"+client.isStartFinish()+","+client.toString());
 				while(true){
@@ -1101,154 +1155,67 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 
 	@Override
 	public boolean onDown(MotionEvent e) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public class MyFlingTask extends AsyncTask<Void, Integer, Void> {
-		private String direction;
-		private int time;
-		public MyFlingTask(String direction,int time) {
-			// TODO Auto-generated constructor stub
-			this.direction = direction;
-			this.time = time;
-		}
-		@Override
-		protected Void doInBackground(Void... params) {
-			// TODO Auto-generated method stub
-			System.out.println("call doInBackground");
-			Log.e("start direction", direction);
-
-			PtzControlReq req = new PtzControlReq(account,loginSession,devID,channelNo,direction);
-			PtzControlRes ptzRes = mSoapManger.GetPtzControlRes(req);
-			if(ptzRes != null){
-				Log.e("start Res", ptzRes.getResult());
-				try {
-					Thread.sleep(time);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				req = new PtzControlReq(account,loginSession,devID,channelNo,"Stop");
-				ptzRes = mSoapManger.GetPtzControlRes(req);
-				Log.e("stop Res", ptzRes.getResult());
-			}else{
-				loginSession = mSoapManger.getLoginResponse().getLoginSession();
-			}
-			return null;
-		}
-	}
-
-	private void animationStart(float fromXDelta, float toXDelta, float fromYDelta, float toYDelta){
-		System.out.println("Fling isAnimationStart:"+isAnimationStart);
-		isAnimationStart = true;
-		translateAnimation = new TranslateAnimation(fromXDelta, toXDelta,fromYDelta,toYDelta);
-		translateAnimation.setDuration(2000);  
-
-		translateAnimation.setAnimationListener(new AnimationListener() {
-
-			@Override
-			public void onAnimationStart(Animation arg0) {
-				// TODO Auto-generated method stub
-			}
-
-			@Override
-			public void onAnimationRepeat(Animation arg0) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onAnimationEnd(Animation arg0) {
-				// TODO Auto-generated method stub
-				animationAim.setVisibility(View.GONE);
-				animationBackground.setVisibility(View.GONE);
-				animationAim.clearAnimation();
-				isAnimationStart = false;
-			}
-		});
-
-		animationAim.startAnimation(translateAnimation);  
-
-	}
 
 	@Override
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
 			float velocityY) {
-		// TODO Auto-generated method stub
-		if(isAnimationStart || !dev.isPtzFlag() || playback){
+		if( !dev.isPtzFlag() || playback){
 			System.out.println("is not PTZ");
+		//	return false;
+		}
+		if (PhoneConfig.getPhoneHeight(this) > PhoneConfig.getPhoneWidth(this)) {
+			Log.e("123", "竖屏");
 			return false;
 		}
-
-		//wide and tele
-		int xLimit = PhoneConfig.getPhoneWidth(this) - 40 - mPlayWide.getWidth();
-		//		Log.i("123", "x1="+e1.getX()+" x2="+e2.getX()+" velocityX="+velocityX +"  xlimit="+xLimit);
-		if(e1.getX() > xLimit){
-			Log.i("123", "islimit ptz move!! ");
+	
+		if (!PTZControlAction.getInstance().bAnimationFinish()) {
+			Log.e("123", "ptz animation not finish");
 			return false;
 		}
-
-
-
-		String direction = "Stop";
-		int time = 0;
-
-		if(mFlingTask != null){
-			Log.e("start status", mFlingTask.getStatus().toString());
-			if( mFlingTask.getStatus() != AsyncTask.Status.FINISHED){
-				Log.e("return", mFlingTask.getStatus().toString());
-				Log.e("return", "return");
-				return true;
-			}
-		}
-
-		//显示平移动画素材
-//		System.out.println("Fling00000000");
-//		animationAim.setVisibility(View.VISIBLE);
-//		System.out.println("Fling1111111");
-//		animationBackground.setVisibility(View.VISIBLE);
-//		System.out.println("Fling2222222");
-
 		final int FLING_MIN_DISTANCE = 100, FLING_MIN_VELOCITY = 200;   
-		if (e1.getX() - e2.getX() > FLING_MIN_DISTANCE && Math.abs(velocityX) > FLING_MIN_VELOCITY) {   
-			// Fling left   
-			animationAim.setVisibility(View.VISIBLE);	
-			animationBackground.setVisibility(View.VISIBLE);
-			direction = "Right";
-			time = 700;
-			animationStart(0,40,0,0);
-			Log.e("MyGesture", "Fling left "+"x:"+Math.abs(e1.getX() - e2.getX())+"y:"+Math.abs(e1.getY() - e2.getY()));  
-		} else if (e2.getX() - e1.getX() > FLING_MIN_DISTANCE && Math.abs(velocityX) > FLING_MIN_VELOCITY) {   
-			// Fling right  
-			animationAim.setVisibility(View.VISIBLE);	
-			animationBackground.setVisibility(View.VISIBLE);
-			Log.e("MyGesture", "Fling right "+"x:"+Math.abs(e1.getX() - e2.getX())+"y:"+Math.abs(e1.getY() - e2.getY()));   
-			direction = "Left";
-			animationStart(0, -40,0,0);
-			time = 700;
-		}  else if (e2.getY() - e1.getY() > FLING_MIN_DISTANCE && Math.abs(velocityY) > FLING_MIN_VELOCITY) {   
-			// Fling Down   
-			animationAim.setVisibility(View.VISIBLE);	
-			animationBackground.setVisibility(View.VISIBLE);
-			Log.e("MyGesture", "Fling Down "+"y:"+Math.abs(e1.getY() - e2.getY())+"x:"+Math.abs(e1.getX() - e2.getX()));   
-			direction = "Up";
-			animationStart(0, 0,0,-40);
-			time = 500;
-		}   else if (e1.getY() - e2.getY() > FLING_MIN_DISTANCE && Math.abs(velocityY) > FLING_MIN_VELOCITY) {   
-			// Fling Up   
-			animationAim.setVisibility(View.VISIBLE);	
-			animationBackground.setVisibility(View.VISIBLE);
-			Log.e("MyGesture", "Fling Up "+"y:"+Math.abs(e1.getY() - e2.getY())+"x:"+Math.abs(e1.getX() - e2.getX()));   
-			direction = "Down";
-			time = 500;
-			animationStart(0, 0,0,40);
-		}   else{
-			return true;
+
+		
+		
+		
+	
+		final int hMax = PhoneConfig.getPhoneHeight(this);
+		if (e1.getY() - e2.getY() > FLING_MIN_DISTANCE && Math.abs(velocityY) > FLING_MIN_VELOCITY) {
+			Log.e("123", "fling up");
+			mPlayPtzMove.setVisibility(View.VISIBLE);
+			mPlayFun.setVisibility(View.VISIBLE);
+			if (mIsShowPtz) {//当前显示  从当中到最上
+				//要不显示显示
+				PTZControlAction.getInstance().ptzAnimationStart(this,mPlayPtzMove,0,0,0,-hMax,false,true);
+				PTZControlAction.getInstance().ptzAnimationStart(this,mPlayFun,0,0,0,hMax,false,false);
+				mIsShowPtz = false;
+			}else{//当前不显示 从最下到当中
+				//要显示
+				PTZControlAction.getInstance().ptzAnimationStart(this,mPlayPtzMove,0,0,hMax,0,true,true);
+				PTZControlAction.getInstance().ptzAnimationStart(this,mPlayFun,0,0,-hMax,0,true,false);
+				mIsShowPtz = true;
+			}
+			
+		}else if(e2.getY() - e1.getY() > FLING_MIN_DISTANCE && Math.abs(velocityY) > FLING_MIN_VELOCITY){
+			Log.e("123", "fling down");
+			mPlayPtzMove.setVisibility(View.VISIBLE);
+			mPlayFun.setVisibility(View.VISIBLE);
+			if(mIsShowPtz){//当前显示  从当中到最下
+				//要不显示
+				PTZControlAction.getInstance().ptzAnimationStart(this,mPlayPtzMove,0,0,0,hMax,false,true);
+				PTZControlAction.getInstance().ptzAnimationStart(this,mPlayFun,0,0,0,-hMax,false,false);
+				mIsShowPtz = false;
+			}else{//从最上到当中
+				PTZControlAction.getInstance().ptzAnimationStart(this, mPlayPtzMove, 0, 0, -hMax, 0, true,true);
+				PTZControlAction.getInstance().ptzAnimationStart(this,mPlayFun,0,0,hMax,0,true,false);
+				mIsShowPtz = true;
+			}
+			
 		}
-		mFlingTask = new MyFlingTask(direction,time);
-		mFlingTask.execute();
-		return true;   
+		
+		return true;
 	}
 
 	@Override
@@ -1272,7 +1239,6 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 
 	@Override
 	public boolean onSingleTapUp(MotionEvent e) {
-		// TODO Auto-generated method stub
 		Log.e("MyGesture", "onSingleTapUp");  
 		System.out.println("playback:"+playback);
 		if(PhoneConfig.getPhoneHeight(this) < PhoneConfig.getPhoneWidth(this)){
@@ -1281,14 +1247,12 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 				System.out.println("onSingleTapUp111:"+isShowSurfaceIcon);
 				mSurfaceIcon.setVisibility(View.GONE);
 				mTitle.setVisibility(View.GONE);
-				mPlayWide.setVisibility(View.GONE);
-				mPlayTele.setVisibility(View.GONE);
+
 				isShowSurfaceIcon = false;
 			}else{
 				System.out.println("onSingleTapUp222:"+isShowSurfaceIcon);
 				mSurfaceIcon.setVisibility(View.VISIBLE);
 				mTitle.setVisibility(View.VISIBLE);
-				showPlayWideTeleButton();
 				System.out.println("onSingleTapUp:"+mSurfaceIcon.isShown());
 				isShowSurfaceIcon = true;
 			}
@@ -1303,53 +1267,47 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-		// TODO Auto-generated method stub
 
-		if (v.getId() == R.id.play_wide) {
-			if (event.getAction() == MotionEvent.ACTION_DOWN) {//图片 反了
-				PTZControlAction.getInstance().zoomTeleStart();
-			}else if(event.getAction() == MotionEvent.ACTION_UP){
-				PTZControlAction.getInstance().zoomTeleStop();
-			}
-			return false;
-		}else if(v.getId() == R.id.play_tele){
+		switch (v.getId()) {
+		case R.id.play_ptz_left:
 			if (event.getAction() == MotionEvent.ACTION_DOWN) {
-				PTZControlAction.getInstance().zoomWideStart();
+				PTZControlAction.getInstance().ptzMoveStart("Left");
 			}else if(event.getAction() == MotionEvent.ACTION_UP){
-				PTZControlAction.getInstance().zoomWideStop();
+				PTZControlAction.getInstance().ptzMoveStop();
 			}
 			return false;
+		case R.id.play_ptz_right:
+			if (event.getAction() == MotionEvent.ACTION_DOWN) {
+				PTZControlAction.getInstance().ptzMoveStart("Right");
+			}else if(event.getAction() == MotionEvent.ACTION_UP){
+				PTZControlAction.getInstance().ptzMoveStop();
+			}
+			return false;
+		case R.id.play_ptz_top:
+			if (event.getAction() == MotionEvent.ACTION_DOWN) {
+				PTZControlAction.getInstance().ptzMoveStart("Up");
+			}else if(event.getAction() == MotionEvent.ACTION_UP){
+				PTZControlAction.getInstance().ptzMoveStop();
+			}
+			return false;
+		case R.id.play_ptz_bottom:
+			if (event.getAction() == MotionEvent.ACTION_DOWN) {
+				PTZControlAction.getInstance().ptzMoveStart("Down");
+			}else if(event.getAction() == MotionEvent.ACTION_UP){
+				PTZControlAction.getInstance().ptzMoveStop();
+			}
+			return false;
+		default:
+			break;
 		}
+
+
+
 		return mGestureDetector.onTouchEvent(event);   
 	}
-	//	@Override
-	//	public void onItemClick(ActionItem item, int position) {
-	//		// TODO Auto-generated method stub
-	//		int isPlayBack = -1;
-	//		boolean ret;
-	//		if(playback){
-	//			isPlayBack = 1;
-	//		}else{
-	//			isPlayBack = 0;
-	//			startTime = 0;
-	//			endTime = 0;
-	//		}
-	//		if(position == 0){
-	//			ret = client.Replay(isPlayBack, startTime, endTime, 0);
-	//			if(ret){
-	//				stream = 0;
-	//			}
-	//		}else if(position == 1){
-	//			ret = client.Replay(isPlayBack, startTime, endTime, 1);
-	//			if(ret){
-	//				stream = 1;
-	//			}
-	//		}
-	//	}
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.pop_layout_hd:
 			mPopupWindow.dismiss();
@@ -1359,7 +1317,6 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 				long replayStartTime = 0;
 				@Override
 				protected Void doInBackground(Void... arg0) {
-					// TODO Auto-generated method stub
 					if(playback){
 						isPlayBack = 1;
 						replayStartTime = correctedStartTime + (long)(mReplaySeekBar.getProgress())/1000;
@@ -1393,7 +1350,6 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 				long replayStartTime = 0;
 				@Override
 				protected Void doInBackground(Void... arg0) {
-					// TODO Auto-generated method stub
 					if(playback){
 						isPlayBack = 1;
 						replayStartTime = correctedStartTime + (long)(mReplaySeekBar.getProgress())/1000;
@@ -1423,14 +1379,25 @@ public class PlayerActivity extends Activity implements Callback, OnTouchListene
 			break;
 		}
 	}
-
-	private void showPlayWideTeleButton(){
-		if(!dev.isPtzFlag()){
-			//return;
+	@Override
+	public void clickSound() {
+		if(isAudioOpen){
+			audioPause();
+		}else {
+			audioPlay();
 		}
-		mPlayWide.setVisibility(View.VISIBLE);
-		mPlayTele.setVisibility(View.VISIBLE);
-
+		SharedPreferences sharedPreferences = getSharedPreferences(
+				"set", Context.MODE_PRIVATE);
+		Editor editor = sharedPreferences.edit();
+		editor.putBoolean("sound_mode", isAudioOpen);
+		editor.commit();
+		
 	}
+	@Override
+	public boolean getSoundState() {
+		return isAudioOpen;
+	}
+
+	
 
 }

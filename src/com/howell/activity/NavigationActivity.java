@@ -180,7 +180,7 @@ public class NavigationActivity extends Activity {
         Editor editor = sharedPreferences.edit();
         editor.putBoolean("isFirstLogin", false);
         editor.commit();
-		//NavigationActivity.this.finish();
+		NavigationActivity.this.finish();
 	}
 
 }

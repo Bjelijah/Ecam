@@ -69,22 +69,11 @@ public class PlayFunFragment extends Fragment implements OnClickListener {
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub\
-		Log.e("123", "frgmengt on resume");
 		checkSoundImage();
 		super.onResume();
 	}
 
 
-	
-	
-	
-	
-	@Override
-	public void onStart() {
-		// TODO Auto-generated method stub
-		Log.e("123", "frgmengt on start");
-		super.onStart();
-	}
 	
 	@Override
 	public void onClick(View v) {

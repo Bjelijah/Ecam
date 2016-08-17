@@ -27,7 +27,7 @@ public class PlayFunViewPage extends ViewPager {
 	private float endX;
 	
 	private View mBottomView = null;
-
+	
 
 	
 	@Override
@@ -35,7 +35,7 @@ public class PlayFunViewPage extends ViewPager {
 		// TODO Auto-generated method stub
 		if (arg0.getAction() == MotionEvent.ACTION_DOWN && mBottomView!=null) {
 			if (arg0.getY() > mBottomView.getTop()) {
-			    Log.i("123", "view page touch y="+arg0.getY()+" bottom view top="+mBottomView.getTop());
+			    Log.e("123", "gety > view.top 不处理    view page touch y="+arg0.getY()+" bottom view top="+mBottomView.getTop());
 				return false;//不处理    让 监听优先级低的（onclickedlistener）和下面的控件处理
 			}
 		}

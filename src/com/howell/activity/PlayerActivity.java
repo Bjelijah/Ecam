@@ -49,8 +49,10 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.StatFs;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
@@ -185,8 +187,8 @@ public class PlayerActivity extends FragmentActivity implements Callback, OnTouc
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		
-		
+
+
 		
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -1164,9 +1166,11 @@ public class PlayerActivity extends FragmentActivity implements Callback, OnTouc
 			float velocityY) {
 		if( !dev.isPtzFlag() || playback){
 			System.out.println("is not PTZ");
-		//	return false;
+			return false;
 		}
-		if (PhoneConfig.getPhoneHeight(this) > PhoneConfig.getPhoneWidth(this)) {
+		final int hMax = PhoneConfig.getPhoneHeight(this);
+		final int wMax = PhoneConfig.getPhoneWidth(this);
+		if (hMax > wMax) {
 			Log.e("123", "竖屏");
 			return false;
 		}
@@ -1181,8 +1185,7 @@ public class PlayerActivity extends FragmentActivity implements Callback, OnTouc
 		
 		
 	
-		final int hMax = PhoneConfig.getPhoneHeight(this);
-		if (e1.getY() - e2.getY() > FLING_MIN_DISTANCE && Math.abs(velocityY) > FLING_MIN_VELOCITY) {
+		if (e1.getY() - e2.getY() > FLING_MIN_DISTANCE && Math.abs(velocityY) > FLING_MIN_VELOCITY && e1.getX() < (wMax/2)) {
 			Log.e("123", "fling up");
 			mPlayPtzMove.setVisibility(View.VISIBLE);
 			mPlayFun.setVisibility(View.VISIBLE);
@@ -1198,7 +1201,7 @@ public class PlayerActivity extends FragmentActivity implements Callback, OnTouc
 				mIsShowPtz = true;
 			}
 			
-		}else if(e2.getY() - e1.getY() > FLING_MIN_DISTANCE && Math.abs(velocityY) > FLING_MIN_VELOCITY){
+		}else if(e2.getY() - e1.getY() > FLING_MIN_DISTANCE && Math.abs(velocityY) > FLING_MIN_VELOCITY && e1.getX() < (wMax/2)){
 			Log.e("123", "fling down");
 			mPlayPtzMove.setVisibility(View.VISIBLE);
 			mPlayFun.setVisibility(View.VISIBLE);
@@ -1249,12 +1252,16 @@ public class PlayerActivity extends FragmentActivity implements Callback, OnTouc
 				mTitle.setVisibility(View.GONE);
 
 				isShowSurfaceIcon = false;
+				Log.e("123", "icon gone top="+mSurfaceIcon.getTop());
+				mPlayFun.setBottomView(null);
 			}else{
 				System.out.println("onSingleTapUp222:"+isShowSurfaceIcon);
 				mSurfaceIcon.setVisibility(View.VISIBLE);
 				mTitle.setVisibility(View.VISIBLE);
 				System.out.println("onSingleTapUp:"+mSurfaceIcon.isShown());
 				isShowSurfaceIcon = true;
+				Log.e("123", "icon visible top="+mSurfaceIcon.getTop());
+				mPlayFun.setBottomView(mSurfaceIcon);
 			}
 		}
 		if(playback){

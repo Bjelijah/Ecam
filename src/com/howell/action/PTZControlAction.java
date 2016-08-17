@@ -3,6 +3,7 @@ package com.howell.action;
 import com.android.howell.webcam.R;
 import com.howell.activity.PlayerActivity;
 import com.howell.protocol.LensControlReq;
+import com.howell.protocol.LensControlRes;
 import com.howell.protocol.PtzControlReq;
 import com.howell.protocol.PtzControlRes;
 import com.howell.protocol.SoapManager;
@@ -76,7 +77,8 @@ public class PTZControlAction {
 					throw new NullPointerException();
 				}
 				LensControlReq req = new LensControlReq(info.getAccount(),info.getLoginSession(),info.getDevID(),info.getChannelNo(),"ZoomTele");
-				info.getSoapManager().getLensControlRes(req);
+				LensControlRes res = info.getSoapManager().getLensControlRes(req);
+				 Log.i("123", "res="+res.getResult());
 				return null;
 			}
 		}.execute();
@@ -91,7 +93,9 @@ public class PTZControlAction {
 					throw new NullPointerException();
 				}
 				LensControlReq req = new LensControlReq(info.getAccount(),info.getLoginSession(),info.getDevID(),info.getChannelNo(),"Stop");
-				info.getSoapManager().getLensControlRes(req);
+				 LensControlRes  res =info.getSoapManager().getLensControlRes(req);
+				 
+				
 				return null;
 			}
 			
@@ -222,7 +226,7 @@ public class PTZControlAction {
 				int top = view.getTop() + (int)(toYDelta - fromYDelta);
 				int bottom = view.getBottom() + (int)(toYDelta - fromYDelta);
 			
-				Log.i("123", "after left="+left+" top="+top+" right="+right+" bottom="+bottom+" hMax="+hMax);
+//				Log.i("123", "after left="+left+" top="+top+" right="+right+" bottom="+bottom+" hMax="+hMax);
 				view.clearAnimation();
 			
 				if (bshow) {
@@ -244,7 +248,7 @@ public class PTZControlAction {
 		animationSet.addAnimation(translateAnimation);
 		animationSet.addAnimation(scaleAnimation);
 		animationSet.addAnimation(alphaAnimation);
-		Log.i("123","before: view left="+view.getLeft()+" top="+view.getTop()+" right="+view.getRight()+" bottom="+view.getBottom());
+//		Log.i("123","before: view left="+view.getLeft()+" top="+view.getTop()+" right="+view.getRight()+" bottom="+view.getBottom());
 		view.startAnimation(animationSet);	
 	}
 	

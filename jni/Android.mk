@@ -124,7 +124,7 @@ LOCAL_SRC_FILES := WebcamECamera.cpp g711.cpp g7.cpp
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/include
 LOCAL_SHARED_LIBRARIES := hwplay jpush 
 LOCAL_STATIC_LIBRARIES := ecamstream
-LOCAL_LDFLAGS := -LE:/Android/android-ndk-r10e/sources/cxx-stl/gnu-libstdc++/4.8/libs/armeabi-v7a
+LOCAL_LDFLAGS := -LD:/Android/android-ndk-r10e/sources/cxx-stl/gnu-libstdc++/4.8/libs/armeabi-v7a
 LOCAL_LDLIBS := -llog -lgnustl_static -lGLESv2 -lz -ldl -lgcc
 #	-L$(NDK_PLATFORMS_ROOT)/$(TARGET_PLATFORM)/arch-arm/usr/lib -L$(LOCAL_PATH) -lz -ldl -lgcc 
 include $(BUILD_SHARED_LIBRARY)

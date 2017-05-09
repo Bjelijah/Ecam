@@ -104,7 +104,7 @@ public class TalkManager {
 		            	System.arraycopy(buffer, position, tmpBuf, 0, tmpBufLen);  
 		            	//写入数据即播放  
 			            int ret = setAudioData(handle,tmpBuf, tmpBufLen);
-			            Log.e("","startTalk ret :"+ret);
+			            Log.e("123","startTalk ret :"+ret);
 			            position += realLen ;
 			            bufferReadResult -= realLen;
 			            Log.e("","send audio /position:"+position+" len:"+tmpBufLen +" bufferReadResult:"+bufferReadResult);

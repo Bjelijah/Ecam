@@ -15,7 +15,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.logging.MemoryHandler;
+
 import com.android.howell.webcam.R;
+import com.howell.action.FlashLightManager;
 import com.howell.broadcastreceiver.HomeKeyEventBroadCastReceiver;
 import com.howell.utils.CameraUtils;
 
@@ -26,7 +29,8 @@ public class FlashLighting extends Activity implements OnClickListener{
 	private LinearLayout mSucceedTips;
 	private Activities mActivities;
 	private HomeKeyEventBroadCastReceiver receiver;
-	private CameraUtils c;
+//	private CameraUtils c;
+	private FlashLightManager f;
 	private boolean isBtnClicked;
 	private String wifi_ssid,wifi_password,device_name;
 	
@@ -35,6 +39,8 @@ public class FlashLighting extends Activity implements OnClickListener{
 	private static final int LIGHTON = 1;
 	private static final int LIGHTOFF = 2;
 	private FlashThread thread;
+	
+	private Handler mHandler = new Handler();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +59,10 @@ public class FlashLighting extends Activity implements OnClickListener{
 		wifi_password = intent.getStringExtra("wifi_password");
 		device_name = intent.getStringExtra("device_name");
 		
-		c = new CameraUtils();
+//		c = new CameraUtils();
+		f = new FlashLightManager(this);
+		f.init(mHandler);
+		
 		
 		//tips = (TextView)findViewById(R.id.tv_flash_light_success);
 		mBack = (ImageButton)findViewById(R.id.ib_flash_light_back);
@@ -81,14 +90,16 @@ public class FlashLighting extends Activity implements OnClickListener{
 		switch (v.getId()) {
 		case R.id.ib_flash_light:
 			if(!isBtnClicked){
-				c.twinkle();
+//				c.twinkle();
+				f.twinkle();
 				isBtnClicked = true;
 				mFlashLight.setImageDrawable(getResources().getDrawable(R.drawable.ok_btn_red_selector));
 				btnTips.setText(getResources().getString(R.string.flash_activity_turn_red_btn_name));
 				btnTips.setTextColor(getResources().getColor(R.color.red));
 				mSucceedTips.setVisibility(View.VISIBLE);
 			}else{
-				c.stopTwinkle();
+//				c.stopTwinkle();
+				f.stopTwinkle();
 				Intent intent = new Intent(FlashLighting.this,SendWifi.class);
 				intent.putExtra("wifi_ssid", wifi_ssid);
 				intent.putExtra("wifi_password", wifi_password);
@@ -98,9 +109,13 @@ public class FlashLighting extends Activity implements OnClickListener{
 			break;
 			
 		case R.id.ib_flash_light_back:
-			if(c.getCamera() != null){
-				c.stopTwinkle();
-			}
+//			if(c.getCamera() != null){
+//				c.stopTwinkle();
+//			}
+			
+			f.stopTwinkle();
+			f.deInit();
+			
 			finish();
 			break;
 		default:
@@ -112,9 +127,13 @@ public class FlashLighting extends Activity implements OnClickListener{
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         super.onKeyDown(keyCode, event);
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-        	if(c.getCamera() != null){
-				c.stopTwinkle();
-			}
+//        	if(c.getCamera() != null){
+//				c.stopTwinkle();
+//			}
+        	
+        	f.stopTwinkle();
+        	f.deInit();
+        	
 			finish();
         }
         return false;

@@ -7,7 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-import android.renderscript.ProgramFragmentFixedFunction.Builder.Format;
+//import android.renderscript.ProgramFragmentFixedFunction.Builder.Format;
 
 public class TimeTransform {
      public static String utcToTimeZoneDate(long date, TimeZone timeZone, DateFormat format){

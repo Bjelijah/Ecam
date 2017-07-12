@@ -1,4 +1,7 @@
 LOCAL_PATH := $(call my-dir)
+#LOCAL_STATIC_JAVA_LIBRARIES := android-support-v13
+
+
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := osipparser2

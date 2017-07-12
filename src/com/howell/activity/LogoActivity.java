@@ -154,12 +154,14 @@ public class LogoActivity extends Activity implements TagAliasCallback{
 	//设置推送别名（老版本用ANDROID_ID作为别名）
 	private void setAlias(){
 		String alias = Secure.getString(getContentResolver(), Secure.ANDROID_ID);//"112233";
+		Log.i("123","alias="+alias);
 		JPushInterface.setAliasAndTags(getApplicationContext(), alias, null, this);
 	}
 
 	//Jpush推送服务器设置别名回调，返回设置结果
 	@Override
 	public void gotResult(int code, String alias, Set<String> tags) {
+		Log.i("123", "got result");
 		// TODO Auto-generated method stub
 		/*
 		String logs ;

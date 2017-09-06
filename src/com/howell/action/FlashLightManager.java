@@ -1,38 +1,32 @@
 package com.howell.action;
 
-
-
 /**
  * Created by Administrator on 2017/7/11.
  */
 
 
 import android.Manifest;
-import android.app.ActivityManager.TaskDescription;
 import android.content.Context;
 import android.content.pm.FeatureInfo;
 import android.content.pm.PackageManager;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
+import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
+import android.hardware.camera2.CameraDevice.StateCallback;
 import android.hardware.camera2.CameraManager;
-import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
-import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.Surface;
 import android.widget.Toast;
 
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,9 +65,11 @@ public class FlashLightManager {
     private String cameraId = null;
     private boolean isSupportFlashCamera2 = false;
     private TimerTask task;
-    private Handler mHandler;
     private FlashLightManager() {
     }
+
+
+    private Handler mHander =null;
 
     public FlashLightManager(Context context) {
         this.context = context;
@@ -88,41 +84,50 @@ public class FlashLightManager {
             initCamera2();
         } else {
             camera = Camera.open();
+
         }
-        mHandler = handler;
+        mHander = handler;
     }
-    
-    @SuppressWarnings("deprecation")
-	public void deInit(){
-    	if (isLOLLIPOP()) {
-			
-		}else{
-			if (camera!=null) {
-				camera.stopPreview();
-				camera.release();
-				camera = null;
-			}
-		}
+
+    public void deInit(){
+        if (isLOLLIPOP()){
+
+        }else{
+            if (camera!=null){
+                camera.stopPreview();
+                camera.release();
+                camera = null;
+            }
+
+        }
+
     }
-    
+
     public void twinkle(){
-    	task = new TimerTask();
-    	task.execute();
+        task = new TimerTask();
+        task.execute();
     }
-    
+
     public void stopTwinkle(){
-    	if (task!=null) {
-			task.cancel(true);
-			task = null;
-		}
-    	turnOff();
+
+
+        if (task!=null){
+            task.cancel(true);
+            task = null;
+        }
+        try {
+            turnOff();
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
     }
-    
-    
+
+
     /**
      * 开启闪光灯
      */
-    public void turnOn() {
+
+    public void turnOn() throws CameraAccessException {
         if (!isSupportFlash()) {
             showToast("设备不支持闪光灯！");
             return;
@@ -137,7 +142,7 @@ public class FlashLightManager {
 
         if (isLOLLIPOP()) {
             Log.i("123","camera2 open");
-            turnLightOnCamera2();
+            openFlash();
         } else {
             turnLightOnCamera(camera);
         }
@@ -146,7 +151,7 @@ public class FlashLightManager {
     /**
      * 关闭闪光灯
      */
-    public void turnOff() {
+    public void turnOff() throws CameraAccessException {
         if (!isSupportFlash()) {
             showToast("设备不支持闪光灯！");
             return;
@@ -160,62 +165,38 @@ public class FlashLightManager {
         }
         if (isLOLLIPOP()) {
             Log.i("123","camera2 close");
-            turnLightOffCamera2();
+            closeFlash();
         } else {
             turnLightOffCamera(camera);
         }
         isOpenFlash = false;
     }
 
-    /**
-     * 开启Camera2闪光灯
-     */
-    private void turnLightOnCamera2() {
-        new Object() {
-            private void _turnLightOnCamera2() {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-//                        showToast("应用未开启访问相机权限！");
-//                        return;
-//                    }
-                    try {
-                        manager.openCamera(cameraId, new CameraDevice.StateCallback() {
 
-                            @Override
-                            public void onOpened(CameraDevice camera) {
-                                cameraDevice = camera;
-                                createCaptureSession();
-                            }
-
-                            @Override
-                            public void onError(CameraDevice camera, int error) {
-                            }
-
-                            @Override
-                            public void onDisconnected(CameraDevice camera) {
-                            }
-                        }, mHandler);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        showToast("开启失败：" + e.getMessage());
-                    }
-                }
-            }
-        }._turnLightOnCamera2();
+    private void openFlash() throws CameraAccessException {
+        CaptureRequest.Builder builder =  cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+        builder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_TORCH);
+        builder.addTarget(surface);
+        request = builder.build();
+        Log.i("123","open flash  FLASH_MODE_TORCH ");
+        if (captureSession!=null)
+        captureSession.setRepeatingRequest(request,null,null);
+        isOpenFlash = true;
     }
 
-    /**
-     * 关闭Camera2闪光灯
-     */
-    private void turnLightOffCamera2() {
-        new Object() {
-            private void _turnLightOffCamera2() {
-                if (cameraDevice != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    cameraDevice.close();
-                }
-            }
-        }._turnLightOffCamera2();
+    private void closeFlash() throws CameraAccessException {
+        CaptureRequest.Builder builder =  cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+        builder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_OFF);
+        builder.addTarget(surface);
+        request = builder.build();
+        Log.i("123","close flash  FLASH_MODE_OFF ");
+        if (captureSession!=null)
+        captureSession.setRepeatingRequest(request,null,null);
+        isOpenFlash = false;
     }
+
+
+
 
     /**
      * 判断设备是否支持闪光灯
@@ -295,7 +276,7 @@ public class FlashLightManager {
      * @param mCamera
      */
     public void turnLightOffCamera(Camera mCamera) {
-        mCamera.stopPreview();
+//        mCamera.stopPreview();
         Camera.Parameters parameters = mCamera.getParameters();
         List<String> flashModes = parameters.getSupportedFlashModes();
         String flashMode = parameters.getFlashMode();
@@ -344,89 +325,110 @@ public class FlashLightManager {
     /**
      * createCaptureSession
      */
-    private void createCaptureSession() {
-        new Object() {
-            private void _createCaptureSession() {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    final CameraCaptureSession.StateCallback stateCallback = new CameraCaptureSession.StateCallback() {
 
-                        public void onConfigured(CameraCaptureSession arg0) {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                captureSession = arg0;
-                                CaptureRequest.Builder builder;
-                                try {
-                                    builder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
-                                    builder.set(CaptureRequest.FLASH_MODE, CameraMetadata.FLASH_MODE_TORCH);
-                                    builder.addTarget(surface);
-                                    request = builder.build();
-                                    captureSession.capture(request, null, null);
-                                    isOpenFlash = true;
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    showToast("开启失败：" + e.getMessage());
-                                }
-                            }
-                        }
 
-                        public void onConfigureFailed(CameraCaptureSession arg0) {
-                        }
-                    };
+    private void createCaptureSession(){
 
-                    surfaceTexture = new SurfaceTexture(0, false);
-                    surfaceTexture.setDefaultBufferSize(1280, 720);
-                    surface = new Surface(surfaceTexture);
-                    ArrayList localArrayList = new ArrayList(1);
-                    localArrayList.add(surface);
-                    try {
-                        cameraDevice.createCaptureSession(localArrayList, stateCallback, null);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        showToast("开启失败：" + e.getMessage());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            final CameraCaptureSession.StateCallback stateCallback = new CameraCaptureSession.StateCallback() {
+
+                public void onConfigured(CameraCaptureSession arg0) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        captureSession = arg0;
                     }
                 }
+                public void onConfigureFailed(CameraCaptureSession arg0) {
+                }
+            };
+            surfaceTexture = new SurfaceTexture(0, false);
+            surfaceTexture.setDefaultBufferSize(1280, 720);
+            surface = new Surface(surfaceTexture);
+            ArrayList localArrayList = new ArrayList(1);
+            localArrayList.add(surface);
+            try {
+                cameraDevice.createCaptureSession(localArrayList, stateCallback, null);
+            } catch (Exception e) {
+                e.printStackTrace();
+                showToast("开启失败：" + e.getMessage());
             }
-        }._createCaptureSession();
+        }
+
     }
+
 
     private void showToast(String content) {
         Toast.makeText(context, content, Toast.LENGTH_LONG).show();
     }
 
+    private void openCamera() throws CameraAccessException {
 
+        manager.openCamera(cameraId, new StateCallback() {
+            @Override
+            public void onOpened( CameraDevice camera) {
+                cameraDevice = camera;
+                createCaptureSession();
+            }
 
-  
+            @Override
+            public void onDisconnected( CameraDevice camera) {
 
+            }
 
+            @Override
+            public void onError( CameraDevice camera, int error) {
 
-    class TimerTask extends AsyncTask<Void, Void, Void>{
+            }
+        },mHander);
+    }
 
-		@Override
-		protected Void doInBackground(Void... params) {
-			// TODO Auto-generated method stub
-			while (true) {
-				if (isCancelled()) {
-					return null;
-				}
-			
-				try {
-					turnOn();
-					Thread.sleep(500);
-					turnOff();
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-			}
-			
-			
-		}
-    	
+    private void closeCamera(){
+        if (cameraDevice != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            cameraDevice.close();
+        }
     }
 
 
+    class TimerTask extends AsyncTask<Object, Object, Void> {
 
+        @Override
+        protected Void doInBackground(Object... params) {
+//            int i = 0;
+            try {
+                openCamera();
+            } catch (CameraAccessException e) {
+                e.printStackTrace();
+            }
+
+
+            while (true){//true
+                if (isCancelled()){
+                    return null;
+                }
+
+                try {
+                    Log.i("123","f  turnLight on");
+                    turnOn();
+                    Log.i("123","--------------------");
+                    Thread.sleep(500);
+                    turnOff();
+                    Thread.sleep(500);
+                    Log.i("123","c  turnLight off");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (CameraAccessException e) {
+                    e.printStackTrace();
+                }
+//                i++;
+            }
+//            return null;
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            closeCamera();
+        }
+    }
 
 
 

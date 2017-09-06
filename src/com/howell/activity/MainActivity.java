@@ -24,11 +24,18 @@ import com.android.howell.webcam.R;
 import com.howell.broadcastreceiver.HomeKeyEventBroadCastReceiver;
 import com.howell.utils.DecodeUtils;
 import com.howell.utils.MessageUtiles;
+import com.howell.utils.PhoneConfig;
+import com.howell.utils.ServerConfigSp;
 import com.howell.protocol.GetNATServerReq;
 import com.howell.protocol.GetNATServerRes;
 import com.howell.protocol.LoginRequest;
 import com.howell.protocol.LoginResponse;
+import com.howell.protocol.QueryAndroidTokenReq;
+import com.howell.protocol.QueryAndroidTokenRes;
 import com.howell.protocol.SoapManager;
+import com.howell.protocol.UpdateAndroidTokenReq;
+import com.howell.protocol.UpdateAndroidTokenRes;
+import com.howell.push.MyService;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
@@ -179,6 +186,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
 	                     editor.commit();
 	                     GetNATServerRes res = mSoapManager.getGetNATServerRes(new GetNATServerReq(account, loginRes.getLoginSession()));
 	                     Log.e("MainActivity", res.toString());
+	                     //
+	                    
+	                 	androidToken(account,loginRes.getLoginSession(),PhoneConfig.getIMEI(MainActivity.this));
+						startPushService(); 
+	                     
 	                     Intent intent = new Intent(MainActivity.this,CamTabActivity.class);
 	                     startActivity(intent);
 	                     finish();
@@ -205,6 +217,26 @@ public class MainActivity extends Activity implements View.OnClickListener {
 		}
 	        
     }
+    
+    private boolean androidToken(String account,String session,String uuid){
+        QueryAndroidTokenRes res = mSoapManager.GetQueryAndroidTokenRes(new QueryAndroidTokenReq(account, session,uuid));
+        Log.i("123","QueryAndroidTokenRes="+res.toString());
+        if (res.getResult().equalsIgnoreCase("ok")){
+            return true;
+        }
+        //regist
+        UpdateAndroidTokenRes tokenRes = mSoapManager.GetUpdateAndroidTokenRes(new UpdateAndroidTokenReq(account,session,uuid,uuid,true));
+        Log.i("123","UpdateAndroidTokenRes="+tokenRes.toString());
+        if (!tokenRes.getResult().equalsIgnoreCase("ok"))   return false;
+        return true;
+    }
+	  
+	   private void startPushService(){
+         boolean isPush = ServerConfigSp.loadPushOnOff(this);
+         if (isPush){
+             this.startService(new Intent(this, MyService.class));
+         }
+     }
     
     public static class MessageHandler extends Handler{
     	

@@ -8,6 +8,22 @@ package com.howell.activity;
 
 import java.util.Set;
 
+import com.android.howell.webcam.R;
+import com.howell.protocol.GetNATServerReq;
+import com.howell.protocol.GetNATServerRes;
+import com.howell.protocol.LoginRequest;
+import com.howell.protocol.LoginResponse;
+import com.howell.protocol.QueryAndroidTokenReq;
+import com.howell.protocol.QueryAndroidTokenRes;
+import com.howell.protocol.SoapManager;
+import com.howell.protocol.UpdateAndroidTokenReq;
+import com.howell.protocol.UpdateAndroidTokenRes;
+import com.howell.push.MyService;
+import com.howell.utils.DecodeUtils;
+import com.howell.utils.NetWorkUtils;
+import com.howell.utils.PhoneConfig;
+import com.howell.utils.ServerConfigSp;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -18,15 +34,6 @@ import android.provider.Settings.Secure;
 import android.util.Log;
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
-
-import com.android.howell.webcam.R;
-import com.howell.utils.DecodeUtils;
-import com.howell.utils.NetWorkUtils;
-import com.howell.protocol.GetNATServerReq;
-import com.howell.protocol.GetNATServerRes;
-import com.howell.protocol.LoginRequest;
-import com.howell.protocol.LoginResponse;
-import com.howell.protocol.SoapManager;
 
 public class LogoActivity extends Activity implements TagAliasCallback{
 	//与平台交互协议单例
@@ -68,7 +75,7 @@ public class LogoActivity extends Activity implements TagAliasCallback{
 			isFirstLogin = sharedPreferences.getBoolean("isFirstLogin", true);
 			account = sharedPreferences.getString("account", "");
 			password = sharedPreferences.getString("password", "");
-
+		
 			//如果用户以前登录过app（配置文件中用户名，密码不为空）则直接登录
 			if(!account.equals("") && !password.equals("")){
 				LoginThread myLoginThread = new LoginThread(1);
@@ -88,6 +95,28 @@ public class LogoActivity extends Activity implements TagAliasCallback{
 		this.finish();
 	}
 
+	
+	  private boolean androidToken(String account,String session,String uuid){
+          QueryAndroidTokenRes res = mSoapManager.GetQueryAndroidTokenRes(new QueryAndroidTokenReq(account, session,uuid));
+          Log.i("123","QueryAndroidTokenRes="+res.toString());
+          if (res.getResult().equalsIgnoreCase("ok")){
+              return true;
+          }
+          //regist
+          UpdateAndroidTokenRes tokenRes = mSoapManager.GetUpdateAndroidTokenRes(new UpdateAndroidTokenReq(account,session,uuid,uuid,true));
+          Log.i("123","UpdateAndroidTokenRes="+tokenRes.toString());
+          if (!tokenRes.getResult().equalsIgnoreCase("ok"))   return false;
+          return true;
+      }
+	  
+	   private void startPushService(){
+           boolean isPush = ServerConfigSp.loadPushOnOff(this);
+           if (isPush){
+               this.startService(new Intent(this, MyService.class));
+           }
+       }
+	  
+	
 	class LoginThread extends Thread{
 		private int flag;
 		public LoginThread(int flag) {
@@ -109,13 +138,22 @@ public class LogoActivity extends Activity implements TagAliasCallback{
 					case 1:
 						try{
 							//登录协议实现
+						    String imei = PhoneConfig.getIMEI(LogoActivity.this);
+							
 							String encodedPassword = DecodeUtils.getEncodedPassword(password);
 							LoginRequest loginReq = new LoginRequest(account, "Common",encodedPassword, "1.0.0.1");
+							loginReq.setImei(imei);
 							LoginResponse loginRes = mSoapManager.getUserLoginRes(loginReq);
 							if(loginRes.getResult().equals("OK")){
 								//登录成功则进入摄像机列表界面
 								GetNATServerRes res = mSoapManager.getGetNATServerRes(new GetNATServerReq(account, loginRes.getLoginSession()));
 								Log.e("LogoActivity", res.toString());
+								//注册推送  开启推送
+								androidToken(account,loginRes.getLoginSession(),imei);
+								startPushService();
+								
+								
+						
 								Intent intent = new Intent(LogoActivity.this,CamTabActivity.class);
 								startActivity(intent);
 							}else{

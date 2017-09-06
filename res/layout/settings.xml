@@ -19,8 +19,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dip"
-        android:gravity="center_vertical"
-        android:background="@drawable/list_item_bg_middle">
+        android:background="@drawable/list_item_bg_middle"
+        android:gravity="center_vertical" >
 
         <ImageButton
             android:id="@+id/imageButton2"
@@ -32,17 +32,18 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dip"
             android:layout_gravity="center_vertical"
+            android:layout_marginLeft="40dip"
             android:text="@string/account"
             android:textColor="#FF000000"
             android:textSize="18sp" />
+
         <ImageView
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_gravity="right|center_vertical"
-	        android:layout_marginRight="5dip"
-	        android:src="@drawable/selector_forward" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="5dip"
+            android:src="@drawable/selector_forward" />
     </FrameLayout>
 
     <FrameLayout
@@ -63,30 +64,33 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dip"
             android:layout_gravity="center_vertical"
+            android:layout_marginLeft="40dip"
             android:text="@string/sys_message"
             android:textColor="#FF000000"
             android:textSize="18sp" />
+
         <ImageView
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_gravity="right|center_vertical"
-	        android:layout_marginRight="5dip"
-	        android:src="@drawable/selector_forward" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="5dip"
+            android:src="@drawable/selector_forward" />
+
+        <!--  -->
 
         <ImageView
             android:id="@+id/setting_red_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
-	        android:layout_marginRight="25dip"
-	        android:visibility="invisible"
-            android:src="@drawable/new_version" />
-
+            android:layout_marginRight="25dip"
+            android:src="@drawable/new_version"
+            android:visibility="invisible" />
     </FrameLayout>
-    
-    <!--  <FrameLayout
+
+    <!--
+    <FrameLayout
 		android:id="@+id/fl_push_alarm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -117,7 +121,8 @@
 	        android:layout_gravity="right|center_vertical"
 	        android:layout_marginRight="5dip"
 	        android:src="@drawable/selector_forward" />
-    </FrameLayout>-->
+    </FrameLayout>
+    -->
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -138,8 +143,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="@string/about"
             android:layout_marginLeft="40dip"
+            android:text="@string/about"
             android:textColor="#FF000000"
             android:textSize="18sp" />
     </FrameLayout>
@@ -150,9 +155,9 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dip"
         android:layout_marginTop="50dip"
-        android:paddingTop="15dip"
-        android:paddingBottom="15dip"
         android:background="@drawable/logout_btn_selector"
+        android:paddingBottom="15dip"
+        android:paddingTop="15dip"
         android:text="@string/exit"
         android:textColor="#FFFFFFFF"
         android:textSize="18sp" />

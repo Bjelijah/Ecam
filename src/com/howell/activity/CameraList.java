@@ -269,12 +269,13 @@ public class CameraList extends ListActivity implements Observer{
 					myHandler.sendEmptyMessage(postUpdateMessage);
 				}
 				
-		        String UUID = Secure.getString(getContentResolver(), Secure.ANDROID_ID);
-		        UpdateAndroidTokenReq updateAndroidTokenReq = new UpdateAndroidTokenReq(mResponse.getAccount(), mResponse.getLoginSession()
-			    		, UUID,UUID, true);
-			    System.out.println(updateAndroidTokenReq.toString());
-			    UpdateAndroidTokenRes res = mSoapManager.GetUpdateAndroidTokenRes(updateAndroidTokenReq);
-			    Log.e("savePushParam", res.getResult());
+				//do in login
+//		        String UUID = Secure.getString(getContentResolver(), Secure.ANDROID_ID);
+//		        UpdateAndroidTokenReq updateAndroidTokenReq = new UpdateAndroidTokenReq(mResponse.getAccount(), mResponse.getLoginSession()
+//			    		, UUID,UUID, true);
+//			    System.out.println(updateAndroidTokenReq.toString());
+//			    UpdateAndroidTokenRes res = mSoapManager.GetUpdateAndroidTokenRes(updateAndroidTokenReq);
+//			    Log.e("savePushParam", res.getResult());
 			    
 			    while(list == null){
 			    	try {

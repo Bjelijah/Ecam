@@ -17,7 +17,7 @@ public class JobSchedulerService extends JobService {
     @Override
     public boolean onStartJob(JobParameters params) {
         if (!DaemonEnv.sInitialized) return false;
-        Log.i("123","job scheduler service on start job");
+        Log.i("547","job scheduler service on start job");
         try {startService(new Intent(DaemonEnv.sApp, DaemonEnv.sServiceClass));} catch (Exception ignored) {}
         return false;
     }

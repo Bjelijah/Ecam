@@ -209,4 +209,10 @@
 	
 	<string name="play_talk">按住说话</string>
 	<string name="device_set_no_permission">没有操作权限</string>
+	<string name="push_title">推送</string>
+	<string name="push_open_close">推送 开/关</string>
+	
+	<string name="push_setting_push_description">	在开启摄像机移动侦测时，如果摄像机侦测到了报警，远端服务器会将报警推送给E看客户端。\n这样，E看客户端将在第一时间收到报警，并且显示通知。无论此应用程序是否被开启，或者是否是在前台。\n为了程序能够在后台持续工作，您需要将程序设置为允许后台运行（打开推送服务就可以设置了），
+		当然，如果您不想让程序在后台运行或者不想再收到推送，您也可以关闭推送服务。</string>
+	
 </resources>

@@ -91,14 +91,19 @@ public class ThreadUtil {
     
     public static void scheduledThreadForDaemonStart(Runnable r, long delay, TimeUnit t){
         if (sScheduledSingleThreadForDaemon==null){
-        	sScheduledSingleThreadForDaemon = Executors.newScheduledThreadPool(POOL_MAX);
+        	sScheduledSingleThreadForDaemon = Executors.newSingleThreadScheduledExecutor();
+        
+        	sScheduledSingleThreadForDaemon.scheduleAtFixedRate(r, delay, delay, t);
         }
-        sScheduledSingleThreadForDaemon.schedule(r,delay,t);
+        
     }
     
     public static void scheduledThreadForDaemonShutDown(){
         if (sScheduledSingleThreadForDaemon==null)return;
         sScheduledSingleThreadForDaemon.shutdown();
+        if(!sScheduledSingleThreadForDaemon.isShutdown()){
+        	sScheduledSingleThreadForDaemon.shutdownNow();
+        }
         sScheduledSingleThreadForDaemon = null;
     }
     
@@ -119,6 +124,9 @@ public class ThreadUtil {
     public static void scheduledSingleThreadShutDown(){
         if (sScheduledSingleThread==null)return;
         sScheduledSingleThread.shutdown();
+        if (!sScheduledSingleThread.isShutdown()) {
+			sScheduledSingleThread.shutdownNow();
+		}
         sScheduledSingleThread=null;
     }
 

@@ -81,8 +81,8 @@ public class Settings extends Activity implements OnClickListener {
             break;
         case R.id.sys_message:
         	//开关 推送
-        	
-        	
+        	//fixme now is always open
+        	startActivity(new Intent(this,PushSettingActivity.class));
             break;
         case R.id.exit:
         	showPopupWindow();

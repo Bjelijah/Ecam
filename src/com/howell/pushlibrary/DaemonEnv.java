@@ -7,7 +7,7 @@ public final class DaemonEnv {
 
     private DaemonEnv() {}
 
-    public static final int DEFAULT_WAKE_UP_INTERVAL = 6 * 60 * 1000;
+    public static final int DEFAULT_WAKE_UP_INTERVAL = 5 * 60 * 1000;
     private static final int MINIMAL_WAKE_UP_INTERVAL = 3 * 60 * 1000;
     public static boolean mShouldWakeUp = false;
     static Context sApp;

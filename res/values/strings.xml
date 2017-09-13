@@ -210,6 +210,6 @@
 	
 	<string name="play_talk">talk</string>
 	<string name="device_set_no_permission">no permission</string>
-	
-	
+	<string name="push_title">Push</string>
+	<string name="push_open_close">Push Open/Close</string>
 </resources>

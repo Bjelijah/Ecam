@@ -33,7 +33,7 @@ public class WatchDogService extends Service {
      */
     protected final int onStart(Intent intent, int flags, int startId) {
         Log.i("547","watchDogService on start");
-        if (!DaemonEnv.sInitialized) return START_STICKY;
+        if (!DaemonEnv.sInitialized) {Log.e("547","daemonEnv no init  return");return START_STICKY;}
 
 //        if (sDisposable != null && !sDisposable.isDisposed()) return START_STICKY;
 
@@ -45,6 +45,9 @@ public class WatchDogService extends Service {
 
         //定时检查 AbsWorkService 是否在运行，如果不在运行就把它拉起来
         //Android 5.0+ 使用 JobScheduler，效果比 AlarmManager 好
+        
+    
+        
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             JobInfo.Builder builder = new JobInfo.Builder(HASH_CODE, new ComponentName(DaemonEnv.sApp, JobSchedulerService.class));
             builder.setPeriodic(DaemonEnv.getWakeUpInterval());
@@ -63,12 +66,12 @@ public class WatchDogService extends Service {
 
         //使用定时 Observable，避免 Android 定制系统 JobScheduler / AlarmManager 唤醒间隔不稳定的情况
 //        sDisposable = Flowable.interval(DaemonEnv.getWakeUpInterval(), TimeUnit.MILLISECONDS)
-        		
+       Log.e("547", "scheduledThreadForDaemonStart  interval="+DaemonEnv.getWakeUpInterval()+"  ms"); 		
        ThreadUtil.scheduledThreadForDaemonStart(new Runnable() {
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
-	         Log.i("547","rxjava start service:"+DaemonEnv.sApp.getClass().getName());
+	         Log.i("547","rxjava start service:"+DaemonEnv.sServiceClass.getClass().getName());
              startService(new Intent(DaemonEnv.sApp, DaemonEnv.sServiceClass));
 		}
 	}, DaemonEnv.getWakeUpInterval(),  TimeUnit.MILLISECONDS);
@@ -98,7 +101,7 @@ public class WatchDogService extends Service {
 
     @Override
     public final int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i("123","watch dog on start command");
+        Log.i("547","watch dog on start command");
         return onStart(intent, flags, startId);
     }
 

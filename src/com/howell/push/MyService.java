@@ -6,11 +6,13 @@ import java.util.concurrent.TimeUnit;
 import org.json.JSONException;
 
 import com.android.howell.webcam.R;
-
 import com.howell.activity.LogoActivity;
+import com.howell.push.WSRes.AlarmLinkRes;
 import com.howell.pushlibrary.AbsWorkService;
 import com.howell.pushlibrary.DaemonEnv;
-
+import com.howell.utils.NetWorkUtils;
+import com.howell.utils.PhoneConfig;
+import com.howell.utils.ServerConfigSp;
 import com.howell.utils.ThreadUtil;
 import com.howell.websocket.autobahn.WebSocketException;
 
@@ -21,7 +23,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
-import android.telephony.TelephonyManager;
 import android.util.Base64;
 import android.util.Log;
 
@@ -31,7 +32,7 @@ import android.util.Log;
  */
 
 public class MyService extends AbsWorkService implements WebSocketManager.IMessage {
-	WebSocketManager mgr = new WebSocketManager();
+	WebSocketManager mgr = WebSocketManager.getInstance();
 	boolean mWsIsOpen = false;
 	int mCseq = 0;
 	Handler mHandler = new Handler();
@@ -48,7 +49,7 @@ public class MyService extends AbsWorkService implements WebSocketManager.IMessa
 		}
 	};
 
-	private static boolean isAlive = false;
+	private static boolean isAliveHeart = false;
 	public static boolean sShouldStopService=false;
 	public static boolean isWorking = false;
 	public static String TAG = MyService.class.getName();
@@ -56,6 +57,7 @@ public class MyService extends AbsWorkService implements WebSocketManager.IMessa
 	private NotificationManager mNotificationManager;
 	private Notification mNotification;
 	private int notificationId=0;
+	private int heartNo = 0;
 	public static void stopService(){
 		Log.i("547","myservice stop service");
 		DaemonEnv.mShouldWakeUp = false;
@@ -93,7 +95,7 @@ public class MyService extends AbsWorkService implements WebSocketManager.IMessa
 		isWorking = false;
 		Log.e("547",TAG+":stop work");
 		//TODO do work
-		unLink();
+		        unLink();
 
 	}
 
@@ -102,12 +104,13 @@ public class MyService extends AbsWorkService implements WebSocketManager.IMessa
 		isWorking = false;
 		Log.e("547",TAG+":stop work");
 		//TODO stop work
-		unLink();
+		        unLink();
 	}
 
 	@Override
 	public Boolean isWorkRunning(Intent intent, int flags, int startId) {
-		return isWorking;
+		Log.i("547","isWorking="+isWorking+"    ws connect="+mgr.isOpen());
+		return isWorking&&mgr.isOpen();
 	}
 
 
@@ -120,8 +123,8 @@ public class MyService extends AbsWorkService implements WebSocketManager.IMessa
 	@Override
 	public void onServiceKilled(Intent rootIntent) {
 		isWorking = false;
-		unLink();
 		Log.e("547",TAG+":onServiceKilled  reborn in "+DaemonEnv.DEFAULT_WAKE_UP_INTERVAL+" ms");
+		        unLink();
 	}
 
 	@Override
@@ -181,7 +184,7 @@ public class MyService extends AbsWorkService implements WebSocketManager.IMessa
 	private void link(){
 
 		String ip = "www.haoweis.com";
-		Log.i("547","link ip="+ip);
+		Log.i("547","my server link  ~~~~~~~~~~~~~~~~~~~~link ip="+ip);
 		try {
 			mgr.registMessage(this).initURL(ip);
 		} catch (WebSocketException e) {
@@ -190,6 +193,8 @@ public class MyService extends AbsWorkService implements WebSocketManager.IMessa
 	}
 	private void unLink(){
 		Log.i("547","we unLink");
+		stopHeart();
+		mgr.unregistMessage(this);
 		mgr.deInit();
 	}
 
@@ -198,19 +203,9 @@ public class MyService extends AbsWorkService implements WebSocketManager.IMessa
 			@Override
 			public void run() {
 				Log.i("547","sendlink");
+				String imei = PhoneConfig.getIMEI(MyService.this);
 				try {
-					String session = null;
-					//                    if (LoginAction.getInstance().getmInfo().getLr()==null||
-					//                            LoginAction.getInstance().getmInfo().getLr().getLoginSession()==null){
-					//                        //重新登入
-					//                    }else{
-					//                        session = LoginAction.getInstance().getmInfo().getLr().getLoginSession();
-					//                    }
-
-					String imei = ((TelephonyManager)MyService.this.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
-
-					mgr.alarmLink(getCseq(), session,
-							imei);
+					mgr.alarmLink(getCseq(), null, imei);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				} catch (Exception e){
@@ -252,18 +247,37 @@ public class MyService extends AbsWorkService implements WebSocketManager.IMessa
 
 
 	private void startHeart(long delaySec){
-		ThreadUtil.scheduledSingleThreadStart(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					Log.e("123","start alarmAlive");
-					mgr.alarmAlive(getCseq(),0,0,0,false);
-				} catch (JSONException e) {
-					e.printStackTrace();
+		if (!isAliveHeart) {
+
+			ThreadUtil.scheduledSingleThreadStart(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						Log.e("547","start alarmAlive  in  scheduledSingleThreadStart  runnable ");
+						mgr.alarmAlive(getCseq(),0,0,0,false);
+						
+						heartNo ++;
+						if (heartNo>=3) {
+							Log.e("547", "no heart we unlink websocket");
+							unLink();
+							heartNo = 0;
+						}
+						
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
 				}
-			}
-		},delaySec, TimeUnit.SECONDS);
+			},delaySec,delaySec, TimeUnit.SECONDS);
+			isAliveHeart = true;
+		}
 	}
+
+	private void stopHeart(){
+		Log.e("547","stop heart");
+		ThreadUtil.scheduledSingleThreadShutDown();
+		isAliveHeart = false;
+	}
+
 
 	private void initNotifcation(){
 		mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -305,26 +319,37 @@ public class MyService extends AbsWorkService implements WebSocketManager.IMessa
 
 	@Override
 	public void onWebSocketOpen() {
-		Log.i("547","on websocket open");
+		Log.i("547","myService   on websocket open   we send  link~~~~~~~~~");
 		mWsIsOpen = true;
 		sendLink();
 	}
 
 	@Override
 	public void onWebSocketClose() {
-
+		Log.e("547","myService  on web socket close");
+		//判断网络    恢复正常是由 daemon 拉起 startwork
+		stopHeart();
+		if(!NetWorkUtils.isNetworkConnected(this)){Log.e("547","网络连接失败  不重连");return;}
+		if (isWorking) {
+			link();
+		}
 	}
-
-
 
 	@Override
 	public void onGetMessage(WSRes res) {
 		Log.i("547","on get message res="+res.toString());
 		switch (res.getType()){
 		case ALARM_LINK:
-			sendHeart();
+			WSRes.AlarmLinkRes alarmLinkRes = (AlarmLinkRes) res.getResultObject();
+			Log.i("547", "alarm link res = "+alarmLinkRes.getResult());
+			if (alarmLinkRes.getResult()==0) {
+				sendHeart();
+			}else{
+				unLink();
+			}
 			break;
 		case ALARM_ALIVE:
+			heartNo = 0;
 			WSRes.AlarmAliveRes aRes = (WSRes.AlarmAliveRes) res.getResultObject();
 			startHeart(aRes.getHeartbeatinterval());
 			break;
@@ -355,4 +380,9 @@ public class MyService extends AbsWorkService implements WebSocketManager.IMessa
 	public void onError(int error) {
 		Log.e("547","on error="+error);
 	}
+
+
+
+
+
 }

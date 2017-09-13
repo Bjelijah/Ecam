@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical"  >
+    
+    
+    <FrameLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="55dip"
+	    android:background="@color/title_blue" >
+        <ImageButton
+            android:id="@+id/ib_push_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:src="@drawable/back_btn_selector"
+            android:layout_gravity="left|center" />
+    </FrameLayout>
+    
+    
+    
+    
+             <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                        android:background="@drawable/list_item_bg_middle" 
+                    >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/push_setting_push_description"
+                        android:textSize="15sp"
+                        />
+
+                </FrameLayout>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+   <FrameLayout
+        android:id="@+id/fl_change_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/list_item_bg_middle" 
+        android:layout_marginTop="20dp">
+                    
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/push_open_close"
+            android:textSize="20sp" />
+        
+        <!-- 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center"
+            android:src="@drawable/qz_icon_forward_normal" />
+ 		-->
+
+          <CheckBox
+                        android:id="@+id/cb_push_set"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|center"
+                        style="@style/MyCheckBox" 
+                        />
+ 		
+    </FrameLayout>
+    
+    
+
+</LinearLayout>

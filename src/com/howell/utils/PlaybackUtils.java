@@ -61,9 +61,11 @@ public class PlaybackUtils {
 	
 	public ArrayList<VODRecord> getNewVerVideoList(InviteUtils client,String startTime,String endTime){
 		ArrayList<VODRecord> mList = new ArrayList<VODRecord>();
-		if(nowPageCountForNewVer <= totalPageForNewVer){
+		Log.e("123", "nowPageCountForNewVer="+nowPageCountForNewVer+" totalPageForNewVer"+totalPageForNewVer);
+		if(nowPageCountForNewVer <= totalPageForNewVer ||true){//fix me add by cbj 2017/9/21  because some camera return pageCount=1;
 			VodSearchRes vodSearchRes = client.getVodSearchReq(nowPageCountForNewVer,startTime,endTime,20);
 			int pageCount = vodSearchRes.getPageCount();
+			Log.e("123","!!!!!!!pageCount="+pageCount);
 	    	totalPageForNewVer = pageCount;
 	    	mList.addAll(vodSearchRes.getRecord());
 	    	nowPageCountForNewVer++;

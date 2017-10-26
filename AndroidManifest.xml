@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.android.howell.webcam" android:versionCode="29"
-	android:versionName="1.1.9">
+	package="com.android.howell.webcam" android:versionCode="30"
+	android:versionName="1.2.0">
 
 	<!-- 极光 -->
 	<permission android:name="com.android.howell.webcam.permission.JPUSH_MESSAGE"

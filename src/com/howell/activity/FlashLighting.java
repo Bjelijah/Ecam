@@ -105,6 +105,7 @@ public class FlashLighting extends Activity implements OnClickListener{
 				intent.putExtra("wifi_password", wifi_password);
 				intent.putExtra("device_name", device_name);
 				startActivity(intent);
+				finish();
 			}
 			break;
 			

@@ -330,6 +330,9 @@ public class VideoList extends ListActivity implements OnItemClickListener {
 			@Override
 			public void onFootRefresh() {
 				// TODO Auto-generated method stub
+				
+				Log.e("123", "!!!!!!!!!!!!!on foot refresh");
+				
 				new AsyncTask<Void, Void, Void>() {
 					protected Void doInBackground(Void... params) {
 						position = mList.size();
@@ -344,6 +347,7 @@ public class VideoList extends ListActivity implements OnItemClickListener {
 					        		Date newEndDate = TimeTransform.StringToDate(lastRefreshEndTime);
 					        		lastRefreshStartTime = TimeTransform.reduceTenDays(newStartDate);
 					        		lastRefreshEndTime = TimeTransform.reduceTenDays(newEndDate);
+					        		Log.e("123", "lastRefreshStartTime="+lastRefreshStartTime+" lastRefreshEndTime="+lastRefreshEndTime);
 									mTemp = utils.getVideoList(client, lastRefreshStartTime, lastRefreshEndTime);
 									System.out.println("foot111:"+mTemp.size());
 									System.out.println("foot111:"+lastRefreshStartTime+","+lastRefreshEndTime);
@@ -351,6 +355,7 @@ public class VideoList extends ListActivity implements OnItemClickListener {
 								if(mTemp.size() > 0){
 									System.out.println("foot222:"+mTemp.size());
 									System.out.println("foot222:"+lastRefreshStartTime+","+lastRefreshEndTime);
+									Log.e("123", "lastRefreshStartTime="+lastRefreshStartTime+" lastRefreshEndTime="+lastRefreshEndTime);
 									mList.addAll(mTemp);
 									utils.addTitleFlag(mList);
 									break;
@@ -358,6 +363,8 @@ public class VideoList extends ListActivity implements OnItemClickListener {
 							}
 						}else{
 							//device is new version
+							Log.e("123", "new  lastRefreshStartTime="+lastRefreshStartTime+" lastRefreshEndTime="+lastRefreshEndTime +" size="+mList.size() );
+//							mList.clear();//fixme
 							mList.addAll(utils.getNewVerVideoList(client, lastRefreshStartTime,lastRefreshEndTime));
 						}
 						adapter.mAdapterList = mList;

@@ -715,6 +715,7 @@ public class SoapManager implements Serializable {
 
         VodSearchRes res = new VodSearchRes();
         SoapObject object = initEnvelopAndTransport(rpc,"http://www.haoweis.com/HomeServices/MCU/vodSearch");
+        Log.e("123", "search vod o="+object.toString());
         try{
 	        Object result = object.getProperty("result");
 	        System.out.println("result:"+result.toString());

@@ -221,7 +221,7 @@ public class MyService extends AbsWorkService implements WebSocketManager.IMessa
 			@Override
 			public void run() {
 				try {
-
+					Log.i("547", "we send heart");
 					mgr.alarmAlive(getCseq(),0,0,0,false);
 				} catch (JSONException e) {
 					e.printStackTrace();
